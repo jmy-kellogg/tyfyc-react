@@ -1,50 +1,56 @@
-# React + TypeScript + Vite
+# Tyfyc
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tyfyc stands for “thank you for your consideration” this is to assist in customizing a person resume. This tool will allow you to upload your resume and auto update it according to a given job post.
 
-Currently, two official plugins are available:
+![Alt text](public/app-preview.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- [ ] Manually add/change resume
+- [ ] Formats resume to downloadable PDF
+- [ ] Saves locally in cookies
+- [ ] Autofill resume from an existing resume
+- [ ] Updates resume according to job posting
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+```
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Run for development
 ```
+npm run dev
+```
+The app will run locally http://localhost:8000/
+
+### Compiles and minifies for production
+```
+npm run build
+
+```
+
+## Project Structure
+```
+tyfyc/
+│── public/                 # Static assets
+│── src/
+│   ├── client/             # Client - frontend
+│       ├── components/     # React components
+│       ├── store/          # Redux store
+│       ├── types/          # TypeScript interfaces
+│       ├── App.vue         # Root component
+│       ├── main.ts         # Entry file
+│   ├── server/             # Server - backend
+│── index.html              # Html
+│── package.json            # Dependencies and scripts
+│── vite.config.js          # Vite configuration
+│── README.md               # Project documentation
+```
+
+## Technologies Used
+- React.js
+- Vite
+- TypeScript
+- HTML & CSS
+- License
+
+## This project is licensed under the MIT License.
