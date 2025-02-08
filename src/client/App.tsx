@@ -1,45 +1,59 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-
-const getGreeting = async function () {
-  const res = await fetch("/api/test");
-  return await res.json();
-};
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [greeting, setGreeting] = useState(""); // Add this
+  const [view, setView] = useState("form");
+  const [smallDisplay, setSmallDisplay] = useState(false);
+
+  const updateScreenSize = () => {
+    const isSmallDisplay = window.innerWidth < 1200;
+    setSmallDisplay(isSmallDisplay);
+  };
 
   useEffect(() => {
-    // Add this hook
-    getGreeting().then((res) => setGreeting(res.greeting));
-  }, []);
+    updateScreenSize();
+    window.addEventListener("resize", updateScreenSize);
+    return () => {
+      window.removeEventListener("resize", updateScreenSize);
+    };
+  });
+
+  // ToDo: remove example function
+  // const [greeting, setGreeting] = useState("");
+  // const getGreeting = async function () {
+  //   const res = await fetch("/api/test");
+  //   return await res.json();
+  // };
+  // useEffect(() => {
+  //   // Add this hook
+  //   getGreeting().then((res) => setGreeting(res.greeting));
+  // }, []);
 
   return (
     <>
-      <div>
-        <h2 className="font-bold underline">Server response: {greeting}</h2>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      {smallDisplay && (
+        <div className="flex">
+          <button
+            className={`m-1 ml-0 w-24 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
+              view == "form" ? " font-bold bg-white mb-0" : ""
+            }`}
+            onClick={() => setView("form")}
+          >
+            Input
+          </button>
+          <button
+            className={`m-1 ml-0 w-24 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
+              view == "preview" ? " font-bold bg-white mb-0" : ""
+            }`}
+            onClick={() => setView("preview")}
+          >
+            Preview
+          </button>
+        </div>
+      )}
+      <div className="flex">
+        <h1>Form</h1>
+        <h1>DoC</h1>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
