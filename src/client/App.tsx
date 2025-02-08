@@ -20,7 +20,7 @@ function App() {
   return (
     <>
       <div>
-        <p>Server response: {greeting}</p>
+        <h2 className="font-bold underline">Server response: {greeting}</h2>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
