@@ -1,19 +1,10 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PersonalState} from "../../types"
 
-interface PersonalState {
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string,
-    city: string,
-    state: string,
-    linkedIn: string,
-    gitHub: string,
-    summary: string,
-}
+type PersonalStateUpdate  = Partial<PersonalState>
 
 const initialState: PersonalState = {
-    firstName: "Jess",
+    firstName: "",
     lastName: "",
     email: "",
     phone: "",
@@ -24,11 +15,13 @@ const initialState: PersonalState = {
     summary: "",
 }
 
+
+
 export const personalSlice = createSlice({
   name: 'personal',
   initialState,
   reducers: {
-    updatePersonal: (state: PersonalState,  action: PayloadAction<PersonalState>) => {
+    updatePersonal: (state: PersonalState,  action: PayloadAction<PersonalStateUpdate>) => {
       return {...state, ...action.payload}
     },
     // syncWithLocalStorage: state => {

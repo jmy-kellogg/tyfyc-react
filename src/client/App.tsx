@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import ManualForm from "./components/ManualForm";
+
 function App() {
   const [view, setView] = useState("form");
   const [smallDisplay, setSmallDisplay] = useState(false);
@@ -16,17 +18,6 @@ function App() {
       window.removeEventListener("resize", updateScreenSize);
     };
   });
-
-  // ToDo: remove example function
-  // const [greeting, setGreeting] = useState("");
-  // const getGreeting = async function () {
-  //   const res = await fetch("/api/test");
-  //   return await res.json();
-  // };
-  // useEffect(() => {
-  //   // Add this hook
-  //   getGreeting().then((res) => setGreeting(res.greeting));
-  // }, []);
 
   return (
     <>
@@ -51,8 +42,8 @@ function App() {
         </div>
       )}
       <div className="flex">
-        <h1>Form</h1>
-        <h1>DoC</h1>
+        {(view == "form" || !smallDisplay) && <ManualForm />}
+        {(view == "preview" || !smallDisplay) && <h1>DoC</h1>}
       </div>
     </>
   );
