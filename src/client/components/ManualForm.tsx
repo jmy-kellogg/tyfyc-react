@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updatePersonal } from "../store/reducers/personalSlice";
-
+import Jobs from "./inputs/Jobs";
 import type { State, PersonalState } from "../types";
 
 function ManualForm() {
@@ -149,11 +149,10 @@ function ManualForm() {
                 ></textarea>
               </div>
             </div>
-            {/* 
-            <SkillsVue />
-            <JobsVue />
-            <EducationVue /> 
-            */}
+
+            {/* <SkillsVue /> */}
+            <Jobs />
+            {/* <EducationVue />  */}
           </div>
         </form>
       </div>

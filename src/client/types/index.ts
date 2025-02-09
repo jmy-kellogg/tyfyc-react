@@ -11,7 +11,6 @@ export interface Personal {
   summary: string;
 }
 
-
 export interface Skill {
    name: string, 
    id: string 
@@ -28,7 +27,7 @@ export interface Job {
   description: string;
 }
 
-export type Jobs = Array<Job>
+export type JobsList = Array<Job>
 
 export interface Education {
   degree: string;
@@ -38,7 +37,6 @@ export interface Education {
 
 export type Educations = Array<Education>
 
-
 //Store
 export type PersonalState =  Personal
 
@@ -47,7 +45,7 @@ export interface SkillsState {
 }
 
 export interface JobsState {
-  jobsList: Jobs
+  list: JobsList
 }
 
 export interface EducationState {
@@ -69,6 +67,6 @@ export interface PersonalStateUpdate {
 export interface ParsedData {
   personal: Personal,
   skills: Skills,
-  jobs: Jobs,
+  jobs: JobsList,
   education: Educations
 }

@@ -1,19 +1,5 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-interface Job {
-  title: string,
-  company: string,
-  location: string,
-  start: string,
-  end: string,
-  description: string,
-}
-
-type JobsList =  Array<Job>
-
-interface JobsState {
-  list: JobsList,
-}
+import type {Job, JobsState, JobsList} from "../../types"
 
 const initialState: JobsState = {
     list: [
