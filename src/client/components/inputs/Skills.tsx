@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { updateSkills } from "../../store/reducers/skillsSlice";
 
-import type { State, Skill, SkillsList } from "../../types";
+import type { State, Skill, SkillsList } from "../../../types";
 
 const options: SkillsList = [
   { label: "JavaScript", value: "javascript" },

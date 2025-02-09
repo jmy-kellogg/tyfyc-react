@@ -1,5 +1,5 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type {Skill, SkillsList, SkillsState} from "../../types"
+import type {Skill, SkillsList, SkillsState} from "../../../types"
 
 
 const initialState: SkillsState = {

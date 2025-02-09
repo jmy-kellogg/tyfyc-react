@@ -8,7 +8,7 @@ import type {
   EducationList,
   JobsList,
   SkillsList,
-} from "../types";
+} from "../../types";
 
 function FormattedDoc() {
   const personal: PersonalState = useSelector((state: State) => state.personal);

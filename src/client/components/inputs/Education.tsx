@@ -6,7 +6,7 @@ import {
   removeEdu,
 } from "../../store/reducers/educationSlice";
 
-import type { State, Education, EducationList } from "../../types";
+import type { State, Education, EducationList } from "../../../types";
 
 function Education() {
   const eduList: EducationList = useSelector(

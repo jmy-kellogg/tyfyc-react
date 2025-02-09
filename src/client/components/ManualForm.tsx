@@ -4,8 +4,9 @@ import { updatePersonal } from "../store/reducers/personalSlice";
 import Jobs from "./inputs/Jobs";
 import Education from "./inputs/Education";
 import Skills from "./inputs/Skills";
+import DocUploader from "./inputs/DocUploader";
 
-import type { State, PersonalState } from "../types";
+import type { State, PersonalState } from "../../types";
 
 function ManualForm() {
   const personal: PersonalState = useSelector((state: State) => state.personal);
@@ -23,7 +24,7 @@ function ManualForm() {
     <>
       <div className="bg-white mr-5 p-5">
         <form>
-          {/* <DocUploaderVue /> */}
+          <DocUploader />
           <h2>
             <b>Personal</b>
           </h2>

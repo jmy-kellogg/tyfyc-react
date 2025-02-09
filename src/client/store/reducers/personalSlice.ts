@@ -1,5 +1,5 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { PersonalState} from "../../types"
+import type { PersonalState} from "../../../types"
 
 type PersonalStateUpdate  = Partial<PersonalState>
 
