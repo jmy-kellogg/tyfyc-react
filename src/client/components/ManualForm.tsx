@@ -2,6 +2,8 @@ import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updatePersonal } from "../store/reducers/personalSlice";
 import Jobs from "./inputs/Jobs";
+import Education from "./inputs/Education";
+
 import type { State, PersonalState } from "../types";
 
 function ManualForm() {
@@ -152,7 +154,7 @@ function ManualForm() {
 
             {/* <SkillsVue /> */}
             <Jobs />
-            {/* <EducationVue />  */}
+            <Education />
           </div>
         </form>
       </div>

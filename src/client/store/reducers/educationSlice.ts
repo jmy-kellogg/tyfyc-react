@@ -1,16 +1,5 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-interface Education {
-  degree: string,
-  school: string,
-  gradYear: string,
-}
-
-type EducationList =  Array<Education>
-
-interface EducationState {
-  list: EducationList,
-}
+import type {EducationState, EducationList } from "../../types"
 
 const initialState: EducationState = {
     list: [

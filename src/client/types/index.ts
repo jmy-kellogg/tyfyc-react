@@ -35,7 +35,7 @@ export interface Education {
   gradYear: string;
 }
 
-export type Educations = Array<Education>
+export type EducationList = Array<Education>
 
 //Store
 export type PersonalState =  Personal
@@ -49,7 +49,7 @@ export interface JobsState {
 }
 
 export interface EducationState {
-  educationList: Educations
+  list: EducationList
 }
 
 export interface State {
@@ -68,5 +68,5 @@ export interface ParsedData {
   personal: Personal,
   skills: Skills,
   jobs: JobsList,
-  education: Educations
+  education: EducationList
 }
