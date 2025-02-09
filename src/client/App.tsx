@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import ManualForm from "./components/ManualForm";
+import FormattedDoc from "./components/FormattedDoc";
 
 function App() {
   const [view, setView] = useState("form");
@@ -43,7 +44,7 @@ function App() {
       )}
       <div className="flex">
         {(view == "form" || !smallDisplay) && <ManualForm />}
-        {(view == "preview" || !smallDisplay) && <h1>DoC</h1>}
+        {(view == "preview" || !smallDisplay) && <FormattedDoc />}
       </div>
     </>
   );
