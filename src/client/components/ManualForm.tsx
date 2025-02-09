@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updatePersonal } from "../store/reducers/personalSlice";
 import Jobs from "./inputs/Jobs";
 import Education from "./inputs/Education";
+import Skills from "./inputs/Skills";
 
 import type { State, PersonalState } from "../types";
 
@@ -151,8 +152,7 @@ function ManualForm() {
                 ></textarea>
               </div>
             </div>
-
-            {/* <SkillsVue /> */}
+            <Skills />
             <Jobs />
             <Education />
           </div>

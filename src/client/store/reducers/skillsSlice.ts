@@ -1,21 +1,12 @@
 import {  createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type {Skill, SkillsList, SkillsState} from "../../types"
 
-interface Skill {
-  name: string,
-  id: string,
-}
-
-type SkillsList =  Array<Skill>
-
-interface SkillsState {
-  list: SkillsList,
-}
 
 const initialState: SkillsState = {
     list: [
       {
-        name: "JavaScript", 
-        id: "javascript" 
+        label: "JavaScript", 
+        value: "javascript" 
       },
     ],
 }

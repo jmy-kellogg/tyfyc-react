@@ -12,11 +12,11 @@ export interface Personal {
 }
 
 export interface Skill {
-   name: string, 
-   id: string 
+   label: string, 
+   value: string 
 }
 
-export type Skills = Array<Skill>
+export type SkillsList = Array<Skill>
 
 export interface Job {
   title: string;
@@ -41,7 +41,7 @@ export type EducationList = Array<Education>
 export type PersonalState =  Personal
 
 export interface SkillsState {
-  skillsList: Skills
+  list: SkillsList
 }
 
 export interface JobsState {
@@ -66,7 +66,7 @@ export interface PersonalStateUpdate {
 // API
 export interface ParsedData {
   personal: Personal,
-  skills: Skills,
+  skills: SkillsList,
   jobs: JobsList,
   education: EducationList
 }
