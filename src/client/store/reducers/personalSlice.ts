@@ -24,19 +24,6 @@ export const personalSlice = createSlice({
     updatePersonal: (state: PersonalState,  action: PayloadAction<PersonalStateUpdate>) => {
       return {...state, ...action.payload}
     },
-    // syncWithLocalStorage: state => {
-    //   const personalData = localStorage.getItem("personal");
-    //   if (personalData) {
-    //     const parseData: PersonalState = JSON.parse(personalData);
-    //     return {
-    //       ...state,
-    //       ...parseData
-    //     }
-    //   }
-    // },
-    // saveToLocalStorage(state) {
-    //   localStorage.setItem("personal", JSON.stringify(state));
-    // },
   }
 })
 
