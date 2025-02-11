@@ -1,4 +1,3 @@
-
 export interface Personal {
   firstName: string;
   lastName: string;
@@ -12,11 +11,11 @@ export interface Personal {
 }
 
 export interface Skill {
-   label: string, 
-   value: string 
+  label: string;
+  value: string;
 }
 
-export type SkillsList = Array<Skill>
+export type SkillsList = Array<Skill>;
 
 export interface Job {
   title: string;
@@ -27,7 +26,7 @@ export interface Job {
   description: string;
 }
 
-export type JobsList = Array<Job>
+export type JobsList = Array<Job>;
 
 export interface Education {
   degree: string;
@@ -35,38 +34,48 @@ export interface Education {
   gradYear: string;
 }
 
-export type EducationList = Array<Education>
+export type EducationList = Array<Education>;
 
 //Store
-export type PersonalState =  Personal
+export type PersonalState = Personal;
 
 export interface SkillsState {
-  list: SkillsList
+  list: SkillsList;
 }
 
 export interface JobsState {
-  list: JobsList
+  list: JobsList;
 }
 
 export interface EducationState {
-  list: EducationList
+  list: EducationList;
+}
+
+export interface PostingState {
+  company: string;
+  description: string;
+  title: string;
+  salary: string;
+  dateApplied: string;
+  location: string;
 }
 
 export interface State {
-  personal: PersonalState,
-  skills: SkillsState,
-  jobs: JobsState,
-  education: EducationState
+  personal: PersonalState;
+  skills: SkillsState;
+  jobs: JobsState;
+  education: EducationState;
+  posting: PostingState;
 }
 export interface PersonalStateUpdate {
-  field:  keyof PersonalState;
+  field: keyof PersonalState;
   value: string;
 }
 
 // API
 export interface ParsedData {
-  personal: Personal,
-  skills: SkillsList,
-  jobs: JobsList,
-  education: EducationList
+  personal: Personal;
+  skills: SkillsList;
+  jobs: JobsList;
+  education: EducationList;
 }
