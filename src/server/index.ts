@@ -1,8 +1,10 @@
 import PDFParser from "pdf2json";
-import multer from "multer"; 
-import express, { Request,  Response } from 'express';
+import multer from "multer";
+import axios from "axios";
+import express, { Request, Response } from "express";
+import * as cheerio from "cheerio";
 
-import type { JobsList, EducationList, ParsedData } from "../types" 
+import type { JobsList, EducationList, ParsedData } from "../types";
 
 export const app = express();
 
@@ -23,7 +25,6 @@ export const divider = () => {
   return line;
 };
 // ----------------------------------------
-
 
 const removeSubString = (str = "", sub: string) => {
   return str.replace(sub, "")?.trim() || "";
@@ -91,7 +92,7 @@ const getJobs = (textData: Array<string> = []): JobsList => {
   return respJobs;
 };
 
-const getEducation = (textData: Array<string> = []):EducationList => {
+const getEducation = (textData: Array<string> = []): EducationList => {
   const education = textData
     .slice(textData.indexOf("Education") + 1, textData.length)
     .filter((line) => {
@@ -104,7 +105,7 @@ const getEducation = (textData: Array<string> = []):EducationList => {
 
   education.forEach((element) => {
     const edu = element.split("|||").filter((str) => !!str.trim());
-    if ( edu.length == 2) {
+    if (edu.length == 2) {
       respEdu.push({
         degree: edu[0] || "",
         school: edu[1]?.split(" - ")[0]?.trim() || "",
@@ -115,7 +116,7 @@ const getEducation = (textData: Array<string> = []):EducationList => {
   return respEdu;
 };
 
-const parseTextData = (rawText: string = ""):ParsedData => {
+const parseTextData = (rawText: string = ""): ParsedData => {
   const textData = rawText.split("\r\n").filter((str) => !!str.trim());
 
   return {
@@ -129,8 +130,8 @@ const parseTextData = (rawText: string = ""):ParsedData => {
 // ToDo: find a better upload solution
 const upload = multer({ dest: "uploads/" });
 app.post("/parser", upload.single("file"), (req: Request, res: Response) => {
-  const pdfParser = new PDFParser(this, 1);
-  const path = req?.file?.path || ""
+  const pdfParser = new PDFParser(this, true);
+  const path = req?.file?.path || "";
 
   pdfParser.loadPDF(path);
 
@@ -138,8 +139,8 @@ app.post("/parser", upload.single("file"), (req: Request, res: Response) => {
     return res.status(500).send({ error: errData.parserError });
   });
 
-  pdfParser.on("pdfParser_dataReady", (pdfData) => {
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pdfParser.on("pdfParser_dataReady", (pdfData: any) => {
     if (pdfData.Meta.Author === "tyfyc") {
       const rawText = pdfParser.getRawTextContent();
       const textData = parseTextData(rawText);
@@ -148,4 +149,29 @@ app.post("/parser", upload.single("file"), (req: Request, res: Response) => {
       return res.status(400).send({ error: "Can only accept TYFYC resumes" });
     }
   });
+});
+
+app.get("/job-posting", (req: Request, res: Response) => {
+  const jobUrl = req.query?.url?.toString();
+
+  if (jobUrl) {
+    try {
+      axios.get(jobUrl).then((response) => {
+        const data = response.data;
+        const $ = cheerio.load(data);
+        $("header").remove();
+        $("nav").remove();
+        $("footer").remove();
+        $("button").remove();
+        $("form").remove();
+
+        const html = $("body").html();
+
+        return res.status(200).send({ html });
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(400).send({ error: "Can't get the job posting" });
+    }
+  }
 });

@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 
 import ManualForm from "./components/ManualForm";
 import FormattedDoc from "./components/FormattedDoc";
+import JobPosting from "./components/JobPosting";
 
 function App() {
-  const [view, setView] = useState("form");
+  const [view, setView] = useState("job");
   const [smallDisplay, setSmallDisplay] = useState(false);
 
   const updateScreenSize = () => {
@@ -40,11 +41,20 @@ function App() {
           >
             Preview
           </button>
+          <button
+            className={`m-1 ml-0 w-24 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
+              view == "job" ? " font-bold bg-white mb-0" : ""
+            }`}
+            onClick={() => setView("job")}
+          >
+            Job
+          </button>
         </div>
       )}
       <div className="flex">
         {(view == "form" || !smallDisplay) && <ManualForm />}
         {(view == "preview" || !smallDisplay) && <FormattedDoc />}
+        {(view == "job" || !smallDisplay) && <JobPosting />}
       </div>
     </>
   );
