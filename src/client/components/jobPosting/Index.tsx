@@ -1,19 +1,13 @@
 import jsPDF from "jspdf";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import JobEdit from "./JobEdit";
+import JobDoc from "./JobDoc";
 
-import ResumeDoc from "./ResumeDoc";
-import ResumeEdit from "./ResumeEdit";
-import type { State } from "../../../types";
-
-function Resume() {
+function JobPosting() {
   const [showForm, setShowForm] = useState(false);
-  const lastName: string = useSelector(
-    (state: State) => state.personal.lastName
-  );
 
   const onPrint = () => {
-    const element = document.getElementById("resume-content");
+    const element = document.getElementById("job-application-content");
     const doc = new jsPDF();
 
     if (element) {
@@ -21,9 +15,10 @@ function Resume() {
         author: "tyfyc",
         keywords: "resume",
       });
+
       doc.html(element, {
         callback: function (doc) {
-          doc.save(`${lastName}_resume.pdf`);
+          doc.save(`job_posting.pdf`);
         },
         width: 170,
         windowWidth: 650,
@@ -35,15 +30,15 @@ function Resume() {
 
   return (
     <>
-      <div className="w-3xl">
+      <div className="mx-5 max-w-3xl">
         <div className="flex place-content-between">
-          <h1>Resume</h1>
+          <h1>Job</h1>
           {!showForm && (
             <button
               className="rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
               onClick={onPrint}
             >
-              Export Resume
+              Save Application Details
             </button>
           )}
         </div>
@@ -54,11 +49,11 @@ function Resume() {
           >
             {showForm ? "Preview" : "Edit"}
           </button>
-          {showForm ? <ResumeEdit /> : <ResumeDoc />}
+          {showForm ? <JobEdit /> : <JobDoc />}
         </div>
       </div>
     </>
   );
 }
 
-export default Resume;
+export default JobPosting;

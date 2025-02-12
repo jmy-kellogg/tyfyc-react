@@ -1,0 +1,91 @@
+import { useSelector } from "react-redux";
+import "./ResumeDoc.css";
+
+import type {
+  State,
+  PersonalState,
+  EducationList,
+  JobsList,
+  SkillsList,
+} from "../../../types";
+
+function Document() {
+  const personal: PersonalState = useSelector((state: State) => state.personal);
+  const jobs: JobsList = useSelector((state: State) => state.jobs.list);
+  const skills: SkillsList = useSelector((state: State) => state.skills.list);
+  const education: EducationList = useSelector(
+    (state: State) => state.education.list
+  );
+
+  const divider = (): string => {
+    let index = 100;
+    let line = "";
+    while (index > 0) {
+      index--;
+      line += "_";
+    }
+    return line;
+  };
+
+  return (
+    <>
+      <div id="resume-content">
+        <div>
+          <div>
+            <h1>
+              {personal.firstName} {personal.lastName}
+            </h1>
+            <p>
+              Email: {personal.email} | Phone: {personal.phone} | Location:{" "}
+              {personal.city},{personal.state} |
+            </p>
+            <p>
+              LinkedIn: {personal.linkedIn} | {personal.gitHub}
+            </p>
+            <h2>Summary</h2>
+            <p>{personal.summary}</p>
+          </div>
+          <div>
+            <h3>Skills</h3>
+            <ul>
+              {skills.map((skill) => (
+                <li key={skill.value}>{skill.label}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <p className="divider">{divider()}</p>
+        <div>
+          <h2>Professional Experience</h2>
+          {jobs.map((job, index) => (
+            <div key={index}>
+              <h3>{job.title}</h3>
+              <p>
+                {job.company} - {job.location}
+              </p>
+              <p>
+                {job.start} - {job.end}
+              </p>
+              <p>{job.description}</p>
+              <p className="divider">{divider()}</p>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h2>Education</h2>
+          {education.map((edu, index) => (
+            <div key={index}>
+              <p>{edu.degree}</p>
+              <p>
+                {edu.school} - {edu.gradYear}
+              </p>
+              <p className="divider">{divider()}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Document;
