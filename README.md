@@ -1,14 +1,15 @@
 # Tyfyc
 
-Tyfyc stands for “thank you for your consideration” this is to assist in customizing a person resume. This tool will allow you to upload your resume and auto update it according to a given job post.
+Tyfyc stands for “thank you for your consideration” this is to assist in customizing a person resume. This tool will allow you to upload your resume and job post you are interested in. You can then tailor your resume and track the application in one place.
 
 ![Alt text](public/app-preview.png)
 
 ## Features
-- [ ] Manually add/change resume
-- [ ] Formats resume to downloadable PDF
-- [ ] Saves locally in cookies
-- [ ] Autofill resume from an existing resume
+- [X] Manually add/change resume
+- [X] Formats resume to downloadable PDF
+- [X] Saves locally in cookies
+- [X] Autofill resume from an existing resume
+- [ ] Saves Application details to csv
 - [ ] Updates resume according to job posting
 
 ## Installation
@@ -36,10 +37,10 @@ tyfyc/
 │   ├── client/             # Client - frontend
 │       ├── components/     # React components
 │       ├── store/          # Redux store
-│       ├── types/          # TypeScript interfaces
 │       ├── App.vue         # Root component
 │       ├── main.ts         # Entry file
 │   ├── server/             # Server - backend
+│   ├── types/              # TypeScript interfaces
 │── index.html              # Html
 │── package.json            # Dependencies and scripts
 │── vite.config.js          # Vite configuration
