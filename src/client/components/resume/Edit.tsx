@@ -1,12 +1,12 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updatePersonal } from "../store/reducers/personalSlice";
-import Jobs from "./inputs/Jobs";
-import Education from "./inputs/Education";
-import Skills from "./inputs/Skills";
-import DocUploader from "./inputs/DocUploader";
+import { updatePersonal } from "../../store/reducers/personalSlice";
+import Jobs from "../inputs/Jobs";
+import Education from "../inputs/Education";
+import Skills from "../inputs/Skills";
+import DocUploader from "../inputs/DocUploader";
 
-import type { State, PersonalState } from "../../types";
+import type { State, PersonalState } from "../../../types";
 
 function ManualForm() {
   const personal: PersonalState = useSelector((state: State) => state.personal);
@@ -22,13 +22,13 @@ function ManualForm() {
 
   return (
     <>
-      <div className="bg-white mr-5 p-5">
+      <div className="bg-white p-5 w-3xl">
         <form>
           <DocUploader />
           <h2>
             <b>Personal</b>
           </h2>
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
               <label className="block text-sm/6 font-medium">First name</label>
               <div className="mt-2">
@@ -57,7 +57,7 @@ function ManualForm() {
               </div>
             </div>
 
-            <div className="sm:col-span-4">
+            <div className="sm:col-span-2">
               <label className="block text-sm/6 font-medium">
                 Email address
               </label>
@@ -72,7 +72,7 @@ function ManualForm() {
                 />
               </div>
             </div>
-            <div className="sm:col-span-4">
+            <div className="sm:col-span-1">
               <label className="block text-sm/6 font-medium">Phone</label>
               <div className="mt-2">
                 <input
@@ -86,7 +86,7 @@ function ManualForm() {
               </div>
             </div>
 
-            <div className="sm:col-span-2 sm:col-start-1">
+            <div className="sm:col-span-2">
               <label className="block text-sm/6 font-medium">City</label>
               <div className="mt-2">
                 <input
@@ -100,7 +100,7 @@ function ManualForm() {
               </div>
             </div>
 
-            <div className="sm:col-span-2">
+            <div className="sm:col-span-1">
               <label className="block text-sm/6 font-medium">State</label>
               <div className="mt-2">
                 <input
@@ -113,7 +113,7 @@ function ManualForm() {
                 />
               </div>
             </div>
-            <div className="sm:col-span-4">
+            <div className="sm:col-span-3">
               <label className="block text-sm/6 font-medium">LinkedIn</label>
               <div className="mt-2">
                 <input
@@ -127,7 +127,7 @@ function ManualForm() {
               </div>
             </div>
 
-            <div className="sm:col-span-4">
+            <div className="sm:col-span-3">
               <label className="block text-sm/6 font-medium">GitHub</label>
               <div className="mt-2">
                 <input

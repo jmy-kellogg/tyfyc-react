@@ -1,6 +1,5 @@
-import jsPDF from "jspdf";
 import { useSelector } from "react-redux";
-import "./FormattedDoc.css";
+import "./Document.css";
 
 import type {
   State,
@@ -8,9 +7,9 @@ import type {
   EducationList,
   JobsList,
   SkillsList,
-} from "../../types";
+} from "../../../types";
 
-function FormattedDoc() {
+function Document() {
   const personal: PersonalState = useSelector((state: State) => state.personal);
   const jobs: JobsList = useSelector((state: State) => state.jobs.list);
   const skills: SkillsList = useSelector((state: State) => state.skills.list);
@@ -28,33 +27,9 @@ function FormattedDoc() {
     return line;
   };
 
-  const onPrint = () => {
-    const element = document.getElementById("element-to-convert");
-    const doc = new jsPDF();
-
-    // extra details we can reference when importing
-    doc.setProperties({
-      author: "tyfyc",
-      keywords: "resume",
-    });
-    doc.html(element, {
-      callback: function (doc) {
-        doc.save("sample-document.pdf");
-      },
-      width: 170,
-      windowWidth: 650,
-    });
-  };
-
   return (
     <>
-      <div className="bg-white p-5">
-        <button
-          className="sticky float-right  rounded-md bg-indigo-600 mx-3 p-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 hover:cursor-pointer"
-          onClick={onPrint}
-        >
-          Export
-        </button>
+      <div className="bg-white p-5 w-3xl">
         <div id="element-to-convert">
           <div>
             <div>
@@ -115,4 +90,4 @@ function FormattedDoc() {
   );
 }
 
-export default FormattedDoc;
+export default Document;

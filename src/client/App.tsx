@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 
-import ManualForm from "./components/ManualForm";
-import FormattedDoc from "./components/FormattedDoc";
 import JobPosting from "./components/JobPosting";
+import Resume from "./components/resume";
 
 function App() {
-  const [view, setView] = useState("job");
+  const [view, setView] = useState("resume");
   const [smallDisplay, setSmallDisplay] = useState(false);
 
   const updateScreenSize = () => {
@@ -27,19 +26,11 @@ function App() {
         <div className="flex">
           <button
             className={`m-1 ml-0 w-24 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
-              view == "form" ? " font-bold bg-white mb-0" : ""
+              view == "resume" ? " font-bold bg-white mb-0" : ""
             }`}
-            onClick={() => setView("form")}
+            onClick={() => setView("resume")}
           >
-            Input
-          </button>
-          <button
-            className={`m-1 ml-0 w-24 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
-              view == "preview" ? " font-bold bg-white mb-0" : ""
-            }`}
-            onClick={() => setView("preview")}
-          >
-            Preview
+            Resume
           </button>
           <button
             className={`m-1 ml-0 w-24 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
@@ -52,8 +43,7 @@ function App() {
         </div>
       )}
       <div className="flex">
-        {(view == "form" || !smallDisplay) && <ManualForm />}
-        {(view == "preview" || !smallDisplay) && <FormattedDoc />}
+        {(view == "resume" || !smallDisplay) && <Resume />}
         {(view == "job" || !smallDisplay) && <JobPosting />}
       </div>
     </>
