@@ -1,4 +1,5 @@
 import axios from "axios";
+import Papa from "papaparse";
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -40,8 +41,41 @@ function JobEdit() {
     console.log("Summit");
   };
 
+  const onFilePicked = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files || [];
+    const file: File = files[0];
+
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: function ({ data }) {
+          const posting = data[0];
+          if (posting) {
+            dispatch(updatePosting(posting));
+          }
+        },
+        error: function (error) {
+          console.error("Error parsing CSV:", error);
+        },
+      });
+    }
+  };
+
   return (
     <>
+      <div className="float-right mt-3">
+        <label className="rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
+          <span>Upload CSV</span>
+          <input
+            id="csv-upload"
+            name="csvUpload"
+            type="file"
+            className="sr-only"
+            accept=".csv"
+            onChange={onFilePicked}
+          />
+        </label>
+      </div>
       {/* ToDo: allow auto fill directly from job link */}
       {showLinkFeature && (
         <div>
