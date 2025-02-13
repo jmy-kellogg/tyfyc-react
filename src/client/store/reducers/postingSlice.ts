@@ -10,6 +10,12 @@ const initialState: PostingState = {
   salary: "",
   dateApplied: "",
   location: "",
+  isRemote: true,
+  status: "applied",
+  interviewStages: [],
+  notes: "",
+  postingLink: "",
+  companyLink: "",
 };
 
 export const postingSlice = createSlice({

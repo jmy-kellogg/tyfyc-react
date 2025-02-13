@@ -58,6 +58,17 @@ export interface PostingState {
   salary: string;
   dateApplied: string;
   location: string;
+  isRemote: boolean;
+  status:
+    | "applied"
+    | "interviewing"
+    | "no_offer"
+    | "declined"
+    | "auto_rejected";
+  interviewStages: Array<string>;
+  notes: string;
+  postingLink: string;
+  companyLink: string;
 }
 
 export interface State {
