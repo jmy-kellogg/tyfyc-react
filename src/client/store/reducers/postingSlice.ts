@@ -10,7 +10,6 @@ const initialState: PostingState = {
   salary: "",
   dateApplied: "",
   location: "",
-  isRemote: true,
   status: "applied",
   interviewStages: [],
   notes: "",

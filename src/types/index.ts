@@ -58,7 +58,6 @@ export interface PostingState {
   salary: string;
   dateApplied: string;
   location: string;
-  isRemote: boolean;
   status:
     | "applied"
     | "interviewing"
