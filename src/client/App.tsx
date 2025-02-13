@@ -43,8 +43,12 @@ function App() {
         </div>
       )}
       <div className="flex">
-        {(view == "resume" || !smallDisplay) && <Resume />}
-        {(view == "job" || !smallDisplay) && <JobPosting />}
+        {(view == "resume" || !smallDisplay) && (
+          <Resume smallDisplay={smallDisplay} />
+        )}
+        {(view == "job" || !smallDisplay) && (
+          <JobPosting smallDisplay={smallDisplay} />
+        )}
       </div>
     </>
   );
