@@ -100,7 +100,7 @@ function JobEdit() {
         </div>
       )}
       <div className="inline-block">
-        <div className="grid grid-row-4 gap-2">
+        <div className="grid gap-2">
           <div className="col-span-6">
             <label className="block text-sm/6 font-medium">Company</label>
             <div className="mt-2">
@@ -115,6 +115,19 @@ function JobEdit() {
             </div>
           </div>
           <div className="col-span-6">
+            <label className="block text-sm/6 font-medium">Company Site</label>
+            <div className="mt-2">
+              <input
+                id="companyLink"
+                name="companyLink"
+                type="text"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                value={posting.companyLink}
+                onChange={updateData}
+              />
+            </div>
+          </div>
+          <div className="col-span-6">
             <label className="block text-sm/6 font-medium">Title</label>
             <div className="mt-2">
               <input
@@ -123,6 +136,21 @@ function JobEdit() {
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={posting.title}
+                onChange={updateData}
+              />
+            </div>
+          </div>
+          <div className="col-span-6">
+            <label className="block text-sm/6 font-medium">
+              Job Posting Link
+            </label>
+            <div className="mt-2">
+              <input
+                id="postingLink"
+                name="postingLink"
+                type="text"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                value={posting.postingLink}
                 onChange={updateData}
               />
             </div>
@@ -178,6 +206,16 @@ function JobEdit() {
                 onChange={updateData}
               />
             </div>
+          </div>
+          <div className="col-span-6">
+            <label className="block text-sm/6 font-medium">Notes</label>
+            <textarea
+              id="notes"
+              name="notes"
+              className="min-h-50 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              value={posting.notes}
+              onChange={updateData}
+            ></textarea>
           </div>
           <div className="col-span-6">
             <label className="block text-sm/6 font-medium">Job Posting</label>
