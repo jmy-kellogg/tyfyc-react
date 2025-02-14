@@ -11,7 +11,7 @@ interface Props {
 }
 
 function Resume({ smallDisplay }: Props) {
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState<boolean>(false);
   const lastName: string = useSelector(
     (state: State) => state.personal.lastName
   );

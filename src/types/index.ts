@@ -51,7 +51,7 @@ export interface EducationState {
   list: EducationList;
 }
 
-export interface PostingState {
+export interface Application {
   company: string;
   description: string;
   title: string;
@@ -71,7 +71,7 @@ export interface PostingState {
   jobId: string;
 }
 
-export type ApplicationsList = Array<PostingState>;
+export type ApplicationsList = Array<Application>;
 
 export interface ApplicationsState {
   openTabs: Array<string>;
@@ -83,7 +83,7 @@ export interface State {
   skills: SkillsState;
   jobs: JobsState;
   education: EducationState;
-  posting: PostingState;
+  posting: Application;
   applications: ApplicationsState;
 }
 export interface PersonalStateUpdate {

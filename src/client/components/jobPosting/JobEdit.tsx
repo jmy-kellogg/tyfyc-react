@@ -3,18 +3,19 @@ import Papa from "papaparse";
 import { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
-import type { PostingState } from "../../../types";
+import type { Application } from "../../../types";
 import { updateApplication } from "../../store/reducers/applicationsSlice";
 
 interface Props {
-  application: PostingState;
+  application: Application;
 }
 
 function JobEdit({ application }: Props) {
   const showLinkFeature = false;
-  const [url, setUrl] = useState("");
-  const [html, setHtml] = useState("");
   const dispatch = useDispatch();
+
+  const [url, setUrl] = useState<string>("");
+  const [html, setHtml] = useState<string>("");
 
   const updateData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -51,12 +52,20 @@ function JobEdit({ application }: Props) {
     if (file) {
       Papa.parse(file, {
         header: true,
-        complete: function ({ data }) {
-          const importApp = data.find(
-            ({ jobId }) => jobId === application.jobId
-          );
-          if (importApp) {
-            dispatch(updateApplication({ ...application, ...importApp }));
+        complete: function (results) {
+          const data = results.data;
+          if (!data || !data.length) {
+            console.error("Must be a TYFYC CSV");
+          } else {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const importApp = data.find((item: any) => {
+              if ("jobId" in item) {
+                return item.jobId === application.jobId;
+              }
+            });
+            if (importApp) {
+              dispatch(updateApplication({ ...application, ...importApp }));
+            }
           }
         },
         error: function (error) {

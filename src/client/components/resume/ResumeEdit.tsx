@@ -9,8 +9,8 @@ import DocUploader from "../inputs/DocUploader";
 import type { State, PersonalState } from "../../../types";
 
 function ResumeEdit() {
-  const personal: PersonalState = useSelector((state: State) => state.personal);
   const dispatch = useDispatch();
+  const personal: PersonalState = useSelector((state: State) => state.personal);
 
   const updateData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

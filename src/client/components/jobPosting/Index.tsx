@@ -4,21 +4,29 @@ import { useSelector } from "react-redux";
 
 import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
-import type { State, PostingState } from "../../../types";
+import type { State, Application, ApplicationsList } from "../../../types";
 
 interface Props {
   smallDisplay: boolean;
-  application: PostingState;
+  application: Application;
 }
 
+type CsvRow = Array<string>;
+type CsvData = Array<CsvRow>;
+
 function JobPosting({ smallDisplay, application }: Props) {
-  const [showForm, setShowForm] = useState(false);
-  const [data, setData] = useState([]);
-  const applications = useSelector((state: State) => state.applications.list);
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [data, setData] = useState<CsvData>([]);
+  const applications: ApplicationsList = useSelector(
+    (state: State) => state.applications.list
+  );
 
   useEffect(() => {
-    const headers = Object.keys(applications[0]);
-    const values = applications.map((app) => Object.values(app));
+    const headers: CsvRow = Object.keys(applications[0]);
+    const values: CsvData = applications.map(
+      (app: Application): CsvRow => Object.values(app)
+    );
+
     setData([headers, ...values]);
   }, [applications]);
   return (

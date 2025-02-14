@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   ApplicationsState,
   ApplicationsList,
-  PostingState,
+  Application,
 } from "../../../types";
 
 const initialState: ApplicationsState = {
@@ -29,7 +29,7 @@ export const ApplicationsSlice = createSlice({
     },
     addNewApplication: (state: ApplicationsState) => {
       const jobId = uuidv4();
-      const defaultApplication: PostingState = {
+      const defaultApplication: Application = {
         company: "",
         description: "",
         title: "",
@@ -57,7 +57,7 @@ export const ApplicationsSlice = createSlice({
     },
     updateApplication: (
       state: ApplicationsState,
-      action: PayloadAction<PostingState>
+      action: PayloadAction<Application>
     ) => {
       const index = state.list.findIndex(
         ({ jobId }) => jobId === action.payload.jobId

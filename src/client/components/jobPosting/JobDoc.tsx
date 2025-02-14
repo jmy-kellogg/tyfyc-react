@@ -1,7 +1,7 @@
-import type { PostingState } from "../../../types";
+import type { Application } from "../../../types";
 
 interface Props {
-  application: PostingState;
+  application: Application;
 }
 
 function JobDoc({ application }: Props) {
