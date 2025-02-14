@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
-import JobPosting from "./components/JobPosting";
-import Resume from "./components/resume";
+// import JobPosting from "./components/jobPosting/Index";
+import Resume from "./components/resume/Index";
+import Applications from "./components/Applications";
 
 function App() {
   const [view, setView] = useState("resume");
@@ -33,22 +34,33 @@ function App() {
             Resume
           </button>
           <button
+            className={`m-1 ml-0 w-32 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
+              view == "applications" ? " font-bold bg-white mb-0" : ""
+            }`}
+            onClick={() => setView("applications")}
+          >
+            Applications
+          </button>
+          {/* <button
             className={`m-1 ml-0 w-24 rounded-t-lg p-3 hover:cursor-pointer hover:font-bold${
               view == "job" ? " font-bold bg-white mb-0" : ""
             }`}
             onClick={() => setView("job")}
           >
             Job
-          </button>
+          </button> */}
         </div>
       )}
       <div className="flex">
         {(view == "resume" || !smallDisplay) && (
           <Resume smallDisplay={smallDisplay} />
         )}
-        {(view == "job" || !smallDisplay) && (
-          <JobPosting smallDisplay={smallDisplay} />
+        {(view == "applications" || !smallDisplay) && (
+          <Applications smallDisplay={smallDisplay} />
         )}
+        {/* {(view == "job" || !smallDisplay) && (
+          <JobPosting smallDisplay={smallDisplay} />
+        )} */}
       </div>
     </>
   );

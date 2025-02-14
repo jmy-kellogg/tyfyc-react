@@ -15,6 +15,7 @@ const initialState: PostingState = {
   notes: "",
   postingLink: "",
   companyLink: "",
+  jobId: "",
 };
 
 export const postingSlice = createSlice({

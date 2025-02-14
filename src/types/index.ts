@@ -68,6 +68,14 @@ export interface PostingState {
   notes: string;
   postingLink: string;
   companyLink: string;
+  jobId: string;
+}
+
+export type ApplicationsList = Array<PostingState>;
+
+export interface ApplicationsState {
+  openTabs: Array<string>;
+  list: ApplicationsList;
 }
 
 export interface State {
@@ -76,6 +84,7 @@ export interface State {
   jobs: JobsState;
   education: EducationState;
   posting: PostingState;
+  applications: ApplicationsState;
 }
 export interface PersonalStateUpdate {
   field: keyof PersonalState;
