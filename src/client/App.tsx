@@ -72,9 +72,6 @@ function App() {
             );
           }
         })}
-        {/* {(active == "job" || !smallDisplay) && (
-          <JobPosting smallDisplay={smallDisplay} />
-        )} */}
       </div>
     </>
   );
