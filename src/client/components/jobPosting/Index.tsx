@@ -15,7 +15,7 @@ type CsvRow = Array<string>;
 type CsvData = Array<CsvRow>;
 
 function JobPosting({ smallDisplay, application }: Props) {
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(!application.company);
   const [data, setData] = useState<CsvData>([]);
   const applications: ApplicationsList = useSelector(
     (state: State) => state.applications.list
@@ -26,7 +26,6 @@ function JobPosting({ smallDisplay, application }: Props) {
     const values: CsvData = applications.map(
       (app: Application): CsvRow => Object.values(app)
     );
-
     setData([headers, ...values]);
   }, [applications]);
   return (

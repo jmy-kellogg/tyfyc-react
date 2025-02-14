@@ -18,12 +18,12 @@ function Tabs({ tabs, active, setActive }: Props) {
       <div className="flex">
         {tabs.map(({ label, value }) => (
           <div
+            key={value}
             className={`p-2 rounded-t-lg ${
               active == value ? " font-bold bg-white mb-0" : ""
             }`}
           >
             <button
-              key={value}
               className={`m-1 hover:font-bold ${
                 active !== value ? "hover:cursor-pointer" : ""
               }`}
