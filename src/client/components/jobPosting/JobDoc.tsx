@@ -1,3 +1,4 @@
+import { statusOptions } from "../../../utils";
 import type { Application } from "../../../types";
 
 interface Props {
@@ -5,6 +6,10 @@ interface Props {
 }
 
 function JobDoc({ application }: Props) {
+  const getStatusLabel = (statusValue: Application["status"]) => {
+    return statusOptions.find(({ value }) => value === statusValue)?.label;
+  };
+
   return (
     <>
       <div id="job-application-content">
@@ -52,7 +57,7 @@ function JobDoc({ application }: Props) {
         </div>
         <div className="flex place-content-between">
           <p>
-            <b>Status: </b> {application.status}
+            <b>Status: </b> {getStatusLabel(application.status)}
           </p>
           <p>
             <b>Date Applied: </b> {application.dateApplied}

@@ -63,12 +63,18 @@ export interface Application {
     | "interviewing"
     | "no_offer"
     | "declined"
-    | "auto_rejected";
+    | "auto_rejected"
+    | "pending";
   interviewStages: Array<string>;
   notes: string;
   postingLink: string;
   companyLink: string;
   jobId: string;
+}
+
+export interface StatusOption {
+  label: string;
+  value: Application["status"];
 }
 
 export type ApplicationsList = Array<Application>;

@@ -2,8 +2,9 @@ import Papa from "papaparse";
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
-import type { Application } from "../../../types";
+import { statusOptions } from "../../../utils";
 import { updateApplication } from "../../store/reducers/applicationsSlice";
+import type { Application } from "../../../types";
 
 interface Props {
   application: Application;
@@ -13,7 +14,7 @@ function JobEdit({ application }: Props) {
   const dispatch = useDispatch();
 
   const updateData = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const field = e.target.name;
     const value = e.target.value;
@@ -124,14 +125,18 @@ function JobEdit({ application }: Props) {
           <div className="col-span-1">
             <label className="block text-sm/6 font-medium">Status</label>
             <div className="mt-2">
-              <input
-                id="status"
+              <select
                 name="status"
-                type="text"
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={application.status}
+                id="status"
+                className="w-full rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 onChange={updateData}
-              />
+              >
+                {statusOptions.map(({ label, value }) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           <div className="col-span-1">
