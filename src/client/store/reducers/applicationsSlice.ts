@@ -64,6 +64,14 @@ export const ApplicationsSlice = createSlice({
       );
       state.list[index] = action.payload;
     },
+    removeOpenTab: (
+      state: ApplicationsState,
+      action: PayloadAction<string>
+    ) => {
+      state.openTabs = state.openTabs.filter(
+        (jobId) => jobId !== action.payload
+      );
+    },
   },
 });
 
@@ -73,5 +81,6 @@ export const {
   addNewApplication,
   removeApplication,
   updateApplication,
+  removeOpenTab,
 } = ApplicationsSlice.actions;
 export default ApplicationsSlice.reducer;
