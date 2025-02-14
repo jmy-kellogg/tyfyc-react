@@ -9,6 +9,16 @@ function JobDoc({ application }: Props) {
   const getStatusLabel = (statusValue: Application["status"]) => {
     return statusOptions.find(({ value }) => value === statusValue)?.label;
   };
+  const getFormattedDate = (dateString: Application["dateApplied"]) => {
+    const options: Intl.DateTimeFormatOptions = {
+      day: "numeric",
+      month: "short",
+      timeZone: "UTC",
+    };
+    const lang = navigator?.language || "en-US";
+
+    return new Date(dateString).toLocaleDateString(lang, options);
+  };
 
   return (
     <>
@@ -60,7 +70,7 @@ function JobDoc({ application }: Props) {
             <b>Status: </b> {getStatusLabel(application.status)}
           </p>
           <p>
-            <b>Date Applied: </b> {application.dateApplied}
+            <b>Date Applied: </b> {getFormattedDate(application.dateApplied)}
           </p>
           <p>
             <b>Location: </b>

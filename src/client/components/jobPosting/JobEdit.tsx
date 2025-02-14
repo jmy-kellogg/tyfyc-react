@@ -145,7 +145,7 @@ function JobEdit({ application }: Props) {
               <input
                 id="dateApplied"
                 name="dateApplied"
-                type="text"
+                type="date"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={application.dateApplied}
                 onChange={updateData}
