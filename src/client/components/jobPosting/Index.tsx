@@ -1,17 +1,16 @@
 import { CSVLink } from "react-csv";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
-import type { State, PostingState } from "../../../types";
+import type { PostingState } from "../../../types";
 
 interface Props {
   smallDisplay: boolean;
+  application: PostingState;
 }
 
-function JobPosting({ smallDisplay }: Props) {
-  const posting: PostingState = useSelector((state: State) => state.posting);
+function JobPosting({ smallDisplay, application }: Props) {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -23,7 +22,7 @@ function JobPosting({ smallDisplay }: Props) {
           {!showForm && (
             <CSVLink
               className="rounded-md border-2 border-indigo-600 mx-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-              data={[Object.keys(posting), Object.values(posting)]}
+              data={[Object.keys(application), Object.values(application)]}
               filename={`tyfyc_job_search.csv`}
               target="_blank"
             >
@@ -38,7 +37,11 @@ function JobPosting({ smallDisplay }: Props) {
           </button>
         </div>
         <div className="bg-white p-5">
-          {showForm ? <JobEdit /> : <JobDoc />}
+          {showForm ? (
+            <JobEdit application={application} />
+          ) : (
+            <JobDoc application={application} />
+          )}
         </div>
       </div>
     </>

@@ -1,17 +1,17 @@
-import { useSelector } from "react-redux";
+import type { PostingState } from "../../../types";
 
-import type { State, PostingState } from "../../../types";
+interface Props {
+  application: PostingState;
+}
 
-function JobDoc() {
-  const posting: PostingState = useSelector((state: State) => state.posting);
-
+function JobDoc({ application }: Props) {
   return (
     <>
       <div id="job-application-content">
         <div className="flex">
-          <h1>{posting.company}</h1>
-          {posting.companyLink && (
-            <a href={posting.companyLink} target="_blank">
+          <h1>{application.company}</h1>
+          {application.companyLink && (
+            <a href={application.companyLink} target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -30,9 +30,9 @@ function JobDoc() {
           )}
         </div>
         <div className="flex">
-          <h2>{posting.title}</h2>
-          {posting.postingLink && (
-            <a href={posting.postingLink} target="_blank">
+          <h2>{application.title}</h2>
+          {application.postingLink && (
+            <a href={application.postingLink} target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -52,29 +52,29 @@ function JobDoc() {
         </div>
         <div className="flex place-content-between">
           <p>
-            <b>Status: </b> {posting.status}
+            <b>Status: </b> {application.status}
           </p>
           <p>
-            <b>Date Applied: </b> {posting.dateApplied}
+            <b>Date Applied: </b> {application.dateApplied}
           </p>
           <p>
             <b>Location: </b>
-            {posting.location}
+            {application.location}
           </p>
           <p>
-            <b>Salary: </b> {posting.salary || "unknown"}
+            <b>Salary: </b> {application.salary || "unknown"}
           </p>
         </div>
-        {posting.notes && (
+        {application.notes && (
           <div className="my-5">
             <h3>Notes: </h3>
-            <p className="whitespace-pre-wrap">{posting.notes}</p>
+            <p className="whitespace-pre-wrap">{application.notes}</p>
           </div>
         )}
-        {posting.description && (
+        {application.description && (
           <div className="my-5">
             <h3>Job Description: </h3>
-            <p className="whitespace-pre-wrap">{posting.description}</p>
+            <p className="whitespace-pre-wrap">{application.description}</p>
           </div>
         )}
       </div>

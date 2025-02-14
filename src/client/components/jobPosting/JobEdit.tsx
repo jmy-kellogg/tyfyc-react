@@ -1,16 +1,19 @@
 import axios from "axios";
 import Papa from "papaparse";
 import { useState, ChangeEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import type { State, PostingState } from "../../../types";
-import { updatePosting } from "../../store/reducers/postingSlice";
+import type { PostingState } from "../../../types";
+import { updateApplication } from "../../store/reducers/applicationsSlice";
 
-function JobEdit() {
+interface Props {
+  application: PostingState;
+}
+
+function JobEdit({ application }: Props) {
   const showLinkFeature = false;
   const [url, setUrl] = useState("");
   const [html, setHtml] = useState("");
-  const posting: PostingState = useSelector((state: State) => state.posting);
   const dispatch = useDispatch();
 
   const updateData = (
@@ -18,7 +21,7 @@ function JobEdit() {
   ) => {
     const field = e.target.name;
     const value = e.target.value;
-    dispatch(updatePosting({ [field]: value }));
+    dispatch(updateApplication({ ...application, [field]: value }));
   };
 
   const getJobPosting = async () => {
@@ -49,9 +52,11 @@ function JobEdit() {
       Papa.parse(file, {
         header: true,
         complete: function ({ data }) {
-          const posting = data[0];
-          if (posting) {
-            dispatch(updatePosting(posting));
+          const importApp = data.find(
+            ({ jobId }) => jobId === application.jobId
+          );
+          if (importApp) {
+            dispatch(updateApplication({ ...application, ...importApp }));
           }
         },
         error: function (error) {
@@ -109,7 +114,7 @@ function JobEdit() {
                 name="company"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.company}
+                value={application.company}
                 onChange={updateData}
               />
             </div>
@@ -122,7 +127,7 @@ function JobEdit() {
                 name="companyLink"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.companyLink}
+                value={application.companyLink}
                 onChange={updateData}
               />
             </div>
@@ -135,7 +140,7 @@ function JobEdit() {
                 name="title"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.title}
+                value={application.title}
                 onChange={updateData}
               />
             </div>
@@ -150,7 +155,7 @@ function JobEdit() {
                 name="postingLink"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.postingLink}
+                value={application.postingLink}
                 onChange={updateData}
               />
             </div>
@@ -163,7 +168,7 @@ function JobEdit() {
                 name="status"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.status}
+                value={application.status}
                 onChange={updateData}
               />
             </div>
@@ -176,7 +181,7 @@ function JobEdit() {
                 name="dateApplied"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.dateApplied}
+                value={application.dateApplied}
                 onChange={updateData}
               />
             </div>
@@ -189,7 +194,7 @@ function JobEdit() {
                 name="location"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.location}
+                value={application.location}
                 onChange={updateData}
               />
             </div>
@@ -202,7 +207,7 @@ function JobEdit() {
                 name="salary"
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={posting.salary}
+                value={application.salary}
                 onChange={updateData}
               />
             </div>
@@ -213,7 +218,7 @@ function JobEdit() {
               id="notes"
               name="notes"
               className="min-h-50 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={posting.notes}
+              value={application.notes}
               onChange={updateData}
             ></textarea>
           </div>
@@ -223,7 +228,7 @@ function JobEdit() {
               id="description"
               name="description"
               className="h-250 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={posting.description}
+              value={application.description}
               onChange={updateData}
             ></textarea>
           </div>
