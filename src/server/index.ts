@@ -150,28 +150,3 @@ app.post("/parser", upload.single("file"), (req: Request, res: Response) => {
     }
   });
 });
-
-app.get("/job-posting", (req: Request, res: Response) => {
-  const jobUrl = req.query?.url?.toString();
-
-  if (jobUrl) {
-    try {
-      axios.get(jobUrl).then((response) => {
-        const data = response.data;
-        const $ = cheerio.load(data);
-        $("header").remove();
-        $("nav").remove();
-        $("footer").remove();
-        $("button").remove();
-        $("form").remove();
-
-        const html = $("body").html();
-
-        return res.status(200).send({ html });
-      });
-    } catch (err) {
-      console.log(err);
-      return res.status(400).send({ error: "Can't get the job posting" });
-    }
-  }
-});

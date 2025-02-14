@@ -1,6 +1,5 @@
-import axios from "axios";
 import Papa from "papaparse";
-import { useState, ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
 import type { Application } from "../../../types";
@@ -11,11 +10,7 @@ interface Props {
 }
 
 function JobEdit({ application }: Props) {
-  const showLinkFeature = false;
   const dispatch = useDispatch();
-
-  const [url, setUrl] = useState<string>("");
-  const [html, setHtml] = useState<string>("");
 
   const updateData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -23,26 +18,6 @@ function JobEdit({ application }: Props) {
     const field = e.target.name;
     const value = e.target.value;
     dispatch(updateApplication({ ...application, [field]: value }));
-  };
-
-  const getJobPosting = async () => {
-    if (url) {
-      try {
-        const response = await axios.get("http://localhost:8000/job-posting", {
-          params: { url },
-        });
-        if (response.data.html) {
-          setHtml(response.data.html);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  const onSubmit = () => {
-    getJobPosting();
-    console.log("Summit");
   };
 
   const onFilePicked = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -90,29 +65,6 @@ function JobEdit({ application }: Props) {
           />
         </label>
       </div>
-      {/* ToDo: allow auto fill directly from job link */}
-      {showLinkFeature && (
-        <div>
-          <label className="text-sm/6 font-medium">Look up Job Posting</label>
-          <div className="flex">
-            <input
-              id="url"
-              name="url"
-              type="text"
-              className="w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-            />
-            <button
-              className="rounded-md bg-indigo-600 mx-3 p-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 hover:cursor-pointer"
-              onClick={onSubmit}
-            >
-              Search
-            </button>
-          </div>
-          <div dangerouslySetInnerHTML={{ __html: html }} />
-        </div>
-      )}
       <div className="inline-block">
         <div className="grid gap-2">
           <div className="col-span-6">
