@@ -1,15 +1,17 @@
 import jsPDF from "jspdf";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Tabs from "../Tabs";
 import ResumeDoc from "./ResumeDoc";
 import ResumeEdit from "./ResumeEdit";
+import { setShowResume } from "../../store/reducers/settingsSlice";
 import type { State } from "../../../types";
 
 function Resume() {
+  const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [showResume, setShowResume] = useState<boolean>(true);
+  const showResume = useSelector((state: State) => state.settings.showResume);
   const lastName = useSelector((state: State) => state.personal.lastName);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
@@ -38,7 +40,7 @@ function Resume() {
 
   return (
     <>
-      {showResume ? (
+      {showResume && (
         <div className="m-3 w-3xl">
           {!smallDisplay && (
             <Tabs
@@ -46,7 +48,7 @@ function Resume() {
                 {
                   label: "Resume",
                   value: "resume",
-                  onCollapse: () => setShowResume(!showResume),
+                  onCollapse: () => dispatch(setShowResume(false)),
                 },
               ]}
               active="resume"
@@ -71,24 +73,6 @@ function Resume() {
           <div className="bg-white p-5">
             {showForm ? <ResumeEdit /> : <ResumeDoc />}
           </div>
-        </div>
-      ) : (
-        <div className="bg-white p-3 rounded-t-lg h-screen">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6 m-auto hover:cursor-pointer hover:font-bold hover:text-blue-400"
-            onClick={() => setShowResume(true)}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-            />
-          </svg>
         </div>
       )}
     </>

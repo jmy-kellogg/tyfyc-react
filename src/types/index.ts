@@ -1,5 +1,6 @@
 export interface SettingsState {
   smallDisplay: boolean;
+  showResume: boolean;
 }
 
 export type TabsList = Array<{
