@@ -1,6 +1,8 @@
 export type TabsList = Array<{
   label: string;
   value: string;
+  onCollapse?: () => void;
+  removable?: boolean;
 }>;
 
 export interface Personal {

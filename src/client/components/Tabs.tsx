@@ -4,7 +4,7 @@ import type { TabsList } from "../../types";
 interface Props {
   tabs: TabsList;
   active: string;
-  setActive: (tabValue: string) => void;
+  setActive?: (tabValue: string) => void;
 }
 
 function Tabs({ tabs, active, setActive }: Props) {
@@ -17,18 +17,36 @@ function Tabs({ tabs, active, setActive }: Props) {
   return (
     <>
       <div className="flex">
-        {tabs.map(({ label, value }) => (
+        {tabs.map(({ label, value, onCollapse }) => (
           <div
             key={value}
-            className={`p-2 rounded-t-lg ${
+            className={`flex p-2 rounded-t-lg ${
               active == value ? " font-bold bg-white mb-0" : ""
             }`}
           >
+            {!!onCollapse && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 m-auto hover:cursor-pointer hover:font-bold hover:text-blue-400"
+                onClick={onCollapse}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5"
+                />
+              </svg>
+            )}
+
             <button
               className={`m-1 hover:font-bold ${
                 active !== value ? "hover:cursor-pointer" : ""
               }`}
-              onClick={() => setActive(value)}
+              onClick={() => setActive && setActive(value)}
             >
               {label}
             </button>
@@ -41,7 +59,7 @@ function Tabs({ tabs, active, setActive }: Props) {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                  className="size-5 "
+                  className="size-5"
                 >
                   <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
                 </svg>
