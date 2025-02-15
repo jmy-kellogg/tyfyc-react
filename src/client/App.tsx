@@ -1,27 +1,28 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import JobPosting from "./components/jobPosting/Index";
 import Resume from "./components/resume/Index";
 import Applications from "./components/Applications";
 import Tabs from "./components/Tabs";
+import SideMenu from "./components/SideMenu";
+import { setSmallDisplay } from "./store/reducers/settingsSlice";
 
-import type { TabsList, State, ApplicationsList } from "../types";
+import type { TabsList, State } from "../types";
 
 function App() {
+  const dispatch = useDispatch();
   const [active, setActive] = useState<string>("resume");
   const [tabs, setTabs] = useState<TabsList>([]);
-  const [smallDisplay, setSmallDisplay] = useState<boolean>(false);
-  const openTabs: Array<string> = useSelector(
-    (state: State) => state.applications.openTabs
-  );
-  const applications: ApplicationsList = useSelector(
-    (state: State) => state.applications.list
+  const openTabs = useSelector((state: State) => state.applications.openTabs);
+  const applications = useSelector((state: State) => state.applications.list);
+  const smallDisplay = useSelector(
+    (state: State) => state.settings.smallDisplay
   );
 
   const updateScreenSize = () => {
     const isSmallDisplay = window.innerWidth < 1200;
-    setSmallDisplay(isSmallDisplay);
+    dispatch(setSmallDisplay(isSmallDisplay));
   };
 
   useEffect(() => {
@@ -61,11 +62,10 @@ function App() {
         <Tabs tabs={tabs} active={active} setActive={setActive} />
       )}
       <div className="flex">
-        {(active == "resume" || !smallDisplay) && (
-          <Resume smallDisplay={smallDisplay} />
-        )}
+        {!smallDisplay && <SideMenu />}
+        {(active == "resume" || !smallDisplay) && <Resume />}
         {(active == "applications" || !smallDisplay) && (
-          <Applications smallDisplay={smallDisplay} setActive={setActive} />
+          <Applications setActive={setActive} />
         )}
         {/* ToDo: cleanup and simplify navigation */}
         {smallDisplay &&

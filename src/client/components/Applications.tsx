@@ -6,20 +6,18 @@ import {
   removeApplication,
   updateOpenTabs,
 } from "../store/reducers/applicationsSlice";
-import type { State, ApplicationsList } from "../../types";
+import type { State } from "../../types";
 
 interface Props {
-  smallDisplay: boolean;
   setActive: (tab: string) => void;
 }
 
-function Applications({ smallDisplay, setActive }: Props) {
+function Applications({ setActive }: Props) {
   const dispatch = useDispatch();
-  const openTabs: Array<string> = useSelector(
-    (state: State) => state.applications.openTabs
-  );
-  const applications: ApplicationsList = useSelector(
-    (state: State) => state.applications.list
+  const openTabs = useSelector((state: State) => state.applications.openTabs);
+  const applications = useSelector((state: State) => state.applications.list);
+  const smallDisplay = useSelector(
+    (state: State) => state.settings.smallDisplay
   );
 
   const openApplication = (jobId: string) => {
@@ -39,7 +37,7 @@ function Applications({ smallDisplay, setActive }: Props) {
 
   return (
     <>
-      <div className="mx-5">
+      <div className="mx-5 m-3">
         {!smallDisplay && <h2 className="text-center">Applications</h2>}
         <div className="bg-white p-5">
           <h1>Job Applications List</h1>

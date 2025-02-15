@@ -7,15 +7,12 @@ import ResumeDoc from "./ResumeDoc";
 import ResumeEdit from "./ResumeEdit";
 import type { State } from "../../../types";
 
-interface Props {
-  smallDisplay: boolean;
-}
-
-function Resume({ smallDisplay }: Props) {
+function Resume() {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [showResume, setShowResume] = useState<boolean>(true);
-  const lastName: string = useSelector(
-    (state: State) => state.personal.lastName
+  const lastName = useSelector((state: State) => state.personal.lastName);
+  const smallDisplay = useSelector(
+    (state: State) => state.settings.smallDisplay
   );
 
   const onPrint = () => {
@@ -42,7 +39,7 @@ function Resume({ smallDisplay }: Props) {
   return (
     <>
       {showResume ? (
-        <div className="w-3xl">
+        <div className="m-3 w-3xl">
           {!smallDisplay && (
             <Tabs
               tabs={[

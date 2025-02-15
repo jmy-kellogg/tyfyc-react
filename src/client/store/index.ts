@@ -7,6 +7,7 @@ import educationReducer from "./reducers/educationSlice";
 import jobsReducer from "./reducers/jobsSlice";
 import skillsReducer from "./reducers/skillsSlice";
 import applicationsReducer from "./reducers/applicationsSlice";
+import settingsReducer from "./reducers/settingsSlice";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   jobs: jobsReducer,
   skills: skillsReducer,
   applications: applicationsReducer,
+  settings: settingsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

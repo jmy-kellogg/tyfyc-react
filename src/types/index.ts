@@ -1,3 +1,7 @@
+export interface SettingsState {
+  smallDisplay: boolean;
+}
+
 export type TabsList = Array<{
   label: string;
   value: string;
@@ -99,6 +103,7 @@ export interface State {
   education: EducationState;
   posting: Application;
   applications: ApplicationsState;
+  settings: SettingsState;
 }
 export interface PersonalStateUpdate {
   field: keyof PersonalState;
@@ -111,4 +116,5 @@ export interface ParsedData {
   skills: SkillsList;
   jobs: JobsList;
   education: EducationList;
+  settings: SettingsState;
 }
