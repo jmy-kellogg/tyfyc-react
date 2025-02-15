@@ -7,16 +7,14 @@ import {
   removeApplication,
   updateOpenTabs,
 } from "../store/reducers/applicationsSlice";
-import {
-  setShowApplications,
-  setActiveTab,
-} from "../store/reducers/settingsSlice";
+import { setActiveTab } from "../store/reducers/settingsSlice";
 import type { State } from "../../types";
 
 function Applications() {
   const dispatch = useDispatch();
   const openTabs = useSelector((state: State) => state.applications.openTabs);
   const applications = useSelector((state: State) => state.applications.list);
+  const activeTab = useSelector((state: State) => state.settings.activeTab);
   const showApplications = useSelector(
     (state: State) => state.settings.showApplications
   );
@@ -41,7 +39,7 @@ function Applications() {
 
   return (
     <>
-      {showApplications && (
+      {(smallDisplay ? activeTab === "applications" : showApplications) && (
         <div>
           {!smallDisplay && (
             <Tabs

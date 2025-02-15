@@ -6,16 +6,16 @@ import Resume from "./components/resume/Index";
 import Applications from "./components/Applications";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
-import { setSmallDisplay } from "./store/reducers/settingsSlice";
+import { setSmallDisplay, setActiveTab } from "./store/reducers/settingsSlice";
 
 import type { TabsList, State } from "../types";
 
 function App() {
   const dispatch = useDispatch();
-  const [active, setActive] = useState<string>("resume");
   const [tabs, setTabs] = useState<TabsList>([]);
   const openTabs = useSelector((state: State) => state.applications.openTabs);
   const applications = useSelector((state: State) => state.applications.list);
+  const activeTab = useSelector((state: State) => state.settings.activeTab);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
   );
@@ -23,6 +23,10 @@ function App() {
   const updateScreenSize = () => {
     const isSmallDisplay = window.innerWidth < 1200;
     dispatch(setSmallDisplay(isSmallDisplay));
+  };
+
+  const setActive = (activeValue: string) => {
+    dispatch(setActiveTab(activeValue));
   };
 
   useEffect(() => {
@@ -50,8 +54,8 @@ function App() {
       setTabs([...staticTabs, ...dynamicTabs]);
     } else {
       setTabs(dynamicTabs);
-      if (!openTabs.includes(active)) {
-        setActive(openTabs[0]);
+      if (!openTabs.includes(activeTab)) {
+        setActive(activeTab);
       }
     }
   }, [openTabs, applications, smallDisplay]);
@@ -62,11 +66,11 @@ function App() {
         <SideMenu />
         <div className="m-3">
           {smallDisplay && (
-            <Tabs tabs={tabs} active={active} setActive={setActive} />
+            <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
           )}
           <div className="grid grid-flow-col gap-4">
-            {(active == "resume" || !smallDisplay) && <Resume />}
-            {(active == "applications" || !smallDisplay) && <Applications />}
+            <Resume />
+            <Applications />
             <JobPosting />
           </div>
         </div>

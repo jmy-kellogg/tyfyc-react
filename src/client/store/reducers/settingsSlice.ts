@@ -25,7 +25,8 @@ export const settingsSlice = createSlice({
       state.showApplications = action.payload;
     },
     setActiveTab: (state: SettingsState, action: PayloadAction<string>) => {
-      state.activeTab = action.payload;
+      const tab = action.payload;
+      state.activeTab = tab;
     },
   },
 });

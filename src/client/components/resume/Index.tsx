@@ -1,17 +1,16 @@
 import jsPDF from "jspdf";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Tabs from "../Tabs";
 import ResumeDoc from "./ResumeDoc";
 import ResumeEdit from "./ResumeEdit";
-import { setShowResume } from "../../store/reducers/settingsSlice";
 import type { State } from "../../../types";
 
 function Resume() {
-  const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
   const showResume = useSelector((state: State) => state.settings.showResume);
+  const activeTab = useSelector((state: State) => state.settings.activeTab);
   const lastName = useSelector((state: State) => state.personal.lastName);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
@@ -40,7 +39,7 @@ function Resume() {
 
   return (
     <>
-      {showResume && (
+      {(smallDisplay ? activeTab === "resume" : showResume) && (
         <div className="w-3xl">
           {!smallDisplay && (
             <Tabs
