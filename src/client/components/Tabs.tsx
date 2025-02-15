@@ -17,31 +17,13 @@ function Tabs({ tabs, active, setActive }: Props) {
   return (
     <>
       <div className="flex">
-        {tabs.map(({ label, value, onCollapse }) => (
+        {tabs.map(({ label, value }) => (
           <div
             key={value}
             className={`flex p-2 rounded-t-lg ${
               active == value ? " font-bold bg-white mb-0" : ""
             }`}
           >
-            {!!onCollapse && (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6 m-auto hover:cursor-pointer hover:font-bold hover:text-blue-400"
-                onClick={onCollapse}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 19.5 8.25 12l7.5-7.5"
-                />
-              </svg>
-            )}
-
             <button
               className={`m-1 hover:font-bold ${
                 active !== value ? "hover:cursor-pointer" : ""

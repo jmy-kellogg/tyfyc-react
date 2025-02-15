@@ -48,7 +48,6 @@ function Resume() {
                 {
                   label: "Resume",
                   value: "resume",
-                  onCollapse: () => dispatch(setShowResume(false)),
                 },
               ]}
               active="resume"

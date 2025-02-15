@@ -1,15 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface SettingsState {
-  smallDisplay: boolean;
-  showResume: boolean;
-  showApplications: boolean;
-}
+import type { SettingsState } from "../../../types";
 
 const initialState: SettingsState = {
   smallDisplay: false,
   showResume: true,
   showApplications: true,
+  activeTab: "",
 };
 
 export const settingsSlice = createSlice({
@@ -28,9 +24,16 @@ export const settingsSlice = createSlice({
     ) => {
       state.showApplications = action.payload;
     },
+    setActiveTab: (state: SettingsState, action: PayloadAction<string>) => {
+      state.activeTab = action.payload;
+    },
   },
 });
 
-export const { setSmallDisplay, setShowResume, setShowApplications } =
-  settingsSlice.actions;
+export const {
+  setSmallDisplay,
+  setShowResume,
+  setShowApplications,
+  setActiveTab,
+} = settingsSlice.actions;
 export default settingsSlice.reducer;

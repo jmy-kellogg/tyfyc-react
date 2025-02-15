@@ -7,14 +7,13 @@ import {
   removeApplication,
   updateOpenTabs,
 } from "../store/reducers/applicationsSlice";
-import { setShowApplications } from "../store/reducers/settingsSlice";
+import {
+  setShowApplications,
+  setActiveTab,
+} from "../store/reducers/settingsSlice";
 import type { State } from "../../types";
 
-interface Props {
-  setActive: (tab: string) => void;
-}
-
-function Applications({ setActive }: Props) {
+function Applications() {
   const dispatch = useDispatch();
   const openTabs = useSelector((state: State) => state.applications.openTabs);
   const applications = useSelector((state: State) => state.applications.list);
@@ -29,7 +28,7 @@ function Applications({ setActive }: Props) {
     if (!openTabs.includes(jobId)) {
       dispatch(updateOpenTabs([...openTabs, jobId]));
     }
-    setActive(jobId);
+    dispatch(setActiveTab(jobId));
   };
 
   const addNew = () => {
@@ -50,7 +49,6 @@ function Applications({ setActive }: Props) {
                 {
                   label: "Applications",
                   value: "applications",
-                  onCollapse: () => dispatch(setShowApplications(false)),
                 },
               ]}
               active="applications"

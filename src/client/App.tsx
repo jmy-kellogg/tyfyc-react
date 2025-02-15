@@ -62,41 +62,10 @@ function App() {
         <Tabs tabs={tabs} active={active} setActive={setActive} />
       )}
       <div className="flex">
-        {!smallDisplay && <SideMenu />}
+        <SideMenu />
         {(active == "resume" || !smallDisplay) && <Resume />}
-        {(active == "applications" || !smallDisplay) && (
-          <Applications setActive={setActive} />
-        )}
-        {/* ToDo: cleanup and simplify navigation */}
-        {smallDisplay &&
-          openTabs.map((jobId) => {
-            const application = applications.find((job) => job.jobId === jobId);
-            if (application) {
-              return (
-                active === jobId && (
-                  <JobPosting key={jobId} application={application} />
-                )
-              );
-            }
-          })}
-
-        {!smallDisplay && (
-          <div>
-            <Tabs tabs={tabs} active={active} setActive={setActive} />
-            {openTabs.map((jobId) => {
-              const application = applications.find(
-                (job) => job.jobId === jobId
-              );
-              if (application) {
-                return (
-                  active === jobId && (
-                    <JobPosting key={jobId} application={application} />
-                  )
-                );
-              }
-            })}
-          </div>
-        )}
+        {(active == "applications" || !smallDisplay) && <Applications />}
+        <JobPosting />
       </div>
     </>
   );

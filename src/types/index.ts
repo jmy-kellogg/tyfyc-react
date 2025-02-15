@@ -2,12 +2,12 @@ export interface SettingsState {
   smallDisplay: boolean;
   showResume: boolean;
   showApplications: boolean;
+  activeTab: string;
 }
 
 export type TabsList = Array<{
   label: string;
   value: string;
-  onCollapse?: () => void;
   removable?: boolean;
 }>;
 
