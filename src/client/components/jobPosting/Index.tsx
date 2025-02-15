@@ -7,14 +7,13 @@ import JobDoc from "./JobDoc";
 import type { State, Application, ApplicationsList } from "../../../types";
 
 interface Props {
-  smallDisplay: boolean;
   application: Application;
 }
 
 type CsvRow = Array<string>;
 type CsvData = Array<CsvRow>;
 
-function JobPosting({ smallDisplay, application }: Props) {
+function JobPosting({ application }: Props) {
   const [showForm, setShowForm] = useState<boolean>(!application.company);
   const [data, setData] = useState<CsvData>([]);
   const applications: ApplicationsList = useSelector(
@@ -30,9 +29,7 @@ function JobPosting({ smallDisplay, application }: Props) {
   }, [applications]);
   return (
     <>
-      <div className="mx-5 w-full max-w-3xl">
-        {!smallDisplay && <h2 className="text-center">Job Posting</h2>}
-
+      <div className="w-full max-w-3xl">
         <div className="float-right m-5">
           {!showForm && (
             <CSVLink

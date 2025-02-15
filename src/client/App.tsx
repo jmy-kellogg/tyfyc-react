@@ -33,10 +33,6 @@ function App() {
   });
 
   useEffect(() => {
-    const staticTabs: TabsList = [
-      { label: "Resume", value: "resume" },
-      { label: "Applications", value: "applications" },
-    ];
     const dynamicTabs: TabsList = openTabs.map((jobId) => {
       const application = applications.find((job) => job.jobId === jobId);
       const company = application?.company || "Job";
@@ -45,9 +41,19 @@ function App() {
         value: jobId,
       };
     });
-
-    setTabs([...staticTabs, ...dynamicTabs]);
-  }, [openTabs, applications]);
+    if (smallDisplay) {
+      const staticTabs: TabsList = [
+        { label: "Resume", value: "resume" },
+        { label: "Applications", value: "applications" },
+      ];
+      setTabs([...staticTabs, ...dynamicTabs]);
+    } else {
+      setTabs(dynamicTabs);
+      if (!openTabs.includes(active)) {
+        setActive(openTabs[0]);
+      }
+    }
+  }, [openTabs, applications, smallDisplay]);
 
   return (
     <>
@@ -61,20 +67,36 @@ function App() {
         {(active == "applications" || !smallDisplay) && (
           <Applications smallDisplay={smallDisplay} setActive={setActive} />
         )}
-        {openTabs.map((jobId) => {
-          const application = applications.find((job) => job.jobId === jobId);
-          if (application) {
-            return (
-              active === jobId && (
-                <JobPosting
-                  key={jobId}
-                  smallDisplay={smallDisplay}
-                  application={application}
-                />
-              )
-            );
-          }
-        })}
+        {/* ToDo: cleanup and simplify navigation */}
+        {smallDisplay &&
+          openTabs.map((jobId) => {
+            const application = applications.find((job) => job.jobId === jobId);
+            if (application) {
+              return (
+                active === jobId && (
+                  <JobPosting key={jobId} application={application} />
+                )
+              );
+            }
+          })}
+
+        {!smallDisplay && (
+          <div>
+            <Tabs tabs={tabs} active={active} setActive={setActive} />
+            {openTabs.map((jobId) => {
+              const application = applications.find(
+                (job) => job.jobId === jobId
+              );
+              if (application) {
+                return (
+                  active === jobId && (
+                    <JobPosting key={jobId} application={application} />
+                  )
+                );
+              }
+            })}
+          </div>
+        )}
       </div>
     </>
   );
