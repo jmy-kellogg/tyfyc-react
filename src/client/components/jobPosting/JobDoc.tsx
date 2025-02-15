@@ -1,4 +1,4 @@
-import { statusOptions } from "../../../utils";
+import { getStatus, getFormattedDate } from "../../../utils";
 import type { Application } from "../../../types";
 
 interface Props {
@@ -6,20 +6,6 @@ interface Props {
 }
 
 function JobDoc({ application }: Props) {
-  const getStatusLabel = (statusValue: Application["status"]) => {
-    return statusOptions.find(({ value }) => value === statusValue)?.label;
-  };
-  const getFormattedDate = (dateString: Application["dateApplied"]) => {
-    const options: Intl.DateTimeFormatOptions = {
-      day: "numeric",
-      month: "short",
-      timeZone: "UTC",
-    };
-    const lang = navigator?.language || "en-US";
-
-    return new Date(dateString).toLocaleDateString(lang, options);
-  };
-
   return (
     <>
       <div id="job-application-content">
@@ -67,7 +53,7 @@ function JobDoc({ application }: Props) {
         </div>
         <div className="flex place-content-between">
           <p>
-            <b>Status: </b> {getStatusLabel(application.status)}
+            <b>Status: </b> {getStatus(application.status)?.label || ""}
           </p>
           <p>
             <b>Date Applied: </b> {getFormattedDate(application.dateApplied)}

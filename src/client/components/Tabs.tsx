@@ -1,9 +1,10 @@
 import { useDispatch } from "react-redux";
 import { removeOpenTab } from "../store/reducers/applicationsSlice";
+import type { TabsList } from "../../types";
 interface Props {
-  tabs: Array<{ label: string; value: string }>;
+  tabs: TabsList;
   active: string;
-  setActive: (tab: string) => void;
+  setActive: (tabValue: string) => void;
 }
 
 function Tabs({ tabs, active, setActive }: Props) {

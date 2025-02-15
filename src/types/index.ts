@@ -1,3 +1,8 @@
+export type TabsList = Array<{
+  label: string;
+  value: string;
+}>;
+
 export interface Personal {
   firstName: string;
   lastName: string;
@@ -75,6 +80,7 @@ export interface Application {
 export interface StatusOption {
   label: string;
   value: Application["status"];
+  color: string;
 }
 
 export type ApplicationsList = Array<Application>;

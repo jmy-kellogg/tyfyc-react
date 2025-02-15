@@ -1,4 +1,4 @@
-import type { SkillsList, Skill, StatusOption } from "../types";
+import type { SkillsList, Skill, StatusOption, Application } from "../types";
 
 // This is to allow us to see sections when importing pdf, until we have a more robust parser
 export const divider = (): string => {
@@ -11,14 +11,34 @@ export const divider = (): string => {
   return line;
 };
 
+// Application Utils
 export const statusOptions: Array<StatusOption> = [
-  { label: "Applied", value: "applied" },
-  { label: "Interviewing", value: "interviewing" },
-  { label: "No Offer", value: "no_offer" },
-  { label: "Declined", value: "declined" },
-  { label: "Auto Rejected", value: "auto_rejected" },
-  { label: "Pending", value: "pending" },
+  { label: "Applied", value: "applied", color: "blue" },
+  { label: "Interviewing", value: "interviewing", color: "green" },
+  { label: "No Offer", value: "no_offer", color: "slate" },
+  { label: "Declined", value: "declined", color: "gray" },
+  { label: "Auto Rejected", value: "auto_rejected", color: "gray" },
+  { label: "Pending", value: "pending", color: "yellow" },
 ];
+
+export const getStatus = (
+  statusValue: Application["status"]
+): StatusOption | undefined => {
+  return statusOptions.find(({ value }) => value === statusValue);
+};
+
+export const getFormattedDate = (
+  dateString: Application["dateApplied"]
+): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  };
+  const lang = navigator?.language || "en-US";
+
+  return new Date(dateString).toLocaleDateString(lang, options);
+};
 
 // Skills Utils
 export const snake_case_string = (str: string): string => {
