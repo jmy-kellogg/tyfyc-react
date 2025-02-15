@@ -1,11 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setShowResume } from "../store/reducers/settingsSlice";
+import {
+  setShowResume,
+  setShowApplications,
+} from "../store/reducers/settingsSlice";
 
 import type { State } from "../../types";
 
 function SideMenu() {
   const dispatch = useDispatch();
   const showResume = useSelector((state: State) => state.settings.showResume);
+  const showApplications = useSelector(
+    (state: State) => state.settings.showApplications
+  );
 
   return (
     <>
@@ -32,6 +38,7 @@ function SideMenu() {
           strokeWidth={1.5}
           stroke="currentColor"
           className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-blue-400"
+          onClick={() => dispatch(setShowApplications(!showApplications))}
         >
           <path
             strokeLinecap="round"
