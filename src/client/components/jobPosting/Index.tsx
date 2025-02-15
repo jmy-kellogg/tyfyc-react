@@ -43,7 +43,7 @@ function JobPosting() {
   }, [applications]);
   return (
     <>
-      <div className="m-3">
+      <div>
         {!smallDisplay && (
           <Tabs tabs={openTabs} active={activeTab} setActive={setActive} />
         )}

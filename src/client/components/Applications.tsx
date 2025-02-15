@@ -42,7 +42,7 @@ function Applications() {
   return (
     <>
       {showApplications && (
-        <div className="mx-5 m-3">
+        <div>
           {!smallDisplay && (
             <Tabs
               tabs={[

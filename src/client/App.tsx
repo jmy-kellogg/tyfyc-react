@@ -58,14 +58,18 @@ function App() {
 
   return (
     <>
-      {smallDisplay && (
-        <Tabs tabs={tabs} active={active} setActive={setActive} />
-      )}
       <div className="flex">
         <SideMenu />
-        {(active == "resume" || !smallDisplay) && <Resume />}
-        {(active == "applications" || !smallDisplay) && <Applications />}
-        <JobPosting />
+        <div className="m-3">
+          {smallDisplay && (
+            <Tabs tabs={tabs} active={active} setActive={setActive} />
+          )}
+          <div className="grid grid-flow-col gap-4">
+            {(active == "resume" || !smallDisplay) && <Resume />}
+            {(active == "applications" || !smallDisplay) && <Applications />}
+            <JobPosting />
+          </div>
+        </div>
       </div>
     </>
   );

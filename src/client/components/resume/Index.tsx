@@ -41,7 +41,7 @@ function Resume() {
   return (
     <>
       {showResume && (
-        <div className="m-3 w-3xl">
+        <div className="w-3xl">
           {!smallDisplay && (
             <Tabs
               tabs={[
