@@ -7,7 +7,6 @@ import type {
 } from "../../../types";
 
 const initialState: ApplicationsState = {
-  openTabs: [],
   list: [],
 };
 
@@ -20,12 +19,6 @@ export const ApplicationsSlice = createSlice({
       action: PayloadAction<ApplicationsList>
     ) => {
       state.list = action.payload;
-    },
-    updateOpenTabs: (
-      state: ApplicationsState,
-      action: PayloadAction<Array<string>>
-    ) => {
-      state.openTabs = action.payload;
     },
     addNewApplication: (state: ApplicationsState) => {
       const jobId = uuidv4();
@@ -43,16 +36,12 @@ export const ApplicationsSlice = createSlice({
         companyLink: "",
         jobId,
       };
-      state.openTabs = [...state.openTabs, jobId];
       state.list = [...state.list, defaultApplication];
     },
     removeApplication: (
       state: ApplicationsState,
       action: PayloadAction<string>
     ) => {
-      state.openTabs = state.openTabs.filter(
-        (jobId) => jobId !== action.payload
-      );
       state.list = state.list.filter(({ jobId }) => jobId !== action.payload);
     },
     updateApplication: (
@@ -64,23 +53,13 @@ export const ApplicationsSlice = createSlice({
       );
       state.list[index] = action.payload;
     },
-    removeOpenTab: (
-      state: ApplicationsState,
-      action: PayloadAction<string>
-    ) => {
-      state.openTabs = state.openTabs.filter(
-        (jobId) => jobId !== action.payload
-      );
-    },
   },
 });
 
 export const {
   updateApplicationsList,
-  updateOpenTabs,
   addNewApplication,
   removeApplication,
   updateApplication,
-  removeOpenTab,
 } = ApplicationsSlice.actions;
 export default ApplicationsSlice.reducer;

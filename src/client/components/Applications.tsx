@@ -5,14 +5,16 @@ import Tabs from "./Tabs";
 import {
   addNewApplication,
   removeApplication,
-  updateOpenTabs,
 } from "../store/reducers/applicationsSlice";
-import { setActiveTab } from "../store/reducers/settingsSlice";
-import type { State } from "../../types";
+import {
+  setActiveTab,
+  addJobTabs,
+  removeJobTab,
+} from "../store/reducers/settingsSlice";
+import type { State, Application } from "../../types";
 
 function Applications() {
   const dispatch = useDispatch();
-  const openTabs = useSelector((state: State) => state.applications.openTabs);
   const applications = useSelector((state: State) => state.applications.list);
   const activeTab = useSelector((state: State) => state.settings.activeTab);
   const showApplications = useSelector(
@@ -22,10 +24,8 @@ function Applications() {
     (state: State) => state.settings.smallDisplay
   );
 
-  const openApplication = (jobId: string) => {
-    if (!openTabs.includes(jobId)) {
-      dispatch(updateOpenTabs([...openTabs, jobId]));
-    }
+  const openApplication = ({ company, jobId }: Application) => {
+    dispatch(addJobTabs({ label: company || "Job", value: jobId }));
     dispatch(setActiveTab(jobId));
   };
 
@@ -35,6 +35,7 @@ function Applications() {
 
   const remove = (jobId: string) => {
     dispatch(removeApplication(jobId));
+    dispatch(removeJobTab(jobId));
   };
 
   return (
@@ -58,7 +59,7 @@ function Applications() {
               <div className="flex" key={application.jobId}>
                 <button
                   className="text-xl hover:cursor-pointer hover:text-indigo-600 hover:font-bold"
-                  onClick={() => openApplication(application.jobId)}
+                  onClick={() => openApplication(application)}
                 >
                   {application.company} - {application.title} |{" "}
                   <span

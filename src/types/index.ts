@@ -1,15 +1,18 @@
+export type Tab = {
+  label: string;
+  value: string;
+};
+
+export type TabsList = Array<Tab>;
+
 export interface SettingsState {
   smallDisplay: boolean;
   showResume: boolean;
   showApplications: boolean;
   activeTab: string;
+  tabs: TabsList;
+  jobTabs: TabsList;
 }
-
-export type TabsList = Array<{
-  label: string;
-  value: string;
-  removable?: boolean;
-}>;
 
 export interface Personal {
   firstName: string;
@@ -94,7 +97,6 @@ export interface StatusOption {
 export type ApplicationsList = Array<Application>;
 
 export interface ApplicationsState {
-  openTabs: Array<string>;
   list: ApplicationsList;
 }
 

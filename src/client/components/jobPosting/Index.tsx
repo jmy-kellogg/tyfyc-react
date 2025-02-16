@@ -17,16 +17,7 @@ function JobPosting() {
   const [data, setData] = useState<CsvData>([]);
   const applications = useSelector((state: State) => state.applications.list);
   const activeTab = useSelector((state: State) => state.settings.activeTab);
-  const openTabs = useSelector((state: State) =>
-    state.applications.openTabs.map((jobId) => {
-      const application = applications.find((job) => job.jobId === jobId);
-      const company = application?.company || "Job";
-      return {
-        label: company,
-        value: jobId,
-      };
-    })
-  );
+  const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
   );
@@ -34,6 +25,7 @@ function JobPosting() {
   const setActive = (jobId: string) => {
     dispatch(setActiveTab(jobId));
   };
+
   useEffect(() => {
     const headers: CsvRow = Object.keys(applications[0]);
     const values: CsvData = applications.map(
@@ -41,18 +33,19 @@ function JobPosting() {
     );
     setData([headers, ...values]);
   }, [applications]);
+
   return (
     <>
       <div>
         {!smallDisplay && (
-          <Tabs tabs={openTabs} active={activeTab} setActive={setActive} />
+          <Tabs tabs={jobTabs || []} active={activeTab} setActive={setActive} />
         )}
-        {openTabs.map(({ value }) => {
+        {jobTabs?.map(({ value }) => {
           const application = applications.find((job) => job.jobId === value);
           if (application) {
             return (
               activeTab === value && (
-                <div className="w-full max-w-3xl">
+                <div key={application.jobId} className="w-full max-w-3xl">
                   <div className="float-right m-5">
                     {!showForm && (
                       <CSVLink

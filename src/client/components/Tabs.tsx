@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { removeOpenTab } from "../store/reducers/applicationsSlice";
+import { removeJobTab } from "../store/reducers/settingsSlice";
 import type { TabsList } from "../../types";
 interface Props {
   tabs: TabsList;
@@ -11,7 +11,7 @@ function Tabs({ tabs, active, setActive }: Props) {
   const dispatch = useDispatch();
 
   const removeTab = (jobId: string) => {
-    dispatch(removeOpenTab(jobId));
+    dispatch(removeJobTab(jobId));
   };
 
   return (
