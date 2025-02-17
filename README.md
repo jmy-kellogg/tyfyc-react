@@ -3,13 +3,14 @@
 Tyfyc stands for “thank you for your consideration” this is to assist in customizing a person resume. This tool will allow you to upload your resume and job post you are interested in. You can then tailor your resume and track the application in one place.
 
 ![Alt text](public/app-preview.png)
+![Alt text](public/small-preview.png)
 
 ## Features
 - [X] Manually add/change resume
 - [X] Formats resume to downloadable PDF
 - [X] Saves locally in cookies
 - [X] Autofill resume from an existing resume
-- [ ] Saves Application details to csv
+- [X] Saves Application details to csv
 - [ ] Updates resume according to job posting
 
 ## Installation
