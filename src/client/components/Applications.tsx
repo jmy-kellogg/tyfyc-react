@@ -10,6 +10,8 @@ import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
+  setTabs,
+  setDefaultTab,
 } from "../store/reducers/settingsSlice";
 import type { State, Application } from "../../types";
 
@@ -27,6 +29,7 @@ function Applications() {
   const openApplication = ({ company, jobId }: Application) => {
     dispatch(addJobTabs({ label: company || "Job", value: jobId }));
     dispatch(setActiveTab(jobId));
+    dispatch(setTabs());
   };
 
   const addNew = () => {
@@ -36,6 +39,7 @@ function Applications() {
   const remove = (jobId: string) => {
     dispatch(removeApplication(jobId));
     dispatch(removeJobTab(jobId));
+    dispatch(setDefaultTab());
   };
 
   return (

@@ -22,23 +22,27 @@ export const settingsSlice = createSlice({
     },
     setShowResume: (state: SettingsState, action: PayloadAction<boolean>) => {
       state.showResume = action.payload;
+      if (action.payload) {
+        state.activeTab = "resume";
+      }
     },
     setShowApplications: (
       state: SettingsState,
       action: PayloadAction<boolean>
     ) => {
       state.showApplications = action.payload;
+      if (action.payload) {
+        state.activeTab = "applications";
+      }
     },
     setActiveTab: (state: SettingsState, action: PayloadAction<string>) => {
       const tab = action.payload;
       state.activeTab = tab;
     },
     setDefaultTab: (state: SettingsState) => {
-      const tabsList = state.smallDisplay ? state.tabs : state.jobTabs;
-      const defaultTab = state.smallDisplay ? state.tabs[0] : state.jobTabs[0];
-
-      if (!tabsList?.find(({ value }) => value === state.activeTab)) {
-        state.activeTab = defaultTab?.value || "";
+      const tabs = state.tabs;
+      if (!tabs?.find(({ value }) => value === state.activeTab)) {
+        state.activeTab = tabs[tabs.length - 1]?.value || "";
       }
     },
     setTabs: (state: SettingsState) => {
@@ -53,7 +57,7 @@ export const settingsSlice = createSlice({
         }
         state.tabs = [...tabs, ...jobTabs];
       } else {
-        state.tabs = [];
+        state.tabs = [...jobTabs];
       }
     },
     addJobTabs: (state: SettingsState, action: PayloadAction<Tab>) => {
@@ -66,10 +70,6 @@ export const settingsSlice = createSlice({
       state.jobTabs = state.jobTabs.filter(
         ({ value }) => value !== action.payload
       );
-      if (action.payload === state.activeTab) {
-        const newActive = state.jobTabs.pop();
-        state.activeTab = newActive?.value || "resume";
-      }
     },
   },
 });
