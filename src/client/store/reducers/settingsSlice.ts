@@ -66,6 +66,10 @@ export const settingsSlice = createSlice({
       state.jobTabs = state.jobTabs.filter(
         ({ value }) => value !== action.payload
       );
+      if (action.payload === state.activeTab) {
+        const newActive = state.jobTabs.pop();
+        state.activeTab = newActive?.value || "resume";
+      }
     },
   },
 });

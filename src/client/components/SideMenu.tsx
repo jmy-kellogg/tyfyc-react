@@ -40,7 +40,7 @@ function SideMenu() {
 
   return (
     <>
-      <div className="bg-white w-12 h-screen p-3">
+      <div className="bg-white text-slate-800 w-12 h-screen p-3">
         {smallDisplay ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +48,7 @@ function SideMenu() {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-blue-400"
+            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-indigo-400"
             onClick={toggleDisplay}
           >
             <path
@@ -64,7 +64,7 @@ function SideMenu() {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-blue-400"
+            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-indigo-400"
             onClick={toggleDisplay}
           >
             <path
@@ -77,11 +77,11 @@ function SideMenu() {
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          fill={showResume ? "currentColor" : "none"}
+          fill={showResume ? "none" : "currentColor"}
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          stroke={showResume ? "white" : "currentColor"}
-          className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-blue-400"
+          stroke={showResume ? "currentColor" : "white"}
+          className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-indigo-400"
           onClick={toggleResume}
         >
           <path
@@ -90,47 +90,44 @@ function SideMenu() {
             d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
           />
         </svg>
+
         {showApplications ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-blue-400"
-            onClick={toggleApplication}
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.478 5.559A1.5 1.5 0 0 1 6.912 4.5H9A.75.75 0 0 0 9 3H6.912a3 3 0 0 0-2.868 2.118l-2.411 7.838a3 3 0 0 0-.133.882V18a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0 0 17.088 3H15a.75.75 0 0 0 0 1.5h2.088a1.5 1.5 0 0 1 1.434 1.059l2.213 7.191H17.89a3 3 0 0 0-2.684 1.658l-.256.513a1.5 1.5 0 0 1-1.342.829h-3.218a1.5 1.5 0 0 1-1.342-.83l-.256-.512a3 3 0 0 0-2.684-1.658H3.265l2.213-7.191Z"
-              clipRule="evenodd"
-            />
-            <path
-              fillRule="evenodd"
-              d="M12 2.25a.75.75 0 0 1 .75.75v6.44l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 1.06-1.06l1.72 1.72V3a.75.75 0 0 1 .75-.75Z"
-              clipRule="evenodd"
-            />
-          </svg>
-        ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-blue-400"
+            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-indigo-400"
             onClick={toggleApplication}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M9 3.75H6.912a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859M12 3v8.25m0 0-3-3m3 3 3-3"
+              d="m7.875 14.25 1.214 1.942a2.25 2.25 0 0 0 1.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 0 1 1.872 1.002l.164.246a2.25 2.25 0 0 0 1.872 1.002h2.092a2.25 2.25 0 0 0 1.872-1.002l.164-.246A2.25 2.25 0 0 1 16.954 9h4.636M2.41 9a2.25 2.25 0 0 0-.16.832V12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 0 1 .382-.632l3.285-3.832a2.25 2.25 0 0 1 1.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0 0 21.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 0 0 2.25 2.25Z"
             />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="size-6 my-3 hover:cursor-pointer hover:size-7 hover:text-indigo-400"
+            onClick={toggleApplication}
+          >
+            <path
+              fillRule="evenodd"
+              d="M1.5 9.832v1.793c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875V9.832a3 3 0 0 0-.722-1.952l-3.285-3.832A3 3 0 0 0 16.215 3h-8.43a3 3 0 0 0-2.278 1.048L2.222 7.88A3 3 0 0 0 1.5 9.832ZM7.785 4.5a1.5 1.5 0 0 0-1.139.524L3.881 8.25h3.165a3 3 0 0 1 2.496 1.336l.164.246a1.5 1.5 0 0 0 1.248.668h2.092a1.5 1.5 0 0 0 1.248-.668l.164-.246a3 3 0 0 1 2.496-1.336h3.165l-2.765-3.226a1.5 1.5 0 0 0-1.139-.524h-8.43Z"
+              clipRule="evenodd"
+            />
+            <path d="M2.813 15c-.725 0-1.313.588-1.313 1.313V18a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-1.688c0-.724-.588-1.312-1.313-1.312h-4.233a3 3 0 0 0-2.496 1.336l-.164.246a1.5 1.5 0 0 1-1.248.668h-2.092a1.5 1.5 0 0 1-1.248-.668l-.164-.246A3 3 0 0 0 7.046 15H2.812Z" />
           </svg>
         )}
         {jobTabs.map(({ label, value }) => (
           <button
             key={value}
-            className={`text-xl font-bold p-1 my-1 border rounded-md hover:text-2xl hover:text-blue-400 hover:bg-blue-100 ${
-              value === activeTab ? "text-white bg-black" : ""
+            className={`text-xl font-bold p-1 my-1 border rounded-md hover:text-2xl hover:text-indigo-400 hover:bg-indigo-100 ${
+              value === activeTab ? "text-white bg-slate-800" : ""
             }`}
             onClick={() => {
               toggleJob(value);
