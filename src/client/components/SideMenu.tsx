@@ -37,7 +37,7 @@ function SideMenu() {
 
   return (
     <>
-      <div className="bg-white text-slate-800 w-12 h-screen p-3">
+      <div className="bg-white text-slate-800 w-12 h-full p-3">
         {smallDisplay ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +137,7 @@ function SideMenu() {
         {jobTabs.map(({ label, value }) => (
           <button
             key={value}
-            className={`text-xl font-bold p-1 my-1 border rounded-md ${
+            className={`w-6 text-xl font-bold p-1 my-1 border rounded-md ${
               value === activeTab
                 ? "text-white bg-slate-800"
                 : "hover:cursor-pointer hover:text-2xl hover:text-indigo-400 hover:bg-indigo-100"

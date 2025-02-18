@@ -22,7 +22,7 @@ export const settingsSlice = createSlice({
     },
     setShowResume: (state: SettingsState, action: PayloadAction<boolean>) => {
       state.showResume = action.payload;
-      if (action.payload) {
+      if (state.smallDisplay && action.payload) {
         state.activeTab = "resume";
       }
     },
@@ -31,7 +31,7 @@ export const settingsSlice = createSlice({
       action: PayloadAction<boolean>
     ) => {
       state.showApplications = action.payload;
-      if (action.payload) {
+      if (state.smallDisplay && action.payload) {
         state.activeTab = "applications";
       }
     },

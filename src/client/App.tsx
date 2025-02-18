@@ -34,13 +34,21 @@ function App() {
   return (
     <>
       <div className="flex">
-        <SideMenu />
-        <div className="m-3">
+        <div className="h-screen absolute">
+          <SideMenu />
+        </div>
+        <div className="m-3 ml-15 w-full">
           {smallDisplay && (
             <Tabs tabs={tabs || []} active={activeTab} setActive={setActive} />
           )}
 
-          <div className="grid grid-flow-col gap-4">
+          <div
+            className={`${
+              smallDisplay
+                ? "flex justify-center bg-white w-full h-full"
+                : "flex gap-4"
+            }`}
+          >
             <Resume />
             <Applications />
             <JobPosting />

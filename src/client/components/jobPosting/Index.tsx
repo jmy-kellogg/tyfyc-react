@@ -46,9 +46,9 @@ function JobPosting() {
             return (
               activeTab === value && (
                 <div key={application.jobId} className="w-full max-w-3xl">
-                  <div className="float-right m-5">
+                  <div className="bg-white text-end">
                     {!showForm && (
-                      <button className="rounded-md border-2 border-indigo-600 mx-5 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
+                      <button className="rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
                         <CSVLink
                           data={data}
                           filename={`tyfyc_job_search.csv`}
@@ -59,7 +59,7 @@ function JobPosting() {
                       </button>
                     )}
                     <button
-                      className="rounded-full border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
+                      className="rounded-full border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
                       onClick={() => setShowForm(!showForm)}
                     >
                       {showForm ? (
@@ -100,7 +100,7 @@ function JobPosting() {
                       )}
                     </button>
                   </div>
-                  <div className="bg-white p-5">
+                  <div className="bg-white p-5 pt-0">
                     {showForm ? (
                       <JobEdit application={application} />
                     ) : (

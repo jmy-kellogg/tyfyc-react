@@ -19,7 +19,7 @@ function JobDoc({ application }: Props) {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-7 mr-2 text-gray-400 hover:text-blue-400 hover:cursor-pointer"
+                className="size-5 mr-2 text-gray-400 hover:text-blue-400 hover:cursor-pointer"
               >
                 <path
                   strokeLinecap="round"
@@ -40,7 +40,7 @@ function JobDoc({ application }: Props) {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-7 mx-2  mr-2 text-gray-400 hover:text-blue-400 hover:cursor-pointer"
+                className="size-5 mx-2  mr-2 text-gray-400 hover:text-blue-400 hover:cursor-pointer"
               >
                 <path
                   strokeLinecap="round"
