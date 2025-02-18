@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getStatus, getFormattedDate } from "../../utils";
 
@@ -13,10 +14,11 @@ import {
   setTabs,
   setDefaultTab,
 } from "../store/reducers/settingsSlice";
-import type { State, Application } from "../../types";
+import type { State, Application, ApplicationsList } from "../../types";
 
 function Applications() {
   const dispatch = useDispatch();
+  const [sortedList, setSortedList] = useState<ApplicationsList>([]);
   const applications = useSelector((state: State) => state.applications.list);
   const activeTab = useSelector((state: State) => state.settings.activeTab);
   const showApplications = useSelector(
@@ -41,6 +43,38 @@ function Applications() {
     dispatch(removeJobTab(jobId));
     dispatch(setDefaultTab());
   };
+  const getStatusColor = (status: Application["status"]) => {
+    const colorMap = {
+      applied: "text-blue-400",
+      interviewing: "text-emerald-400",
+      no_offer: "text-amber-400",
+      declined: "text-rose-400",
+      auto_rejected: "text-gray-400",
+      pending: "text-purple-400",
+    };
+    return colorMap[status];
+  };
+
+  useEffect(() => {
+    const order = [
+      "interviewing",
+      "applied",
+      "pending",
+      "declined",
+      "no_offer",
+      "auto_rejected",
+    ];
+
+    const sortedList = [...applications]
+      .sort((a, b) => {
+        const aDate = new Date(a.dateApplied).getTime();
+        const bDate = new Date(b.dateApplied).getTime();
+        return bDate - aDate;
+      })
+      .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
+
+    setSortedList(sortedList);
+  }, [applications]);
 
   return (
     <>
@@ -58,21 +92,24 @@ function Applications() {
             />
           )}
           <div className="bg-white p-5">
-            <h1>Job Applications List</h1>
-            {applications.map((application) => (
-              <div className="flex" key={application.jobId}>
+            <h1>Job Applications</h1>
+            {sortedList.map((application) => (
+              <div
+                className="flex border-b-1 border-zinc-300 hover:bg-indigo-100"
+                key={application.jobId}
+              >
                 <button
-                  className="text-xl hover:cursor-pointer hover:text-indigo-600 hover:font-bold"
+                  className="text-l p-3  hover:cursor-pointer"
                   onClick={() => openApplication(application)}
                 >
-                  {application.company} - {application.title} |{" "}
-                  <span
-                    className={`rounded-md p-1 bg-${
-                      getStatus(application.status)?.color || "white"
-                    }-100`}
+                  <b>{application.company}</b> - {application.title} |{" "}
+                  <b
+                    className={`rounded-md p-1 ${getStatusColor(
+                      application.status
+                    )}`}
                   >
                     {getStatus(application.status)?.label || ""}
-                  </span>{" "}
+                  </b>{" "}
                   | {getFormattedDate(application.dateApplied)}
                 </button>
                 <button
@@ -86,7 +123,7 @@ function Applications() {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="size-6"
+                    className="size-5"
                   >
                     <path
                       strokeLinecap="round"
