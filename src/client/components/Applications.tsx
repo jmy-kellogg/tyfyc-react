@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import Papa from "papaparse";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getStatus, getFormattedDate } from "../../utils";
 
@@ -6,6 +7,7 @@ import Tabs from "./Tabs";
 import {
   addNewApplication,
   removeApplication,
+  updateApplicationsList,
 } from "../store/reducers/applicationsSlice";
 import {
   setActiveTab,
@@ -55,6 +57,52 @@ function Applications() {
     return colorMap[status];
   };
 
+  const onFilePicked = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files || [];
+    const file: File = files[0];
+
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: function (results) {
+          const data = results.data;
+          if (!data || !data.length) {
+            console.error("Must be a TYFYC CSV");
+          } else {
+            const jobIdLists = applications.map(({ jobId }) => jobId);
+            const uploaded: ApplicationsList = data
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              .filter((item: any) => {
+                return item?.jobId && !jobIdLists.includes(item.jobId);
+              })
+              .map((item) => {
+                return {
+                  company: item?.company || "",
+                  description: item?.description || "",
+                  title: item?.title || "",
+                  salary: item?.salary || "",
+                  dateApplied: item?.dateApplied || "",
+                  location: item?.location || "",
+                  status: item?.status || "applied",
+                  interviewStages: item?.interviewStages || [],
+                  notes: item?.notes || "",
+                  postingLink: item?.postingLink || "",
+                  companyLink: item?.companyLink || "",
+                  jobId: item?.jobId || "",
+                };
+              });
+
+            if (uploaded.length) {
+              dispatch(updateApplicationsList([...applications, ...uploaded]));
+            }
+          }
+        },
+        error: function (error) {
+          console.error("Error parsing CSV:", error);
+        },
+      });
+    }
+  };
   useEffect(() => {
     const order = [
       "interviewing",
@@ -92,7 +140,22 @@ function Applications() {
             />
           )}
           <div className="bg-white p-5">
-            <h1>Job Applications</h1>
+            <div className="flex place-content-between min-w-85">
+              <h2>Job Applications</h2>
+              <div className="m-3 self-center">
+                <label className="rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
+                  <span>Import from CSV</span>
+                  <input
+                    id="csv-upload"
+                    name="csvUpload"
+                    type="file"
+                    className="sr-only"
+                    accept=".csv"
+                    onChange={onFilePicked}
+                  />
+                </label>
+              </div>
+            </div>
             {sortedList.map((application) => (
               <div
                 className="flex border-b-1 border-zinc-300 hover:bg-indigo-100"

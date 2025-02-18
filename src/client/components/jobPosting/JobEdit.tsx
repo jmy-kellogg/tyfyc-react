@@ -1,4 +1,3 @@
-import Papa from "papaparse";
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
@@ -21,51 +20,8 @@ function JobEdit({ application }: Props) {
     dispatch(updateApplication({ ...application, [field]: value }));
   };
 
-  const onFilePicked = async (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files || [];
-    const file: File = files[0];
-
-    if (file) {
-      Papa.parse(file, {
-        header: true,
-        complete: function (results) {
-          const data = results.data;
-          if (!data || !data.length) {
-            console.error("Must be a TYFYC CSV");
-          } else {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const importApp = data.find((item: any) => {
-              if ("jobId" in item) {
-                return item.jobId === application.jobId;
-              }
-            });
-            if (importApp) {
-              dispatch(updateApplication({ ...application, ...importApp }));
-            }
-          }
-        },
-        error: function (error) {
-          console.error("Error parsing CSV:", error);
-        },
-      });
-    }
-  };
-
   return (
     <>
-      <div className="float-right mt-3">
-        <label className="rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
-          <span>Upload CSV</span>
-          <input
-            id="csv-upload"
-            name="csvUpload"
-            type="file"
-            className="sr-only"
-            accept=".csv"
-            onChange={onFilePicked}
-          />
-        </label>
-      </div>
       <div className="inline-block">
         <div className="grid gap-2">
           <div className="col-span-6">
