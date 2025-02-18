@@ -85,6 +85,7 @@ function JobEdit({ application }: Props) {
                 name="status"
                 id="status"
                 className="w-full rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                value={application.status}
                 onChange={updateData}
               >
                 {statusOptions.map(({ label, value }) => (
