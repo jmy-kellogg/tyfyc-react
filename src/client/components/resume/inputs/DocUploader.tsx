@@ -46,13 +46,13 @@ function DocUploader() {
 
   return (
     <>
-      <div className="mb-4 col-span-full">
+      <div className="mb-4 w-full h-sm">
         <label className="block text-sm/6 font-medium">
           <h2>
             <b>Upload</b>
           </h2>
         </label>
-        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+        <div className="mt-2 flex w-full h-xs justify-center rounded-lg border border-dashed border-gray-900/25 p-3">
           <div className="text-center">
             <svg
               className="mx-auto size-12 text-gray-300"

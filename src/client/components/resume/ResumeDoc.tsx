@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../utils";
+import "./ResumeDoc.css";
 
 import type {
   State,
