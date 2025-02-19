@@ -34,6 +34,14 @@ function JobPosting() {
     setData([headers, ...values]);
   }, [applications]);
 
+  useEffect(() => {
+    const activeJob = applications.find(({ jobId }) => jobId === activeTab);
+    const isNew = !activeJob?.company;
+    if (activeJob && isNew) {
+      setShowForm(true);
+    }
+  }, [activeTab, applications]);
+
   return (
     <>
       <div>

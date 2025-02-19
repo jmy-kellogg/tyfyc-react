@@ -1,4 +1,5 @@
 import Papa from "papaparse";
+import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getStatus, getFormattedDate } from "../../utils";
@@ -37,7 +38,11 @@ function Applications() {
   };
 
   const addNew = () => {
-    dispatch(addNewApplication());
+    const jobId = uuidv4();
+    dispatch(addNewApplication(jobId));
+    dispatch(addJobTabs({ label: "Job", value: jobId }));
+    dispatch(setActiveTab(jobId));
+    dispatch(setTabs());
   };
 
   const remove = (jobId: string) => {
@@ -142,9 +147,9 @@ function Applications() {
           <div className="bg-white p-5">
             <div className="flex place-content-between min-w-85">
               <h2>Job Applications</h2>
-              <div className="m-3 self-center">
-                <label className="rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
-                  <span>Import from CSV</span>
+              <div className="m-3 self-center rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
+                <label>
+                  <span>Import CSV</span>
                   <input
                     id="csv-upload"
                     name="csvUpload"
@@ -158,14 +163,15 @@ function Applications() {
             </div>
             {sortedList.map((application) => (
               <div
-                className="flex border-b-1 border-zinc-300 hover:bg-indigo-100"
+                className="flex place-content-between  border-b-1 border-zinc-300 hover:bg-indigo-100 hover:cursor-pointer"
                 key={application.jobId}
+                onClick={() => openApplication(application)}
               >
-                <button
-                  className="text-l p-3  hover:cursor-pointer"
-                  onClick={() => openApplication(application)}
-                >
-                  <b>{application.company}</b> - {application.title} |{" "}
+                <span className="text-l p-3">
+                  <b>{application.company}</b> - {application.title}
+                </span>
+                <span className="text-l p-3">
+                  |{" "}
                   <b
                     className={`rounded-md p-1 ${getStatusColor(
                       application.status
@@ -174,7 +180,7 @@ function Applications() {
                     {getStatus(application.status)?.label || ""}
                   </b>{" "}
                   | {getFormattedDate(application.dateApplied)}
-                </button>
+                </span>
                 <button
                   type="button"
                   className="rounded-md align-sub text-red-600 m-1 p-1 hover:bg-red-100"

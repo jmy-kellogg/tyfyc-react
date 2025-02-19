@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { statusOptions } from "../../../utils";
 import { updateApplication } from "../../store/reducers/applicationsSlice";
+import { updateTab, setTabs } from "../../store/reducers/settingsSlice";
 import type { Application } from "../../../types";
 
 interface Props {
@@ -20,11 +21,18 @@ function JobEdit({ application }: Props) {
     dispatch(updateApplication({ ...application, [field]: value }));
   };
 
+  const updateCompanyName = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    dispatch(updateTab({ label: value, value: application.jobId }));
+    dispatch(updateApplication({ ...application, company: value }));
+    dispatch(setTabs());
+  };
+
   return (
     <>
       <div className="inline-block">
         <div className="grid gap-2">
-          <div className="col-span-6">
+          <div className="col-span-2">
             <label className="block text-sm/6 font-medium">Company</label>
             <div className="mt-2">
               <input
@@ -33,11 +41,11 @@ function JobEdit({ application }: Props) {
                 type="text"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={application.company}
-                onChange={updateData}
+                onChange={updateCompanyName}
               />
             </div>
           </div>
-          <div className="col-span-6">
+          <div className="col-span-4">
             <label className="block text-sm/6 font-medium">Company Site</label>
             <div className="mt-2">
               <input
@@ -50,8 +58,8 @@ function JobEdit({ application }: Props) {
               />
             </div>
           </div>
-          <div className="col-span-6">
-            <label className="block text-sm/6 font-medium">Title</label>
+          <div className="col-span-2">
+            <label className="block text-sm/6 font-medium">Job Title</label>
             <div className="mt-2">
               <input
                 id="title"
@@ -63,7 +71,7 @@ function JobEdit({ application }: Props) {
               />
             </div>
           </div>
-          <div className="col-span-6">
+          <div className="col-span-4">
             <label className="block text-sm/6 font-medium">
               Job Posting Link
             </label>

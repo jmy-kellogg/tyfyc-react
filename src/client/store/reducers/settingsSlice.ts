@@ -71,6 +71,12 @@ export const settingsSlice = createSlice({
         ({ value }) => value !== action.payload
       );
     },
+    updateTab: (state: SettingsState, action: PayloadAction<Tab>) => {
+      const index = state.jobTabs.findIndex(
+        ({ value }) => value === action.payload.value
+      );
+      state.jobTabs[index] = action.payload;
+    },
   },
 });
 
@@ -83,5 +89,6 @@ export const {
   addJobTabs,
   removeJobTab,
   setDefaultTab,
+  updateTab,
 } = settingsSlice.actions;
 export default settingsSlice.reducer;

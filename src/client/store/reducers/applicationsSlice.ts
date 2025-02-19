@@ -20,8 +20,11 @@ export const ApplicationsSlice = createSlice({
     ) => {
       state.list = action.payload;
     },
-    addNewApplication: (state: ApplicationsState) => {
-      const jobId = uuidv4();
+    addNewApplication: (
+      state: ApplicationsState,
+      action: PayloadAction<string | undefined>
+    ) => {
+      const jobId = action.payload || uuidv4();
       const defaultApplication: Application = {
         company: "",
         description: "",
@@ -29,7 +32,7 @@ export const ApplicationsSlice = createSlice({
         salary: "",
         dateApplied: "",
         location: "",
-        status: "applied",
+        status: "pending",
         interviewStages: [],
         notes: "",
         postingLink: "",

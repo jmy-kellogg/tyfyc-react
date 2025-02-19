@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updatePersonal } from "../../store/reducers/personalSlice";
-import Jobs from "./inputs/Jobs";
+import Jobs from "./inputs/JobsHistory";
 import Education from "./inputs/Education";
 import Skills from "./inputs/Skills";
 import DocUploader from "./inputs/DocUploader";
