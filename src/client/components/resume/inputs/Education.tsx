@@ -63,14 +63,12 @@ function Education() {
               onChange={(e) => saveEducation(e, index)}
             />
 
-            <label className="block text-sm/6 font-medium">
-              Year Graduated
-            </label>
+            <label className="block text-sm/6 font-medium">Graduated</label>
 
             <input
               id="grad-year"
               name="gradYear"
-              type="text"
+              type="month"
               className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={school.gradYear}
               onChange={(e) => saveEducation(e, index)}

@@ -28,16 +28,19 @@ export const getStatus = (
 };
 
 export const getFormattedDate = (
-  dateString: Application["dateApplied"]
-): string => {
-  const options: Intl.DateTimeFormatOptions = {
+  dateString: Application["dateApplied"],
+  options: Intl.DateTimeFormatOptions | undefined = {
     day: "numeric",
     month: "short",
+  }
+): string => {
+  const lang = navigator?.language || "en-US";
+  const dateOptions = {
+    ...options,
     timeZone: "UTC",
   };
-  const lang = navigator?.language || "en-US";
 
-  return new Date(dateString).toLocaleDateString(lang, options);
+  return new Date(dateString).toLocaleDateString(lang, dateOptions);
 };
 
 // Skills Utils

@@ -69,24 +69,23 @@ function Jobs() {
               value={job.location}
               onChange={(e) => saveJobs(e, index)}
             />
-
-            <label className="block text-sm/6 font-medium">Start</label>
-            <input
-              id="start"
-              type="text"
-              name="start"
-              className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={job.start}
-              onChange={(e) => saveJobs(e, index)}
-            />
-
             <label className="block text-sm/6 font-medium">End</label>
             <input
               id="end"
               name="end"
-              type="text"
+              type="month"
               className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={job.end}
+              onChange={(e) => saveJobs(e, index)}
+            />
+
+            <label className="block text-sm/6 font-medium">Start</label>
+            <input
+              id="start"
+              name="start"
+              type="month"
+              className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              value={job.start}
               onChange={(e) => saveJobs(e, index)}
             />
 

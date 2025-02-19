@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import "./ResumeDoc.css";
+import { getFormattedDate } from "../../../utils";
 
 import type {
   State,
@@ -64,7 +64,12 @@ function Document() {
                 {job.company} - {job.location}
               </p>
               <p>
-                {job.start} - {job.end}
+                {getFormattedDate(job.start, {
+                  month: "short",
+                  year: "numeric",
+                })}{" "}
+                -{" "}
+                {getFormattedDate(job.end, { month: "short", year: "numeric" })}
               </p>
               <p>{job.description}</p>
               <p className="divider">{divider()}</p>
@@ -77,7 +82,8 @@ function Document() {
             <div key={index}>
               <p>{edu.degree}</p>
               <p>
-                {edu.school} - {edu.gradYear}
+                {edu.school} -{" "}
+                {getFormattedDate(edu.gradYear, { year: "numeric" })}
               </p>
               <p className="divider">{divider()}</p>
             </div>
