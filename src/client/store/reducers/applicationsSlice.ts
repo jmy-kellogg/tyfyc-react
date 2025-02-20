@@ -22,9 +22,9 @@ export const ApplicationsSlice = createSlice({
     },
     addNewApplication: (
       state: ApplicationsState,
-      action: PayloadAction<string | undefined>
+      action: PayloadAction<Application | undefined>
     ) => {
-      const jobId = action.payload || uuidv4();
+      const application = action.payload || {};
       const defaultApplication: Application = {
         company: "",
         description: "",
@@ -37,7 +37,8 @@ export const ApplicationsSlice = createSlice({
         notes: "",
         postingLink: "",
         companyLink: "",
-        jobId,
+        jobId: uuidv4(),
+        ...application,
       };
       state.list = [...state.list, defaultApplication];
     },

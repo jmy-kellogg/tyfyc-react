@@ -1,23 +1,22 @@
 import Papa from "papaparse";
-import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getStatus, getFormattedDate } from "../../utils";
+import { getStatus, getFormattedDate } from "../../../utils";
 
-import Tabs from "./Tabs";
+import Tabs from "../Tabs";
+import NewJobModal from "./NewJobModal";
 import {
-  addNewApplication,
   removeApplication,
   updateApplicationsList,
-} from "../store/reducers/applicationsSlice";
+} from "../../store/reducers/applicationsSlice";
 import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
   setTabs,
   setDefaultTab,
-} from "../store/reducers/settingsSlice";
-import type { State, Application, ApplicationsList } from "../../types";
+} from "../../store/reducers/settingsSlice";
+import type { State, Application, ApplicationsList } from "../../../types";
 
 function Applications() {
   const dispatch = useDispatch();
@@ -37,19 +36,12 @@ function Applications() {
     dispatch(setTabs());
   };
 
-  const addNew = () => {
-    const jobId = uuidv4();
-    dispatch(addNewApplication(jobId));
-    dispatch(addJobTabs({ label: "Job", value: jobId }));
-    dispatch(setActiveTab(jobId));
-    dispatch(setTabs());
-  };
-
   const remove = (jobId: string) => {
     dispatch(removeApplication(jobId));
     dispatch(removeJobTab(jobId));
     dispatch(setDefaultTab());
   };
+
   const getStatusColor = (status: Application["status"]) => {
     const colorMap = {
       applied: "text-blue-400",
@@ -203,13 +195,7 @@ function Applications() {
                 </button>
               </div>
             ))}
-            <button
-              type="button"
-              className="rounded-md bg-indigo-600 my-3 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={addNew}
-            >
-              Add Application
-            </button>
+            <NewJobModal />
           </div>
         </div>
       )}

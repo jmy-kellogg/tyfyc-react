@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import JobPosting from "./components/jobPosting/Index";
 import Resume from "./components/resume/Index";
-import Applications from "./components/Applications";
+import Applications from "./components/jobsTracker/Applications";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
 import {
