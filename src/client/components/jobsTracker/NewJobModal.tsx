@@ -46,7 +46,12 @@ function NewJobModal() {
 
   const submit = () => {
     dispatch(addNewApplication(application));
-    dispatch(addJobTabs({ label: "Job", value: application.jobId }));
+    dispatch(
+      addJobTabs({
+        label: application.company || "Job",
+        value: application.jobId,
+      })
+    );
     dispatch(setActiveTab(application.jobId));
     dispatch(setTabs());
     setShowModal(false);
