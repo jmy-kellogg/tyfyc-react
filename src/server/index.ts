@@ -1,8 +1,6 @@
 import PDFParser from "pdf2json";
 import multer from "multer";
-import axios from "axios";
 import express, { Request, Response } from "express";
-import * as cheerio from "cheerio";
 
 import type { JobsList, EducationList, ParsedData } from "../types";
 

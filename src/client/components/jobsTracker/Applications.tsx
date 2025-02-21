@@ -74,18 +74,19 @@ function Applications() {
               })
               .map((item) => {
                 return {
-                  company: item?.company || "",
-                  description: item?.description || "",
-                  title: item?.title || "",
-                  salary: item?.salary || "",
-                  dateApplied: item?.dateApplied || "",
-                  location: item?.location || "",
-                  status: item?.status || "applied",
-                  interviewStages: item?.interviewStages || [],
-                  notes: item?.notes || "",
-                  postingLink: item?.postingLink || "",
-                  companyLink: item?.companyLink || "",
-                  jobId: item?.jobId || "",
+                  company: "",
+                  description: "",
+                  title: "",
+                  salary: "",
+                  dateApplied: "",
+                  location: "",
+                  status: "applied",
+                  interviewStages: [],
+                  notes: "",
+                  postingLink: "",
+                  companyLink: "",
+                  jobId: "",
+                  ...(item || {}),
                 };
               });
 
