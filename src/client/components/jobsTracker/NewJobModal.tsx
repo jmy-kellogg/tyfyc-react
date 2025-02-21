@@ -9,6 +9,7 @@ import {
   addJobTabs,
   setTabs,
 } from "../../store/reducers/settingsSlice";
+
 import type { Application } from "../../../types";
 
 function NewJobModal() {

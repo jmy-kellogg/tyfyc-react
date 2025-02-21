@@ -6,7 +6,8 @@ import {
   updateJobs,
 } from "../../../store/reducers/jobsSlice";
 
-import type { State, Job, JobsList } from "../../../../types";
+import type { Job, JobsList } from "../../../../types";
+import type { State } from "../../../store";
 
 function Jobs() {
   const jobs: JobsList = useSelector((state: State) => state.jobs.list);

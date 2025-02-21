@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { skillsOptions } from "../../../../utils";
 import { updateSkills } from "../../../store/reducers/skillsSlice";
 
-import type { State, Skill, SkillsList } from "../../../../types";
+import type { Skill, SkillsList } from "../../../../types";
+import type { State } from "../../../store";
 
 function Skills() {
   const skills: SkillsList = useSelector((state: State) => state.skills.list);

@@ -6,7 +6,8 @@ import { updateJobs } from "../../../store/reducers/jobsSlice";
 import { updateEducation } from "../../../store/reducers/educationSlice";
 import { updateSkills } from "../../../store/reducers/skillsSlice";
 
-import { type ParsedData } from "../../../../types";
+import type { ParsedData } from "../../../../types";
+
 function DocUploader() {
   const [errorMsg, setErrorMsg] = useState("");
   const dispatch = useDispatch();

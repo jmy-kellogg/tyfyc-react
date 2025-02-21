@@ -1,5 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { SettingsState, Tab } from "../../../types";
+import type { Tab, TabsList } from "../../../types";
+
+export interface SettingsState {
+  smallDisplay: boolean;
+  showResume: boolean;
+  showApplications: boolean;
+  activeTab: string;
+  tabs: TabsList;
+  jobTabs: TabsList;
+}
 
 const initialState: SettingsState = {
   smallDisplay: false,

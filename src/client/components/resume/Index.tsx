@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import Tabs from "../Tabs";
 import ResumeDoc from "./ResumeDoc";
 import ResumeEdit from "./ResumeEdit";
-import type { State } from "../../../types";
+
+import type { State } from "../../store";
 
 function Resume() {
   const [showForm, setShowForm] = useState<boolean>(false);

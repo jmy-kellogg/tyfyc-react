@@ -16,7 +16,9 @@ import {
   setTabs,
   setDefaultTab,
 } from "../../store/reducers/settingsSlice";
-import type { State, Application, ApplicationsList } from "../../../types";
+
+import type { Application, ApplicationsList } from "../../../types";
+import type { State } from "../../store";
 
 function Applications() {
   const dispatch = useDispatch();

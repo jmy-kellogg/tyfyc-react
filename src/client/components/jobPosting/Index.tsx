@@ -6,7 +6,9 @@ import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
 import Tabs from "../Tabs";
 import { setActiveTab } from "../../store/reducers/settingsSlice";
-import type { State, Application } from "../../../types";
+
+import type { Application } from "../../../types";
+import type { State } from "../../store";
 
 type CsvRow = Array<string>;
 type CsvData = Array<CsvRow>;

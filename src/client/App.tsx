@@ -12,7 +12,7 @@ import {
   setDefaultTab,
 } from "./store/reducers/settingsSlice";
 
-import type { State } from "../types";
+import type { State } from "./store";
 
 function App() {
   const dispatch = useDispatch();

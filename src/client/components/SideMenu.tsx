@@ -7,7 +7,7 @@ import {
   setSmallDisplay,
 } from "../store/reducers/settingsSlice";
 
-import type { State } from "../../types";
+import type { State } from "../store";
 
 function SideMenu() {
   const dispatch = useDispatch();

@@ -2,21 +2,13 @@ import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../utils";
 import "./ResumeDoc.css";
 
-import type {
-  State,
-  PersonalState,
-  EducationList,
-  JobsList,
-  SkillsList,
-} from "../../../types";
+import type { State } from "../../store";
 
 function Document() {
-  const personal: PersonalState = useSelector((state: State) => state.personal);
-  const jobs: JobsList = useSelector((state: State) => state.jobs.list);
-  const skills: SkillsList = useSelector((state: State) => state.skills.list);
-  const education: EducationList = useSelector(
-    (state: State) => state.education.list
-  );
+  const personal = useSelector((state: State) => state.personal);
+  const jobs = useSelector((state: State) => state.jobs.list);
+  const skills = useSelector((state: State) => state.skills.list);
+  const education = useSelector((state: State) => state.education.list);
 
   const divider = (): string => {
     let index = 100;

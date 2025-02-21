@@ -1,4 +1,5 @@
 import { getStatus, getFormattedDate } from "../../../utils";
+
 import type { Application } from "../../../types";
 
 interface Props {

@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type {
-  ApplicationsState,
-  ApplicationsList,
-  Application,
-} from "../../../types";
+import type { ApplicationsList, Application } from "../../../types";
+
+export interface ApplicationsState {
+  list: ApplicationsList;
+}
 
 const initialState: ApplicationsState = {
   list: [],

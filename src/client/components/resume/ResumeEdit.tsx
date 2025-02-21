@@ -6,11 +6,11 @@ import Education from "./inputs/Education";
 import Skills from "./inputs/Skills";
 import DocUploader from "./inputs/DocUploader";
 
-import type { State, PersonalState } from "../../../types";
+import type { State } from "../../store";
 
 function ResumeEdit() {
   const dispatch = useDispatch();
-  const personal: PersonalState = useSelector((state: State) => state.personal);
+  const personal = useSelector((state: State) => state.personal);
 
   const updateData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

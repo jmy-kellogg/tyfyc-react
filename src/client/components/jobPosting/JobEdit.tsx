@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { statusOptions } from "../../../utils";
 import { updateApplication } from "../../store/reducers/applicationsSlice";
 import { updateTab, setTabs } from "../../store/reducers/settingsSlice";
+
 import type { Application } from "../../../types";
 
 interface Props {

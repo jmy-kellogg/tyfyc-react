@@ -6,7 +6,9 @@ import {
   setShowApplications,
   setDefaultTab,
 } from "../store/reducers/settingsSlice";
+
 import type { TabsList } from "../../types";
+
 interface Props {
   tabs: TabsList;
   active: string;

@@ -5,15 +5,7 @@ export type Tab = {
 
 export type TabsList = Array<Tab>;
 
-export interface SettingsState {
-  smallDisplay: boolean;
-  showResume: boolean;
-  showApplications: boolean;
-  activeTab: string;
-  tabs: TabsList;
-  jobTabs: TabsList;
-}
-
+// Resume
 export interface Personal {
   firstName: string;
   lastName: string;
@@ -52,21 +44,7 @@ export interface Education {
 
 export type EducationList = Array<Education>;
 
-//Store
-export type PersonalState = Personal;
-
-export interface SkillsState {
-  list: SkillsList;
-}
-
-export interface JobsState {
-  list: JobsList;
-}
-
-export interface EducationState {
-  list: EducationList;
-}
-
+// Application
 export interface Application {
   company: string;
   description: string;
@@ -88,30 +66,12 @@ export interface Application {
   jobId: string;
 }
 
+export type ApplicationsList = Array<Application>;
+
 export interface StatusOption {
   label: string;
   value: Application["status"];
   color: string;
-}
-
-export type ApplicationsList = Array<Application>;
-
-export interface ApplicationsState {
-  list: ApplicationsList;
-}
-
-export interface State {
-  personal: PersonalState;
-  skills: SkillsState;
-  jobs: JobsState;
-  education: EducationState;
-  posting: Application;
-  applications: ApplicationsState;
-  settings: SettingsState;
-}
-export interface PersonalStateUpdate {
-  field: keyof PersonalState;
-  value: string;
 }
 
 // API
@@ -120,5 +80,4 @@ export interface ParsedData {
   skills: SkillsList;
   jobs: JobsList;
   education: EducationList;
-  settings: SettingsState;
 }
