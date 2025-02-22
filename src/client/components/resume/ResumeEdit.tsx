@@ -27,8 +27,8 @@ function ResumeEdit() {
         <h2>
           <b>Personal</b>
         </h2>
-        <div className="grid gap-x-1 gap-y-6 grid-cols-6">
-          <div className="col-span-3">
+        <div className="grid gap-x-1 gap-y-6 grid-cols-4">
+          <div className="col-span-2">
             <label className="block text-sm/6 font-medium">First name</label>
             <div className="mt-2">
               <input
@@ -42,7 +42,7 @@ function ResumeEdit() {
             </div>
           </div>
 
-          <div className="col-span-3">
+          <div className="col-span-2">
             <label className="block text-sm/6 font-medium">Last name</label>
             <div className="mt-2">
               <input
@@ -83,7 +83,7 @@ function ResumeEdit() {
             </div>
           </div>
 
-          <div className="col-span-1">
+          <div className="col-span-3">
             <label className="block text-sm/6 font-medium">City</label>
             <div className="mt-2">
               <input
@@ -110,7 +110,7 @@ function ResumeEdit() {
               />
             </div>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <label className="block text-sm/6 font-medium">LinkedIn</label>
             <div className="mt-2">
               <input
@@ -124,7 +124,7 @@ function ResumeEdit() {
             </div>
           </div>
 
-          <div className="col-span-3">
+          <div className="col-span-2">
             <label className="block text-sm/6 font-medium">GitHub</label>
             <div className="mt-2">
               <input

@@ -25,12 +25,11 @@ function Document() {
       <div id="resume-content">
         <div>
           <div>
-            <h1>
-              {personal.firstName} {personal.lastName}
-            </h1>
+            <h1>{personal.firstName + " " + personal.lastName}</h1>
             <p>
-              Email: {personal.email} | Phone: {personal.phone} | Location:{" "}
-              {personal.city},{personal.state} |
+              {"Email: " + personal.email}
+              {" | Phone: " + personal.phone}
+              {" | Location: " + personal.city + ", " + personal.state} |
             </p>
             <p>
               LinkedIn: {personal.linkedIn} | {personal.gitHub}
@@ -60,9 +59,12 @@ function Document() {
                 {getFormattedDate(job.start, {
                   month: "short",
                   year: "numeric",
-                })}{" "}
-                -{" "}
-                {getFormattedDate(job.end, { month: "short", year: "numeric" })}
+                }) +
+                  " - " +
+                  getFormattedDate(job.end, {
+                    month: "short",
+                    year: "numeric",
+                  })}
               </p>
               <p>{job.description}</p>
               <p className="divider">{divider()}</p>
@@ -75,8 +77,9 @@ function Document() {
             <div key={index}>
               <p>{edu.degree}</p>
               <p>
-                {edu.school} -{" "}
-                {getFormattedDate(edu.gradYear, { year: "numeric" })}
+                {edu.school +
+                  " - " +
+                  getFormattedDate(edu.gradYear, { year: "numeric" })}
               </p>
               <p className="divider">{divider()}</p>
             </div>
