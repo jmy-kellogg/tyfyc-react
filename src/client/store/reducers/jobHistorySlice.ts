@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { Job, JobsList } from "../../../types";
+import type { JobHistory, JobHistoryList } from "../../../types";
 
 export interface JobsState {
-  list: JobsList;
+  list: JobHistoryList;
 }
 
 const initialState: JobsState = {
@@ -18,15 +18,15 @@ const initialState: JobsState = {
   ],
 };
 
-export const jobsSlice = createSlice({
-  name: "jobs",
+export const jobHistorySlice = createSlice({
+  name: "jobHistory",
   initialState,
   reducers: {
-    updateJobs: (state: JobsState, action: PayloadAction<JobsList>) => {
+    updateJobs: (state: JobsState, action: PayloadAction<JobHistoryList>) => {
       state.list = action.payload;
     },
     addNewJob(state: JobsState) {
-      const newItem: Job = {
+      const newItem: JobHistory = {
         title: "",
         company: "",
         location: "",
@@ -42,5 +42,5 @@ export const jobsSlice = createSlice({
   },
 });
 
-export const { updateJobs, addNewJob, removeJob } = jobsSlice.actions;
-export default jobsSlice.reducer;
+export const { updateJobs, addNewJob, removeJob } = jobHistorySlice.actions;
+export default jobHistorySlice.reducer;

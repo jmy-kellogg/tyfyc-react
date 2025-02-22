@@ -6,7 +6,7 @@ import applicationsReducer, {
   ApplicationsState,
 } from "./reducers/applicationsSlice";
 import educationReducer, { EducationState } from "./reducers/educationSlice";
-import jobsReducer, { JobsState } from "./reducers/jobsSlice";
+import jobHistoryReducer, { JobsState } from "./reducers/jobHistorySlice";
 import personalReducer, { PersonalState } from "./reducers/personalSlice";
 import settingsReducer, { SettingsState } from "./reducers/settingsSlice";
 import skillsReducer, { SkillsState } from "./reducers/skillsSlice";
@@ -17,7 +17,7 @@ export type AppDispatch = AppStore["dispatch"];
 export interface State {
   applications: ApplicationsState;
   education: EducationState;
-  jobs: JobsState;
+  jobHistory: JobsState;
   personal: PersonalState;
   settings: SettingsState;
   skills: SkillsState;
@@ -31,7 +31,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   applications: applicationsReducer,
   education: educationReducer,
-  jobs: jobsReducer,
+  jobHistory: jobHistoryReducer,
   personal: personalReducer,
   settings: settingsReducer,
   skills: skillsReducer,

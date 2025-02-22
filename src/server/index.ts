@@ -2,7 +2,7 @@ import PDFParser from "pdf2json";
 import multer from "multer";
 import express, { Request, Response } from "express";
 
-import type { JobsList, EducationList, ParsedData } from "../types";
+import type { JobHistoryList, EducationList, ParsedData } from "../types";
 
 export const app = express();
 
@@ -61,8 +61,8 @@ const getSkills = (textData: Array<string> = []) => {
   return skills;
 };
 
-const getJobs = (textData: Array<string> = []): JobsList => {
-  const jobs = textData
+const getJobs = (textData: Array<string> = []): JobHistoryList => {
+  const jobHistory = textData
     .slice(
       textData.indexOf("Professional Experience") + 1,
       textData.indexOf("Education")
@@ -70,9 +70,9 @@ const getJobs = (textData: Array<string> = []): JobsList => {
     .join("|||")
     .split(divider());
 
-  const respJobs: JobsList = [];
+  const respJobs: JobHistoryList = [];
 
-  jobs.forEach((element) => {
+  jobHistory.forEach((element) => {
     const job = element.split("|||").filter((str) => !!str.trim());
 
     if (job.length) {
@@ -120,7 +120,7 @@ const parseTextData = (rawText: string = ""): ParsedData => {
   return {
     personal: getPersonal(textData),
     skills: getSkills(textData),
-    jobs: getJobs(textData),
+    jobHistory: getJobs(textData),
     education: getEducation(textData),
   };
 };

@@ -4,20 +4,22 @@ import {
   addNewJob,
   removeJob,
   updateJobs,
-} from "../../../store/reducers/jobsSlice";
+} from "../../../store/reducers/jobHistorySlice";
 
-import type { Job, JobsList } from "../../../../types";
+import type { JobHistory, JobHistoryList } from "../../../../types";
 import type { State } from "../../../store";
 
-function Jobs() {
-  const jobs: JobsList = useSelector((state: State) => state.jobs.list);
+function JobsHistory() {
+  const jobHistory: JobHistoryList = useSelector(
+    (state: State) => state.jobHistory.list
+  );
   const dispatch = useDispatch();
 
   const saveJobs = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
-    const newJobs = [...jobs];
+    const newJobs = [...jobHistory];
     const job = newJobs[index];
     newJobs[index] = {
       ...job,
@@ -40,7 +42,7 @@ function Jobs() {
         <h2>
           <b>Professional Experience </b>
         </h2>
-        {jobs.map((job: Job, index: number) => (
+        {jobHistory.map((job: JobHistory, index: number) => (
           <div className="border-b border-gray-300 my-3" key={index}>
             <label className="block text-sm/6 font-medium">Title</label>
             <input
@@ -120,4 +122,4 @@ function Jobs() {
   );
 }
 
-export default Jobs;
+export default JobsHistory;

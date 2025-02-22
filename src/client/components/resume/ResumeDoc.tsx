@@ -6,7 +6,7 @@ import type { State } from "../../store";
 
 function Document() {
   const personal = useSelector((state: State) => state.personal);
-  const jobs = useSelector((state: State) => state.jobs.list);
+  const jobHistory = useSelector((state: State) => state.jobHistory.list);
   const skills = useSelector((state: State) => state.skills.list);
   const education = useSelector((state: State) => state.education.list);
 
@@ -50,7 +50,7 @@ function Document() {
         <p className="divider">{divider()}</p>
         <div>
           <h2>Professional Experience</h2>
-          {jobs.map((job, index) => (
+          {jobHistory.map((job, index) => (
             <div key={index}>
               <h3>{job.title}</h3>
               <p>

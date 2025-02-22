@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { updatePersonal } from "../../../store/reducers/personalSlice";
-import { updateJobs } from "../../../store/reducers/jobsSlice";
+import { updateJobs } from "../../../store/reducers/jobHistorySlice";
 import { updateEducation } from "../../../store/reducers/educationSlice";
 import { updateSkills } from "../../../store/reducers/skillsSlice";
 
@@ -37,7 +37,7 @@ function DocUploader() {
       const parsedData: ParsedData = response.data;
 
       dispatch(updatePersonal(parsedData.personal));
-      dispatch(updateJobs(parsedData.jobs));
+      dispatch(updateJobs(parsedData.jobHistory));
       dispatch(updateEducation(parsedData.education));
       dispatch(updateSkills(parsedData.skills));
     } catch {

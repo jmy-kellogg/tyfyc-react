@@ -25,7 +25,7 @@ export interface Skill {
 
 export type SkillsList = Array<Skill>;
 
-export interface Job {
+export interface JobHistory {
   title: string;
   company: string;
   location: string;
@@ -34,7 +34,7 @@ export interface Job {
   description: string;
 }
 
-export type JobsList = Array<Job>;
+export type JobHistoryList = Array<JobHistory>;
 
 export interface Education {
   degree: string;
@@ -78,6 +78,6 @@ export interface StatusOption {
 export interface ParsedData {
   personal: Personal;
   skills: SkillsList;
-  jobs: JobsList;
+  jobHistory: JobHistoryList;
   education: EducationList;
 }
