@@ -14,7 +14,6 @@ import {
   addJobTabs,
   removeJobTab,
   setTabs,
-  setDefaultTab,
 } from "../../store/reducers/settingsSlice";
 
 import type { Application, ApplicationsList } from "../../../types";
@@ -41,7 +40,7 @@ function Applications() {
   const remove = (jobId: string) => {
     dispatch(removeApplication(jobId));
     dispatch(removeJobTab(jobId));
-    dispatch(setDefaultTab());
+    dispatch(setTabs());
   };
 
   const getStatusColor = (status: Application["status"]) => {
