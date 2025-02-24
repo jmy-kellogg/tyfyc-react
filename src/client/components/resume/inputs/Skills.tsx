@@ -1,7 +1,7 @@
 import Select, { ActionMeta, MultiValue } from "react-select";
 import { useSelector, useDispatch } from "react-redux";
 
-import { skillsOptions } from "../../../../utils";
+import { skillsOptions } from "../../../../utils/options";
 import { updateSkills } from "../../../store/reducers/skillsSlice";
 
 import type { Skill, SkillsList } from "../../../../types";

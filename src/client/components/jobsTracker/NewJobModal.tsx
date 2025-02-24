@@ -2,7 +2,7 @@ import { useState, ChangeEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 
-import { statusOptions } from "../../../utils";
+import { statusOptions } from "../../../utils/options";
 import { addNewApplication } from "../../store/reducers/applicationsSlice";
 import {
   setActiveTab,

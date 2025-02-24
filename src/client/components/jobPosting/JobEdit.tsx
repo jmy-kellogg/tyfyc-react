@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
-import { statusOptions } from "../../../utils";
+import { statusOptions } from "../../../utils/options";
 import { updateApplication } from "../../store/reducers/applicationsSlice";
 import { updateTab, setTabs } from "../../store/reducers/settingsSlice";
 
