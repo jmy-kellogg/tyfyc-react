@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updatePersonal } from "../../store/reducers/personalSlice";
+import { setPersonal } from "../../store/reducers/personalSlice";
 import JobsHistory from "./inputs/JobsHistory";
 import Education from "./inputs/Education";
 import Skills from "./inputs/Skills";
@@ -17,7 +17,7 @@ function ResumeEdit() {
   ) => {
     const field = e.target.name;
     const value = e.target.value;
-    dispatch(updatePersonal({ [field]: value }));
+    dispatch(setPersonal({ [field]: value }));
   };
 
   return (

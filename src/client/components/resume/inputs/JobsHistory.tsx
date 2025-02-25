@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   addNewJob,
   removeJob,
-  updateJobs,
+  setJobs,
 } from "../../../store/reducers/jobHistorySlice";
 
 import type { JobHistory, JobHistoryList } from "../../../../types";
@@ -25,7 +25,7 @@ function JobsHistory() {
       ...job,
       ...{ [e.target.name]: e.target.value },
     };
-    dispatch(updateJobs(newJobs));
+    dispatch(setJobs(newJobs));
   };
 
   const addNew = () => {

@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { updatePersonal } from "../../../store/reducers/personalSlice";
-import { updateJobs } from "../../../store/reducers/jobHistorySlice";
-import { updateEducation } from "../../../store/reducers/educationSlice";
-import { updateSkills } from "../../../store/reducers/skillsSlice";
+import { setPersonal } from "../../../store/reducers/personalSlice";
+import { setJobs } from "../../../store/reducers/jobHistorySlice";
+import { setEducation } from "../../../store/reducers/educationSlice";
+import { setSkills } from "../../../store/reducers/skillsSlice";
 
 import type { ParsedData } from "../../../../types";
 
@@ -36,10 +36,10 @@ function DocUploader() {
       // also make sure to sync with localStorage
       const parsedData: ParsedData = response.data;
 
-      dispatch(updatePersonal(parsedData.personal));
-      dispatch(updateJobs(parsedData.jobHistory));
-      dispatch(updateEducation(parsedData.education));
-      dispatch(updateSkills(parsedData.skills));
+      dispatch(setPersonal(parsedData.personal));
+      dispatch(setJobs(parsedData.jobHistory));
+      dispatch(setEducation(parsedData.education));
+      dispatch(setSkills(parsedData.skills));
     } catch {
       setErrorMsg("Invalid Resume Added");
     }

@@ -18,7 +18,7 @@ export const skillsSlice = createSlice({
   name: "skills",
   initialState,
   reducers: {
-    updateSkills: (state: SkillsState, action: PayloadAction<SkillsList>) => {
+    setSkills: (state: SkillsState, action: PayloadAction<SkillsList>) => {
       state.list = action.payload;
     },
     addSkill(state: SkillsState, action: PayloadAction<Skill>) {
@@ -30,5 +30,5 @@ export const skillsSlice = createSlice({
   },
 });
 
-export const { updateSkills, addSkill, removeSkill } = skillsSlice.actions;
+export const { setSkills, addSkill, removeSkill } = skillsSlice.actions;
 export default skillsSlice.reducer;

@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  updateEducation,
+  setEducation,
   addNewEdu,
   removeEdu,
 } from "../../../store/reducers/educationSlice";
@@ -25,7 +25,7 @@ function Education() {
       ...edu,
       ...{ [e.target.name]: e.target.value },
     };
-    dispatch(updateEducation(newEdu));
+    dispatch(setEducation(newEdu));
   };
 
   const addNew = () => {

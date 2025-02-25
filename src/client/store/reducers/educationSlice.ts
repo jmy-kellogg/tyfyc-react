@@ -19,7 +19,7 @@ export const educationSlice = createSlice({
   name: "education",
   initialState,
   reducers: {
-    updateEducation: (
+    setEducation: (
       state: EducationState,
       action: PayloadAction<EducationList>
     ) => {
@@ -39,5 +39,5 @@ export const educationSlice = createSlice({
   },
 });
 
-export const { updateEducation, addNewEdu, removeEdu } = educationSlice.actions;
+export const { setEducation, addNewEdu, removeEdu } = educationSlice.actions;
 export default educationSlice.reducer;

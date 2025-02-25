@@ -22,7 +22,7 @@ export const jobHistorySlice = createSlice({
   name: "jobHistory",
   initialState,
   reducers: {
-    updateJobs: (state: JobsState, action: PayloadAction<JobHistoryList>) => {
+    setJobs: (state: JobsState, action: PayloadAction<JobHistoryList>) => {
       state.list = action.payload;
     },
     addNewJob(state: JobsState) {
@@ -42,5 +42,5 @@ export const jobHistorySlice = createSlice({
   },
 });
 
-export const { updateJobs, addNewJob, removeJob } = jobHistorySlice.actions;
+export const { setJobs, addNewJob, removeJob } = jobHistorySlice.actions;
 export default jobHistorySlice.reducer;
