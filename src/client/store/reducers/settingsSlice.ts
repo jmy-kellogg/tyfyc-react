@@ -27,6 +27,10 @@ const initialState: SettingsState = {
   jobTabs: [],
 };
 
+const checkForTab = (tabs: TabsList, tabValue: string): boolean => {
+  return !!tabs.map(({ value }) => value).includes(tabValue);
+};
+
 export const settingsSlice = createSlice({
   name: "settings",
   initialState,
@@ -35,15 +39,14 @@ export const settingsSlice = createSlice({
       state.smallDisplay = action.payload;
     },
     setShowResume: (state: SettingsState, action: PayloadAction<boolean>) => {
-      const tabExists = state.tabs.map(({ value }) => value).includes("resume");
+      const tabExists = checkForTab(state.tabs, "resume");
       state.showResume = action.payload;
-      if (action.payload) {
-        if (!tabExists) {
-          state.tabs.unshift({ label: "Resume", value: "resume" });
-        }
-        if (state.smallDisplay) {
-          state.activeTab = "resume";
-        }
+
+      if (action.payload && state.smallDisplay) {
+        state.activeTab = "resume";
+      }
+      if (action.payload && !tabExists) {
+        state.tabs.unshift({ label: "Resume", value: "resume" });
       } else if (!action.payload && tabExists) {
         state.tabs.shift();
       }
@@ -52,21 +55,17 @@ export const settingsSlice = createSlice({
       state: SettingsState,
       action: PayloadAction<boolean>
     ) => {
-      const tabExists = state.tabs
-        .map(({ value }) => value)
-        .includes("applications");
+      const tabExists = checkForTab(state.tabs, "applications");
       state.showApplications = action.payload;
 
-      if (action.payload) {
-        if (!tabExists) {
-          state.tabs.push({
-            label: "Applications",
-            value: "applications",
-          });
-        }
-        if (state.smallDisplay) {
-          state.activeTab = "applications";
-        }
+      if (action.payload && state.smallDisplay) {
+        state.activeTab = "applications";
+      }
+      if (action.payload && !tabExists) {
+        state.tabs.push({
+          label: "Applications",
+          value: "applications",
+        });
       } else if (!action.payload && tabExists) {
         state.tabs.pop();
       }
@@ -75,7 +74,8 @@ export const settingsSlice = createSlice({
       state.activeTab = action.payload;
     },
     addJobTabs: (state: SettingsState, action: PayloadAction<Tab>) => {
-      if (!state.jobTabs?.find(({ value }) => value === action.payload.value)) {
+      const tabExists = checkForTab(state.jobTabs, action.payload.value);
+      if (!tabExists) {
         const jobTabs = state.jobTabs || [];
         state.jobTabs = [...jobTabs, action.payload];
       }
@@ -85,7 +85,7 @@ export const settingsSlice = createSlice({
         ({ value }) => value !== action.payload
       );
     },
-    updateTab: (state: SettingsState, action: PayloadAction<Tab>) => {
+    setJobTab: (state: SettingsState, action: PayloadAction<Tab>) => {
       const index = state.jobTabs.findIndex(
         ({ value }) => value === action.payload.value
       );
@@ -99,20 +99,16 @@ export const {
   setShowResume,
   setShowApplications,
   setActiveTab,
+  setJobTab,
   addJobTabs,
   removeJobTab,
-  updateTab,
 } = settingsSlice.actions;
 export default settingsSlice.reducer;
 
 const selectSettings = (state: State) => state.settings;
 
 export const getTabs = createDraftSafeSelector(selectSettings, (settings) => {
-  if (settings.smallDisplay) {
-    return [...settings.tabs, ...settings.jobTabs];
-  } else {
-    return settings.jobTabs;
-  }
+  return [...settings.tabs, ...settings.jobTabs];
 });
 
 export const getActiveTabs = createDraftSafeSelector(
@@ -121,9 +117,28 @@ export const getActiveTabs = createDraftSafeSelector(
     const tabs = settings.smallDisplay
       ? [...settings.tabs, ...settings.jobTabs]
       : settings.jobTabs;
-    if (!tabs.map(({ value }) => value).includes(settings.activeTab)) {
+    const tabExists = checkForTab(tabs, settings.activeTab);
+    if (!tabExists) {
       return tabs[tabs.length - 1]?.value || "";
     }
     return settings.activeTab;
+  }
+);
+
+export const getShowResume = createDraftSafeSelector(
+  selectSettings,
+  (settings) => {
+    return settings.smallDisplay
+      ? settings.activeTab === "resume"
+      : settings.showResume;
+  }
+);
+
+export const getShowApplications = createDraftSafeSelector(
+  selectSettings,
+  (settings) => {
+    return settings.smallDisplay
+      ? settings.activeTab === "applications"
+      : settings.showApplications;
   }
 );

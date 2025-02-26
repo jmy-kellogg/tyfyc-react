@@ -13,7 +13,7 @@ import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
-  getActiveTabs,
+  getShowApplications,
 } from "../../store/reducers/settingsSlice";
 
 import type { Application, ApplicationsList } from "../../../types";
@@ -22,11 +22,8 @@ import type { State } from "../../store";
 function Applications() {
   const dispatch = useDispatch();
   const [sortedList, setSortedList] = useState<ApplicationsList>([]);
-  const activeTab = useSelector(getActiveTabs);
+  const showApplications = useSelector(getShowApplications);
   const applications = useSelector((state: State) => state.applications.list);
-  const showApplications = useSelector(
-    (state: State) => state.settings.showApplications
-  );
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
   );
@@ -123,7 +120,7 @@ function Applications() {
 
   return (
     <>
-      {(smallDisplay ? activeTab === "applications" : showApplications) && (
+      {showApplications && (
         <div>
           {!smallDisplay && (
             <Tabs

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { statusOptions } from "../../../utils/options";
 import { updateApplication } from "../../store/reducers/applicationsSlice";
-import { updateTab } from "../../store/reducers/settingsSlice";
+import { setJobTab } from "../../store/reducers/settingsSlice";
 
 import type { Application } from "../../../types";
 
@@ -24,7 +24,7 @@ function JobEdit({ application }: Props) {
 
   const updateCompanyName = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    dispatch(updateTab({ label: value, value: application.jobId }));
+    dispatch(setJobTab({ label: value, value: application.jobId }));
     dispatch(updateApplication({ ...application, company: value }));
   };
 

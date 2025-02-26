@@ -6,13 +6,12 @@ import Tabs from "../Tabs";
 import ResumeDoc from "./ResumeDoc";
 import ResumeEdit from "./ResumeEdit";
 
-import { getActiveTabs } from "../../store/reducers/settingsSlice";
+import { getShowResume } from "../../store/reducers/settingsSlice";
 import type { State } from "../../store";
 
 function Resume() {
   const [showForm, setShowForm] = useState<boolean>(false);
-  const activeTab = useSelector(getActiveTabs);
-  const showResume = useSelector((state: State) => state.settings.showResume);
+  const showResume = useSelector(getShowResume);
   const lastName = useSelector((state: State) => state.personal.lastName);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
@@ -41,7 +40,7 @@ function Resume() {
 
   return (
     <>
-      {(smallDisplay ? activeTab === "resume" : showResume) && (
+      {showResume && (
         <div className="w-3xl">
           {!smallDisplay && (
             <Tabs
