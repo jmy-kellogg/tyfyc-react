@@ -94,7 +94,6 @@ const getEducation = (textData: Array<string> = []): EducationList => {
     const edu = element.split("|||").filter((str) => !!str.trim());
 
     if (edu.length == 2) {
-      console.log(edu[1]?.split(" - ")[1]?.trim());
       const year = edu[1]?.split(" - ")[1]?.trim() || "";
       respEdu.push({
         degree: edu[0] || "",

@@ -6,12 +6,13 @@ import Tabs from "../Tabs";
 import ResumeDoc from "./ResumeDoc";
 import ResumeEdit from "./ResumeEdit";
 
+import { getActiveTabs } from "../../store/reducers/settingsSlice";
 import type { State } from "../../store";
 
 function Resume() {
   const [showForm, setShowForm] = useState<boolean>(false);
+  const activeTab = useSelector(getActiveTabs);
   const showResume = useSelector((state: State) => state.settings.showResume);
-  const activeTab = useSelector((state: State) => state.settings.activeTab);
   const lastName = useSelector((state: State) => state.personal.lastName);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay

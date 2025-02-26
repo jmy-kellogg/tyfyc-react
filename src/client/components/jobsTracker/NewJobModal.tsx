@@ -4,11 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { statusOptions } from "../../../utils/options";
 import { addNewApplication } from "../../store/reducers/applicationsSlice";
-import {
-  setActiveTab,
-  addJobTabs,
-  setTabs,
-} from "../../store/reducers/settingsSlice";
+import { setActiveTab, addJobTabs } from "../../store/reducers/settingsSlice";
 
 import type { Application } from "../../../types";
 
@@ -54,7 +50,6 @@ function NewJobModal() {
       })
     );
     dispatch(setActiveTab(application.jobId));
-    dispatch(setTabs());
     setShowModal(false);
   };
 

@@ -1,10 +1,8 @@
 import { useDispatch } from "react-redux";
 import {
   removeJobTab,
-  setTabs,
   setShowResume,
   setShowApplications,
-  setDefaultTab,
 } from "../store/reducers/settingsSlice";
 
 import type { TabsList } from "../../types";
@@ -26,8 +24,6 @@ function Tabs({ tabs, active, setActive }: Props) {
     } else {
       dispatch(removeJobTab(value));
     }
-    dispatch(setTabs());
-    dispatch(setDefaultTab());
   };
 
   return (

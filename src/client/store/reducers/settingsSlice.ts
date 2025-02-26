@@ -1,5 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  createDraftSafeSelector,
+} from "@reduxjs/toolkit";
 import type { Tab, TabsList } from "../../../types";
+import type { State } from "../index";
 
 export interface SettingsState {
   smallDisplay: boolean;
@@ -30,44 +35,44 @@ export const settingsSlice = createSlice({
       state.smallDisplay = action.payload;
     },
     setShowResume: (state: SettingsState, action: PayloadAction<boolean>) => {
+      const tabExists = state.tabs.map(({ value }) => value).includes("resume");
       state.showResume = action.payload;
-      if (state.smallDisplay && action.payload) {
-        state.activeTab = "resume";
+      if (action.payload) {
+        if (!tabExists) {
+          state.tabs.unshift({ label: "Resume", value: "resume" });
+        }
+        if (state.smallDisplay) {
+          state.activeTab = "resume";
+        }
+      } else if (!action.payload && tabExists) {
+        state.tabs.shift();
       }
     },
     setShowApplications: (
       state: SettingsState,
       action: PayloadAction<boolean>
     ) => {
+      const tabExists = state.tabs
+        .map(({ value }) => value)
+        .includes("applications");
       state.showApplications = action.payload;
-      if (state.smallDisplay && action.payload) {
-        state.activeTab = "applications";
+
+      if (action.payload) {
+        if (!tabExists) {
+          state.tabs.push({
+            label: "Applications",
+            value: "applications",
+          });
+        }
+        if (state.smallDisplay) {
+          state.activeTab = "applications";
+        }
+      } else if (!action.payload && tabExists) {
+        state.tabs.pop();
       }
     },
     setActiveTab: (state: SettingsState, action: PayloadAction<string>) => {
-      const tab = action.payload;
-      state.activeTab = tab;
-    },
-    setDefaultTab: (state: SettingsState) => {
-      const tabs = state.tabs;
-      if (!tabs?.find(({ value }) => value === state.activeTab)) {
-        state.activeTab = tabs[tabs.length - 1]?.value || "";
-      }
-    },
-    setTabs: (state: SettingsState) => {
-      const jobTabs = state.jobTabs || [];
-      if (state.smallDisplay) {
-        const tabs = [];
-        if (state.showResume) {
-          tabs.push({ label: "Resume", value: "resume" });
-        }
-        if (state.showApplications) {
-          tabs.push({ label: "Applications", value: "applications" });
-        }
-        state.tabs = [...tabs, ...jobTabs];
-      } else {
-        state.tabs = [...jobTabs];
-      }
+      state.activeTab = action.payload;
     },
     addJobTabs: (state: SettingsState, action: PayloadAction<Tab>) => {
       if (!state.jobTabs?.find(({ value }) => value === action.payload.value)) {
@@ -94,10 +99,31 @@ export const {
   setShowResume,
   setShowApplications,
   setActiveTab,
-  setTabs,
   addJobTabs,
   removeJobTab,
-  setDefaultTab,
   updateTab,
 } = settingsSlice.actions;
 export default settingsSlice.reducer;
+
+const selectSettings = (state: State) => state.settings;
+
+export const getTabs = createDraftSafeSelector(selectSettings, (settings) => {
+  if (settings.smallDisplay) {
+    return [...settings.tabs, ...settings.jobTabs];
+  } else {
+    return settings.jobTabs;
+  }
+});
+
+export const getActiveTabs = createDraftSafeSelector(
+  selectSettings,
+  (settings) => {
+    const tabs = settings.smallDisplay
+      ? [...settings.tabs, ...settings.jobTabs]
+      : settings.jobTabs;
+    if (!tabs.map(({ value }) => value).includes(settings.activeTab)) {
+      return tabs[tabs.length - 1]?.value || "";
+    }
+    return settings.activeTab;
+  }
+);

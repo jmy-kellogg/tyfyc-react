@@ -13,7 +13,7 @@ import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
-  setTabs,
+  getActiveTabs,
 } from "../../store/reducers/settingsSlice";
 
 import type { Application, ApplicationsList } from "../../../types";
@@ -22,8 +22,8 @@ import type { State } from "../../store";
 function Applications() {
   const dispatch = useDispatch();
   const [sortedList, setSortedList] = useState<ApplicationsList>([]);
+  const activeTab = useSelector(getActiveTabs);
   const applications = useSelector((state: State) => state.applications.list);
-  const activeTab = useSelector((state: State) => state.settings.activeTab);
   const showApplications = useSelector(
     (state: State) => state.settings.showApplications
   );
@@ -34,13 +34,11 @@ function Applications() {
   const openApplication = ({ company, jobId }: Application) => {
     dispatch(addJobTabs({ label: company || "Job", value: jobId }));
     dispatch(setActiveTab(jobId));
-    dispatch(setTabs());
   };
 
   const remove = (jobId: string) => {
     dispatch(removeApplication(jobId));
     dispatch(removeJobTab(jobId));
-    dispatch(setTabs());
   };
 
   const getStatusColor = (status: Application["status"]) => {

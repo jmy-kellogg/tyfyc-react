@@ -2,19 +2,19 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setShowResume,
   setShowApplications,
-  setTabs,
   setActiveTab,
   setSmallDisplay,
+  getActiveTabs,
 } from "../store/reducers/settingsSlice";
 
 import type { State } from "../store";
 
 function SideMenu() {
   const dispatch = useDispatch();
-  const activeTab = useSelector((state: State) => state.settings.activeTab);
-  const jobTabs = useSelector((state: State) => state.settings.jobTabs);
+  const activeTab = useSelector(getActiveTabs);
+  const jobTabs = useSelector(({ settings }: State) => settings.jobTabs);
   const smallDisplay = useSelector(
-    (state: State) => state.settings.smallDisplay
+    ({ settings }: State) => settings.smallDisplay
   );
 
   const toggleDisplay = () => {
@@ -23,12 +23,10 @@ function SideMenu() {
 
   const toggleResume = () => {
     dispatch(setShowResume(true));
-    dispatch(setTabs());
   };
 
   const toggleApplication = () => {
     dispatch(setShowApplications(true));
-    dispatch(setTabs());
   };
 
   const toggleJob = (jobId: string) => {

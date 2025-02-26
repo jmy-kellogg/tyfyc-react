@@ -5,7 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
 import Tabs from "../Tabs";
-import { setActiveTab } from "../../store/reducers/settingsSlice";
+import {
+  setActiveTab,
+  getActiveTabs,
+} from "../../store/reducers/settingsSlice";
 
 import type { Application } from "../../../types";
 import type { State } from "../../store";
@@ -17,8 +20,8 @@ function JobPosting() {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
   const [data, setData] = useState<CsvData>([]);
+  const activeTab = useSelector(getActiveTabs);
   const applications = useSelector((state: State) => state.applications.list);
-  const activeTab = useSelector((state: State) => state.settings.activeTab);
   const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
