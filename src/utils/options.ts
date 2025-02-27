@@ -10,11 +10,11 @@ export const statusOptions: Array<StatusOption> = [
 ];
 
 export const skillsOptions: SkillsList = [
-  { label: "JavaScript", value: "javascript" },
-  { label: "TypeScript", value: "typescript" },
+  { label: "JavaScript", value: "javascript", alias: ["Javascript"] },
+  { label: "TypeScript", value: "typescript", alias: ["Typescript"] },
   { label: "Python", value: "python" },
-  { label: "Vue.js", value: "vue" },
-  { label: "React", value: "react" },
+  { label: "Vue.js", value: "vue", alias: ["Vue.js"] },
+  { label: "React", value: "react", alias: ["React.js"] },
   { label: "Django", value: "django" },
   { label: "Flask", value: "flask" },
   { label: "Cypress", value: "cypress" },
@@ -24,7 +24,7 @@ export const skillsOptions: SkillsList = [
   { label: "Selenium", value: "selenium" },
   { label: "ES6", value: "es6" },
   { label: "HTML", value: "html" },
-  { label: "CSS/Sass", value: "css/sass" },
+  { label: "CSS", value: "css" },
   { label: "Bootstrap", value: "bootstrap" },
   { label: "Material UI", value: "material_ui" },
   { label: "Figma", value: "figma" },
@@ -50,6 +50,7 @@ export const skillsOptions: SkillsList = [
   { label: "C#", value: "csharp" },
   { label: "Angular", value: "angular" },
   { label: "Ruby on Rails", value: "rails" },
+  { label: "Ruby", value: "ruby" },
   { label: "SQL", value: "sql" },
   { label: "PostgreSQL", value: "postgresql" },
   { label: "NoSQL", value: "nosql" },
@@ -68,4 +69,5 @@ export const skillsOptions: SkillsList = [
   { label: "Machine Learning", value: "machine_learning" },
   { label: "Data Science", value: "data_science" },
   { label: "Cybersecurity", value: "cybersecurity" },
+  { label: "Flutter", value: "flutter" },
 ];

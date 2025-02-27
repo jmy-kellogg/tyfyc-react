@@ -21,6 +21,7 @@ export interface Personal {
 export interface Skill {
   label: string;
   value: string;
+  alias?: Array<string>;
 }
 
 export type SkillsList = Array<Skill>;

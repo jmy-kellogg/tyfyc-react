@@ -1,5 +1,6 @@
 import { getStatus, getFormattedDate } from "../../../utils";
 
+import JobDescription from "./JobDescription";
 import type { Application } from "../../../types";
 
 interface Props {
@@ -76,7 +77,8 @@ function JobDoc({ application }: Props) {
         {application.description && (
           <div className="my-5">
             <h3>Job Description: </h3>
-            <p className="whitespace-pre-wrap">{application.description}</p>
+
+            <JobDescription description={application.description} />
           </div>
         )}
       </div>
