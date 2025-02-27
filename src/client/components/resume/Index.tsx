@@ -30,9 +30,9 @@ function Resume() {
         callback: function (doc) {
           doc.save(`${lastName}_resume.pdf`);
         },
-        width: 170,
+        width: 185,
         windowWidth: 650,
-        margin: 5,
+        margin: 10,
         autoPaging: "text",
       });
     }
@@ -53,7 +53,7 @@ function Resume() {
               active="resume"
             />
           )}
-          <div className="float-right m-5">
+          <div className="flex justify-end mt-5">
             {!showForm && (
               <button
                 className="rounded-md border-2 border-indigo-600 mx-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"

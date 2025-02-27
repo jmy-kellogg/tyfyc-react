@@ -23,7 +23,7 @@ function Document() {
   return (
     <>
       <div id="resume-content">
-        <div>
+        <div className="personal-container">
           <div>
             <h1>{personal.firstName + " " + personal.lastName}</h1>
             <p>
@@ -37,7 +37,7 @@ function Document() {
             <h2>Summary</h2>
             <p>{personal.summary}</p>
           </div>
-          <div>
+          <div className="skills-container">
             <h3>Skills</h3>
             <ul>
               {skills.map((skill) => (

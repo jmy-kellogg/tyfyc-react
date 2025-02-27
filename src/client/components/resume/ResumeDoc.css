@@ -26,3 +26,13 @@ h4 {
   color: #a8a8aec9;
   font-size: 0.85em;
 }
+
+.personal-container {
+  display: flex;
+  align-items: end
+}
+
+.skills-container{
+  margin: 15px;
+  margin-right: 0px
+}
