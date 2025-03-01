@@ -4,14 +4,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
-import Tabs from "../Tabs";
+import Tabs from "../../Tabs";
+import { updateApplication } from "../../../store/reducers/applicationsSlice";
 import {
   setActiveTab,
   getActiveTabs,
-} from "../../store/reducers/settingsSlice";
+  setJobTab,
+} from "../../../store/reducers/settingsSlice";
 
-import type { Application } from "../../../types";
-import type { State } from "../../store";
+import type { Application } from "../../../../types";
+import type { State } from "../../../store";
 
 type CsvRow = Array<string>;
 type CsvData = Array<CsvRow>;
@@ -29,6 +31,17 @@ function JobPosting() {
 
   const setActive = (jobId: string) => {
     dispatch(setActiveTab(jobId));
+  };
+
+  const updateData = (
+    field: string,
+    value: string,
+    application: Application
+  ) => {
+    if (field === "company") {
+      dispatch(setJobTab({ label: value, value: application.jobId }));
+    }
+    dispatch(updateApplication({ ...application, [field]: value }));
   };
 
   useEffect(() => {
@@ -115,7 +128,10 @@ function JobPosting() {
                   </div>
                   <div className="bg-white p-5 pt-0">
                     {showForm ? (
-                      <JobEdit application={application} />
+                      <JobEdit
+                        application={application}
+                        updateData={updateData}
+                      />
                     ) : (
                       <JobDoc application={application} />
                     )}

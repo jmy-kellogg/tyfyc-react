@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { skillsOptions } from "../../../utils/options";
-import { setSkills } from "../../store/reducers/skillsSlice";
-import type { Skill, SkillsList } from "../../../types";
-import type { State } from "../../store";
+import { skillsOptions } from "../../../../utils/options";
+import { setSkills } from "../../../store/reducers/skillsSlice";
+import type { Skill, SkillsList } from "../../../../types";
+import type { State } from "../../../store";
 interface Props {
   description: string | null;
 }
@@ -54,8 +54,8 @@ function JobDescription({ description }: Props) {
                   <div className="w-32 bg-white border-1 rounded-md absolute p-1">
                     <b>Add to resume</b>
                     <ul>
-                      {skills.map(({ label }) => (
-                        <li>{label}</li>
+                      {skills.map(({ label, value }) => (
+                        <li key={value}>{label}</li>
                       ))}
                     </ul>
                   </div>

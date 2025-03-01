@@ -1,7 +1,7 @@
-import { getStatus, getFormattedDate } from "../../../utils";
+import { getStatus, getFormattedDate } from "../../../../utils";
 
 import JobDescription from "./JobDescription";
-import type { Application } from "../../../types";
+import type { Application } from "../../../../types";
 
 interface Props {
   application: Application;

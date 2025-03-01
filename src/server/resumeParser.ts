@@ -109,7 +109,7 @@ const getEducation = (textData: Array<string> = []): EducationList => {
 
 const parseResume = (rawText: string = ""): ParsedData => {
   const textData = rawText.split("\r\n").filter((str) => !!str.trim());
-  console.log(textData);
+
   return {
     personal: getPersonal(textData),
     skills: getSkills(textData),
