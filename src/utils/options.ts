@@ -1,6 +1,16 @@
 import { v4 as uuidv4 } from "uuid";
-import { getToday } from ".";
 import type { StatusOption, SkillsList, Application } from "../types";
+
+const getToday = (): string => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const day = today.getDate();
+  const formattedDate = `${year}-${formattedMonth}-${day}`;
+
+  return formattedDate;
+};
 
 export const jobDefault: Application = {
   company: "",
