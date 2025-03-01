@@ -7,7 +7,8 @@ const getToday = (): string => {
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const day = today.getDate();
-  const formattedDate = `${year}-${formattedMonth}-${day}`;
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
 
   return formattedDate;
 };

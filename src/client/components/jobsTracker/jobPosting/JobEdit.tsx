@@ -13,7 +13,7 @@ type ParsedText = Array<string>;
 
 function JobEdit({ application = jobDefault, updateData }: Props) {
   const getCandidates = (parsedText: ParsedText): ParsedText => {
-    const firstItems = parsedText.slice(0, 5);
+    const firstItems = parsedText.slice(0, 10);
     return firstItems.filter((str) => str.length < 50);
   };
 
@@ -27,7 +27,7 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
 
   const findCompany = (parsedText: ParsedText) => {
     const isCap = /[A-Z]/;
-    const isLower = /[a-z]/;
+    const isLower = /[a-z(]/;
 
     const candidate: string | undefined = parsedText.find((text) => {
       const startsWithAt = text.slice(0, 2).toLocaleLowerCase() === "at";
@@ -44,18 +44,25 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
 
       return removePunctuation(company);
     } else {
-      return "'";
+      return "";
     }
   };
 
   // ToDo: Find city locations
-  const findLocation = (parsedText: Array<string>) => {
-    const firstItems = parsedText.slice(0, 5);
-    const isRemote = firstItems.find((text) =>
+  const findLocation = (parsedText: Array<string>): string => {
+    let locationText: string = "";
+    const locationTag = parsedText.find((text) => text.includes("Location: "));
+    const remoteText = parsedText.find((text) =>
       text.toLocaleLowerCase().includes("remote")
     );
 
-    return isRemote ? "Remote" : "";
+    if (locationTag) {
+      locationText = locationTag.replace("Location: ", "");
+    } else if (remoteText) {
+      locationText = remoteText;
+    }
+
+    return locationText;
   };
 
   const onChangeData = (
