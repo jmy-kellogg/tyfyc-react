@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { getFormattedDate } from "../../../utils";
+import { getFormattedDate, divider } from "../../../utils";
 import "./ResumeDoc.css";
 
 import type { State } from "../../store";
@@ -10,21 +10,11 @@ function Document() {
   const skills = useSelector((state: State) => state.skills.list);
   const education = useSelector((state: State) => state.education.list);
 
-  const divider = (): string => {
-    let index = 100;
-    let line = "";
-    while (index > 0) {
-      index--;
-      line += "_";
-    }
-    return line;
-  };
-
   return (
     <>
       <div id="resume-content">
-        <div className="personal-container">
-          <div>
+        <div>
+          <div className="personal-section">
             <h1>{personal.firstName + " " + personal.lastName}</h1>
             <p>
               {"Email: " + personal.email}
@@ -32,41 +22,45 @@ function Document() {
               {" | Location: " + personal.city + ", " + personal.state} |
             </p>
             <p>
-              LinkedIn: {personal.linkedIn} | {personal.gitHub}
+              LinkedIn: {personal.linkedIn} | GitHub: {personal.gitHub}
             </p>
-            <h2>Summary</h2>
+          </div>
+          <p className="divider">{divider()}</p>
+          <div className="resume-section">
+            {" "}
+            <h3>Summary</h3>
             <p>{personal.summary}</p>
           </div>
-          <div className="skills-container">
+          <div className="resume-section">
             <h3>Skills</h3>
-            <ul>
-              {skills.map((skill) => (
-                <li key={skill.value}>{skill.label}</li>
-              ))}
-            </ul>
+            <p>{skills.map(({ label }) => label).join(", ")}</p>
           </div>
         </div>
         <p className="divider">{divider()}</p>
+
         <div>
           <h2>Professional Experience</h2>
+
           {jobHistory.map((job, index) => (
             <div key={index}>
-              <h3>{job.title}</h3>
-              <p>
-                {job.company} - {job.location}
-              </p>
-              <p>
-                {getFormattedDate(job.start, {
-                  month: "short",
-                  year: "numeric",
-                }) +
-                  " - " +
-                  getFormattedDate(job.end, {
+              <div className="resume-section">
+                <h3>{job.title}</h3>
+                <h4>
+                  {job.company} - {job.location}
+                </h4>
+                <p>
+                  {getFormattedDate(job.start, {
                     month: "short",
                     year: "numeric",
-                  })}
-              </p>
-              <p>{job.description}</p>
+                  }) +
+                    " - " +
+                    getFormattedDate(job.end, {
+                      month: "short",
+                      year: "numeric",
+                    })}
+                </p>
+                <p>{job.description}</p>
+              </div>
               <p className="divider">{divider()}</p>
             </div>
           ))}
@@ -75,12 +69,14 @@ function Document() {
           <h2>Education</h2>
           {education.map((edu, index) => (
             <div key={index}>
-              <p>{edu.degree}</p>
-              <p>
-                {edu.school +
-                  " - " +
-                  getFormattedDate(edu.gradYear, { year: "numeric" })}
-              </p>
+              <div className="resume-section">
+                <p>{edu.degree}</p>
+                <p>
+                  {edu.school +
+                    " - " +
+                    getFormattedDate(edu.gradYear, { year: "numeric" })}
+                </p>
+              </div>
               <p className="divider">{divider()}</p>
             </div>
           ))}

@@ -32,7 +32,7 @@ function JobPosting() {
   };
 
   useEffect(() => {
-    const headers: CsvRow = Object.keys(applications[0]);
+    const headers: CsvRow = Object.keys(applications[0] || {});
     const values: CsvData = applications.map(
       (app: Application): CsvRow => Object.values(app)
     );

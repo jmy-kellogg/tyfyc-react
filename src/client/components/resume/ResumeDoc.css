@@ -1,38 +1,41 @@
 
 h1 {
-  font-size: 3em;
+  font-size: 40px;
   font-weight: bold;
 }
 
 h2 {
-  font-size: 1.5em;
+  font-size: 30px;
   margin: 0.25em 0px;
   font-weight: bold;
 }
 
 h3 {
-  font-size: 1.17em;
+  font-size: 20px;
   margin: 0.25em 0px;
   font-weight: bold;
 }
 
 h4 {
-  font-size: 1em;
+  font-size: 15px;
   margin: 0.25em 0px;
   font-weight: bold;
 }
 
+#resume-content{
+  padding: 25px 50px;
+  width: 816px;
+}
+
+.personal-section {
+  text-align: center;
+}
+
+.resume-section {
+  padding: 0px 10px;
+}
+
 .divider {
   color: #a8a8aec9;
-  font-size: 0.85em;
-}
-
-.personal-container {
-  display: flex;
-  align-items: end
-}
-
-.skills-container{
-  margin: 15px;
-  margin-right: 0px
-}
+  font-size: 12px;
+ }

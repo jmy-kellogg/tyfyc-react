@@ -3,7 +3,7 @@ import type { Skill, StatusOption, Application } from "../types";
 
 // This is to allow us to see sections when importing pdf, until we have a more robust parser
 export const divider = (): string => {
-  let index = 100;
+  let index = 110;
   let line = "";
   while (index > 0) {
     index--;

@@ -21,7 +21,7 @@ const getPersonal = (textData: Array<string> = []) => {
   const contacts = textData[1]?.split("|") || [];
   const location = removeSubString(contacts[2], "Location: ").split(", ") || [];
   const sites = textData[2]?.split("|") || [];
-  const summary = textData[4] || "";
+  const summary = textData[5] || "";
 
   return {
     firstName: names[0]?.trim() || "",
@@ -37,15 +37,17 @@ const getPersonal = (textData: Array<string> = []) => {
 };
 
 const getSkills = (textData: Array<string> = []) => {
-  const skills = textData
-    .slice(
-      textData.indexOf("Skills") + 1,
-      textData.indexOf("Professional Experience") - 1
-    )
-    .map((skill) => ({
-      label: skill,
-      value: snake_case_string(skill),
-    }));
+  const skills =
+    textData
+      .slice(
+        textData.indexOf("Skills") + 1,
+        textData.indexOf("Professional Experience") - 1
+      )[0]
+      ?.split(", ")
+      .map((skill) => ({
+        label: skill,
+        value: snake_case_string(skill),
+      })) || "";
   return skills;
 };
 
@@ -107,7 +109,7 @@ const getEducation = (textData: Array<string> = []): EducationList => {
 
 const parseResume = (rawText: string = ""): ParsedData => {
   const textData = rawText.split("\r\n").filter((str) => !!str.trim());
-
+  console.log(textData);
   return {
     personal: getPersonal(textData),
     skills: getSkills(textData),
