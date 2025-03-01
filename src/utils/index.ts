@@ -13,6 +13,10 @@ export const divider = (): string => {
 };
 
 // Application Utils
+export const removePunctuation = (str: string): string => {
+  return str.replace(/[.,!?;:]$/g, "");
+};
+
 export const getStatus = (
   statusValue: Application["status"]
 ): StatusOption | undefined => {

@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 
+import { removePunctuation } from "../../../../utils";
 import { statusOptions, jobDefault } from "../../../../utils/options";
 import type { Application } from "../../../../types";
 
@@ -8,8 +9,15 @@ interface Props {
   updateData: (field: string, value: string, application: Application) => void;
 }
 
+type ParsedText = Array<string>;
+
 function JobEdit({ application = jobDefault, updateData }: Props) {
-  const findJobTitle = (parsedText: Array<string>) => {
+  const getCandidates = (parsedText: ParsedText): ParsedText => {
+    const firstItems = parsedText.slice(0, 5);
+    return firstItems.filter((str) => str.length < 50);
+  };
+
+  const findJobTitle = (parsedText: ParsedText) => {
     const title = parsedText.find((text) => {
       const lcText = text.toLocaleLowerCase();
       return lcText.includes("engineer") || lcText.includes("developer");
@@ -17,29 +25,27 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
     return title || "";
   };
 
-  const findCompany = (parsedText: Array<string>) => {
+  const findCompany = (parsedText: ParsedText) => {
     const isCap = /[A-Z]/;
-    const company: Array<string> = [];
+    const isLower = /[a-z]/;
 
-    const candidates = parsedText.filter((text) => {
+    const candidate: string | undefined = parsedText.find((text) => {
       const startsWithAt = text.slice(0, 2).toLocaleLowerCase() === "at";
       const nextWord = text.split(" ")[1];
       return startsWithAt && isCap.test(nextWord);
     });
 
-    if (candidates[0]) {
-      const candidate: Array<string> = candidates[0].split(" ");
-      for (let i = 1; i < 5; i++) {
-        const word = candidate[i];
-        if (word && isCap.test(word)) {
-          company.push(word);
-        } else {
-          break;
-        }
-      }
-    }
+    if (candidate) {
+      const words: ParsedText = candidate.split(" ");
+      // remove the "At"
+      words.shift();
+      const firstLowerCase = words.findIndex((str) => isLower.test(str[0]));
+      const company = words.slice(0, firstLowerCase).join(" ");
 
-    return company.join(" ") || "";
+      return removePunctuation(company);
+    } else {
+      return "'";
+    }
   };
 
   // ToDo: Find city locations
@@ -66,16 +72,18 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
     const value = e.target.value;
     const parsedText = value.split("\n").filter((str) => !!str);
     const newApp = { ...application, [field]: value };
+    const candidates = getCandidates(parsedText);
 
     if (!newApp.title) {
-      newApp.title = findJobTitle(parsedText);
+      newApp.title = findJobTitle(candidates);
+    }
+    if (!newApp.location) {
+      newApp.location = findLocation(candidates);
     }
     if (!newApp.company) {
       newApp.company = findCompany(parsedText);
     }
-    if (!newApp.location) {
-      newApp.location = findLocation(parsedText);
-    }
+
     updateData(field, value, newApp);
   };
 
@@ -83,8 +91,8 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
     <>
       <div className="p-4 space-y-4">
         <div>
-          <div className="grid gap-2">
-            <div className="col-span-2">
+          <div className="grid gap-2 grid-cols-8">
+            <div className="col-span-4">
               <label className="block text-sm/6 font-medium">Company</label>
               <div className="mt-2">
                 <input
@@ -93,6 +101,19 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   value={application.company}
+                  onChange={onChangeData}
+                />
+              </div>
+            </div>
+            <div className="col-span-4">
+              <label className="block text-sm/6 font-medium">Job Title</label>
+              <div className="mt-2">
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  value={application.title}
                   onChange={onChangeData}
                 />
               </div>
@@ -112,19 +133,7 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
                 />
               </div>
             </div>
-            <div className="col-span-2">
-              <label className="block text-sm/6 font-medium">Job Title</label>
-              <div className="mt-2">
-                <input
-                  id="title"
-                  name="title"
-                  type="text"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.title}
-                  onChange={onChangeData}
-                />
-              </div>
-            </div>
+
             <div className="col-span-4">
               <label className="block text-sm/6 font-medium">
                 Job Posting Link
@@ -140,7 +149,7 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
                 />
               </div>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <label className="block text-sm/6 font-medium">Status</label>
               <div className="mt-2">
                 <select
@@ -158,7 +167,7 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
                 </select>
               </div>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <label className="block text-sm/6 font-medium">
                 Date Applied
               </label>
@@ -173,7 +182,7 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
                 />
               </div>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <label className="block text-sm/6 font-medium">Location</label>
               <div className="mt-2">
                 <input
@@ -200,7 +209,7 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
               </div>
             </div>
 
-            <div className="col-span-6">
+            <div className="col-span-full">
               <label className="block text-sm/6 font-medium">Job Posting</label>
               <textarea
                 id="description"
@@ -210,7 +219,7 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
                 onChange={updateDescription}
               ></textarea>
             </div>
-            <div className="col-span-6">
+            <div className="col-span-full">
               <label className="block text-sm/6 font-medium">Notes</label>
               <textarea
                 id="notes"

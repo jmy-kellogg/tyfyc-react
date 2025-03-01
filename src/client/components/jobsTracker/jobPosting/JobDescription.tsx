@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { removePunctuation } from "../../../../utils";
 import { skillsOptions } from "../../../../utils/options";
 import { setSkills } from "../../../store/reducers/skillsSlice";
 import type { Skill, SkillsList } from "../../../../types";
@@ -39,7 +40,7 @@ function JobDescription({ description }: Props) {
   return (
     <p className="whitespace-pre-wrap">
       {description?.split(" ").map((str, i) => {
-        const word = str.replace(/[.,!?;:]$/g, "");
+        const word = removePunctuation(str);
         if (skillsAliases.includes(word)) {
           return (
             <span key={i}>
