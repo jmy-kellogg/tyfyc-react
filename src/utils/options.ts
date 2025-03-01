@@ -1,4 +1,21 @@
-import type { StatusOption, SkillsList } from "../types";
+import { v4 as uuidv4 } from "uuid";
+import { getToday } from ".";
+import type { StatusOption, SkillsList, Application } from "../types";
+
+export const jobDefault: Application = {
+  company: "",
+  description: "",
+  title: "",
+  salary: "",
+  dateApplied: getToday(),
+  location: "",
+  status: "applied",
+  interviewStages: [],
+  notes: "",
+  postingLink: "",
+  companyLink: "",
+  jobId: uuidv4(),
+};
 
 export const statusOptions: Array<StatusOption> = [
   { label: "Applied", value: "applied", color: "blue" },

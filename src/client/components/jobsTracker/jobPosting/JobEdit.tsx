@@ -1,8 +1,6 @@
 import { ChangeEvent } from "react";
-import { v4 as uuidv4 } from "uuid";
 
-import { getToday } from "../../../../utils";
-import { statusOptions } from "../../../../utils/options";
+import { statusOptions, jobDefault } from "../../../../utils/options";
 import type { Application } from "../../../../types";
 
 interface Props {
@@ -10,23 +8,7 @@ interface Props {
   updateData: (field: string, value: string, application: Application) => void;
 }
 
-function JobEdit({
-  application = {
-    company: "",
-    description: "",
-    title: "",
-    salary: "",
-    dateApplied: getToday(),
-    location: "",
-    status: "applied",
-    interviewStages: [],
-    notes: "",
-    postingLink: "",
-    companyLink: "",
-    jobId: uuidv4(),
-  },
-  updateData,
-}: Props) {
+function JobEdit({ application = jobDefault, updateData }: Props) {
   const findJobTitle = (parsedText: Array<string>) => {
     const title = parsedText.find((text) => {
       const lcText = text.toLocaleLowerCase();
