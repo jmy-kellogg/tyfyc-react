@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getStatus, getFormattedDate } from "../../../utils";
 
 import Tabs from "../Tabs";
+import ExportCSV from "./ExportCSV";
 import NewJobModal from "./NewJobModal";
 import {
   removeApplication,
@@ -97,6 +98,7 @@ function Applications() {
       });
     }
   };
+
   useEffect(() => {
     const order = [
       "interviewing",
@@ -134,10 +136,9 @@ function Applications() {
             />
           )}
           <div className="bg-white p-5">
-            <div className="flex place-content-between min-w-85">
-              <h2>Job Applications</h2>
-              <div className="m-3 self-center rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
-                <label>
+            <div className="flex justify-end min-w-85">
+              <div className="flex">
+                <label className="self-center rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500">
                   <span>Import CSV</span>
                   <input
                     id="csv-upload"
@@ -148,6 +149,7 @@ function Applications() {
                     onChange={onFilePicked}
                   />
                 </label>
+                <ExportCSV />
               </div>
             </div>
             {sortedList.map((application) => (
@@ -162,7 +164,7 @@ function Applications() {
                   <div className="text-l p-3">
                     <b>{application.company}</b> - {application.title}
                   </div>
-                  <div className="text-l p-3">
+                  <div className="text-l p-3 min-w-45 content-center">
                     |{" "}
                     <b
                       className={`rounded-md p-1 ${getStatusColor(

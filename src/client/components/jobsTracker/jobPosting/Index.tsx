@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
+import ExportCSV from "../ExportCSV";
 import Tabs from "../../Tabs";
 import { updateApplication } from "../../../store/reducers/applicationsSlice";
 import {
@@ -15,13 +16,9 @@ import {
 import type { Application } from "../../../../types";
 import type { State } from "../../../store";
 
-type CsvRow = Array<string>;
-type CsvData = Array<CsvRow>;
-
 function JobPosting() {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [data, setData] = useState<CsvData>([]);
   const activeTab = useSelector(getActiveTabs);
   const applications = useSelector((state: State) => state.applications.list);
   const jobTabs = useSelector((state: State) => state.settings.jobTabs);
@@ -45,14 +42,6 @@ function JobPosting() {
   };
 
   useEffect(() => {
-    const headers: CsvRow = Object.keys(applications[0] || {});
-    const values: CsvData = applications.map(
-      (app: Application): CsvRow => Object.values(app)
-    );
-    setData([headers, ...values]);
-  }, [applications]);
-
-  useEffect(() => {
     const activeJob = applications.find(({ jobId }) => jobId === activeTab);
     const isNew = !activeJob?.company;
     if (activeJob && isNew) {
@@ -73,17 +62,7 @@ function JobPosting() {
               activeTab === value && (
                 <div key={application.jobId} className="w-full max-w-3xl">
                   <div className="bg-white text-end">
-                    {!showForm && (
-                      <button className="rounded-md border-2 border-indigo-600 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer">
-                        <CSVLink
-                          data={data}
-                          filename={`tyfyc_job_search.csv`}
-                          target="_blank"
-                        >
-                          Save
-                        </CSVLink>
-                      </button>
-                    )}
+                    {!showForm && <ExportCSV label="Save" />}
                     <button
                       className="rounded-full border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
                       onClick={() => setShowForm(!showForm)}
