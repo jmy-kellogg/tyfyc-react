@@ -29,7 +29,7 @@ function App() {
     <>
       <div className="flex">
         <SideMenu />
-        <div className="m-3 w-full">
+        <div className={`m-3 ${smallDisplay ? "w-210" : "w-full"}`}>
           {smallDisplay && (
             <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
           )}
@@ -37,7 +37,7 @@ function App() {
           <div
             className={`${
               smallDisplay
-                ? "flex justify-center bg-white w-full h-full"
+                ? "flex justify-center bg-white w-full"
                 : "flex gap-4"
             }`}
           >
