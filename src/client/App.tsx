@@ -9,14 +9,14 @@ import SideMenu from "./components/SideMenu";
 import {
   setActiveTab,
   getTabs,
-  getActiveTabs,
+  getActiveTab,
 } from "./store/reducers/settingsSlice";
 import type { State } from "./store";
 
 function App() {
   const dispatch = useDispatch();
   const tabs = useSelector(getTabs);
-  const activeTab = useSelector(getActiveTabs);
+  const activeTab = useSelector(getActiveTab);
   const smallDisplay = useSelector(
     ({ settings }: State) => settings.smallDisplay
   );

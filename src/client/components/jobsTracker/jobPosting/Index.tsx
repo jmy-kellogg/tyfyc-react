@@ -1,4 +1,3 @@
-import { CSVLink } from "react-csv";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -9,7 +8,7 @@ import Tabs from "../../Tabs";
 import { updateApplication } from "../../../store/reducers/applicationsSlice";
 import {
   setActiveTab,
-  getActiveTabs,
+  getActiveTab,
   setJobTab,
 } from "../../../store/reducers/settingsSlice";
 
@@ -19,7 +18,7 @@ import type { State } from "../../../store";
 function JobPosting() {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
-  const activeTab = useSelector(getActiveTabs);
+  const activeTab = useSelector(getActiveTab);
   const applications = useSelector((state: State) => state.applications.list);
   const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const smallDisplay = useSelector(

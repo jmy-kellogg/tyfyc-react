@@ -111,34 +111,17 @@ export const getTabs = createDraftSafeSelector(selectSettings, (settings) => {
   return [...settings.tabs, ...settings.jobTabs];
 });
 
-export const getActiveTabs = createDraftSafeSelector(
+export const getActiveTab = createDraftSafeSelector(
   selectSettings,
   (settings) => {
     const tabs = settings.smallDisplay
       ? [...settings.tabs, ...settings.jobTabs]
-      : settings.jobTabs;
+      : [...settings.jobTabs];
     const tabExists = checkForTab(tabs, settings.activeTab);
+
     if (!tabExists) {
-      return tabs[tabs.length - 1]?.value || "";
+      return tabs.pop()?.value || "";
     }
     return settings.activeTab;
-  }
-);
-
-export const getShowResume = createDraftSafeSelector(
-  selectSettings,
-  (settings) => {
-    return settings.smallDisplay
-      ? settings.activeTab === "resume"
-      : settings.showResume;
-  }
-);
-
-export const getShowApplications = createDraftSafeSelector(
-  selectSettings,
-  (settings) => {
-    return settings.smallDisplay
-      ? settings.activeTab === "applications"
-      : settings.showApplications;
   }
 );

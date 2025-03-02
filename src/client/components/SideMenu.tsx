@@ -4,14 +4,14 @@ import {
   setShowApplications,
   setActiveTab,
   setSmallDisplay,
-  getActiveTabs,
+  getActiveTab,
 } from "../store/reducers/settingsSlice";
 
 import type { State } from "../store";
 
 function SideMenu() {
   const dispatch = useDispatch();
-  const activeTab = useSelector(getActiveTabs);
+  const activeTab = useSelector(getActiveTab);
   const jobTabs = useSelector(({ settings }: State) => settings.jobTabs);
   const smallDisplay = useSelector(
     ({ settings }: State) => settings.smallDisplay
