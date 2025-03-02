@@ -31,7 +31,7 @@ function Resume() {
           doc.save(`${lastName}_resume.pdf`);
         },
         width: 210,
-        margin: [0, 0, 5, 0],
+        margin: [0, 10, 5, 10],
         windowWidth: 816,
         autoPaging: "text",
       });
@@ -41,7 +41,7 @@ function Resume() {
   return (
     <>
       {showResume && (
-        <div className="w-3xl">
+        <div>
           {!smallDisplay && (
             <Tabs
               tabs={[
@@ -53,7 +53,7 @@ function Resume() {
               active="resume"
             />
           )}
-          <div className="flex justify-end mt-5">
+          <div className="flex bg-white justify-end p-5 pb-0">
             {!showForm && (
               <button
                 className="rounded-md border-2 border-indigo-600 mx-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
@@ -104,7 +104,7 @@ function Resume() {
               )}
             </button>
           </div>
-          <div className="bg-white p-5">
+          <div className="bg-white p-3">
             {showForm ? <ResumeEdit /> : <ResumeDoc />}
           </div>
         </div>

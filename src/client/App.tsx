@@ -28,10 +28,8 @@ function App() {
   return (
     <>
       <div className="flex">
-        <div className="h-screen absolute">
-          <SideMenu />
-        </div>
-        <div className="m-3 ml-15 w-full">
+        <SideMenu />
+        <div className="m-3 w-full">
           {smallDisplay && (
             <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
           )}

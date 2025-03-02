@@ -35,7 +35,7 @@ function SideMenu() {
 
   return (
     <>
-      <div className="bg-white text-slate-800 w-12 h-full p-3">
+      <div className="h-screen sticky top-0 left-0 bg-white text-slate-800 shadow-lg w-12 p-3">
         {smallDisplay ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
