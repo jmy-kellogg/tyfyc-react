@@ -32,7 +32,7 @@ function Resume() {
           doc.save(`${lastName}_resume.pdf`);
         },
         width: 210,
-        margin: [0, 10, 5, 10],
+        margin: [5, 0, 5, 0],
         windowWidth: 816,
         autoPaging: "text",
       });

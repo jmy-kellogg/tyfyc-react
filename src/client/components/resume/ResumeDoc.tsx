@@ -25,25 +25,25 @@ function Document() {
               {personal.gitHub}
             </p>
           </div>
-          <p className="divider">{divider()}</p>
-          <div className="resume-section">
-            {" "}
-            <h3>Summary</h3>
-            <p>{personal.summary}</p>
-          </div>
-          <div className="resume-section">
+          <div className="body-section">
+            <p className="divider">{divider()}</p> <h3>Summary</h3>
+            <div className="body-sub-section">
+              <p>{personal.summary}</p>
+            </div>
             <h3>Skills</h3>
-            <p>{skills.map(({ label }) => label).join(", ")}</p>
+            <div className="body-sub-section">
+              <p>{skills.map(({ label }) => label).join(", ")}</p>
+            </div>
+            <p className="divider">{divider()}</p>
           </div>
         </div>
-        <p className="divider">{divider()}</p>
 
-        <div>
+        <div className="body-section">
           <h2>Professional Experience</h2>
 
           {jobHistory.map((job, index) => (
             <div key={index}>
-              <div className="resume-section">
+              <div className="body-sub-section">
                 <h3>{job.title}</h3>
                 <h4>
                   {job.company} - {job.location}
@@ -64,11 +64,11 @@ function Document() {
             </div>
           ))}
         </div>
-        <div>
+        <div className="body-section">
           <h2>Education</h2>
           {education.map((edu, index) => (
             <div key={index}>
-              <div className="resume-section">
+              <div className="body-sub-section">
                 <p>{edu.degree}</p>
                 <p>
                   {edu.school +
