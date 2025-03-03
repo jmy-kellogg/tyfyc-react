@@ -17,12 +17,12 @@ function Document() {
           <div className="personal-section">
             <h1>{personal.firstName + " " + personal.lastName}</h1>
             <p>
-              {"Email: " + personal.email}
-              {" | Phone: " + personal.phone}
-              {" | Location: " + personal.city + ", " + personal.state} |
+              <b>Email:</b> {personal.email} | <b>Phone:</b> {personal.phone} |{" "}
+              <b>Location:</b> {personal.city + ", " + personal.state}
             </p>
             <p>
-              LinkedIn: {personal.linkedIn} | GitHub: {personal.gitHub}
+              <b>LinkedIn:</b> {personal.linkedIn} | <b>GitHub:</b>{" "}
+              {personal.gitHub}
             </p>
           </div>
           <p className="divider">{divider()}</p>
@@ -47,8 +47,7 @@ function Document() {
                 <h3>{job.title}</h3>
                 <h4>
                   {job.company} - {job.location}
-                </h4>
-                <p>
+                  {" | "}
                   {getFormattedDate(job.start, {
                     month: "short",
                     year: "numeric",
@@ -58,7 +57,7 @@ function Document() {
                       month: "short",
                       year: "numeric",
                     })}
-                </p>
+                </h4>
                 <p>{job.description}</p>
               </div>
               <p className="divider">{divider()}</p>
@@ -74,7 +73,10 @@ function Document() {
                 <p>
                   {edu.school +
                     " - " +
-                    getFormattedDate(edu.gradYear, { year: "numeric" })}
+                    getFormattedDate(edu.gradYear, {
+                      month: "short",
+                      year: "numeric",
+                    })}
                 </p>
               </div>
               <p className="divider">{divider()}</p>
