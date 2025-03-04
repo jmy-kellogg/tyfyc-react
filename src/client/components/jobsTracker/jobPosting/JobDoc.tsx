@@ -1,18 +1,30 @@
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { getStatus, getFormattedDate } from "../../../../utils";
+import { setPersonal } from "../../../store/reducers/personalSlice";
 
 import JobDescription from "./JobDescription";
 import type { Application } from "../../../../types";
+import type { State } from "../../../store";
 
 interface Props {
   application: Application;
 }
 
 function JobDoc({ application }: Props) {
+  const [popover, setPopover] = useState<boolean>(false);
+  const targetJobTitle = useSelector((state: State) => state.personal.jobTitle);
+  const dispatch = useDispatch();
+
+  const updateResumeJobTitle = () => {
+    dispatch(setPersonal({ jobTitle: application.title }));
+  };
   return (
     <>
       <div id="job-application-content">
         <div className="flex">
           <h1>{application.company}</h1>
+
           {application.companyLink && (
             <a href={application.companyLink} target="_blank">
               <svg
@@ -33,7 +45,24 @@ function JobDoc({ application }: Props) {
           )}
         </div>
         <div className="flex">
-          <h2>{application.title}</h2>
+          {targetJobTitle === application.title ? (
+            <h2>{application.title}</h2>
+          ) : (
+            <button
+              className="bg-amber-100 hover:cursor-pointer"
+              onMouseEnter={() => setPopover(true)}
+              onMouseLeave={() => setPopover(false)}
+              onClick={() => updateResumeJobTitle()}
+            >
+              <h2>{application.title}</h2>
+              {popover && (
+                <div className="w-64 bg-white border-1 rounded-md absolute p-1">
+                  <b>Update on Resume</b>
+                </div>
+              )}
+            </button>
+          )}
+
           {application.postingLink && (
             <a href={application.postingLink} target="_blank">
               <svg
