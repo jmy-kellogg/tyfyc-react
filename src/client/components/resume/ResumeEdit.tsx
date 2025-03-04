@@ -55,6 +55,21 @@ function ResumeEdit() {
               />
             </div>
           </div>
+          <div className="col-span-full">
+            <label className="block text-sm/6 font-medium">
+              Target Job Title
+            </label>
+            <div className="mt-2">
+              <input
+                id="job-title"
+                name="jobTitle"
+                type="text"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
+                value={personal.jobTitle}
+                onChange={updateData}
+              />
+            </div>
+          </div>
 
           <div className="col-span-2">
             <label className="block text-sm/6 font-medium">Email address</label>

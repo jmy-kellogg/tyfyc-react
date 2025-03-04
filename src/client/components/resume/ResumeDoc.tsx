@@ -16,6 +16,8 @@ function Document() {
         <div>
           <div className="personal-section">
             <h1>{personal.firstName + " " + personal.lastName}</h1>
+            <h3>{personal.jobTitle}</h3>
+            <p className="divider">{divider()}</p>
             <p>
               <b>Email:</b> {personal.email} | <b>Phone:</b> {personal.phone} |{" "}
               <b>Location:</b> {personal.city + ", " + personal.state}
@@ -24,13 +26,15 @@ function Document() {
               <b>LinkedIn:</b> {personal.linkedIn} | <b>GitHub:</b>{" "}
               {personal.gitHub}
             </p>
+            <p className="divider">{divider()}</p>
           </div>
+
           <div className="body-section">
-            <p className="divider">{divider()}</p> <h3>Summary</h3>
+            <h2>Summary</h2>
             <div className="body-sub-section">
               <p>{personal.summary}</p>
             </div>
-            <h3>Skills</h3>
+            <h2>Skills</h2>
             <div className="body-sub-section">
               <p>{skills.map(({ label }) => label).join(", ")}</p>
             </div>

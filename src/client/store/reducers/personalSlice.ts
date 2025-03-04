@@ -8,6 +8,7 @@ type PersonalStateUpdate = Partial<PersonalState>;
 const initialState: PersonalState = {
   firstName: "",
   lastName: "",
+  jobTitle: "",
   email: "",
   phone: "",
   city: "",

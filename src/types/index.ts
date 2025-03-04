@@ -9,6 +9,7 @@ export type TabsList = Array<Tab>;
 export interface Personal {
   firstName: string;
   lastName: string;
+  jobTitle: string;
   email: string;
   phone: string;
   linkedIn: string;

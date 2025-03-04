@@ -13,22 +13,24 @@ const getInputDate = (str: string): string => {
 };
 
 const getPersonal = (textData: Array<string> = []) => {
-  const names = textData[0]?.split(" ") || [];
-  const contacts = textData[1]?.split("|") || [];
-  const location = contacts[2].split(", ") || [];
-  const sites = textData[2]?.split("|") || [];
-  const summary = textData[5] || "";
-
+  const personal = textData.filter((text) => text !== divider()).slice(0, 6);
+  const names = personal[0]?.split(" ") || [];
+  const jobTitle = personal[1];
+  const contacts = personal[2]?.split("|") || [];
+  const location = contacts[2]?.split(", ") || [];
+  const sites = personal[3]?.split("|") || [];
+  const summary = textData[7] || "";
   return {
     firstName: names[0]?.trim() || "",
     lastName: names[1]?.trim() || "",
-    email: contacts[0],
-    phone: contacts[1],
+    jobTitle: jobTitle?.trim() || "",
+    email: contacts[0]?.trim() || "",
+    phone: contacts[1]?.trim() || "",
     city: location[0]?.trim() || "",
     state: location[1]?.trim() || "",
-    linkedIn: sites[0],
-    gitHub: sites[1],
-    summary: summary,
+    linkedIn: sites[0]?.trim() || "",
+    gitHub: sites[1]?.trim() || "",
+    summary: summary || "",
   };
 };
 
