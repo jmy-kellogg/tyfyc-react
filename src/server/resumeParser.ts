@@ -1,5 +1,10 @@
 import { snake_case_string, divider } from "../utils";
-import type { JobHistoryList, EducationList, ParsedData } from "../types";
+import type {
+  JobHistoryList,
+  EducationList,
+  Personal,
+  ParsedData,
+} from "../types";
 
 const getInputDate = (str: string): string => {
   if (str.length) {
@@ -12,14 +17,20 @@ const getInputDate = (str: string): string => {
   }
 };
 
-const getPersonal = (textData: Array<string> = []) => {
-  const personal = textData.filter((text) => text !== divider()).slice(0, 6);
+const getPersonal = (textData: Array<string> = []): Personal => {
+  const personal = textData
+    .slice(0, textData.indexOf("Skills"))
+    .filter((text) => text !== divider());
   const names = personal[0]?.split(" ") || [];
   const jobTitle = personal[1];
   const contacts = personal[2]?.split("|") || [];
   const location = contacts[2]?.split(", ") || [];
   const sites = personal[3]?.split("|") || [];
-  const summary = textData[7] || "";
+  const summary = personal.slice(
+    personal.indexOf("Summary") + 1,
+    personal.length
+  );
+
   return {
     firstName: names[0]?.trim() || "",
     lastName: names[1]?.trim() || "",
@@ -30,7 +41,7 @@ const getPersonal = (textData: Array<string> = []) => {
     state: location[1]?.trim() || "",
     linkedIn: sites[0]?.trim() || "",
     gitHub: sites[1]?.trim() || "",
-    summary: summary || "",
+    summary: summary?.join(" ") || "",
   };
 };
 

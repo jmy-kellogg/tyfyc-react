@@ -12,10 +12,10 @@ export interface Personal {
   jobTitle: string;
   email: string;
   phone: string;
-  linkedIn: string;
-  gitHub: string;
   city: string;
   state: string;
+  linkedIn: string;
+  gitHub: string;
   summary: string;
 }
 
