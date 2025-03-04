@@ -86,7 +86,7 @@ const getJobs = (textData: Array<string> = []): JobHistoryList => {
         location: companyLocation[1]?.trim() || "",
         start: getInputDate(start),
         end: getInputDate(end),
-        description: job.slice(3, job.length).join(" "),
+        description: job.slice(2, job.length).join(" "),
       });
     }
   });
