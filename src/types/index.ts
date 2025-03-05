@@ -46,6 +46,15 @@ export interface Education {
 
 export type EducationList = Array<Education>;
 
+export interface Project {
+  title: string;
+  description: string;
+  year?: string;
+  url?: string;
+}
+
+export type ProjectsList = Array<Project>;
+
 // Application
 export interface Application {
   company: string;

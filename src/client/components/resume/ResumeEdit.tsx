@@ -5,6 +5,7 @@ import JobsHistory from "./inputs/JobsHistory";
 import Education from "./inputs/Education";
 import Skills from "./inputs/Skills";
 import DocUploader from "./inputs/DocUploader";
+import Projects from "./inputs/Projects";
 
 import type { State } from "../../store";
 
@@ -168,6 +169,7 @@ function ResumeEdit() {
           <Skills />
           <JobsHistory />
           <Education />
+          <Projects />
         </div>
       </form>
     </>

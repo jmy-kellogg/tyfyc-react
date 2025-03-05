@@ -9,6 +9,7 @@ function Document() {
   const jobHistory = useSelector((state: State) => state.jobHistory.list);
   const skills = useSelector((state: State) => state.skills.list);
   const education = useSelector((state: State) => state.education.list);
+  const projects = useSelector((state: State) => state.projects);
 
   return (
     <>
@@ -68,25 +69,60 @@ function Document() {
             </div>
           ))}
         </div>
-        <div className="body-section">
-          <h2>Education</h2>
-          {education.map((edu, index) => (
-            <div key={index}>
-              <div className="body-sub-section">
-                <p>{edu.degree}</p>
-                <p>
-                  {edu.school +
-                    " - " +
-                    getFormattedDate(edu.gradYear, {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                </p>
+        {education.length && (
+          <div className="body-section">
+            <h2>Education</h2>
+            {education.map((edu, index) => (
+              <div key={index}>
+                <div className="body-sub-section">
+                  <p>{edu.degree}</p>
+                  <p>
+                    {edu.school +
+                      " - " +
+                      getFormattedDate(edu.gradYear, {
+                        month: "short",
+                        year: "numeric",
+                      })}
+                  </p>
+                </div>
+                <p className="divider">{divider()}</p>
               </div>
-              <p className="divider">{divider()}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+        {projects.length && (
+          <div className="body-section">
+            <h2>Project</h2>
+            {projects.map((project, index) => (
+              <div key={index}>
+                <div className="body-sub-section">
+                  {project.url ? (
+                    <a href={project.url}>
+                      {" "}
+                      <h3>{project.title}</h3>
+                    </a>
+                  ) : (
+                    <h3>{project.title}</h3>
+                  )}
+                  <p>{project.description}</p>
+                  {project.year && (
+                    <p>
+                      {getFormattedDate(project.year, {
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  )}
+                  {project.links &&
+                    project.links.map((link) => (
+                      <a href={link.url}>{link.text || link.url}</a>
+                    ))}
+                </div>
+                <p className="divider">{divider()}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
