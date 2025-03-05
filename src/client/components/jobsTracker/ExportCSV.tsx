@@ -14,7 +14,7 @@ interface Props {
 
 function ExportCSV({ label = "Export CSV" }: Props) {
   const [data, setData] = useState<CsvData>([]);
-  const applications = useSelector((state: State) => state.applications.list);
+  const applications = useSelector((state: State) => state.applications);
 
   useEffect(() => {
     const headers: CsvRow = Object.keys(applications[0] || {});

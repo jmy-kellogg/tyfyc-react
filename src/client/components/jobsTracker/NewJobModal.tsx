@@ -8,9 +8,9 @@ import { setActiveTab, addJobTabs } from "../../store/reducers/settingsSlice";
 import type { Application } from "../../../types";
 
 function NewJobModal() {
-  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [application, setApplication] = useState<Application>(jobDefault);
+  const dispatch = useDispatch();
 
   const addNew = () => {
     setShowModal(true);

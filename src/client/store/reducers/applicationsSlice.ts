@@ -2,23 +2,19 @@ import { v4 as uuidv4 } from "uuid";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { ApplicationsList, Application } from "../../../types";
 
-export interface ApplicationsState {
-  list: ApplicationsList;
-}
+export type ApplicationsState = ApplicationsList;
 
-const initialState: ApplicationsState = {
-  list: [],
-};
+const initialState: ApplicationsState = [];
 
 export const ApplicationsSlice = createSlice({
   name: "posting",
   initialState,
   reducers: {
     updateApplicationsList: (
-      state: ApplicationsState,
+      _state: ApplicationsState,
       action: PayloadAction<ApplicationsList>
     ) => {
-      state.list = action.payload;
+      return action.payload;
     },
     addNewApplication: (
       state: ApplicationsState,
@@ -40,22 +36,22 @@ export const ApplicationsSlice = createSlice({
         jobId: uuidv4(),
         ...application,
       };
-      state.list = [...state.list, defaultApplication];
+      return [...state, defaultApplication];
     },
     removeApplication: (
       state: ApplicationsState,
       action: PayloadAction<string>
     ) => {
-      state.list = state.list.filter(({ jobId }) => jobId !== action.payload);
+      return state.filter(({ jobId }) => jobId !== action.payload);
     },
     updateApplication: (
       state: ApplicationsState,
       action: PayloadAction<Application>
     ) => {
-      const index = state.list.findIndex(
+      const index = state.findIndex(
         ({ jobId }) => jobId === action.payload.jobId
       );
-      state.list[index] = action.payload;
+      state[index] = action.payload;
     },
   },
 });

@@ -11,7 +11,7 @@ import type { State } from "../../../store";
 
 function JobsHistory() {
   const jobHistory: JobHistoryList = useSelector(
-    (state: State) => state.jobHistory.list
+    (state: State) => state.jobHistory
   );
   const dispatch = useDispatch();
 

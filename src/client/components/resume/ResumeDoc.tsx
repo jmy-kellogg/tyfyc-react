@@ -5,11 +5,9 @@ import "./ResumeDoc.css";
 import type { State } from "../../store";
 
 function Document() {
-  const personal = useSelector((state: State) => state.personal);
-  const jobHistory = useSelector((state: State) => state.jobHistory.list);
-  const skills = useSelector((state: State) => state.skills.list);
-  const education = useSelector((state: State) => state.education.list);
-  const projects = useSelector((state: State) => state.projects);
+  const { personal, jobHistory, skills, education, projects } = useSelector(
+    (state: State) => state
+  );
 
   return (
     <>

@@ -8,7 +8,7 @@ import type { Skill, SkillsList } from "../../../../types";
 import type { State } from "../../../store";
 
 function Skills() {
-  const skills: SkillsList = useSelector((state: State) => state.skills.list);
+  const skills: SkillsList = useSelector((state: State) => state.skills);
   const dispatch = useDispatch();
 
   const onChange = (

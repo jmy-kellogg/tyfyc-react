@@ -11,7 +11,7 @@ interface Props {
 
 function JobDescription({ description }: Props) {
   const [popover, setPopover] = useState<number | null>(null);
-  const skills: SkillsList = useSelector((state: State) => state.skills.list);
+  const skills: SkillsList = useSelector((state: State) => state.skills);
   const dispatch = useDispatch();
 
   const skillsAliases = skillsOptions.reduce(

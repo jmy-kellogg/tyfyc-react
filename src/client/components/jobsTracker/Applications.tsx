@@ -21,14 +21,15 @@ import type { Application, ApplicationsList } from "../../../types";
 import type { State } from "../../store";
 
 function Applications() {
-  const dispatch = useDispatch();
   const [sortedList, setSortedList] = useState<ApplicationsList>([]);
   const [showDisplay, setShowDisplay] = useState<boolean>(true);
-  const applications = useSelector((state: State) => state.applications.list);
+  const applications = useSelector((state: State) => state.applications);
   const activeTab = useSelector(getActiveTab);
   const { showApplications, smallDisplay } = useSelector(
     (state: State) => state.settings
   );
+
+  const dispatch = useDispatch();
 
   const openApplication = ({ company, jobId }: Application) => {
     dispatch(addJobTabs({ label: company || "Job", value: jobId }));

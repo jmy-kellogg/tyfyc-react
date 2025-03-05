@@ -19,7 +19,7 @@ function JobPosting() {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
   const activeTab = useSelector(getActiveTab);
-  const applications = useSelector((state: State) => state.applications.list);
+  const applications = useSelector((state: State) => state.applications);
   const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay

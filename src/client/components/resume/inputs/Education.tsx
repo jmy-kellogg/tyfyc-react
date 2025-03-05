@@ -10,9 +10,7 @@ import type { Education, EducationList } from "../../../../types";
 import type { State } from "../../../store";
 
 function Education() {
-  const eduList: EducationList = useSelector(
-    (state: State) => state.education.list
-  );
+  const eduList: EducationList = useSelector((state: State) => state.education);
   const dispatch = useDispatch();
 
   const saveEducation = (

@@ -1,29 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { EducationList } from "../../../types";
 
-export interface EducationState {
-  list: EducationList;
-}
+export type EducationState = EducationList;
 
-const initialState: EducationState = {
-  list: [
-    {
-      degree: "",
-      school: "",
-      gradYear: "",
-    },
-  ],
-};
+const initialState: EducationState = [
+  {
+    degree: "",
+    school: "",
+    gradYear: "",
+  },
+];
 
 export const educationSlice = createSlice({
   name: "education",
   initialState,
   reducers: {
     setEducation: (
-      state: EducationState,
+      _state: EducationState,
       action: PayloadAction<EducationList>
     ) => {
-      state.list = action.payload;
+      return action.payload;
     },
     addNewEdu(state: EducationState) {
       const newItem = {
@@ -31,10 +27,10 @@ export const educationSlice = createSlice({
         school: "",
         gradYear: "",
       };
-      state.list.push(newItem);
+      state.push(newItem);
     },
     removeEdu(state: EducationState, action: PayloadAction<number>) {
-      state.list.splice(action.payload, 1);
+      return state.splice(action.payload, 1);
     },
   },
 });

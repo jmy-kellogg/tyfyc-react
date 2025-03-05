@@ -1,31 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { Skill, SkillsList } from "../../../types";
 
-export interface SkillsState {
-  list: SkillsList;
-}
+export type SkillsState = SkillsList;
 
-const initialState: SkillsState = {
-  list: [
-    {
-      label: "JavaScript",
-      value: "javascript",
-    },
-  ],
-};
+const initialState: SkillsState = [
+  {
+    label: "JavaScript",
+    value: "javascript",
+  },
+];
 
 export const skillsSlice = createSlice({
   name: "skills",
   initialState,
   reducers: {
-    setSkills: (state: SkillsState, action: PayloadAction<SkillsList>) => {
-      state.list = action.payload;
+    setSkills: (_state: SkillsState, action: PayloadAction<SkillsList>) => {
+      return action.payload;
     },
     addSkill(state: SkillsState, action: PayloadAction<Skill>) {
-      state.list.push(action.payload);
+      state.push(action.payload);
     },
     removeSkill(state: SkillsState, action: PayloadAction<number>) {
-      state.list.splice(action.payload, 1);
+      state.splice(action.payload, 1);
     },
   },
 });

@@ -1,29 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { JobHistory, JobHistoryList } from "../../../types";
 
-export interface JobsState {
-  list: JobHistoryList;
-}
+export type JobsState = JobHistoryList;
 
-const initialState: JobsState = {
-  list: [
-    {
-      title: "",
-      company: "",
-      location: "",
-      start: "",
-      end: "",
-      description: "",
-    },
-  ],
-};
-
+const initialState: JobsState = [
+  {
+    title: "",
+    company: "",
+    location: "",
+    start: "",
+    end: "",
+    description: "",
+  },
+];
 export const jobHistorySlice = createSlice({
   name: "jobHistory",
   initialState,
   reducers: {
-    setJobs: (state: JobsState, action: PayloadAction<JobHistoryList>) => {
-      state.list = action.payload;
+    setJobs: (_state: JobsState, action: PayloadAction<JobHistoryList>) => {
+      return action.payload;
     },
     addNewJob(state: JobsState) {
       const newItem: JobHistory = {
@@ -34,10 +29,10 @@ export const jobHistorySlice = createSlice({
         end: "",
         description: "",
       };
-      state.list.push(newItem);
+      state.push(newItem);
     },
     removeJob(state: JobsState, action: PayloadAction<number>) {
-      state.list.splice(action.payload, 1);
+      state.splice(action.payload, 1);
     },
   },
 });
