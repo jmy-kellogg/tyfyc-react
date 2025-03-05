@@ -62,7 +62,7 @@ function Document() {
                       year: "numeric",
                     })}
                 </h4>
-                <p>{job.description}</p>
+                <p className="whitespace-pre-wrap">{job.description}</p>
               </div>
               <p className="divider">{divider()}</p>
             </div>
