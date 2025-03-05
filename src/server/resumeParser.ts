@@ -4,6 +4,7 @@ import type {
   EducationList,
   Personal,
   ParsedData,
+  ProjectsList,
 } from "../types";
 
 const getInputDate = (str: string): string => {
@@ -95,11 +96,8 @@ const getJobs = (textData: Array<string> = []): JobHistoryList => {
 };
 
 const getEducation = (textData: Array<string> = []): EducationList => {
-  const endPageIndex = textData.findIndex(
-    (text) => text === "Email:Phone:Location:"
-  );
   const education = textData
-    .slice(textData.indexOf("Education") + 1, endPageIndex - 1)
+    .slice(textData.indexOf("Education") + 1, textData.indexOf("Projects") - 1)
     .join("|||")
     .split(divider());
 
@@ -119,6 +117,34 @@ const getEducation = (textData: Array<string> = []): EducationList => {
   return respEdu;
 };
 
+const getProjects = (textData: Array<string> = []): ProjectsList => {
+  const projects = textData
+    .slice(textData.indexOf("Projects") + 1, textData.length)
+    .filter((string) => {
+      return !(
+        string === "Email:Phone:Location:" ||
+        string === "LinkedIn:GitHub:" ||
+        (string.includes("Page (") && string.includes(") Break"))
+      );
+    })
+    .join("|||")
+    .split(divider());
+  const respProjects: ProjectsList = [];
+
+  projects.forEach((element) => {
+    const project = element.split("|||").filter((str) => !!str.trim());
+    if (project.length) {
+      respProjects.push({
+        title: project[0] || "",
+        description: project[1] || "",
+        year: getInputDate(project[2] || ""),
+      });
+    }
+  });
+
+  return respProjects;
+};
+
 const parseResume = (rawText: string = ""): ParsedData => {
   const textData = rawText.split("\r\n").filter((str) => !!str.trim());
 
@@ -127,6 +153,7 @@ const parseResume = (rawText: string = ""): ParsedData => {
     skills: getSkills(textData),
     jobHistory: getJobs(textData),
     education: getEducation(textData),
+    projects: getProjects(textData),
   };
 };
 

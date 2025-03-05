@@ -91,4 +91,5 @@ export interface ParsedData {
   skills: SkillsList;
   jobHistory: JobHistoryList;
   education: EducationList;
+  projects: ProjectsList;
 }

@@ -5,6 +5,7 @@ import { setPersonal } from "../../../store/reducers/personalSlice";
 import { setJobs } from "../../../store/reducers/jobHistorySlice";
 import { setEducation } from "../../../store/reducers/educationSlice";
 import { setSkills } from "../../../store/reducers/skillsSlice";
+import { setProjects } from "../../../store/reducers/projectsSlice";
 
 import type { ParsedData } from "../../../../types";
 
@@ -40,6 +41,7 @@ function DocUploader() {
       dispatch(setJobs(parsedData.jobHistory));
       dispatch(setEducation(parsedData.education));
       dispatch(setSkills(parsedData.skills));
+      dispatch(setProjects(parsedData.projects));
     } catch {
       setErrorMsg("Invalid Resume Added");
     }

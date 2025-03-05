@@ -92,7 +92,7 @@ function Document() {
         )}
         {projects.length && (
           <div className="body-section">
-            <h2>Project</h2>
+            <h2>Projects</h2>
             {projects.map((project, index) => (
               <div key={index}>
                 <div className="body-sub-section">
@@ -113,10 +113,6 @@ function Document() {
                       })}
                     </p>
                   )}
-                  {project.links &&
-                    project.links.map((link) => (
-                      <a href={link.url}>{link.text || link.url}</a>
-                    ))}
                 </div>
                 <p className="divider">{divider()}</p>
               </div>
