@@ -18,6 +18,15 @@ const getInputDate = (str: string): string => {
   }
 };
 
+const splitSubSection = (acc: Array<Array<string>>, cur: string) => {
+  if (cur === divider()) {
+    acc.push([]);
+  } else {
+    acc[acc.length - 1].push(cur);
+  }
+  return acc;
+};
+
 const getPersonal = (textData: Array<string> = []): Personal => {
   const personal = textData
     .slice(0, textData.indexOf("Skills"))
@@ -65,15 +74,13 @@ const getJobs = (textData: Array<string> = []): JobHistoryList => {
   const jobHistory = textData
     .slice(
       textData.indexOf("Professional Experience") + 1,
-      textData.indexOf("Education")
+      textData.indexOf("Education") - 1
     )
-    .join("|||")
-    .split(divider());
+    .reduce(splitSubSection, [[]]);
 
   const respJobs: JobHistoryList = [];
 
-  jobHistory.forEach((element) => {
-    const job = element.split("|||").filter((str) => !!str.trim());
+  jobHistory.forEach((job) => {
     if (job.length) {
       const companyLine: Array<string> = job[1]?.split(" | ") || [];
       const companyLocation = companyLine[0]?.split(" - ") || [];
@@ -98,13 +105,10 @@ const getJobs = (textData: Array<string> = []): JobHistoryList => {
 const getEducation = (textData: Array<string> = []): EducationList => {
   const education = textData
     .slice(textData.indexOf("Education") + 1, textData.indexOf("Projects") - 1)
-    .join("|||")
-    .split(divider());
-
+    .reduce(splitSubSection, [[]]);
   const respEdu: EducationList = [];
 
-  education.forEach((element) => {
-    const edu = element.split("|||").filter((str) => !!str.trim());
+  education.forEach((edu) => {
     if (edu.length == 2) {
       const date = edu[1]?.split(" - ")[1]?.trim() || "";
       respEdu.push({
@@ -119,20 +123,11 @@ const getEducation = (textData: Array<string> = []): EducationList => {
 
 const getProjects = (textData: Array<string> = []): ProjectsList => {
   const projects = textData
-    .slice(textData.indexOf("Projects") + 1, textData.length)
-    .filter((string) => {
-      return !(
-        string === "Email:Phone:Location:" ||
-        string === "LinkedIn:GitHub:" ||
-        (string.includes("Page (") && string.includes(") Break"))
-      );
-    })
-    .join("|||")
-    .split(divider());
+    .slice(textData.indexOf("Projects") + 1, textData.length - 1)
+    .reduce(splitSubSection, [[]]);
   const respProjects: ProjectsList = [];
 
-  projects.forEach((element) => {
-    const project = element.split("|||").filter((str) => !!str.trim());
+  projects.forEach((project) => {
     if (project.length) {
       respProjects.push({
         title: project[0] || "",
@@ -146,7 +141,9 @@ const getProjects = (textData: Array<string> = []): ProjectsList => {
 };
 
 const parseResume = (rawText: string = ""): ParsedData => {
-  const textData = rawText.split("\r\n").filter((str) => !!str.trim());
+  const textData = rawText
+    .split("\r\n")
+    .filter((str) => !str.includes("---Page (") && !!str.trim());
 
   return {
     personal: getPersonal(textData),

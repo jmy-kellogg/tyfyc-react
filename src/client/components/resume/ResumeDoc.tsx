@@ -18,12 +18,11 @@ function Document() {
             <h3>{personal.jobTitle}</h3>
             <p className="divider">{divider()}</p>
             <p>
-              <b>Email:</b> {personal.email} | <b>Phone:</b> {personal.phone} |{" "}
-              <b>Location:</b> {personal.city + ", " + personal.state}
+              Email: {personal.email} | Phone: {personal.phone} | Location:{" "}
+              {personal.city + ", " + personal.state}
             </p>
             <p>
-              <b>LinkedIn:</b> {personal.linkedIn} | <b>GitHub:</b>{" "}
-              {personal.gitHub}
+              LinkedIn: {personal.linkedIn} | GitHub: {personal.gitHub}
             </p>
             <p className="divider">{divider()}</p>
           </div>
