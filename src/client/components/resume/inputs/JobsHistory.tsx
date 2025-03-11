@@ -57,11 +57,12 @@ function JobsHistory() {
         </h2>
         {jobHistory.map((job: JobHistory, index: number) => (
           <div
+            key={index}
             onMouseEnter={() => setHover(index)}
             onMouseLeave={() => setHover(null)}
           >
             {hover === index ? (
-              <div className="my-3" key={index}>
+              <div className="my-3">
                 <input
                   id="title"
                   name="title"
@@ -135,7 +136,7 @@ function JobsHistory() {
             ) : (
               <div key={index}>
                 <div className="body-sub-section">
-                  <h3>{job.title}</h3>
+                  <h3>{job.title || "New Employment"}</h3>
                   <h4>
                     {job.company} - {job.location}
                     {" | "}

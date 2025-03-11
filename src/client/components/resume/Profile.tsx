@@ -7,11 +7,11 @@ import Contact from "./inputs/Contact";
 import Summary from "./inputs/Summary";
 import Skills from "./inputs/Skills";
 import JobsHistory from "./inputs/JobsHistory";
+import Education from "./inputs/Education";
 
 import type { State } from "@store";
 
 function Profile() {
-  const education = useSelector((state: State) => state.education);
   const projects = useSelector((state: State) => state.projects);
 
   return (
@@ -25,32 +25,9 @@ function Profile() {
         <div className="body-section">
           <Summary />
           <Skills />
-        </div>
-
-        <div className="body-section">
           <JobsHistory />
+          <Education />
         </div>
-        {education.length && (
-          <div className="body-section">
-            <h2>Education</h2>
-            {education.map((edu, index) => (
-              <div key={index}>
-                <div className="body-sub-section">
-                  <p>{edu.degree}</p>
-                  <p>
-                    {edu.school +
-                      " - " +
-                      getFormattedDate(edu.gradYear, {
-                        month: "short",
-                        year: "numeric",
-                      })}
-                  </p>
-                </div>
-                <p className="divider">{divider()}</p>
-              </div>
-            ))}
-          </div>
-        )}
         {projects.length && (
           <div className="body-section">
             <h2>Projects</h2>

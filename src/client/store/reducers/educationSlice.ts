@@ -30,7 +30,7 @@ export const educationSlice = createSlice({
       state.push(newItem);
     },
     removeEdu(state: EducationState, action: PayloadAction<number>) {
-      return state.splice(action.payload, 1);
+      state.splice(action.payload, 1);
     },
   },
 });
