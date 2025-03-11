@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removePunctuation } from "../../../../utils";
-import { skillsOptions } from "../../../../utils/options";
-import { setSkills } from "../../../store/reducers/skillsSlice";
-import type { Skill, SkillsList } from "../../../../types";
-import type { State } from "../../../store";
+
+import { removePunctuation } from "@utils";
+import { skillsOptions } from "@options";
+
+import { setSkills } from "@/reducers/skillsSlice";
+import type { State } from "@store";
+import type { Skill, SkillsList } from "@types";
 interface Props {
   description: string | null;
 }

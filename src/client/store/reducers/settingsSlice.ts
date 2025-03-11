@@ -3,7 +3,7 @@ import {
   PayloadAction,
   createDraftSafeSelector,
 } from "@reduxjs/toolkit";
-import type { Tab, TabsList } from "../../../types";
+import type { Tab, TabsList } from "@types";
 import type { State } from "../index";
 
 export interface SettingsState {

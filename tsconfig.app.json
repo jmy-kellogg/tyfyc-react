@@ -20,7 +20,22 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    
+
+  
+    "baseUrl": "./",
+    "paths": {
+      /* paths */
+      "@/reducers/*": ["src/client/store/reducers/*"],
+      "@/*": ["src/client/*"],
+      /* alias */
+      "@types": ["src/types/index.ts"],
+      "@store": ["src/client/store/index.ts"],
+      "@utils": ["src/utils/index.ts"],
+      "@options": ["src/utils/options.ts"],
+    }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

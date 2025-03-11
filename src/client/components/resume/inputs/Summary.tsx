@@ -1,8 +1,10 @@
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { divider } from "../../../../utils";
-import { setPersonal } from "../../../store/reducers/personalSlice";
-import type { State } from "../../../store";
+
+import { divider } from "@utils";
+
+import { setPersonal } from "@/reducers/personalSlice";
+import type { State } from "@store";
 
 function Summary() {
   const dispatch = useDispatch();

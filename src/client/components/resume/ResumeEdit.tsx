@@ -1,13 +1,14 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setPersonal } from "../../store/reducers/personalSlice";
+
 import JobsHistory from "./inputs/JobsHistory";
 import Education from "./inputs/Education";
 import Skills from "./inputs/Skills";
 import DocUploader from "./inputs/DocUploader";
 import Projects from "./inputs/Projects";
 
-import type { State } from "../../store";
+import { setPersonal } from "@/reducers/personalSlice";
+import type { State } from "@store";
 
 function ResumeEdit() {
   const dispatch = useDispatch();

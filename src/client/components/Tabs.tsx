@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
+
 import {
   removeJobTab,
   setShowResume,
   setShowApplications,
-} from "../store/reducers/settingsSlice";
-
-import type { TabsList } from "../../types";
+} from "@/reducers/settingsSlice";
+import type { TabsList } from "@types";
 
 interface Props {
   tabs: TabsList;

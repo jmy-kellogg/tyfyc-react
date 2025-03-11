@@ -1,4 +1,4 @@
-import { snake_case_string, divider } from "../utils";
+import { snake_case_string, divider } from "@utils";
 import type {
   JobHistoryList,
   EducationList,

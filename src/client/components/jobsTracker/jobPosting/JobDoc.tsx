@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getStatus, getFormattedDate } from "../../../../utils";
-import { setPersonal } from "../../../store/reducers/personalSlice";
 
 import JobDescription from "./JobDescription";
-import type { Application } from "../../../../types";
-import type { State } from "../../../store";
+import { getStatus, getFormattedDate } from "@utils";
+
+import { setPersonal } from "@/reducers/personalSlice";
+import type { State } from "@store";
+import type { Application } from "@types";
 
 interface Props {
   application: Application;

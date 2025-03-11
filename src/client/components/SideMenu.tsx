@@ -1,13 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   setShowResume,
   setShowApplications,
   setActiveTab,
   setSmallDisplay,
   getActiveTab,
-} from "../store/reducers/settingsSlice";
-
-import type { State } from "../store";
+} from "@/reducers/settingsSlice";
+import type { State } from "@store";
 
 function SideMenu() {
   const dispatch = useDispatch();

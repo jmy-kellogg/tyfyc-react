@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
-import { getFormattedDate, divider } from "../../../utils";
+import { getFormattedDate, divider } from "@utils";
+
 import "./ResumeDoc.css";
 
-import type { State } from "../../store";
+import type { State } from "@store";
 
 function Document() {
   const personal = useSelector((state: State) => state.personal);

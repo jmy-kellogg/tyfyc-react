@@ -1,13 +1,13 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   setProjects,
   addNewProject,
   removeProject,
-} from "../../../store/reducers/projectsSlice";
-
-import type { Project, ProjectsList } from "../../../../types";
-import type { State } from "../../../store";
+} from "@/reducers/projectsSlice";
+import type { State } from "@store";
+import type { Project, ProjectsList } from "@types";
 
 function Projects() {
   const projects: ProjectsList = useSelector((state: State) => state.projects);

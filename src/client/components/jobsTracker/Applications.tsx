@@ -1,24 +1,24 @@
 import Papa from "papaparse";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getStatus, getFormattedDate } from "../../../utils";
 
+import { getStatus, getFormattedDate } from "@utils";
 import Tabs from "../Tabs";
 import ExportCSV from "./ExportCSV";
 import NewJobModal from "./NewJobModal";
+
 import {
   removeApplication,
   updateApplicationsList,
-} from "../../store/reducers/applicationsSlice";
+} from "@/reducers/applicationsSlice";
 import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
   getActiveTab,
-} from "../../store/reducers/settingsSlice";
-
-import type { Application, ApplicationsList } from "../../../types";
-import type { State } from "../../store";
+} from "@/reducers/settingsSlice";
+import type { State } from "@store";
+import type { Application, ApplicationsList } from "@types";
 
 function Applications() {
   const [sortedList, setSortedList] = useState<ApplicationsList>([]);

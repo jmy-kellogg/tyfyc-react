@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import JobEdit from "./jobPosting/JobEdit";
-import { jobDefault } from "../../../utils/options";
-import { addNewApplication } from "../../store/reducers/applicationsSlice";
-import { setActiveTab, addJobTabs } from "../../store/reducers/settingsSlice";
-import type { Application } from "../../../types";
+import { jobDefault } from "@options";
+
+import { addNewApplication } from "@/reducers/applicationsSlice";
+import { setActiveTab, addJobTabs } from "@/reducers/settingsSlice";
+import type { Application } from "@types";
 
 function NewJobModal() {
   const [showModal, setShowModal] = useState<boolean>(false);

@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { setPersonal } from "../../../store/reducers/personalSlice";
-import { setJobs } from "../../../store/reducers/jobHistorySlice";
-import { setEducation } from "../../../store/reducers/educationSlice";
-import { setSkills } from "../../../store/reducers/skillsSlice";
-import { setProjects } from "../../../store/reducers/projectsSlice";
 
-import type { ParsedData } from "../../../../types";
+import { setPersonal } from "@/reducers/personalSlice";
+import { setJobs } from "@/reducers/jobHistorySlice";
+import { setEducation } from "@/reducers/educationSlice";
+import { setSkills } from "@/reducers/skillsSlice";
+import { setProjects } from "@/reducers/projectsSlice";
+import type { ParsedData } from "@types";
 
 function DocUploader() {
   const [errorMsg, setErrorMsg] = useState("");

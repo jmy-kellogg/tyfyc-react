@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { getFormattedDate, divider } from "../../../utils";
+import { getFormattedDate, divider } from "@utils";
 import "./ResumeDoc.css";
 
 import Title from "./inputs/Title";
 import Contact from "./inputs/Contact";
-
-import type { State } from "../../store";
 import Summary from "./inputs/Summary";
+
+import type { State } from "@store";
 
 function Profile() {
   const jobHistory = useSelector((state: State) => state.jobHistory);

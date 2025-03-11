@@ -1,17 +1,12 @@
 import Select, { ActionMeta, MultiValue } from "react-select";
 import { useSelector, useDispatch } from "react-redux";
 
-import { skillsOptions } from "../../../../utils/options";
-import { setSkills } from "../../../store/reducers/skillsSlice";
 import DndSort from "../sortable/DndSort";
+import { skillsOptions } from "@options";
 
-import type {
-  Skill,
-  SkillsList,
-  SortableItem,
-  SortableList,
-} from "../../../../types";
-import type { State } from "../../../store";
+import { setSkills } from "@/reducers/skillsSlice";
+import type { State } from "@store";
+import type { Skill, SkillsList, SortableItem, SortableList } from "@types";
 
 function Skills() {
   const skills: SkillsList = useSelector((state: State) => state.skills);

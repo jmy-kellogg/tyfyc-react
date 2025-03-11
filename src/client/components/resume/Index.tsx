@@ -7,8 +7,8 @@ import Tabs from "../Tabs";
 // import ResumeEdit from "./ResumeEdit";
 import Profile from "./Profile.tsx";
 
-import { getActiveTab } from "../../store/reducers/settingsSlice";
-import type { State } from "../../store";
+import { getActiveTab } from "@/reducers/settingsSlice";
+import type { State } from "@store";
 
 function Resume() {
   const [showForm, setShowForm] = useState<boolean>(false);

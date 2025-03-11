@@ -1,13 +1,9 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  addNewJob,
-  removeJob,
-  setJobs,
-} from "../../../store/reducers/jobHistorySlice";
 
-import type { JobHistory, JobHistoryList } from "../../../../types";
-import type { State } from "../../../store";
+import { addNewJob, removeJob, setJobs } from "@/reducers/jobHistorySlice";
+import type { JobHistory, JobHistoryList } from "@types";
+import type { State } from "@store";
 
 function JobsHistory() {
   const jobHistory: JobHistoryList = useSelector(

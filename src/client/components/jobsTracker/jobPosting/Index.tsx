@@ -5,15 +5,15 @@ import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
 import ExportCSV from "../ExportCSV";
 import Tabs from "../../Tabs";
-import { updateApplication } from "../../../store/reducers/applicationsSlice";
+
+import { updateApplication } from "@/reducers/applicationsSlice";
 import {
   setActiveTab,
   getActiveTab,
   setJobTab,
-} from "../../../store/reducers/settingsSlice";
-
-import type { Application } from "../../../../types";
-import type { State } from "../../../store";
+} from "@/reducers/settingsSlice";
+import type { State } from "@store";
+import type { Application } from "@types";
 
 function JobPosting() {
   const dispatch = useDispatch();

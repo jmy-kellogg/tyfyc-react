@@ -1,8 +1,9 @@
 import { ChangeEvent } from "react";
 
-import { removePunctuation } from "../../../../utils";
-import { statusOptions, jobDefault } from "../../../../utils/options";
-import type { Application } from "../../../../types";
+import { removePunctuation } from "@utils";
+import { statusOptions, jobDefault } from "@options";
+
+import type { Application } from "@types";
 
 interface Props {
   application?: Application;

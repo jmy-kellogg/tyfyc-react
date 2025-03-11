@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { ApplicationsList, Application } from "../../../types";
+import type { ApplicationsList, Application } from "@types";
 
 export type ApplicationsState = ApplicationsList;
 

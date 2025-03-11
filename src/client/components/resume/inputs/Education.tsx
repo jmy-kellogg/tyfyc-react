@@ -1,13 +1,9 @@
 import { ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setEducation,
-  addNewEdu,
-  removeEdu,
-} from "../../../store/reducers/educationSlice";
 
-import type { Education, EducationList } from "../../../../types";
-import type { State } from "../../../store";
+import { setEducation, addNewEdu, removeEdu } from "@/reducers/educationSlice";
+import type { State } from "@store";
+import type { Education, EducationList } from "@types";
 
 function Education() {
   const eduList: EducationList = useSelector((state: State) => state.education);
