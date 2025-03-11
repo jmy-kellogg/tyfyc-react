@@ -1,9 +1,20 @@
+import { ReactElement } from "react";
+
 export type Tab = {
   label: string;
   value: string;
 };
 
 export type TabsList = Array<Tab>;
+
+export interface SortableItem {
+  id: string;
+  component: ReactElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
+
+export type SortableList = Array<SortableItem>;
 
 // Resume
 export interface Personal {
