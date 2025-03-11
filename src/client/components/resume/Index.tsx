@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import Tabs from "../Tabs";
-import ResumeDoc from "./ResumeDoc";
-import ResumeEdit from "./ResumeEdit";
+// import ResumeDoc from "./ResumeDoc";
+// import ResumeEdit from "./ResumeEdit";
+import Profile from "./Profile.tsx";
 
 import { getActiveTab } from "../../store/reducers/settingsSlice";
 import type { State } from "../../store";
@@ -111,7 +112,8 @@ function Resume() {
             </button>
           </div>
           <div className="bg-white p-3">
-            {showForm ? <ResumeEdit /> : <ResumeDoc />}
+            {/* {showForm ? <ResumeEdit /> : <ResumeDoc />} */}
+            <Profile />
           </div>
         </div>
       )}
