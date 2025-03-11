@@ -5,12 +5,12 @@ import "./ResumeDoc.css";
 import Title from "./inputs/Title";
 import Contact from "./inputs/Contact";
 import Summary from "./inputs/Summary";
+import Skills from "./inputs/Skills";
 
 import type { State } from "@store";
 
 function Profile() {
   const jobHistory = useSelector((state: State) => state.jobHistory);
-  const skills = useSelector((state: State) => state.skills);
   const education = useSelector((state: State) => state.education);
   const projects = useSelector((state: State) => state.projects);
 
@@ -24,13 +24,7 @@ function Profile() {
 
         <div className="body-section">
           <Summary />
-
-          <h2>Skills</h2>
-          <div className="body-sub-section">
-            <p>{skills.map(({ label }) => label).join(", ")}</p>
-          </div>
-
-          <p className="divider">{divider()}</p>
+          <Skills />
         </div>
 
         <div className="body-section">

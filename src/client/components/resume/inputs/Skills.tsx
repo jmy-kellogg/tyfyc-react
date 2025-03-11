@@ -1,27 +1,29 @@
+import { useState } from "react";
 import Select, { ActionMeta, MultiValue } from "react-select";
 import { useSelector, useDispatch } from "react-redux";
 
 import DndSort from "../sortable/DndSort";
 import { skillsOptions } from "@options";
+import { divider } from "@utils";
 
 import { setSkills } from "@/reducers/skillsSlice";
 import type { State } from "@store";
 import type { Skill, SkillsList, SortableItem, SortableList } from "@types";
 
 function Skills() {
-  const skills: SkillsList = useSelector((state: State) => state.skills);
   const dispatch = useDispatch();
+  const skills: SkillsList = useSelector((state: State) => state.skills);
+  const [hover, setHover] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const onChange = (
     newValue: MultiValue<Skill>,
     actionMeta: ActionMeta<Skill>
   ) => {
-    if (
-      actionMeta.action === "select-option" ||
-      actionMeta.action === "remove-value"
-    ) {
+    if (actionMeta.action === "select-option") {
       const updatedSkills: SkillsList = [...newValue];
       dispatch(setSkills(updatedSkills));
+      setHover(false);
     }
   };
 
@@ -74,25 +76,37 @@ function Skills() {
 
   return (
     <>
-      <div className="col-span-full">
+      <div
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+      >
         <h2>
           <b>Skills</b>
         </h2>
-        <label className="block text-sm/6 font-medium">Technologies</label>
-        <Select
-          isMulti
-          isClearable={false}
-          components={{ ValueContainer }}
-          name="skills"
-          isSearchable
-          classNamePrefix="select"
-          className="basic-single"
-          defaultValue={skillsOptions[0]}
-          options={skillsOptions}
-          value={skills}
-          onChange={onChange}
-        />
+        {hover || open ? (
+          <Select
+            isMulti
+            isClearable={false}
+            components={{ ValueContainer }}
+            name="skills"
+            isSearchable
+            classNamePrefix="select"
+            className="basic-single"
+            placeholder="Technologies"
+            defaultValue={skillsOptions[0]}
+            options={skillsOptions}
+            value={skills}
+            onChange={onChange}
+            onMenuOpen={() => setOpen(true)}
+            onMenuClose={() => setOpen(false)}
+          />
+        ) : (
+          <div className="body-sub-section">
+            <p>{skills.map(({ label }) => label).join(", ")}</p>
+          </div>
+        )}
       </div>
+      <p className="divider">{divider()}</p>
     </>
   );
 }
