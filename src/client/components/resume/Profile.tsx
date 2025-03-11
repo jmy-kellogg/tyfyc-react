@@ -6,11 +6,11 @@ import Title from "./inputs/Title";
 import Contact from "./inputs/Contact";
 import Summary from "./inputs/Summary";
 import Skills from "./inputs/Skills";
+import JobsHistory from "./inputs/JobsHistory";
 
 import type { State } from "@store";
 
 function Profile() {
-  const jobHistory = useSelector((state: State) => state.jobHistory);
   const education = useSelector((state: State) => state.education);
   const projects = useSelector((state: State) => state.projects);
 
@@ -28,30 +28,7 @@ function Profile() {
         </div>
 
         <div className="body-section">
-          <h2>Professional Experience</h2>
-
-          {jobHistory.map((job, index) => (
-            <div key={index}>
-              <div className="body-sub-section">
-                <h3>{job.title}</h3>
-                <h4>
-                  {job.company} - {job.location}
-                  {" | "}
-                  {getFormattedDate(job.start, {
-                    month: "short",
-                    year: "numeric",
-                  }) +
-                    " - " +
-                    getFormattedDate(job.end, {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                </h4>
-                <p className="whitespace-pre-wrap">{job.description}</p>
-              </div>
-              <p className="divider">{divider()}</p>
-            </div>
-          ))}
+          <JobsHistory />
         </div>
         {education.length && (
           <div className="body-section">
