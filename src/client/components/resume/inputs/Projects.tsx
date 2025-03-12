@@ -10,7 +10,12 @@ import { getFormattedDate, divider } from "@utils";
 import type { Project, ProjectsList } from "../../../../types";
 import type { State } from "../../../store";
 
-function Projects() {
+interface Props {
+  editAll: boolean;
+  lockEdit: boolean;
+}
+
+function Projects({ editAll, lockEdit }: Props) {
   const dispatch = useDispatch();
   const projects: ProjectsList = useSelector((state: State) => state.projects);
   const [hover, setHover] = useState<number | null>(null);
@@ -52,7 +57,7 @@ function Projects() {
             onMouseEnter={() => setHover(index)}
             onMouseLeave={() => setHover(null)}
           >
-            {hover === index ? (
+            {!lockEdit && (editAll || hover === index) ? (
               <div className="my-3">
                 <div className="flex">
                   <input
@@ -142,7 +147,7 @@ function Projects() {
             <p className="divider">{divider()}</p>
           </div>
         ))}
-        {showAdd && (
+        {!lockEdit && (editAll || showAdd) && (
           <button
             type="button"
             className="rounded-md bg-indigo-600 m-1 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

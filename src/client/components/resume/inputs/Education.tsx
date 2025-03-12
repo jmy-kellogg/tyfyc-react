@@ -7,7 +7,12 @@ import { setEducation, addNewEdu, removeEdu } from "@/reducers/educationSlice";
 import type { State } from "@store";
 import type { Education, EducationList } from "@types";
 
-function Education() {
+interface Props {
+  editAll: boolean;
+  lockEdit: boolean;
+}
+
+function Education({ editAll, lockEdit }: Props) {
   const dispatch = useDispatch();
   const eduList: EducationList = useSelector((state: State) => state.education);
   const [hover, setHover] = useState<number | null>(null);
@@ -42,7 +47,7 @@ function Education() {
       >
         <h2>
           <b>Education </b>
-          {showAdd && (
+          {!lockEdit && (editAll || showAdd) && (
             <button
               type="button"
               className="float-right rounded-md bg-indigo-600 m-1 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -58,7 +63,7 @@ function Education() {
             onMouseEnter={() => setHover(index)}
             onMouseLeave={() => setHover(null)}
           >
-            {hover === index ? (
+            {!lockEdit && (editAll || hover === index) ? (
               <div className="my-3">
                 <div className="flex">
                   <input

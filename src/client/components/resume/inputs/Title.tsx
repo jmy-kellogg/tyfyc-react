@@ -6,7 +6,12 @@ import { divider } from "@utils";
 import { setPersonal } from "@/reducers/personalSlice";
 import type { State } from "@store";
 
-function Title() {
+interface Props {
+  editAll: boolean;
+  lockEdit: boolean;
+}
+
+function Title({ editAll, lockEdit }: Props) {
   const dispatch = useDispatch();
   const personal = useSelector((state: State) => state.personal);
   const [hover, setHover] = useState(false);
@@ -23,7 +28,7 @@ function Title() {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        {hover ? (
+        {!lockEdit && (editAll || hover) ? (
           <form>
             <div className="flex justify-center">
               <div className="m-1">

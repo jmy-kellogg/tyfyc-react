@@ -6,7 +6,12 @@ import { divider } from "@utils";
 import { setPersonal } from "@/reducers/personalSlice";
 import type { State } from "@store";
 
-function Summary() {
+interface Props {
+  editAll: boolean;
+  lockEdit: boolean;
+}
+
+function Summary({ editAll, lockEdit }: Props) {
   const dispatch = useDispatch();
   const personal = useSelector((state: State) => state.personal);
   const [hover, setHover] = useState(false);
@@ -24,7 +29,8 @@ function Summary() {
         onMouseLeave={() => setHover(false)}
       >
         <h2>Summary</h2>
-        {hover ? (
+
+        {!lockEdit && (editAll || hover) ? (
           <div className="mt-2">
             <textarea
               id="summary"

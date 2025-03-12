@@ -10,7 +10,12 @@ import { setSkills } from "@/reducers/skillsSlice";
 import type { State } from "@store";
 import type { Skill, SkillsList, SortableItem, SortableList } from "@types";
 
-function Skills() {
+interface Props {
+  editAll: boolean;
+  lockEdit: boolean;
+}
+
+function Skills({ editAll, lockEdit }: Props) {
   const dispatch = useDispatch();
   const skills: SkillsList = useSelector((state: State) => state.skills);
   const [hover, setHover] = useState(false);
@@ -83,7 +88,7 @@ function Skills() {
         <h2>
           <b>Skills</b>
         </h2>
-        {hover || open ? (
+        {!lockEdit && (editAll || hover || open) ? (
           <Select
             isMulti
             isClearable={false}
