@@ -15,6 +15,7 @@ import Projects from "./inputs/Projects";
 
 import { getActiveTab } from "@/reducers/settingsSlice";
 import type { State } from "@store";
+import DocUploader from "./inputs/DocUploader";
 
 function Resume() {
   const [showDisplay, setShowDisplay] = useState<boolean>(true);
@@ -69,7 +70,9 @@ function Resume() {
             />
           )}
           <div className="flex bg-white justify-end p-5 pb-0">
-            {!editAll && (
+            {editAll ? (
+              <DocUploader />
+            ) : (
               <button
                 className="rounded-md border-2 border-indigo-600 mx-3 px-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
                 onClick={onPrint}
