@@ -1,9 +1,8 @@
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { divider } from "@utils";
+import Divider from "@/components/Divider";
 import { setPersonal } from "@/reducers/personalSlice";
-
 import type { State } from "@store";
 
 interface Props {
@@ -115,7 +114,7 @@ function Contact({ editAll, lockEdit }: Props) {
           </div>
         )}
       </div>
-      <p className="divider">{divider()}</p>
+      <Divider />
     </>
   );
 }

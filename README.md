@@ -36,7 +36,8 @@ tyfyc/
 │── public/                 # Static assets
 │── src/
 │   ├── client/             # Client - frontend
-│       ├── components/     # React components
+│       ├── components/     # Reusable components
+│       ├── containers/     # Containers
 │       ├── store/          # Redux store
 │       ├── App.vue         # Root component
 │       ├── main.ts         # Entry file

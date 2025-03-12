@@ -3,7 +3,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
-import Tabs from "../Tabs";
+import Tabs from "@/components/Tabs";
 import ExportCSV from "./ExportCSV";
 import NewJobModal from "./NewJobModal";
 

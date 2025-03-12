@@ -2,11 +2,12 @@ import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import "../ResumeDoc.css";
-import { getFormattedDate, divider } from "@utils";
+import { getFormattedDate } from "@utils";
 
 import { addNewJob, removeJob, setJobs } from "@/reducers/jobHistorySlice";
 import type { JobHistory, JobHistoryList } from "@types";
 import type { State } from "@store";
+import Divider from "@/components/Divider";
 
 interface Props {
   editAll: boolean;
@@ -159,7 +160,7 @@ function JobsHistory({ editAll, lockEdit }: Props) {
                 </div>
               </div>
             )}
-            <p className="divider">{divider()}</p>
+            <Divider />
           </div>
         ))}
       </div>

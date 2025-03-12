@@ -2,9 +2,9 @@ import { useState } from "react";
 import Select, { ActionMeta, MultiValue } from "react-select";
 import { useSelector, useDispatch } from "react-redux";
 
-import DndSort from "../sortable/DndSort";
+import DndSort from "@/components/sortable/DndSort";
+import Divider from "@/components/Divider";
 import { skillsOptions } from "@options";
-import { divider } from "@utils";
 
 import { setSkills } from "@/reducers/skillsSlice";
 import type { State } from "@store";
@@ -111,7 +111,7 @@ function Skills({ editAll, lockEdit }: Props) {
           </div>
         )}
       </div>
-      <p className="divider">{divider()}</p>
+      <Divider />
     </>
   );
 }

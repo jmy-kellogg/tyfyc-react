@@ -27,6 +27,7 @@
     "baseUrl": "./",
     "paths": {
       /* paths */
+      "@/components/*": ["src/client/components/*"],
       "@/reducers/*": ["src/client/store/reducers/*"],
       "@/*": ["src/client/*"],
       /* alias */

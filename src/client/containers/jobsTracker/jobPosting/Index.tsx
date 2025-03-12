@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import JobEdit from "./JobEdit";
 import JobDoc from "./JobDoc";
 import ExportCSV from "../ExportCSV";
-import Tabs from "../../Tabs";
+import Tabs from "@/components/Tabs";
 
 import { updateApplication } from "@/reducers/applicationsSlice";
 import {

@@ -1,14 +1,16 @@
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import { getFormattedDate } from "@utils";
+import Divider from "@/components/Divider";
+
 import {
   setProjects,
   addNewProject,
   removeProject,
-} from "../../../store/reducers/projectsSlice";
-import { getFormattedDate, divider } from "@utils";
-
-import type { Project, ProjectsList } from "../../../../types";
-import type { State } from "../../../store";
+} from "@/reducers/projectsSlice";
+import type { Project, ProjectsList } from "@types";
+import type { State } from "@store";
 
 interface Props {
   editAll: boolean;
@@ -144,7 +146,7 @@ function Projects({ editAll, lockEdit }: Props) {
                 </div>
               </div>
             )}
-            <p className="divider">{divider()}</p>
+            <Divider />
           </div>
         ))}
         {!lockEdit && (editAll || showAdd) && (

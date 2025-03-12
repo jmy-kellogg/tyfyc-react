@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import Tabs from "../Tabs";
+import Tabs from "@/components/Tabs";
 import "./ResumeDoc.css";
 
 import Title from "./inputs/Title";

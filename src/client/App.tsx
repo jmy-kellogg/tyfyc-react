@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import JobPosting from "./components/jobsTracker/jobPosting/Index";
-import Resume from "./components/resume/Index";
-import Applications from "./components/jobsTracker/Applications";
+import JobPosting from "./containers/jobsTracker/jobPosting/Index";
+import Resume from "./containers/resume/Index";
+import Applications from "./containers/jobsTracker/Applications";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
 

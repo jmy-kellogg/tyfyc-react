@@ -1,8 +1,9 @@
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getFormattedDate, divider } from "@utils";
+import { getFormattedDate } from "@utils";
 
+import Divider from "@/components/Divider";
 import { setEducation, addNewEdu, removeEdu } from "@/reducers/educationSlice";
 import type { State } from "@store";
 import type { Education, EducationList } from "@types";
@@ -131,7 +132,7 @@ function Education({ editAll, lockEdit }: Props) {
                 <p>{edu.degree || "Degree"}</p>
               </div>
             )}
-            <p className="divider">{divider()}</p>
+            <Divider />
           </div>
         ))}
       </div>
