@@ -1,40 +1,47 @@
-import { useState } from "react";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-
-import JobEdit from "./jobPosting/JobEdit";
-import { jobDefault } from "@options";
 
 import { addNewApplication } from "@/reducers/applicationsSlice";
 import { setActiveTab, addJobTabs } from "@/reducers/settingsSlice";
-import type { Application } from "@types";
 
 function NewJobModal() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [application, setApplication] = useState<Application>(jobDefault);
+  const [description, setDescription] = useState<string>("");
   const dispatch = useDispatch();
 
-  const addNew = () => {
-    setShowModal(true);
+  const submit = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/job-posting",
+        null,
+        {
+          params: {
+            description,
+          },
+        }
+      );
+      const jobId = uuidv4();
+      const applicationData = { ...(response.data || {}), jobId };
+      dispatch(addNewApplication(applicationData));
+      dispatch(
+        addJobTabs({
+          label: applicationData.company || "Job",
+          value: jobId,
+        })
+      );
+      dispatch(setActiveTab(jobId));
+      setShowModal(false);
+    } catch {
+      console.error("Invalid Job Description");
+    }
   };
 
-  const submit = () => {
-    dispatch(addNewApplication(application));
-    dispatch(
-      addJobTabs({
-        label: application.company || "Job",
-        value: application.jobId,
-      })
-    );
-    dispatch(setActiveTab(application.jobId));
-    setShowModal(false);
-  };
+  const updateDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
 
-  const updateData = (
-    field: string,
-    value: string,
-    application: Application
-  ) => {
-    setApplication({ ...application, [field]: value });
+    setDescription(value);
   };
 
   return (
@@ -42,7 +49,7 @@ function NewJobModal() {
       <button
         className="rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
         type="button"
-        onClick={addNew}
+        onClick={() => setShowModal(true)}
       >
         Add Application
       </button>
@@ -52,8 +59,8 @@ function NewJobModal() {
           id="default-modal"
           className="backdrop-brightness-50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-full"
         >
-          <div className="bg-white m-auto my-20 p-4 w-2xl h-auto rounded-lg">
-            <div className="flex items-center justify-between p-4 border-b border-gray-400 rounded-t">
+          <div className="bg-white m-10 p-4 w-2xl h-auto rounded-lg">
+            <div className="flex items-center justify-between p-4 border-b border-slate-300 rounded-t">
               <h3 className="text-xl font-semibold">Add New</h3>
               <button
                 type="button"
@@ -77,8 +84,20 @@ function NewJobModal() {
                 </svg>
               </button>
             </div>
-            <JobEdit application={application} updateData={updateData} />
-            <div className="flex items-center p-4  border-t border-gray-400">
+            <div className="m-3">
+              <label className="block text-lg font-medium text-center">
+                Copy/Paste Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                className="w-full min-h-100 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                value={description}
+                onChange={updateDescription}
+              ></textarea>
+            </div>
+
+            <div className="flex items-center p-4  border-t border-slate-300">
               <button
                 type="button"
                 className="rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"

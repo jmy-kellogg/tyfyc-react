@@ -2,8 +2,11 @@ import PDFParser from "pdf2json";
 import multer from "multer";
 import express, { Request, Response } from "express";
 import parseResume from "./resumeParser";
+import dotenv from "dotenv";
+import { manualJobPostingParse, aiJobPostingParse } from "./jobPostingParser";
 
 export const app = express();
+dotenv.config();
 
 // ToDo: find a better upload solution
 const upload = multer({ dest: "uploads/" });
@@ -27,4 +30,20 @@ app.post("/parser", upload.single("file"), (req: Request, res: Response) => {
       return res.status(400).send({ error: "Can only accept TYFYC resumes" });
     }
   });
+});
+
+app.post("/job-posting", async (req: Request, res: Response) => {
+  const description: string = `${req.query.description}` || "";
+
+  if (!description) {
+    return res.status(400).send({ error: "Must give description" });
+  }
+
+  if (process.env.OPENAI_FEATURE_FLAG === "true") {
+    const applicationData = await aiJobPostingParse(description);
+    return res.status(200).send(applicationData);
+  } else {
+    const manualParse = manualJobPostingParse(description);
+    return res.status(200).send(manualParse);
+  }
 });

@@ -1,32 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
-import type { StatusOption, SkillsList, Application } from "../types";
-
-const getToday = (): string => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const formattedMonth = month < 10 ? `0${month}` : month;
-  const day = today.getDate();
-  const formattedDay = day < 10 ? `0${day}` : day;
-  const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
-
-  return formattedDate;
-};
-
-export const jobDefault: Application = {
-  company: "",
-  description: "",
-  title: "",
-  salary: "",
-  dateApplied: getToday(),
-  location: "",
-  status: "applied",
-  interviewStages: [],
-  notes: "",
-  postingLink: "",
-  companyLink: "",
-  jobId: uuidv4(),
-};
+import type { StatusOption, SkillsList } from "../types";
 
 export const statusOptions: Array<StatusOption> = [
   { label: "Applied", value: "applied", color: "blue" },

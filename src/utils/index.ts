@@ -38,6 +38,17 @@ export const getFormattedDate = (
 
   return new Date(dateString).toLocaleDateString(lang, dateOptions);
 };
+export const getToday = (): string => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const day = today.getDate();
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+
+  return formattedDate;
+};
 
 // Skills Utils
 export const snake_case_string = (str: string): string => {
