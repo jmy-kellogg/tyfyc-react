@@ -35,6 +35,7 @@
       "@store": ["src/client/store/index.ts"],
       "@utils": ["src/utils/index.ts"],
       "@options": ["src/utils/options.ts"],
+      "@featureFlags": ["src/utils/featureFlags.ts"]
     }
   },
   "include": ["src"],

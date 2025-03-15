@@ -1,6 +1,6 @@
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { addNewApplication } from "@/reducers/applicationsSlice";
@@ -36,12 +36,6 @@ function NewJobModal() {
     } catch {
       console.error("Invalid Job Description");
     }
-  };
-
-  const updateDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-
-    setDescription(value);
   };
 
   return (
@@ -93,7 +87,7 @@ function NewJobModal() {
                 name="description"
                 className="w-full min-h-100 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={description}
-                onChange={updateDescription}
+                onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
 

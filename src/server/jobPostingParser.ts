@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import dotenv from "dotenv";
 import { removePunctuation } from "@utils";
 
 interface ParsedData {
@@ -7,8 +6,6 @@ interface ParsedData {
 }
 
 type ParsedText = Array<string>;
-
-dotenv.config();
 
 const getCandidates = (parsedText: ParsedText): ParsedText => {
   const firstItems = parsedText.slice(0, 10);
@@ -62,7 +59,7 @@ const findLocation = (parsedText: ParsedText): string => {
   return locationText;
 };
 
-export const manualJobPostingParse = (description: string): ParsedData => {
+export const jobDescriptionManualParse = (description: string): ParsedData => {
   const parsedText = description.split("\n").filter((str) => !!str);
   const candidates = getCandidates(parsedText);
 
@@ -83,7 +80,7 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const aiJobPostingParse = async (
+export const jobDescriptionAiParse = async (
   description: string
 ): Promise<ParsedData> => {
   let applicationData: ParsedData = {
@@ -119,7 +116,7 @@ export const aiJobPostingParse = async (
       }
     });
   } catch {
-    const manualParse = manualJobPostingParse(description);
+    const manualParse = jobDescriptionManualParse(description);
     applicationData = { ...applicationData, ...manualParse };
   }
   return applicationData;
