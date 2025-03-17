@@ -34,6 +34,7 @@ export const ApplicationsSlice = createSlice({
         status: "applied",
         interviewStages: [],
         notes: "",
+        skills: [],
         jobId: uuidv4(),
         ...application,
       };

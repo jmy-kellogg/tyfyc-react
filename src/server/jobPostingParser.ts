@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import { removePunctuation } from "@utils";
 
 interface ParsedData {
-  [key: string]: string;
+  [key: string]: string | Array<string>;
 }
 
 type ParsedText = Array<string>;
@@ -91,6 +91,7 @@ export const jobDescriptionAiParse = async (
     location: "",
     postingLink: "",
     companyLink: "",
+    skills: [],
   };
   try {
     const completion = await client.chat.completions.create({
@@ -98,9 +99,9 @@ export const jobDescriptionAiParse = async (
       max_tokens: 1000,
       messages: [
         {
-          role: "developer",
+          role: "system",
           content:
-            "For the following job posting. Give me the job data in form of this json for example { company: 'Company x', title: 'Frontend Developer', location: 'Remote', salary: '$100,000 - $200,000' }",
+            "You are an AI assistant that extracts data from job postings. For the following post get the company name, job title, location, salary range, and list all technical skills. Return the data in a json format using this format {company: string, title: string, location: string, salary: string, skills: Array<string>}. If there is no data use an empty string or array.",
         },
         {
           role: "user",
@@ -111,7 +112,7 @@ export const jobDescriptionAiParse = async (
     const responseMessage = completion.choices[0].message.content || "";
     const parsedData: ParsedData = JSON.parse(responseMessage) || {};
     Object.keys(parsedData).forEach((key) => {
-      if (key in applicationData && typeof parsedData[key] === "string") {
+      if (key in applicationData) {
         applicationData[key] = parsedData[key] || "";
       }
     });

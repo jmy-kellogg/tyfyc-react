@@ -86,6 +86,7 @@ export interface Application {
   postingLink: string;
   companyLink: string;
   jobId: string;
+  skills: Array<string>;
 }
 
 export type ApplicationsList = Array<Application>;
