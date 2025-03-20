@@ -13,6 +13,9 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 - [X] Saves Application details to csv
 - [ ] Updates resume according to job posting
 
+## OpenAI
+add .env file with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality. 
+
 ## Installation
 ```
 npm install
@@ -54,6 +57,8 @@ tyfyc/
 - Vite
 - TypeScript
 - HTML & CSS
+- Express
+- OpenAI "gpt-3.5-turbo"
 - License
 
 ## This project is licensed under the MIT License.

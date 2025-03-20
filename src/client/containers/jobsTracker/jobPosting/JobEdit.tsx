@@ -1,7 +1,8 @@
+import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent } from "react";
 
-import { removePunctuation } from "@utils";
-import { statusOptions, jobDefault } from "@options";
+import { removePunctuation, getToday } from "@utils";
+import { statusOptions } from "@options";
 
 import type { Application } from "@types";
 
@@ -11,6 +12,21 @@ interface Props {
 }
 
 type ParsedText = Array<string>;
+
+const jobDefault: Application = {
+  company: "",
+  description: "",
+  title: "",
+  salary: "",
+  dateApplied: getToday(),
+  location: "",
+  status: "applied",
+  interviewStages: [],
+  notes: "",
+  postingLink: "",
+  companyLink: "",
+  jobId: uuidv4(),
+};
 
 function JobEdit({ application = jobDefault, updateData }: Props) {
   const getCandidates = (parsedText: ParsedText): ParsedText => {

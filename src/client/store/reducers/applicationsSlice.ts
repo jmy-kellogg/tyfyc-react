@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getToday } from "@utils";
 import type { ApplicationsList, Application } from "@types";
 
 export type ApplicationsState = ApplicationsList;
@@ -26,14 +27,18 @@ export const ApplicationsSlice = createSlice({
         description: "",
         title: "",
         salary: "",
-        dateApplied: "",
         location: "",
-        status: "pending",
+        companyLink: "",
+        postingLink: "",
+        dateApplied: getToday(),
+        status: "applied",
         interviewStages: [],
         notes: "",
-        postingLink: "",
-        companyLink: "",
+        skills: [],
         jobId: uuidv4(),
+        resume: {
+          summary: "",
+        },
         ...application,
       };
       return [...state, defaultApplication];

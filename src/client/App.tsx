@@ -29,7 +29,7 @@ function App() {
     <>
       <div className="flex">
         <SideMenu />
-        <div className={`m-3 ${smallDisplay ? "w-210" : "w-full"}`}>
+        <div className="m-3 w-full">
           {smallDisplay && (
             <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
           )}

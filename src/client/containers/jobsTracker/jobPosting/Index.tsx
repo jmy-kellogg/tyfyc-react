@@ -59,10 +59,7 @@ function JobPosting() {
           if (application) {
             return (
               activeTab === value && (
-                <div
-                  key={application.jobId}
-                  className="w-full min-w-100 max-w-3xl"
-                >
+                <div key={application.jobId} className="w-full min-w-100 m-5">
                   <div className="bg-white text-end">
                     {!showForm && <ExportCSV label="Save" />}
                     <button

@@ -1,7 +1,14 @@
 import PDFParser from "pdf2json";
 import multer from "multer";
 import express, { Request, Response } from "express";
+import getFlag from "@featureFlags";
+
 import parseResume from "./resumeParser";
+import resumeRecommendations from "./resumeChecker";
+import {
+  jobDescriptionManualParse,
+  jobDescriptionAiParse,
+} from "./jobPostingParser";
 
 export const app = express();
 
@@ -27,4 +34,42 @@ app.post("/parser", upload.single("file"), (req: Request, res: Response) => {
       return res.status(400).send({ error: "Can only accept TYFYC resumes" });
     }
   });
+});
+
+app.post("/job-posting", async (req: Request, res: Response) => {
+  const description: string = `${req.query.description}` || "";
+
+  if (!description) {
+    return res.status(400).send({ error: "Must give description" });
+  }
+
+  if (getFlag("OPENAI_FEATURE_FLAG")) {
+    if (description) {
+      const applicationData = await jobDescriptionAiParse(description);
+      return res.status(200).send(applicationData);
+    }
+  } else {
+    const manualParse = jobDescriptionManualParse(description);
+    return res.status(200).send(manualParse);
+  }
+});
+
+app.post("/resume-recommendation", async (req: Request, res: Response) => {
+  const summary: string = `${req.query.summary}` || "";
+  const description: string = `${req.query.description}` || "";
+
+  if (!summary || !description) {
+    return res.status(400).send({ error: "Must give description" });
+  }
+
+  if (getFlag("OPENAI_FEATURE_FLAG")) {
+    if (description) {
+      const responseRec = await resumeRecommendations({ summary, description });
+      return res.status(200).send({ ...responseRec, originalSummary: summary });
+    }
+  } else {
+    return res
+      .status(200)
+      .send({ summary, description, originalSummary: summary });
+  }
 });
