@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import getFlag from "@featureFlags";
 
 import parseResume from "./resumeParser";
+import resumeRecommendations from "./resumeChecker";
 import {
   jobDescriptionManualParse,
   jobDescriptionAiParse,
@@ -50,5 +51,25 @@ app.post("/job-posting", async (req: Request, res: Response) => {
   } else {
     const manualParse = jobDescriptionManualParse(description);
     return res.status(200).send(manualParse);
+  }
+});
+
+app.post("/resume-recommendation", async (req: Request, res: Response) => {
+  const summary: string = `${req.query.summary}` || "";
+  const description: string = `${req.query.description}` || "";
+
+  if (!summary || !description) {
+    return res.status(400).send({ error: "Must give description" });
+  }
+
+  if (getFlag("OPENAI_FEATURE_FLAG")) {
+    if (description) {
+      const responseRec = await resumeRecommendations({ summary, description });
+      return res.status(200).send({ ...responseRec, originalSummary: summary });
+    }
+  } else {
+    return res
+      .status(200)
+      .send({ summary, description, originalSummary: summary });
   }
 });

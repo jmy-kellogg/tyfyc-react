@@ -36,6 +36,9 @@ export const ApplicationsSlice = createSlice({
         notes: "",
         skills: [],
         jobId: uuidv4(),
+        resume: {
+          summary: "",
+        },
         ...application,
       };
       return [...state, defaultApplication];
