@@ -8,6 +8,7 @@ import { getStatus, getFormattedDate } from "@utils";
 
 import { setPersonal } from "@/reducers/personalSlice";
 import { updateApplication } from "@/reducers/applicationsSlice";
+import getFlag from "@featureFlags";
 import type { State } from "@store";
 import type { Application } from "@types";
 
@@ -43,7 +44,6 @@ function JobDoc({ application }: Props) {
           summary: response?.data?.summary || "",
         },
       };
-      console.log(response?.data?.summary);
       dispatch(updateApplication(updatedResume));
     } catch {
       console.error("Couldn't get resume recommendation");
@@ -52,7 +52,7 @@ function JobDoc({ application }: Props) {
 
   return (
     <>
-      {!application.resume?.summary && (
+      {getFlag("OPENAI_FEATURE_FLAG") && !application.resume?.summary && (
         <button
           className="float-right rounded-md border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
           onClick={() => getRecommendedResume()}
@@ -151,7 +151,7 @@ function JobDoc({ application }: Props) {
             </div>
           )}
         </div>
-        {application.resume?.summary && (
+        {getFlag("OPENAI_FEATURE_FLAG") && application.resume?.summary && (
           <Recommendation summary={application.resume?.summary} />
         )}
       </div>

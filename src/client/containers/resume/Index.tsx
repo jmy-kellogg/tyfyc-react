@@ -5,28 +5,23 @@ import { useSelector } from "react-redux";
 import Tabs from "@/components/Tabs";
 import "./ResumeDoc.css";
 
-import Title from "./inputs/Title";
-import Contact from "./inputs/Contact";
-import Summary from "./inputs/Summary";
-import Skills from "./inputs/Skills";
-import JobsHistory from "./inputs/JobsHistory";
-import Education from "./inputs/Education";
-import Projects from "./inputs/Projects";
-
 import { getActiveTab } from "@/reducers/settingsSlice";
+import { getFormattedDate, divider } from "@utils";
 import type { State } from "@store";
-import DocUploader from "./inputs/DocUploader";
 
 function Resume() {
   const [showDisplay, setShowDisplay] = useState<boolean>(true);
-  const [lockEdit, setLockEdit] = useState<boolean>(false);
-  const [editAll, setEditAll] = useState<boolean>(false);
-
-  const lastName = useSelector((state: State) => state.personal.lastName);
-  const activeTab = useSelector(getActiveTab);
-  const { showResume, smallDisplay } = useSelector(
-    (state: State) => state.settings
+  const smallDisplay = useSelector(
+    (state: State) => state.settings.smallDisplay
   );
+  const showResume = useSelector((state: State) => state.settings.showResume);
+  const activeTab = useSelector(getActiveTab);
+  const personal = useSelector((state: State) => state.personal);
+  const jobHistory = useSelector((state: State) => state.jobHistory);
+  const skills = useSelector((state: State) => state.skills);
+  const education = useSelector((state: State) => state.education);
+  const projects = useSelector((state: State) => state.projects);
+  const lastName = useSelector((state: State) => state.personal.lastName);
 
   const onPrint = () => {
     const element = document.getElementById("resume-content");
@@ -69,113 +64,119 @@ function Resume() {
               active="resume"
             />
           )}
-          <div className="flex bg-white justify-end p-5 pb-0">
-            {editAll ? (
-              <DocUploader />
-            ) : (
-              <button
-                className="rounded-md border-2 border-indigo-600 mx-3 px-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                onClick={onPrint}
-              >
-                Export Resume
-              </button>
-            )}
-            {!lockEdit && (
-              <button
-                className="rounded-full border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                onClick={() => setEditAll(!editAll)}
-              >
-                {editAll ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                    />
-                  </svg>
-                )}
-              </button>
-            )}
-            {!editAll && (
-              <button
-                className="rounded-full mx-2 border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                onClick={() => setLockEdit(!lockEdit)}
-              >
-                {lockEdit ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
-                    />
-                  </svg>
-                )}
-              </button>
-            )}
-          </div>
-          <div className="bg-white p-3">
+          <div className="bg-white p-5">
+            <button
+              className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
+              onClick={onPrint}
+            >
+              Export Resume
+            </button>
+
             <div id="resume-content">
-              <div className="personal-section">
-                <Title editAll={editAll} lockEdit={lockEdit} />
-                <Contact editAll={editAll} lockEdit={lockEdit} />
+              <div>
+                <div className="personal-section">
+                  <h1>{personal.firstName + " " + personal.lastName}</h1>
+                  <h3>{personal.jobTitle}</h3>
+                  <p className="divider">{divider()}</p>
+                  <p>
+                    Email: {personal.email} | Phone: {personal.phone} |
+                    Location: {personal.city + ", " + personal.state}
+                  </p>
+                  <p>
+                    LinkedIn: {personal.linkedIn} | GitHub: {personal.gitHub}
+                  </p>
+                  <p className="divider">{divider()}</p>
+                </div>
+
+                <div className="body-section">
+                  <h2>Summary</h2>
+                  <div className="body-sub-section">
+                    <p>{personal.summary}</p>
+                  </div>
+                  <h2>Skills</h2>
+                  <div className="body-sub-section">
+                    <p>{skills.map(({ label }) => label).join(", ")}</p>
+                  </div>
+                  <p className="divider">{divider()}</p>
+                </div>
               </div>
 
               <div className="body-section">
-                <Summary editAll={editAll} lockEdit={lockEdit} />
-                <Skills editAll={editAll} lockEdit={lockEdit} />
-                <JobsHistory editAll={editAll} lockEdit={lockEdit} />
-                <Education editAll={editAll} lockEdit={lockEdit} />
-                <Projects editAll={editAll} lockEdit={lockEdit} />
+                <h2>Professional Experience</h2>
+
+                {jobHistory.map((job, index) => (
+                  <div key={index}>
+                    <div className="body-sub-section">
+                      <h3>{job.title}</h3>
+                      <h4>
+                        {job.company} - {job.location}
+                        {" | "}
+                        {getFormattedDate(job.start, {
+                          month: "short",
+                          year: "numeric",
+                        }) +
+                          " - " +
+                          getFormattedDate(job.end, {
+                            month: "short",
+                            year: "numeric",
+                          })}
+                      </h4>
+                      <p className="whitespace-pre-wrap">{job.description}</p>
+                    </div>
+                    <p className="divider">{divider()}</p>
+                  </div>
+                ))}
               </div>
+              {education.length && (
+                <div className="body-section">
+                  <h2>Education</h2>
+                  {education.map((edu, index) => (
+                    <div key={index}>
+                      <div className="body-sub-section">
+                        <p>{edu.degree}</p>
+                        <p>
+                          {edu.school +
+                            " - " +
+                            getFormattedDate(edu.gradYear, {
+                              month: "short",
+                              year: "numeric",
+                            })}
+                        </p>
+                      </div>
+                      <p className="divider">{divider()}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {projects.length && (
+                <div className="body-section">
+                  <h2>Projects</h2>
+                  {projects.map((project, index) => (
+                    <div key={index}>
+                      <div className="body-sub-section">
+                        {project.url ? (
+                          <a href={project.url}>
+                            {" "}
+                            <h3>{project.title}</h3>
+                          </a>
+                        ) : (
+                          <h3>{project.title}</h3>
+                        )}
+                        <p>{project.description}</p>
+                        {project.year && (
+                          <p>
+                            {getFormattedDate(project.year, {
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
+                        )}
+                      </div>
+                      <p className="divider">{divider()}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import "../ResumeDoc.css";
 import { getFormattedDate } from "@utils";
 
 import { addNewJob, removeJob, setJobs } from "@/reducers/jobHistorySlice";

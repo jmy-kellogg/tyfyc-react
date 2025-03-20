@@ -1,8 +1,6 @@
 import { useSelector } from "react-redux";
 import { getFormattedDate, divider } from "@utils";
 
-import "../../resume/ResumeDoc.css";
-
 import type { State } from "@store";
 
 interface Props {
@@ -19,7 +17,7 @@ function Recommendation({ summary }: Props) {
   return (
     <>
       <div className="m-5">
-        <div id="resume-content">
+        <div>
           <div>
             <div className="personal-section">
               <h1>{personal.firstName + " " + personal.lastName}</h1>

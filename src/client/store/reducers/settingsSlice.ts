@@ -8,6 +8,7 @@ import type { State } from "../index";
 
 export interface SettingsState {
   smallDisplay: boolean;
+  showProfile: boolean;
   showResume: boolean;
   showApplications: boolean;
   activeTab: string;
@@ -17,10 +18,12 @@ export interface SettingsState {
 
 const initialState: SettingsState = {
   smallDisplay: false,
+  showProfile: true,
   showResume: true,
   showApplications: true,
   activeTab: "",
   tabs: [
+    { label: "Profile", value: "profile" },
     { label: "Resume", value: "resume" },
     { label: "Applications", value: "applications" },
   ],
@@ -38,6 +41,19 @@ export const settingsSlice = createSlice({
     setSmallDisplay: (state: SettingsState, action: PayloadAction<boolean>) => {
       state.smallDisplay = action.payload;
     },
+    setShowProfile: (state: SettingsState, action: PayloadAction<boolean>) => {
+      const tabExists = checkForTab(state.tabs, "profile");
+      state.showProfile = action.payload;
+
+      if (action.payload && state.smallDisplay) {
+        state.activeTab = "profile";
+      }
+      if (action.payload && !tabExists) {
+        state.tabs.unshift({ label: "Profile", value: "profile" });
+      } else if (!action.payload && tabExists) {
+        state.tabs = state.tabs.filter(({ value }) => value !== "profile");
+      }
+    },
     setShowResume: (state: SettingsState, action: PayloadAction<boolean>) => {
       const tabExists = checkForTab(state.tabs, "resume");
       state.showResume = action.payload;
@@ -48,7 +64,7 @@ export const settingsSlice = createSlice({
       if (action.payload && !tabExists) {
         state.tabs.unshift({ label: "Resume", value: "resume" });
       } else if (!action.payload && tabExists) {
-        state.tabs.shift();
+        state.tabs = state.tabs.filter(({ value }) => value !== "resume");
       }
     },
     setShowApplications: (
@@ -96,6 +112,7 @@ export const settingsSlice = createSlice({
 
 export const {
   setSmallDisplay,
+  setShowProfile,
   setShowResume,
   setShowApplications,
   setActiveTab,

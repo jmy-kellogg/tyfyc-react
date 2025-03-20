@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import JobPosting from "./containers/jobsTracker/jobPosting/Index";
+import Profile from "./containers/profile/Index";
 import Resume from "./containers/resume/Index";
 import Applications from "./containers/jobsTracker/Applications";
 import Tabs from "./components/Tabs";
@@ -41,6 +42,7 @@ function App() {
                 : "flex gap-4"
             }`}
           >
+            <Profile />
             <Resume />
             <Applications />
             <JobPosting />
