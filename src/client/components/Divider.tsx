@@ -7,6 +7,7 @@ function Divider() {
         style={{
           color: "#a8a8aec9",
           fontSize: "14px",
+          textAlign: "center",
         }}
       >
         {divider()}

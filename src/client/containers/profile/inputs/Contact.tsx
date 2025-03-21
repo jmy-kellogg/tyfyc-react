@@ -103,7 +103,7 @@ function Contact({ editAll, lockEdit }: Props) {
             </div>
           </form>
         ) : (
-          <div>
+          <div className="text-center">
             <p>
               Email: {personal.email} | Phone: {personal.phone} | Location:{" "}
               {personal.city + ", " + personal.state}

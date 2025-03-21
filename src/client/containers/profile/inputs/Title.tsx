@@ -67,7 +67,7 @@ function Title({ editAll, lockEdit }: Props) {
             </div>
           </form>
         ) : (
-          <div>
+          <div className="text-center">
             <h1>{personal.firstName + " " + personal.lastName}</h1>
             <h3>{personal.jobTitle}</h3>
           </div>

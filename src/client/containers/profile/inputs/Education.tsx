@@ -119,7 +119,7 @@ function Education({ editAll, lockEdit }: Props) {
                 </div>
               </div>
             ) : (
-              <div className="body-sub-section">
+              <div>
                 <p>
                   {edu.school ||
                     "New School" +

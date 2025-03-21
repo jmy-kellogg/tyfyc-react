@@ -125,7 +125,7 @@ function Projects({ editAll, lockEdit }: Props) {
               </div>
             ) : (
               <div>
-                <div className="body-sub-section">
+                <div>
                   {project.url ? (
                     <a href={project.url}>
                       {" "}

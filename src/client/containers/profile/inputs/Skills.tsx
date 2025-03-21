@@ -106,7 +106,7 @@ function Skills({ editAll, lockEdit }: Props) {
             onMenuClose={() => setOpen(false)}
           />
         ) : (
-          <div className="body-sub-section">
+          <div>
             <p>{skills.map(({ label }) => label).join(", ")}</p>
           </div>
         )}

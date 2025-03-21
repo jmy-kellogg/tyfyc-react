@@ -41,7 +41,7 @@ function Summary({ editAll, lockEdit }: Props) {
             ></textarea>
           </div>
         ) : (
-          <div className="body-sub-section">
+          <div>
             <p>{personal.summary}</p>
           </div>
         )}

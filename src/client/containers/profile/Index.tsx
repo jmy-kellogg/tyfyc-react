@@ -44,7 +44,7 @@ function Profile() {
               active="profile"
             />
           )}
-          <div className="flex bg-white justify-end p-5">
+          <div className="m-3 flex justify-end">
             {!lockEdit && (
               <button
                 className="rounded-full border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
@@ -127,14 +127,14 @@ function Profile() {
               </button>
             )}
           </div>
-          <div className="p-3 w-full justify-center">
+          <div className="w-3xl my-5">
             <div>
               <div>
                 <Title editAll={editAll} lockEdit={lockEdit} />
                 <Contact editAll={editAll} lockEdit={lockEdit} />
               </div>
 
-              <div>
+              <div className="px-5">
                 <Summary editAll={editAll} lockEdit={lockEdit} />
                 <Skills editAll={editAll} lockEdit={lockEdit} />
                 <JobsHistory editAll={editAll} lockEdit={lockEdit} />

@@ -140,7 +140,7 @@ function JobsHistory({ editAll, lockEdit }: Props) {
               </div>
             ) : (
               <div key={index}>
-                <div className="body-sub-section">
+                <div>
                   <h3>{job.title || "New Employment"}</h3>
                   <h4>
                     {job.company} - {job.location}
