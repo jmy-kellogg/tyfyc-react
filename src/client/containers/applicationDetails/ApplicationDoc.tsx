@@ -16,7 +16,7 @@ interface Props {
   application: Application;
 }
 
-function JobDoc({ application }: Props) {
+function ApplicationDoc({ application }: Props) {
   const [popover, setPopover] = useState<boolean>(false);
   const targetJobTitle = useSelector((state: State) => state.personal.jobTitle);
   const summary = useSelector((state: State) => state.personal.summary);
@@ -159,4 +159,4 @@ function JobDoc({ application }: Props) {
   );
 }
 
-export default JobDoc;
+export default ApplicationDoc;

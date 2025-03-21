@@ -130,7 +130,7 @@ function Applications() {
   return (
     <>
       {showDisplay && (
-        <div>
+        <div className="w-full">
           {!smallDisplay && (
             <Tabs
               tabs={[
@@ -143,7 +143,7 @@ function Applications() {
             />
           )}
           <div className="bg-white p-5">
-            <div className="flex justify-end min-w-85">
+            <div className="flex justify-end">
               <div className="flex">
                 <label className="self-center rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500">
                   <span>Import CSV</span>
@@ -161,17 +161,20 @@ function Applications() {
             </div>
             {sortedList.map((application) => (
               <div
-                className="flex place-content-between border-b-1 border-zinc-300 "
+                className="flex border-b-1 border-zinc-300"
                 key={application.jobId}
               >
                 <button
-                  className="flex place-content-between w-full hover:bg-indigo-100 hover:cursor-pointer"
+                  className="flex place-content-between w-full text-l hover:bg-indigo-100 hover:cursor-pointer"
                   onClick={() => openApplication(application)}
                 >
-                  <div className="text-l p-3">
-                    <b>{application.company}</b> - {application.title}
+                  <div className="p-3">
+                    <b>{application.company}</b>
                   </div>
-                  <div className="text-l p-3 min-w-45 content-center">
+
+                  <div className="p-3">{application.title}</div>
+
+                  <div className="p-3 content-center min-w-50">
                     |{" "}
                     <b
                       className={`rounded-md p-1 ${getStatusColor(

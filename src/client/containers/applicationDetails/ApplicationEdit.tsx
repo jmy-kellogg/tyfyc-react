@@ -25,10 +25,14 @@ const jobDefault: Application = {
   notes: "",
   postingLink: "",
   companyLink: "",
+  skills: [],
+  resume: {
+    summary: "",
+  },
   jobId: uuidv4(),
 };
 
-function JobEdit({ application = jobDefault, updateData }: Props) {
+function ApplicationEdit({ application = jobDefault, updateData }: Props) {
   const getCandidates = (parsedText: ParsedText): ParsedText => {
     const firstItems = parsedText.slice(0, 10);
     return firstItems.filter((str) => str.length < 50);
@@ -260,4 +264,4 @@ function JobEdit({ application = jobDefault, updateData }: Props) {
   );
 }
 
-export default JobEdit;
+export default ApplicationEdit;

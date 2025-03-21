@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import JobPosting from "./containers/jobsTracker/jobPosting/Index";
+import ApplicationDetails from "./containers/applicationDetails/Index";
 import Profile from "./containers/profile/Index";
 import Resume from "./containers/resume/Index";
-import Applications from "./containers/jobsTracker/Applications";
+import Applications from "./containers/applications/Index";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
 
@@ -35,17 +35,11 @@ function App() {
             <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
           )}
 
-          <div
-            className={`${
-              smallDisplay
-                ? "flex justify-center bg-white w-full"
-                : "flex gap-4"
-            }`}
-          >
+          <div className={`${smallDisplay ? "flex bg-white" : "flex gap-4"}`}>
             <Profile />
             <Resume />
             <Applications />
-            <JobPosting />
+            <ApplicationDetails />
           </div>
         </div>
       </div>

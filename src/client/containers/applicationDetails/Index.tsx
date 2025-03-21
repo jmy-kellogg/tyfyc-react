@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import JobEdit from "./JobEdit";
-import JobDoc from "./JobDoc";
-import ExportCSV from "../ExportCSV";
+import ApplicationEdit from "./ApplicationEdit";
+import ApplicationDoc from "./ApplicationDoc";
 import Tabs from "@/components/Tabs";
 
 import { updateApplication } from "@/reducers/applicationsSlice";
@@ -15,7 +14,7 @@ import {
 import type { State } from "@store";
 import type { Application } from "@types";
 
-function JobPosting() {
+function ApplicationDetails() {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
   const activeTab = useSelector(getActiveTab);
@@ -50,7 +49,7 @@ function JobPosting() {
 
   return (
     <>
-      <div>
+      <div className="w-full">
         {!smallDisplay && (
           <Tabs tabs={jobTabs || []} active={activeTab} setActive={setActive} />
         )}
@@ -59,9 +58,8 @@ function JobPosting() {
           if (application) {
             return (
               activeTab === value && (
-                <div key={application.jobId} className="w-full min-w-100 m-5">
-                  <div className="bg-white text-end">
-                    {!showForm && <ExportCSV label="Save" />}
+                <div key={application.jobId} className="p-5 bg-white">
+                  <div className="text-end">
                     <button
                       className="rounded-full border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
                       onClick={() => setShowForm(!showForm)}
@@ -104,14 +102,14 @@ function JobPosting() {
                       )}
                     </button>
                   </div>
-                  <div className="bg-white p-5 pt-0">
+                  <div className="px-5 w-3xl justify-self-center">
                     {showForm ? (
-                      <JobEdit
+                      <ApplicationEdit
                         application={application}
                         updateData={updateData}
                       />
                     ) : (
-                      <JobDoc application={application} />
+                      <ApplicationDoc application={application} />
                     )}
                   </div>
                 </div>
@@ -124,4 +122,4 @@ function JobPosting() {
   );
 }
 
-export default JobPosting;
+export default ApplicationDetails;
