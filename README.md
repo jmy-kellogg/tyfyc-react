@@ -14,42 +14,71 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 - [ ] Updates resume according to job posting
 
 ## OpenAI
-add .env file with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality. 
+add .env file in `/frontend` with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality. 
 
 ## Installation
+
+### Backend
 ```
+cd backend
+```
+
+Set up Python environment
+```
+python -m venv venv
+source ./venv/bin/activate
+```
+
+Install Requirements
+```
+pip install requirements.txt
+```
+
+### Frontend
+```
+cd frontend
 npm install
 ```
 
-### Run for development
+## Run for development
+
+### Backend
 ```
+cd backend
+python ./main.py
+```
+Backend will run locally http://localhost:8080/
+
+### Frontend
+```
+cd frontend
 npm run dev
 ```
-The app will run locally http://localhost:8000/
+Frontend will run locally http://localhost:8000/
 
 ### Compiles and minifies for production
 ```
 npm run build
-
 ```
 
 ## Project Structure
 ```
 tyfyc/
-│── public/                 # Static assets
-│── src/
-│   ├── client/             # Client - frontend
-│       ├── components/     # Reusable components
-│       ├── containers/     # Containers
-│       ├── store/          # Redux store
-│       ├── App.vue         # Root component
-│       ├── main.ts         # Entry file
-│   ├── server/             # Server - backend
-│   ├── types/              # TypeScript interfaces
-│── index.html              # Html
-│── package.json            # Dependencies and scripts
-│── vite.config.js          # Vite configuration
-│── README.md               # Project documentation
+│── public/                     # Static assets
+│── backend/                    # FastAPI Backend
+│── frontend/                   # React Frontend
+    │── src/
+    │   ├── components/         # Reusable components
+    │   ├── containers/         # Containers
+    │   ├── store/              # Redux store
+    │   ├── App.vue             # Root component
+    │   ├── main.ts             # Entry file
+    │   ├── types/              # TypeScript interfaces
+    │   ├── api.ts              # Axio routing
+    │── index.html              # Html
+    │── package.json            # Dependencies and scripts
+    │── vite.config.js          # Vite configuration
+│── README.md                   # Project documentation
 ```
 
 ## Technologies Used
@@ -58,6 +87,7 @@ tyfyc/
 - TypeScript
 - HTML & CSS
 - Express
+- FastAPI
 - OpenAI "gpt-3.5-turbo"
 - License
 
