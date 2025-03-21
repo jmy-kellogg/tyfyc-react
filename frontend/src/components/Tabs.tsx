@@ -5,7 +5,7 @@ import {
   setShowResume,
   setShowProfile,
   setShowApplications,
-} from "@/reducers/settingsSlice";
+} from "src/store/reducers/settingsSlice";
 import type { TabsList } from "@types";
 
 interface Props {

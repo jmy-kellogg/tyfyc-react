@@ -2,12 +2,12 @@ import jsPDF from "jspdf";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import Tabs from "@/components/Tabs";
+import Tabs from "src/components/Tabs";
 import "./ResumeDoc.css";
 
-import { getActiveTab } from "@/reducers/settingsSlice";
+import { getActiveTab } from "src/store/reducers/settingsSlice";
 import { getFormattedDate, divider } from "@utils";
-import type { State } from "@store";
+import type { State } from "src/store";
 
 function Resume() {
   const [showDisplay, setShowDisplay] = useState<boolean>(true);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import Tabs from "@/components/Tabs";
+import Tabs from "src/components/Tabs";
 
 import Title from "./inputs/Title";
 import Contact from "./inputs/Contact";
@@ -10,8 +10,8 @@ import Skills from "./inputs/Skills";
 import JobsHistory from "./inputs/JobsHistory";
 import Education from "./inputs/Education";
 import Projects from "./inputs/Projects";
-import { getActiveTab } from "@/reducers/settingsSlice";
-import type { State } from "@store";
+import { getActiveTab } from "src/store/reducers/settingsSlice";
+import type { State } from "src/store";
 
 function Profile() {
   const [showDisplay, setShowDisplay] = useState<boolean>(true);

@@ -7,8 +7,8 @@ import {
   setActiveTab,
   setSmallDisplay,
   getActiveTab,
-} from "@/reducers/settingsSlice";
-import type { State } from "@store";
+} from "src/store/reducers/settingsSlice";
+import type { State } from "src/store";
 
 function SideMenu() {
   const dispatch = useDispatch();

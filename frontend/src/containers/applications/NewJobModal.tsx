@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { addNewApplication } from "@/reducers/applicationsSlice";
-import { setActiveTab, addJobTabs } from "@/reducers/settingsSlice";
+import { addNewApplication } from "src/store/reducers/applicationsSlice";
+import { setActiveTab, addJobTabs } from "src/store/reducers/settingsSlice";
 
 function NewJobModal() {
   const [showModal, setShowModal] = useState<boolean>(false);

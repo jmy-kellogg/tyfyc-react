@@ -3,15 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 
 import ApplicationEdit from "./ApplicationEdit";
 import ApplicationDoc from "./ApplicationDoc";
-import Tabs from "@/components/Tabs";
+import Tabs from "src/components/Tabs";
 
-import { updateApplication } from "@/reducers/applicationsSlice";
+import { updateApplication } from "src/store/reducers/applicationsSlice";
 import {
   setActiveTab,
   getActiveTab,
   setJobTab,
-} from "@/reducers/settingsSlice";
-import type { State } from "@store";
+} from "src/store/reducers/settingsSlice";
+import type { State } from "src/store";
 import type { Application } from "@types";
 
 function ApplicationDetails() {

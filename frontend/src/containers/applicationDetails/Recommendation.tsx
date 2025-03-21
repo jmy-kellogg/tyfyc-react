@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { getFormattedDate, divider } from "@utils";
 
-import type { State } from "@store";
+import type { State } from "src/store";
 
 interface Props {
   summary: string;

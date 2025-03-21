@@ -1,9 +1,9 @@
 import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import Divider from "@/components/Divider";
-import { setPersonal } from "@/reducers/personalSlice";
-import type { State } from "@store";
+import Divider from "src/components/Divider";
+import { setPersonal } from "src/store/reducers/personalSlice";
+import type { State } from "src/store";
 
 interface Props {
   editAll: boolean;

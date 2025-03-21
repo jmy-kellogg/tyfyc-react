@@ -27,12 +27,12 @@
     "baseUrl": "./",
     "paths": {
       /* paths */
-      "@/components/*": ["src/client/components/*"],
-      "@/reducers/*": ["src/client/store/reducers/*"],
-      "@/*": ["src/client/*"],
+      "@/components/*": ["src/components/*"],
+      "@/reducers/*": ["src/store/reducers/*"],
+      "@/*": ["src/*"],
       /* alias */
       "@types": ["src/types/index.ts"],
-      "@store": ["src/client/store/index.ts"],
+      "@store": ["src/store/index.ts"],
       "@utils": ["src/utils/index.ts"],
       "@options": ["src/utils/options.ts"],
       "@featureFlags": ["src/utils/featureFlags.ts"]

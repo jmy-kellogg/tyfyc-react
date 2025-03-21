@@ -3,10 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { getFormattedDate } from "@utils";
 
-import { addNewJob, removeJob, setJobs } from "@/reducers/jobHistorySlice";
+import {
+  addNewJob,
+  removeJob,
+  setJobs,
+} from "src/store/reducers/jobHistorySlice";
 import type { JobHistory, JobHistoryList } from "@types";
-import type { State } from "@store";
-import Divider from "@/components/Divider";
+import type { State } from "src/store";
+import Divider from "src/components/Divider";
 
 interface Props {
   editAll: boolean;

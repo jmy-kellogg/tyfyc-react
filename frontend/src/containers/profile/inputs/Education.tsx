@@ -3,9 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { getFormattedDate } from "@utils";
 
-import Divider from "@/components/Divider";
-import { setEducation, addNewEdu, removeEdu } from "@/reducers/educationSlice";
-import type { State } from "@store";
+import Divider from "src/components/Divider";
+import {
+  setEducation,
+  addNewEdu,
+  removeEdu,
+} from "src/store/reducers/educationSlice";
+import type { State } from "src/store";
 import type { Education, EducationList } from "@types";
 
 interface Props {

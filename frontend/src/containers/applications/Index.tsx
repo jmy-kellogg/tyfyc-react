@@ -3,21 +3,21 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
-import Tabs from "@/components/Tabs";
+import Tabs from "src/components/Tabs";
 import ExportCSV from "./ExportCSV";
 import NewJobModal from "./NewJobModal";
 
 import {
   removeApplication,
   updateApplicationsList,
-} from "@/reducers/applicationsSlice";
+} from "src/store/reducers/applicationsSlice";
 import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
   getActiveTab,
-} from "@/reducers/settingsSlice";
-import type { State } from "@store";
+} from "src/store/reducers/settingsSlice";
+import type { State } from "src/store";
 import type { Application, ApplicationsList } from "@types";
 
 function Applications() {

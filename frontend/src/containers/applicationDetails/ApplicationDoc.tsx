@@ -6,10 +6,10 @@ import JobDescription from "./JobDescription";
 import Recommendation from "./Recommendation";
 import { getStatus, getFormattedDate } from "@utils";
 
-import { setPersonal } from "@/reducers/personalSlice";
-import { updateApplication } from "@/reducers/applicationsSlice";
+import { setPersonal } from "src/store/reducers/personalSlice";
+import { updateApplication } from "src/store/reducers/applicationsSlice";
 import getFlag from "@featureFlags";
-import type { State } from "@store";
+import type { State } from "src/store";
 import type { Application } from "@types";
 
 interface Props {

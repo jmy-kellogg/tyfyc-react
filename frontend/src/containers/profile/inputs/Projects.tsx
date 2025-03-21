@@ -2,15 +2,15 @@ import { useState, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getFormattedDate } from "@utils";
-import Divider from "@/components/Divider";
+import Divider from "src/components/Divider";
 
 import {
   setProjects,
   addNewProject,
   removeProject,
-} from "@/reducers/projectsSlice";
+} from "src/store/reducers/projectsSlice";
 import type { Project, ProjectsList } from "@types";
-import type { State } from "@store";
+import type { State } from "src/store";
 
 interface Props {
   editAll: boolean;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { CSVLink } from "react-csv";
 import { useSelector } from "react-redux";
 
-import type { State } from "@store";
+import type { State } from "src/store";
 import type { Application } from "@types";
 
 type CsvRow = Array<string>;

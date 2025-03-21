@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { removePunctuation } from "@utils";
 import { skillsOptions } from "@options";
 
-import { setSkills } from "@/reducers/skillsSlice";
-import type { State } from "@store";
+import { setSkills } from "src/store/reducers/skillsSlice";
+import type { State } from "src/store";
 import type { Skill, SkillsList } from "@types";
 interface Props {
   description: string | null;

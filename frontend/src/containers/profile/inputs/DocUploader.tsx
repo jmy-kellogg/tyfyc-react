@@ -2,11 +2,11 @@ import axios from "axios";
 import { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
-import { setPersonal } from "@/reducers/personalSlice";
-import { setJobs } from "@/reducers/jobHistorySlice";
-import { setEducation } from "@/reducers/educationSlice";
-import { setSkills } from "@/reducers/skillsSlice";
-import { setProjects } from "@/reducers/projectsSlice";
+import { setPersonal } from "src/store/reducers/personalSlice";
+import { setJobs } from "src/store/reducers/jobHistorySlice";
+import { setEducation } from "src/store/reducers/educationSlice";
+import { setSkills } from "src/store/reducers/skillsSlice";
+import { setProjects } from "src/store/reducers/projectsSlice";
 import type { ParsedData } from "@types";
 
 function DocUploader() {
