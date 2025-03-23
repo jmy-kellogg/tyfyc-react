@@ -16,9 +16,9 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 ## OpenAI
 add .env file in `/frontend` with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality. 
 
-## Installation
+# Development
 
-### Backend
+## Backend
 ```
 cd backend
 ```
@@ -34,27 +34,28 @@ Install Requirements
 pip install requirements.txt
 ```
 
-### Frontend
+Start backend
+```
+python ./main.py
+```
+Runs locally on http://localhost:8080/
+
+
+## Frontend
 ```
 cd frontend
+```
+
+Install Requirements
+```
 npm install
 ```
 
-## Run for development
-
-### Backend
+Start Frontend
 ```
-cd backend
-python ./main.py
-```
-Backend will run locally http://localhost:8080/
-
-### Frontend
-```
-cd frontend
 npm run dev
 ```
-Frontend will run locally http://localhost:8000/
+Run locally http://localhost:8000/
 
 ### Compiles and minifies for production
 ```
