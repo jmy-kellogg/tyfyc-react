@@ -1,5 +1,6 @@
 from database import Base
 from sqlalchemy import Column, Integer, String, TEXT
+from sqlalchemy.orm import relationship
 
 class Application(Base):
   __tablename__ = "applications"
@@ -12,4 +13,3 @@ class Application(Base):
   posting_link = Column(String)
   company_site = Column(String)
   posting = Column(TEXT)
-  
