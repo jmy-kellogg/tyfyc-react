@@ -31,6 +31,7 @@
       "@/reducers/*": ["src/store/reducers/*"],
       "@/*": ["src/*"],
       /* alias */
+      "@api": ["src/api.ts"],
       "@types": ["src/types/index.ts"],
       "@store": ["src/store/index.ts"],
       "@utils": ["src/utils/index.ts"],

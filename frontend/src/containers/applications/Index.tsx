@@ -1,29 +1,24 @@
-import Papa from "papaparse";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
+import api from "@/api";
 import Tabs from "src/components/Tabs";
 import ExportCSV from "./ExportCSV";
+import ImportCSV from "./ImportCSV";
 import NewJobModal from "./NewJobModal";
 
 import {
-  removeApplication,
-  updateApplicationsList,
-} from "src/store/reducers/applicationsSlice";
-import {
   setActiveTab,
   addJobTabs,
-  removeJobTab,
   getActiveTab,
 } from "src/store/reducers/settingsSlice";
 import type { State } from "src/store";
 import type { Application, ApplicationsList } from "@types";
 
 function Applications() {
-  const [sortedList, setSortedList] = useState<ApplicationsList>([]);
+  const [applications, setApplications] = useState<ApplicationsList>([]);
   const [showDisplay, setShowDisplay] = useState<boolean>(true);
-  const applications = useSelector((state: State) => state.applications);
   const activeTab = useSelector(getActiveTab);
   const { showApplications, smallDisplay } = useSelector(
     (state: State) => state.settings
@@ -37,8 +32,9 @@ function Applications() {
   };
 
   const remove = (jobId: string) => {
-    dispatch(removeApplication(jobId));
-    dispatch(removeJobTab(jobId));
+    // toDo: wire up to backend
+    // dispatch(removeApplication(jobId));
+    // dispatch(removeJobTab(jobId));
   };
 
   const getStatusColor = (status: Application["status"]) => {
@@ -53,74 +49,33 @@ function Applications() {
     return colorMap[status];
   };
 
-  const onFilePicked = async (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files || [];
-    const file: File = files[0];
-
-    if (file) {
-      Papa.parse(file, {
-        header: true,
-        complete: function (results) {
-          const data = results.data;
-          if (!data || !data.length) {
-            console.error("Must be a TYFYC CSV");
-          } else {
-            const jobIdLists = applications.map(({ jobId }) => jobId);
-            const uploaded: ApplicationsList = data
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              .filter((item: any) => {
-                return item?.jobId && !jobIdLists.includes(item.jobId);
-              })
-              .map((item) => {
-                return {
-                  company: "",
-                  description: "",
-                  title: "",
-                  salary: "",
-                  dateApplied: "",
-                  location: "",
-                  status: "applied",
-                  interviewStages: [],
-                  notes: "",
-                  postingLink: "",
-                  companyLink: "",
-                  jobId: "",
-                  ...(item || {}),
-                };
-              });
-
-            if (uploaded.length) {
-              dispatch(updateApplicationsList([...applications, ...uploaded]));
-            }
-          }
-        },
-        error: function (error) {
-          console.error("Error parsing CSV:", error);
-        },
-      });
-    }
-  };
-
   useEffect(() => {
-    const order = [
-      "interviewing",
-      "applied",
-      "pending",
-      "declined",
-      "no_offer",
-      "auto_rejected",
-    ];
+    const fetchData = async () => {
+      try {
+        const dbApplications = (await api.get("/applications"))?.data || [];
+        const order = [
+          "interviewing",
+          "applied",
+          "pending",
+          "declined",
+          "no_offer",
+          "auto_rejected",
+        ];
+        const sortedList = [...dbApplications]
+          .sort((a, b) => {
+            const aDate = new Date(a.dateApplied).getTime();
+            const bDate = new Date(b.dateApplied).getTime();
+            return bDate - aDate;
+          })
+          .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
 
-    const sortedList = [...applications]
-      .sort((a, b) => {
-        const aDate = new Date(a.dateApplied).getTime();
-        const bDate = new Date(b.dateApplied).getTime();
-        return bDate - aDate;
-      })
-      .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
-
-    setSortedList(sortedList);
-  }, [applications]);
+        setApplications(sortedList);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const show = smallDisplay ? activeTab === "applications" : showApplications;
@@ -144,25 +99,13 @@ function Applications() {
           )}
           <div className="bg-white p-5">
             <div className="flex justify-end">
-              <div className="flex">
-                <label className="self-center rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500">
-                  <span>Import CSV</span>
-                  <input
-                    id="csv-upload"
-                    name="csvUpload"
-                    type="file"
-                    className="sr-only"
-                    accept=".csv"
-                    onChange={onFilePicked}
-                  />
-                </label>
-                <ExportCSV />
-              </div>
+              <ImportCSV />
+              <ExportCSV applications={applications} />
             </div>
-            {sortedList.map((application) => (
+            {applications.map((application) => (
               <div
                 className="flex border-b-1 border-zinc-300"
-                key={application.jobId}
+                key={application.id}
               >
                 <button
                   className="flex place-content-between w-full text-l hover:bg-indigo-100 hover:cursor-pointer"

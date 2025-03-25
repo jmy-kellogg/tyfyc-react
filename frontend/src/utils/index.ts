@@ -58,9 +58,55 @@ export const snake_case_string = (str: string): string => {
   return regexOutput.map((s) => s?.toLowerCase()).join("_");
 };
 
+export const snakeToCamelCase = (str: string): string => {
+  return str
+    .toLowerCase()
+    .replace(/([-_][a-z])/g, (group) =>
+      group.toUpperCase().replace("-", "").replace("_", "")
+    );
+};
+
+export const camelToSnakeCase = (str: string): string => {
+  const regex =
+    /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
+  const regexOutput = str.match(regex) || [];
+  return regexOutput.map((s) => s?.toLowerCase()).join("_");
+};
+
 export const createSkill = (newSkill: string): Skill => {
   return {
     label: newSkill,
     value: snake_case_string(newSkill),
   };
+};
+
+// API Utils
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const jsToPythonKeys = (item: any) => {
+  if (item && item.constructor == Object) {
+    const keys = Object.keys(item);
+    keys.forEach((key) => {
+      const snake_case = camelToSnakeCase(key);
+      if (snake_case !== key) {
+        item[snake_case] = item[key];
+        delete item[key];
+      }
+    });
+  }
+  return item;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const pythonToJsKeys = (item: any) => {
+  if (item && item.constructor == Object) {
+    const keys = Object.keys(item);
+    keys.forEach((key) => {
+      if (key.includes("_")) {
+        const camelCase = snakeToCamelCase(key);
+        item[camelCase] = item[key];
+        delete item[key];
+      }
+    });
+  }
+  return item;
 };

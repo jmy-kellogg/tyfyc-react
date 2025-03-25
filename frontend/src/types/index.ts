@@ -68,8 +68,10 @@ export type ProjectsList = Array<Project>;
 
 // Application
 export interface Application {
+  id: number;
   company: string;
   description: string;
+  posting: string;
   title: string;
   salary: string;
   dateApplied: string;
@@ -84,7 +86,7 @@ export interface Application {
   interviewStages: Array<string>;
   notes: string;
   postingLink: string;
-  companyLink: string;
+  companySite: string;
   jobId: string;
   skills: Array<string>;
   resume: {

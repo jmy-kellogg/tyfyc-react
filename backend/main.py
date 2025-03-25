@@ -1,8 +1,12 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.database import Base, engine
+
 from app.routers import skills, applications
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(debug=True)
 
