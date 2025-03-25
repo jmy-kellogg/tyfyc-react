@@ -1,25 +1,58 @@
-from fastapi import APIRouter, Depends
+import json
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
-from typing import Annotated, List
+from typing import List
 
 from app.schema import ApplicationBase, ApplicationModel
 from app.database import get_db
-import app.models as models
+from app.models import Application
 
 router = APIRouter()
 
-db_dependency = Annotated[Session, Depends(get_db)]
-
 @router.get("/applications", response_model=List[ApplicationModel])
-def read_applications(db: db_dependency, skip: int=0, limit: int=100):
-    print(db)
-    applications = db.query(models.Application).offset(skip).limit(limit).all()
+def fetch_all_applications(db: Session = Depends(get_db), skip: int=0, limit: int=100):    
+    applications = db.query(Application).offset(skip).limit(limit).all()
+    
     return applications
 
 @router.post("/applications", response_model=ApplicationModel)
-async def create_application(application: ApplicationBase, db: db_dependency):
-    db_application = models.Application(**application.dict())
+def create_application(application: ApplicationBase, db: Session = Depends(get_db)):
+    db_application = Application(**application.dict())
+    
     db.add(db_application)
     db.commit()
     db.refresh(db_application)
+    
     return db_application
+
+@router.get("/applications/{application_id}", response_model=ApplicationModel)
+def fetch_application_by_id(application_id: str, db: Session = Depends(get_db)):
+    application = db.get(Application, application_id)
+    
+    if not application:
+        raise HTTPException(status_code=404, detail="Item not found")
+    
+    return application
+
+@router.put("/applications/{application_id}", response_model=ApplicationModel)
+def update_application_by_id(application_id: str, application: ApplicationBase, db: Session = Depends(get_db)):
+    db_application = db.get(Application, application_id)
+    
+    for field, value in application.dict().items():
+        setattr(db_application, field, value)
+    
+    db.commit()
+    db.refresh(db_application)
+    
+    return db_application
+
+@router.delete("/applications/{application_id}", status_code=status.HTTP_200_OK)
+def delete_application_by_id(application_id: str, db: Session = Depends(get_db)):
+    db_application = db.get(Application, application_id)
+    
+    if not db_application:
+        raise HTTPException(status_code=404, detail="Application not found")
+    db.delete(db_application)
+    db.commit()
+
+    return {"detail": f"Application with id {application_id} deleted."}
