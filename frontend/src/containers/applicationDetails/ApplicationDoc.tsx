@@ -65,8 +65,8 @@ function ApplicationDoc({ application }: Props) {
           <div className="flex">
             <h1>{application.company}</h1>
 
-            {application.companyLink && (
-              <a href={application.companyLink} target="_blank">
+            {application.companySite && (
+              <a href={application.companySite} target="_blank">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -137,17 +137,11 @@ function ApplicationDoc({ application }: Props) {
               <b>Salary: </b> {application.salary || "unknown"}
             </p>
           </div>
-          {application.notes && (
-            <div className="my-5">
-              <h3>Notes: </h3>
-              <p className="whitespace-pre-wrap">{application.notes}</p>
-            </div>
-          )}
-          {application.description && (
+          {application.posting && (
             <div className="my-5">
               <h3>Job Description: </h3>
 
-              <JobDescription description={application.description} />
+              <JobDescription description={application.posting} />
             </div>
           )}
         </div>

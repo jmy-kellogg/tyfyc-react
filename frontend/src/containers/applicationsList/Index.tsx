@@ -14,10 +14,10 @@ import {
   getActiveTab,
 } from "src/store/reducers/settingsSlice";
 import type { State } from "src/store";
-import type { Application, ApplicationsList } from "@types";
+import type { Application, Applications } from "@types";
 
-function Applications() {
-  const [applications, setApplications] = useState<ApplicationsList>([]);
+function ApplicationsList() {
+  const [applications, setApplications] = useState<Applications>([]);
   const [showDisplay, setShowDisplay] = useState<boolean>(true);
   const activeTab = useSelector(getActiveTab);
   const { showApplications, smallDisplay } = useSelector(
@@ -26,15 +26,43 @@ function Applications() {
 
   const dispatch = useDispatch();
 
-  const openApplication = ({ company, jobId }: Application) => {
-    dispatch(addJobTabs({ label: company || "Job", value: jobId }));
-    dispatch(setActiveTab(jobId));
+  const fetchData = async () => {
+    try {
+      const dbApplications = (await api.get("/applications"))?.data || [];
+      const order = [
+        "interviewing",
+        "applied",
+        "pending",
+        "declined",
+        "no_offer",
+        "auto_rejected",
+      ];
+      const sortedList = [...dbApplications]
+        .sort((a, b) => {
+          const aDate = new Date(a.dateApplied).getTime();
+          const bDate = new Date(b.dateApplied).getTime();
+          return bDate - aDate;
+        })
+        .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
+
+      setApplications(sortedList);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const remove = (jobId: string) => {
-    // toDo: wire up to backend
-    // dispatch(removeApplication(jobId));
-    // dispatch(removeJobTab(jobId));
+  const openApplication = ({ company, id }: Application) => {
+    dispatch(addJobTabs({ label: company || "Job", value: id }));
+    dispatch(setActiveTab(id));
+  };
+
+  const remove = async (applicationId: string) => {
+    try {
+      await api.delete(`/applications/${applicationId}`);
+      fetchData();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const getStatusColor = (status: Application["status"]) => {
@@ -50,30 +78,6 @@ function Applications() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dbApplications = (await api.get("/applications"))?.data || [];
-        const order = [
-          "interviewing",
-          "applied",
-          "pending",
-          "declined",
-          "no_offer",
-          "auto_rejected",
-        ];
-        const sortedList = [...dbApplications]
-          .sort((a, b) => {
-            const aDate = new Date(a.dateApplied).getTime();
-            const bDate = new Date(b.dateApplied).getTime();
-            return bDate - aDate;
-          })
-          .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
-
-        setApplications(sortedList);
-      } catch (err) {
-        console.error(err);
-      }
-    };
     fetchData();
   }, []);
 
@@ -132,7 +136,7 @@ function Applications() {
                 <button
                   type="button"
                   className="rounded-md align-sub text-red-600 m-1 p-1 hover:bg-red-100 hover:cursor-pointer"
-                  onClick={() => remove(application.jobId)}
+                  onClick={() => remove(application.id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -159,4 +163,4 @@ function Applications() {
   );
 }
 
-export default Applications;
+export default ApplicationsList;

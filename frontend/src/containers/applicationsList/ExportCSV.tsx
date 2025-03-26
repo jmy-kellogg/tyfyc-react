@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { CSVLink } from "react-csv";
 
-import type { Application, ApplicationsList } from "@types";
+import type { Application, Applications } from "@types";
 
 type HeaderRow = Array<keyof Application>;
 type CsvRow = Array<Application[keyof Application]>;
 type CsvData = Array<CsvRow>;
 
 interface Props {
-  applications: ApplicationsList;
+  applications: Applications;
 }
 
 function ExportCSV({ applications }: Props) {

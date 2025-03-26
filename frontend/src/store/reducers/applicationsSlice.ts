@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getToday } from "@utils";
-import type { ApplicationsList, Application } from "@types";
+import type { Applications, Application } from "@types";
 
-export type ApplicationsState = ApplicationsList;
+export type ApplicationsState = Applications;
 
 const initialState: ApplicationsState = [];
 
@@ -13,7 +13,7 @@ export const ApplicationsSlice = createSlice({
   reducers: {
     updateApplicationsList: (
       _state: ApplicationsState,
-      action: PayloadAction<ApplicationsList>
+      action: PayloadAction<Applications>
     ) => {
       return action.payload;
     },

@@ -3,19 +3,19 @@ import { ChangeEvent } from "react";
 
 import { removePunctuation, getToday } from "@utils";
 import { statusOptions } from "@options";
+import api from "@/api";
 
 import type { Application } from "@types";
 
 interface Props {
   application?: Application;
-  updateData: (field: string, value: string, application: Application) => void;
 }
 
 type ParsedText = Array<string>;
 
 const jobDefault: Application = {
   company: "",
-  description: "",
+  posting: "",
   title: "",
   salary: "",
   dateApplied: getToday(),
@@ -24,15 +24,23 @@ const jobDefault: Application = {
   interviewStages: [],
   notes: "",
   postingLink: "",
-  companyLink: "",
+  companySite: "",
   skills: [],
   resume: {
     summary: "",
   },
-  jobId: uuidv4(),
+  id: uuidv4(),
 };
 
-function ApplicationEdit({ application = jobDefault, updateData }: Props) {
+function ApplicationEdit({ application = jobDefault }: Props) {
+  const updateData = async (
+    field: string,
+    value: string,
+    application: Application
+  ) => {
+    console.log(field, value, application);
+  };
+
   const getCandidates = (parsedText: ParsedText): ParsedText => {
     const firstItems = parsedText.slice(0, 10);
     return firstItems.filter((str) => str.length < 50);
@@ -95,7 +103,7 @@ function ApplicationEdit({ application = jobDefault, updateData }: Props) {
     updateData(field, value, application);
   };
 
-  const updateDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const updatePosting = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const field = e.target.name;
     const value = e.target.value;
     const parsedText = value.split("\n").filter((str) => !!str);
@@ -152,11 +160,11 @@ function ApplicationEdit({ application = jobDefault, updateData }: Props) {
               </label>
               <div className="mt-2">
                 <input
-                  id="companyLink"
-                  name="companyLink"
+                  id="companySite"
+                  name="companySite"
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.companyLink}
+                  value={application.companySite}
                   onChange={onChangeData}
                 />
               </div>
@@ -240,21 +248,11 @@ function ApplicationEdit({ application = jobDefault, updateData }: Props) {
             <div className="col-span-full">
               <label className="block text-sm/6 font-medium">Job Posting</label>
               <textarea
-                id="description"
-                name="description"
+                id="posting"
+                name="posting"
                 className="w-full min-h-100 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={application.description}
-                onChange={updateDescription}
-              ></textarea>
-            </div>
-            <div className="col-span-full">
-              <label className="block text-sm/6 font-medium">Notes</label>
-              <textarea
-                id="notes"
-                name="notes"
-                className="min-h-50 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={application.notes}
-                onChange={onChangeData}
+                value={application.posting}
+                onChange={updatePosting}
               ></textarea>
             </div>
           </div>

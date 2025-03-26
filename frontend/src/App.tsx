@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ApplicationDetails from "./containers/applicationDetails/Index";
 import Profile from "./containers/profile/Index";
 import Resume from "./containers/resume/Index";
-import Applications from "./containers/applications/Index";
+import ApplicationsList from "./containers/applicationsList/Index";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
 
@@ -38,7 +38,7 @@ function App() {
           <div className={`${smallDisplay ? "flex bg-white" : "flex gap-4"}`}>
             <Profile />
             <Resume />
-            <Applications />
+            <ApplicationsList />
             <ApplicationDetails />
           </div>
         </div>

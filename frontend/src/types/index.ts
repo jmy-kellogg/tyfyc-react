@@ -68,7 +68,7 @@ export type ProjectsList = Array<Project>;
 
 // Application
 export interface Application {
-  id: number;
+  id: string;
   company: string;
   description: string;
   posting: string;
@@ -94,7 +94,7 @@ export interface Application {
   };
 }
 
-export type ApplicationsList = Array<Application>;
+export type Applications = Array<Application>;
 
 export interface StatusOption {
   label: string;
