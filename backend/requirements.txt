@@ -2,3 +2,11 @@ fastapi
 uvicorn
 pydantic
 sqlalchemy
+databases
+bcrypt==4.0.1
+python-jose[cryptography]
+passlib[bcrypt]
+PyJWT
+python-decouple
+python-multipart
+dotenv
