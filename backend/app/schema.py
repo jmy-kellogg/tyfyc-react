@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class Skill(BaseModel):
@@ -20,7 +20,29 @@ class ApplicationBase(BaseModel):
     company_site: str
     posting: str
 
-class ApplicationModel(ApplicationBase):
+class ApplicationCreate(BaseModel):
+    company: str | None = "" 
+    title: str | None = ""
+    status: str | None = ""
+    date_applied: str | None = ""
+    location: str | None = ""
+    salary: str | None = ""
+    posting_link: str | None = ""
+    company_site: str | None = ""
+    posting: str | None = ""
+
+class ApplicationUpdate(BaseModel):
+    company:  Optional[str]
+    title:  Optional[str]
+    status:  Optional[str]
+    date_applied:  Optional[str]
+    location:  Optional[str]
+    salary:  Optional[str]
+    posting_link:  Optional[str]
+    company_site:  Optional[str]
+    posting:  Optional[str]
+
+class ApplicationOut(ApplicationBase):
     id: str
     class Config:
         orm_mode = True
