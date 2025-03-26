@@ -82,7 +82,8 @@ export interface Application {
     | "no_offer"
     | "declined"
     | "auto_rejected"
-    | "pending";
+    | "pending"
+    | "";
   interviewStages: Array<string>;
   notes: string;
   postingLink: string;

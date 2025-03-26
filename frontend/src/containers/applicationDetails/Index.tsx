@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import ApplicationEdit from "./ApplicationEdit";
 import ApplicationDoc from "./ApplicationDoc";
 import Tabs from "src/components/Tabs";
 
-import { setActiveTab, getActiveTab } from "src/store/reducers/settingsSlice";
+import {
+  setActiveTab,
+  getActiveTab,
+  isApplicationDetail,
+} from "src/store/reducers/settingsSlice";
 import type { State } from "src/store";
-import type { Application } from "@types";
-import api from "@/api";
 
 function ApplicationDetails() {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState<boolean>(false);
   const activeTab = useSelector(getActiveTab);
-  const [application, setApplication] = useState<Application>({});
+  const showApplicationDetails = useSelector(isApplicationDetail);
   const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const smallDisplay = useSelector(
     (state: State) => state.settings.smallDisplay
@@ -24,29 +26,13 @@ function ApplicationDetails() {
     dispatch(setActiveTab(jobId));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dbApplication =
-          (await api.get(`/applications/${activeTab}`))?.data || {};
-
-        console.log(dbApplication);
-
-        setApplication(dbApplication);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
-  }, [activeTab]);
-
   return (
     <>
       <div className="w-full">
         {!smallDisplay && (
           <Tabs tabs={jobTabs || []} active={activeTab} setActive={setActive} />
         )}
-        {application && application.id == activeTab && (
+        {showApplicationDetails && (
           <div className="p-5 bg-white">
             <div className="text-end">
               <button
@@ -93,9 +79,9 @@ function ApplicationDetails() {
             </div>
             <div className="px-5 w-3xl justify-self-center">
               {showForm ? (
-                <ApplicationEdit application={application} />
+                <ApplicationEdit applicationId={activeTab} />
               ) : (
-                <ApplicationDoc application={application} />
+                <ApplicationDoc applicationId={activeTab} />
               )}
             </div>
           </div>

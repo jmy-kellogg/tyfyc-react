@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -10,14 +10,16 @@ import { setPersonal } from "src/store/reducers/personalSlice";
 import { updateApplication } from "src/store/reducers/applicationsSlice";
 import getFlag from "@featureFlags";
 import type { State } from "src/store";
+import api from "@/api";
 import type { Application } from "@types";
 
 interface Props {
-  application: Application;
+  applicationId: string;
 }
 
-function ApplicationDoc({ application }: Props) {
+function ApplicationDoc({ applicationId }: Props) {
   const [popover, setPopover] = useState<boolean>(false);
+  const [application, setApplication] = useState<Partial<Application>>({});
   const targetJobTitle = useSelector((state: State) => state.personal.jobTitle);
   const summary = useSelector((state: State) => state.personal.summary);
   const dispatch = useDispatch();
@@ -49,6 +51,20 @@ function ApplicationDoc({ application }: Props) {
       console.error("Couldn't get resume recommendation");
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const dbApplication =
+          (await api.get(`/applications/${applicationId}`))?.data || {};
+
+        setApplication(dbApplication);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, [applicationId]);
 
   return (
     <>

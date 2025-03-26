@@ -28,7 +28,7 @@ export const ApplicationsSlice = createSlice({
         title: "",
         salary: "",
         location: "",
-        companyLink: "",
+        companySite: "",
         postingLink: "",
         dateApplied: getToday(),
         status: "applied",

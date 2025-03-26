@@ -142,3 +142,11 @@ export const getActiveTab = createDraftSafeSelector(
     return settings.activeTab;
   }
 );
+
+export const isApplicationDetail = createDraftSafeSelector(
+  selectSettings,
+  (settings) => {
+    const nonDetailPage = ["profile", "resume", "applications"];
+    return !nonDetailPage.includes(settings.activeTab);
+  }
+);

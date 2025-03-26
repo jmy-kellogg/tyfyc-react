@@ -1,44 +1,50 @@
-import { v4 as uuidv4 } from "uuid";
-import { ChangeEvent } from "react";
-
-import { removePunctuation, getToday } from "@utils";
+import { useState, useEffect, ChangeEvent } from "react";
+import { removePunctuation } from "@utils";
 import { statusOptions } from "@options";
 import api from "@/api";
 
 import type { Application } from "@types";
 
 interface Props {
-  application?: Application;
+  applicationId: string;
 }
 
 type ParsedText = Array<string>;
 
-const jobDefault: Application = {
-  company: "",
-  posting: "",
-  title: "",
-  salary: "",
-  dateApplied: getToday(),
-  location: "",
-  status: "applied",
-  interviewStages: [],
-  notes: "",
-  postingLink: "",
-  companySite: "",
-  skills: [],
-  resume: {
-    summary: "",
-  },
-  id: uuidv4(),
-};
+function ApplicationEdit({ applicationId }: Props) {
+  const [formData, setFormData] = useState<Partial<Application>>({});
 
-function ApplicationEdit({ application = jobDefault }: Props) {
-  const updateData = async (
-    field: string,
-    value: string,
-    application: Application
+  const updateApplication = async (data: Partial<Application>) => {
+    const application = {
+      company: data?.company || "",
+      title: data?.title || "",
+      status: data?.status || "",
+      dateApplied: data?.dateApplied || "",
+      location: data?.location || "",
+      salary: data?.salary || "",
+      postingLink: data?.postingLink || "",
+      companySite: data?.companySite || "",
+      posting: data?.posting || "",
+    };
+
+    try {
+      await api.put(`/applications/${applicationId}`, application);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onChangeData = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    console.log(field, value, application);
+    const field = e.target.name;
+    const value = e.target.value;
+
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const onChangeForm = () => {
+    updateApplication(formData);
   };
 
   const getCandidates = (parsedText: ParsedText): ParsedText => {
@@ -94,20 +100,10 @@ function ApplicationEdit({ application = jobDefault }: Props) {
     return locationText;
   };
 
-  const onChangeData = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const field = e.target.name;
-    const value = e.target.value;
-
-    updateData(field, value, application);
-  };
-
   const updatePosting = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const field = e.target.name;
     const value = e.target.value;
     const parsedText = value.split("\n").filter((str) => !!str);
-    const newApp = { ...application, [field]: value };
+    const newApp = { ...formData, posting: value };
     const candidates = getCandidates(parsedText);
 
     if (!newApp.title) {
@@ -120,8 +116,23 @@ function ApplicationEdit({ application = jobDefault }: Props) {
       newApp.company = findCompany(parsedText);
     }
 
-    updateData(field, value, newApp);
+    setFormData(newApp);
+    updateApplication(newApp);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const dbApplication =
+          (await api.get(`/applications/${applicationId}`))?.data || {};
+
+        setFormData(dbApplication);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, [applicationId]);
 
   return (
     <>
@@ -136,8 +147,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="company"
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.company}
+                  value={formData.company}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 />
               </div>
             </div>
@@ -149,8 +161,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="title"
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.title}
+                  value={formData.title}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 />
               </div>
             </div>
@@ -164,8 +177,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="companySite"
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.companySite}
+                  value={formData.companySite}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 />
               </div>
             </div>
@@ -180,8 +194,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="postingLink"
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.postingLink}
+                  value={formData.postingLink}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 />
               </div>
             </div>
@@ -192,8 +207,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="status"
                   id="status"
                   className="w-full rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.status}
+                  value={formData.status}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 >
                   {statusOptions.map(({ label, value }) => (
                     <option key={value} value={value}>
@@ -213,8 +229,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="dateApplied"
                   type="date"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.dateApplied}
+                  value={formData.dateApplied}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 />
               </div>
             </div>
@@ -226,8 +243,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="location"
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.location}
+                  value={formData.location}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 />
               </div>
             </div>
@@ -239,8 +257,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                   name="salary"
                   type="text"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  value={application.salary}
+                  value={formData.salary}
                   onChange={onChangeData}
+                  onBlur={onChangeForm}
                 />
               </div>
             </div>
@@ -251,8 +270,9 @@ function ApplicationEdit({ application = jobDefault }: Props) {
                 id="posting"
                 name="posting"
                 className="w-full min-h-100 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={application.posting}
-                onChange={updatePosting}
+                value={formData.posting}
+                onChange={onChangeData}
+                onBlur={updatePosting}
               ></textarea>
             </div>
           </div>
