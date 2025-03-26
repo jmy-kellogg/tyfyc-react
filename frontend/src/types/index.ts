@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { Application } from "./applications";
 
 export type Tab = {
   label: string;
@@ -65,37 +66,6 @@ export interface Project {
 }
 
 export type ProjectsList = Array<Project>;
-
-// Application
-export interface Application {
-  id: string;
-  company: string;
-  description: string;
-  posting: string;
-  title: string;
-  salary: string;
-  dateApplied: string;
-  location: string;
-  status:
-    | "applied"
-    | "interviewing"
-    | "no_offer"
-    | "declined"
-    | "auto_rejected"
-    | "pending"
-    | "";
-  interviewStages: Array<string>;
-  notes: string;
-  postingLink: string;
-  companySite: string;
-  jobId: string;
-  skills: Array<string>;
-  resume: {
-    summary: string;
-  };
-}
-
-export type Applications = Array<Application>;
 
 export interface StatusOption {
   label: string;

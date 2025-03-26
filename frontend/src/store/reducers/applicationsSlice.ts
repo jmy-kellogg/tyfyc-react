@@ -1,9 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getToday } from "@utils";
-import type { Applications, Application } from "@types";
+import type { Application } from "@/types/applications";
 
-export type ApplicationsState = Applications;
+export interface ApplicationStore extends Application {
+  description: string;
+  interviewStages: Array<string>;
+  notes: string;
+  jobId: string;
+  skills: Array<string>;
+  resume: {
+    summary: string;
+  };
+}
+
+export type ApplicationsState = Array<ApplicationStore>;
 
 const initialState: ApplicationsState = [];
 
@@ -13,18 +24,20 @@ export const ApplicationsSlice = createSlice({
   reducers: {
     updateApplicationsList: (
       _state: ApplicationsState,
-      action: PayloadAction<Applications>
+      action: PayloadAction<ApplicationsState>
     ) => {
       return action.payload;
     },
     addNewApplication: (
       state: ApplicationsState,
-      action: PayloadAction<Application | undefined>
+      action: PayloadAction<ApplicationStore | undefined>
     ) => {
       const application = action.payload || {};
-      const defaultApplication: Application = {
+      const id = uuidv4();
+      const defaultApplication: ApplicationStore = {
         company: "",
         description: "",
+        posting: "",
         title: "",
         salary: "",
         location: "",
@@ -35,7 +48,8 @@ export const ApplicationsSlice = createSlice({
         interviewStages: [],
         notes: "",
         skills: [],
-        jobId: uuidv4(),
+        id: id,
+        jobId: id,
         resume: {
           summary: "",
         },
@@ -51,12 +65,12 @@ export const ApplicationsSlice = createSlice({
     },
     updateApplication: (
       state: ApplicationsState,
-      action: PayloadAction<Application>
+      action: PayloadAction<Partial<ApplicationStore>>
     ) => {
       const index = state.findIndex(
         ({ jobId }) => jobId === action.payload.jobId
       );
-      state[index] = action.payload;
+      state[index] = { ...state[index], ...action.payload };
     },
   },
 });

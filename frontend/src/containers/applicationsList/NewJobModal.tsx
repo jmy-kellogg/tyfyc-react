@@ -6,7 +6,7 @@ import api from "@/api";
 import { getToday } from "@/utils";
 
 import { setActiveTab, addJobTabs } from "src/store/reducers/settingsSlice";
-import type { Application } from "@types";
+import type { Application } from "@/types/applications";
 
 function NewJobModal() {
   const [showModal, setShowModal] = useState<boolean>(false);

@@ -4,7 +4,12 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const resumeRecommendations = async ({ summary, description }) => {
+interface ResumeData {
+  summary: string;
+  description: string;
+}
+
+const resumeRecommendations = async ({ summary, description }: ResumeData) => {
   try {
     const completion = await client.chat.completions.create({
       model: "gpt-3.5-turbo",

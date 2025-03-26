@@ -3,19 +3,19 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.schema import  ApplicationOut, ApplicationCreate, ApplicationUpdate
+from app.schema.applications import  ApplicationResp, ApplicationCreate, ApplicationUpdate
 from app.database import get_db
 from app.models import Application
 
 router = APIRouter()
 
-@router.get("/applications", response_model=List[ApplicationOut])
+@router.get("/applications", response_model=List[ApplicationResp])
 def fetch_all_applications(db: Session = Depends(get_db), skip: int=0, limit: int=100):    
     applications = db.query(Application).offset(skip).limit(limit).all()
     
     return applications
 
-@router.post("/applications", response_model=ApplicationOut)
+@router.post("/applications", response_model=ApplicationResp)
 def create_application(application: ApplicationCreate, db: Session = Depends(get_db)):
     db_application = Application(**application.dict())
     
@@ -25,7 +25,7 @@ def create_application(application: ApplicationCreate, db: Session = Depends(get
     
     return db_application
 
-@router.get("/applications/{application_id}", response_model=ApplicationOut)
+@router.get("/applications/{application_id}", response_model=ApplicationResp)
 def fetch_application_by_id(application_id: str, db: Session = Depends(get_db)):
     application = db.get(Application, application_id)
     
@@ -34,7 +34,7 @@ def fetch_application_by_id(application_id: str, db: Session = Depends(get_db)):
     
     return application
 
-@router.put("/applications/{application_id}", response_model=ApplicationOut)
+@router.put("/applications/{application_id}", response_model=ApplicationResp)
 def update_application_by_id(application_id: str, application: ApplicationUpdate, db: Session = Depends(get_db)):
     db_application = db.get(Application, application_id)
     

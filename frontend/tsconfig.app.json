@@ -29,6 +29,7 @@
       /* paths */
       "@/components/*": ["src/components/*"],
       "@/reducers/*": ["src/store/reducers/*"],
+      "@/types/*": ["src/types/*"],
       "@/*": ["src/*"],
       /* alias */
       "@api": ["src/api.ts"],

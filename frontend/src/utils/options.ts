@@ -7,6 +7,7 @@ export const statusOptions: Array<StatusOption> = [
   { label: "Declined", value: "declined", color: "gray" },
   { label: "Auto Rejected", value: "auto_rejected", color: "gray" },
   { label: "Pending", value: "pending", color: "yellow" },
+  { label: "Unknown", value: "", color: "" },
 ];
 
 export const skillsOptions: SkillsList = [

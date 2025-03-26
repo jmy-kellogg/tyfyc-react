@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CSVLink } from "react-csv";
 
-import type { Application, Applications } from "@types";
+import type { Application, Applications } from "@/types/applications";
 
 type HeaderRow = Array<keyof Application>;
 type CsvRow = Array<Application[keyof Application]>;

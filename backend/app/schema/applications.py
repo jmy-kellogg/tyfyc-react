@@ -1,14 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-
-class Skill(BaseModel):
-    label: str
-    value: str
-
-class Skills(BaseModel):
-    options: List[Skill]
-
 class ApplicationBase(BaseModel):
     company: str
     title: str
@@ -42,7 +34,7 @@ class ApplicationUpdate(BaseModel):
     company_site:  Optional[str]
     posting:  Optional[str]
 
-class ApplicationOut(ApplicationBase):
+class ApplicationResp(ApplicationBase):
     id: str
     class Config:
         orm_mode = True

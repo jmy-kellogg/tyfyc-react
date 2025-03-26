@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.schema import Skills
+from app.schema.skills import Skills
 
 router = APIRouter()
 

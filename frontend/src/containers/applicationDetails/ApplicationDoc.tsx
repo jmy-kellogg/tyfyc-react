@@ -11,7 +11,8 @@ import { updateApplication } from "src/store/reducers/applicationsSlice";
 import getFlag from "@featureFlags";
 import type { State } from "src/store";
 import api from "@/api";
-import type { Application } from "@types";
+import type { Application } from "@/types/applications";
+import type { ApplicationStore } from "src/store/reducers/applicationsSlice";
 
 interface Props {
   applicationId: string;
@@ -20,6 +21,10 @@ interface Props {
 function ApplicationDoc({ applicationId }: Props) {
   const [popover, setPopover] = useState<boolean>(false);
   const [application, setApplication] = useState<Partial<Application>>({});
+  const storeApplication: Partial<ApplicationStore> = useSelector(
+    (state: State) =>
+      state.applications.find(({ id }) => id === applicationId) || {}
+  );
   const targetJobTitle = useSelector((state: State) => state.personal.jobTitle);
   const summary = useSelector((state: State) => state.personal.summary);
   const dispatch = useDispatch();
@@ -36,7 +41,7 @@ function ApplicationDoc({ applicationId }: Props) {
         {
           params: {
             summary,
-            description: application.description,
+            description: application.posting,
           },
         }
       );
@@ -68,7 +73,7 @@ function ApplicationDoc({ applicationId }: Props) {
 
   return (
     <>
-      {getFlag("OPENAI_FEATURE_FLAG") && !application.resume?.summary && (
+      {getFlag("OPENAI_FEATURE_FLAG") && !storeApplication.resume?.summary && (
         <button
           className="float-right rounded-md border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
           onClick={() => getRecommendedResume()}
@@ -140,10 +145,12 @@ function ApplicationDoc({ applicationId }: Props) {
           </div>
           <div className="flex place-content-between">
             <p>
-              <b>Status: </b> {getStatus(application.status)?.label || ""}
+              <b>Status: </b>{" "}
+              {application.status ? getStatus(application.status)?.label : ""}
             </p>
             <p>
-              <b>Date Applied: </b> {getFormattedDate(application.dateApplied)}
+              <b>Date Applied: </b>{" "}
+              {getFormattedDate(application.dateApplied || "")}
             </p>
             <p>
               <b>Location: </b>
@@ -161,8 +168,8 @@ function ApplicationDoc({ applicationId }: Props) {
             </div>
           )}
         </div>
-        {getFlag("OPENAI_FEATURE_FLAG") && application.resume?.summary && (
-          <Recommendation summary={application.resume?.summary} />
+        {getFlag("OPENAI_FEATURE_FLAG") && storeApplication.resume?.summary && (
+          <Recommendation summary={storeApplication.resume?.summary} />
         )}
       </div>
     </>

@@ -3,7 +3,7 @@ import { removePunctuation } from "@utils";
 import { statusOptions } from "@options";
 import api from "@/api";
 
-import type { Application } from "@types";
+import type { Application } from "@/types/applications";
 
 interface Props {
   applicationId: string;

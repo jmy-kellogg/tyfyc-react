@@ -1,6 +1,7 @@
 import Papa from "papaparse";
 import { ChangeEvent } from "react";
 
+import type { Application, Applications } from "@/types/applications";
 import api from "@/api";
 
 function ImportCSV() {
@@ -12,28 +13,37 @@ function ImportCSV() {
       Papa.parse(file, {
         header: true,
         complete: async (results) => {
-          const csvData = results.data;
+          const csvData = results?.data || [];
           if (!csvData || !csvData.length) {
             console.error("Must be a TYFYC CSV");
           } else {
-            const dbApplications = (await api.get("/applications"))?.data || [];
+            const dbApplications: Applications =
+              (await api.get("/applications"))?.data || [];
             const jobIdLists = dbApplications.map(({ id }) => id);
 
-            const uploaded = csvData
-              .filter((item) => {
-                return !item?.id || !jobIdLists.includes(item.id);
+            const uploaded: Array<Partial<Application>> = csvData
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              .filter((item: unknown): item is Record<string, any> => {
+                return (
+                  item !== null &&
+                  typeof item === "object" &&
+                  Object.keys(item).length > 0
+                );
               })
-              .map((item) => {
+              .filter((item: Partial<Application>) => {
+                return !item?.id || !jobIdLists.includes(item?.id);
+              })
+              .map((item: Partial<Application>) => {
                 return {
-                  company: item["company"] || "",
-                  title: item["title"] || "",
-                  status: item["status"] || "applied",
-                  location: item["location"] || "",
-                  dateApplied: item["dateApplied"] || "",
-                  salary: item["salary"] || "",
-                  postingLink: item["postingLink"] || "",
-                  companySite: item["companySite"] || "",
-                  posting: item["posting"] || "",
+                  company: item.company || "",
+                  title: item.title || "",
+                  status: item.status || "applied",
+                  location: item.location || "",
+                  dateApplied: item.dateApplied || "",
+                  salary: item.salary || "",
+                  postingLink: item.postingLink || "",
+                  companySite: item.companySite || "",
+                  posting: item.posting || "",
                 };
               });
 

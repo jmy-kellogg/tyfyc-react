@@ -1,5 +1,6 @@
 import { statusOptions } from "@options";
-import type { Skill, StatusOption, Application } from "@types";
+import type { Skill, StatusOption } from "@types";
+import type { Application } from "@/types/applications";
 
 // This is to allow us to see sections when importing pdf, until we have a more robust parser
 export const divider = (): string => {

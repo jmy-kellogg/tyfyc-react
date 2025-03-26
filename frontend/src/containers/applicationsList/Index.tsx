@@ -14,7 +14,7 @@ import {
   getActiveTab,
 } from "src/store/reducers/settingsSlice";
 import type { State } from "src/store";
-import type { Application, Applications } from "@types";
+import type { Application, Applications } from "@/types/applications";
 
 function ApplicationsList() {
   const [applications, setApplications] = useState<Applications>([]);
@@ -66,6 +66,7 @@ function ApplicationsList() {
   };
 
   const getStatusColor = (status: Application["status"]) => {
+    if (!status) return "";
     const colorMap = {
       applied: "text-blue-400",
       interviewing: "text-emerald-400",
@@ -130,7 +131,7 @@ function ApplicationsList() {
                     >
                       {getStatus(application.status)?.label || ""}
                     </b>{" "}
-                    | {getFormattedDate(application.dateApplied)}
+                    | {getFormattedDate(application.dateApplied || "")}
                   </div>
                 </button>
                 <button
