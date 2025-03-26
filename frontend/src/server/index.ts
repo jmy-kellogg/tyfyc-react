@@ -5,10 +5,7 @@ import getFlag from "@featureFlags";
 
 import parseResume from "./resumeParser";
 import resumeRecommendations from "./resumeChecker";
-import {
-  jobDescriptionManualParse,
-  jobDescriptionAiParse,
-} from "./jobPostingParser";
+import { jobPostingManualParse, jobPostingAiParse } from "./jobPostingParser";
 
 export const app = express();
 
@@ -45,11 +42,11 @@ app.post("/job-posting", async (req: Request, res: Response) => {
 
   if (getFlag("OPENAI_FEATURE_FLAG")) {
     if (description) {
-      const applicationData = await jobDescriptionAiParse(description);
+      const applicationData = await jobPostingAiParse(description);
       return res.status(200).send(applicationData);
     }
   } else {
-    const manualParse = jobDescriptionManualParse(description);
+    const manualParse = jobPostingManualParse(description);
     return res.status(200).send(manualParse);
   }
 });

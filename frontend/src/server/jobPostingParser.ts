@@ -59,18 +59,18 @@ const findLocation = (parsedText: ParsedText): string => {
   return locationText;
 };
 
-export const jobDescriptionManualParse = (description: string): ParsedData => {
-  const parsedText = description.split("\n").filter((str) => !!str);
+export const jobPostingManualParse = (posting: string): ParsedData => {
+  const parsedText = posting.split("\n").filter((str) => !!str);
   const candidates = getCandidates(parsedText);
 
   const application = {
     company: findCompany(parsedText) || "",
-    description: description,
+    posting: posting,
     title: findJobTitle(candidates) || "",
     salary: "",
     location: findLocation(candidates) || "",
     postingLink: "",
-    companyLink: "",
+    companySite: "",
   };
 
   return application;
@@ -80,17 +80,17 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const jobDescriptionAiParse = async (
-  description: string
+export const jobPostingAiParse = async (
+  posting: string
 ): Promise<ParsedData> => {
   let applicationData: ParsedData = {
     company: "",
-    description: description,
+    posting: posting,
     title: "",
     salary: "",
     location: "",
     postingLink: "",
-    companyLink: "",
+    companySite: "",
     skills: [],
   };
   try {
@@ -105,7 +105,7 @@ export const jobDescriptionAiParse = async (
         },
         {
           role: "user",
-          content: description,
+          content: posting,
         },
       ],
     });
@@ -117,7 +117,7 @@ export const jobDescriptionAiParse = async (
       }
     });
   } catch {
-    const manualParse = jobDescriptionManualParse(description);
+    const manualParse = jobPostingManualParse(posting);
     applicationData = { ...applicationData, ...manualParse };
   }
   return applicationData;

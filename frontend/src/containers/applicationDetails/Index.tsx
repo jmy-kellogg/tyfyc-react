@@ -46,7 +46,7 @@ function ApplicationDetails() {
         {!smallDisplay && (
           <Tabs tabs={jobTabs || []} active={activeTab} setActive={setActive} />
         )}
-        {application && (
+        {application && application.id == activeTab && (
           <div className="p-5 bg-white">
             <div className="text-end">
               <button

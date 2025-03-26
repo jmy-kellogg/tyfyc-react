@@ -1,40 +1,59 @@
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { addNewApplication } from "src/store/reducers/applicationsSlice";
+import api from "@/api";
+import { getToday } from "@/utils";
+
 import { setActiveTab, addJobTabs } from "src/store/reducers/settingsSlice";
+import type { Application } from "@types";
 
 function NewJobModal() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>("");
+  const [posting, setPosting] = useState<string>("");
   const dispatch = useDispatch();
 
   const submit = async () => {
     try {
+      const defaultApplication = {
+        company: "",
+        posting: posting,
+        title: "",
+        salary: "",
+        dateApplied: getToday(),
+        location: "",
+        status: "applied",
+        notes: "",
+        postingLink: "",
+        companySite: "",
+      };
       const response = await axios.post(
         "http://localhost:8000/job-posting",
         null,
         {
           params: {
-            description,
+            posting,
           },
         }
       );
-      const jobId = uuidv4();
-      const applicationData = { ...(response.data || {}), jobId };
-      dispatch(addNewApplication(applicationData));
+      const parsedData = response?.data || {};
+
+      // ToDo: autofill new post
+      const application: Application = await api.post("/applications", {
+        ...defaultApplication,
+        ...parsedData,
+      });
+
       dispatch(
         addJobTabs({
-          label: applicationData.company || "Job",
-          value: jobId,
+          label: application.company || "Job",
+          value: application.id,
         })
       );
-      dispatch(setActiveTab(jobId));
+      dispatch(setActiveTab(application.id));
       setShowModal(false);
     } catch {
-      console.error("Invalid Job Description");
+      console.error("Invalid Job Posting");
     }
   };
 
@@ -80,14 +99,14 @@ function NewJobModal() {
             </div>
             <div className="m-3">
               <label className="block text-lg font-medium text-center">
-                Copy/Paste Description
+                Copy/Paste job Posting
               </label>
               <textarea
-                id="description"
-                name="description"
+                id="posting"
+                name="posting"
                 className="w-full min-h-100 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={posting}
+                onChange={(e) => setPosting(e.target.value)}
               ></textarea>
             </div>
 
