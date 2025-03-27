@@ -7,7 +7,7 @@ import { setJobs } from "src/store/reducers/jobHistorySlice";
 import { setEducation } from "src/store/reducers/educationSlice";
 import { setSkills } from "src/store/reducers/skillsSlice";
 import { setProjects } from "src/store/reducers/projectsSlice";
-import type { ParsedData } from "@types";
+import type { ParsedData } from "@/types";
 
 function DocUploader() {
   const [errorMsg, setErrorMsg] = useState("");

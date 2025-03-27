@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import api from "@/api";
+import api from "src/api";
 import { getToday } from "@/utils";
 
 import { setActiveTab, addJobTabs } from "src/store/reducers/settingsSlice";

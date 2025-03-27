@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { removePunctuation } from "@utils";
 import { statusOptions } from "@options";
-import api from "@/api";
+import api from "src/api";
 
 import type { Application } from "@/types/applications";
 

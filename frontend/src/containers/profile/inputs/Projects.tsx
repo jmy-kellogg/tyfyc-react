@@ -9,7 +9,7 @@ import {
   addNewProject,
   removeProject,
 } from "src/store/reducers/projectsSlice";
-import type { Project, ProjectsList } from "@types";
+import type { Project, ProjectsList } from "@/types";
 import type { State } from "src/store";
 
 interface Props {

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { EducationList } from "@types";
+import type { EducationList } from "@/types";
 
 export type EducationState = EducationList;
 

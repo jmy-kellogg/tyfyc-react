@@ -8,7 +8,7 @@ import {
   removeJob,
   setJobs,
 } from "src/store/reducers/jobHistorySlice";
-import type { JobHistory, JobHistoryList } from "@types";
+import type { JobHistory, JobHistoryList } from "@/types";
 import type { State } from "src/store";
 import Divider from "src/components/Divider";
 

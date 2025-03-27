@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { Skill, SkillsList } from "@types";
+import type { Skill, SkillsList } from "@/types";
 
 export type SkillsState = SkillsList;
 

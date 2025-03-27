@@ -10,9 +10,8 @@ import { setPersonal } from "src/store/reducers/personalSlice";
 import { updateApplication } from "src/store/reducers/applicationsSlice";
 import getFlag from "@featureFlags";
 import type { State } from "src/store";
-import api from "@/api";
+import api from "src/api";
 import type { Application } from "@/types/applications";
-import type { ApplicationStore } from "src/store/reducers/applicationsSlice";
 
 interface Props {
   applicationId: string;
@@ -21,10 +20,7 @@ interface Props {
 function ApplicationDoc({ applicationId }: Props) {
   const [popover, setPopover] = useState<boolean>(false);
   const [application, setApplication] = useState<Partial<Application>>({});
-  const storeApplication: Partial<ApplicationStore> = useSelector(
-    (state: State) =>
-      state.applications.find(({ id }) => id === applicationId) || {}
-  );
+  const storedApplications = useSelector((state: State) => state.applications);
   const targetJobTitle = useSelector((state: State) => state.personal.jobTitle);
   const summary = useSelector((state: State) => state.personal.summary);
   const dispatch = useDispatch();
@@ -33,7 +29,15 @@ function ApplicationDoc({ applicationId }: Props) {
     dispatch(setPersonal({ jobTitle: application.title }));
   };
 
+  const getResumeSummary = () => {
+    return (
+      storedApplications.find(({ id }) => id === applicationId)?.resume
+        ?.summary || ""
+    );
+  };
+
   const getRecommendedResume = async () => {
+    console.log("hit");
     try {
       const response = await axios.post(
         "http://localhost:8000/resume-recommendation",
@@ -73,7 +77,7 @@ function ApplicationDoc({ applicationId }: Props) {
 
   return (
     <>
-      {getFlag("OPENAI_FEATURE_FLAG") && !storeApplication.resume?.summary && (
+      {getFlag("OPENAI_FEATURE_FLAG") && !getResumeSummary() && (
         <button
           className="float-right rounded-md border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
           onClick={() => getRecommendedResume()}
@@ -168,8 +172,8 @@ function ApplicationDoc({ applicationId }: Props) {
             </div>
           )}
         </div>
-        {getFlag("OPENAI_FEATURE_FLAG") && storeApplication.resume?.summary && (
-          <Recommendation summary={storeApplication.resume?.summary} />
+        {getFlag("OPENAI_FEATURE_FLAG") && getResumeSummary() && (
+          <Recommendation summary={getResumeSummary()} />
         )}
       </div>
     </>

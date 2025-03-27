@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { JobHistory, JobHistoryList } from "@types";
+import type { JobHistory, JobHistoryList } from "@/types";
 
 export type JobsState = JobHistoryList;
 

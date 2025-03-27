@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
-import api from "@/api";
+import api from "src/api";
+import { getApplications } from "src/api/applications";
 import getFlag from "@featureFlags";
 import Tabs from "src/components/Tabs";
 import ExportCSV from "./ExportCSV";
@@ -29,7 +30,7 @@ function ApplicationsList() {
 
   const fetchData = async () => {
     try {
-      const dbApplications = (await api.get("/applications"))?.data || [];
+      const dbApplications = await getApplications();
       const order = [
         "interviewing",
         "applied",

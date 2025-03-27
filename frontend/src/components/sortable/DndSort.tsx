@@ -16,7 +16,7 @@ import {
 
 import SortableItem from "./SortableItem";
 
-import { SortableList } from "@types";
+import { SortableList } from "@/types";
 
 interface Props {
   list: SortableList;

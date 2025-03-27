@@ -8,7 +8,7 @@ import { skillsOptions } from "@options";
 
 import { setSkills } from "src/store/reducers/skillsSlice";
 import type { State } from "src/store";
-import type { Skill, SkillsList, SortableItem, SortableList } from "@types";
+import type { Skill, SkillsList, SortableItem, SortableList } from "@/types";
 
 interface Props {
   editAll: boolean;

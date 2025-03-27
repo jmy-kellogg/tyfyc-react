@@ -10,7 +10,7 @@ import {
   removeEdu,
 } from "src/store/reducers/educationSlice";
 import type { State } from "src/store";
-import type { Education, EducationList } from "@types";
+import type { Education, EducationList } from "@/types";
 
 interface Props {
   editAll: boolean;

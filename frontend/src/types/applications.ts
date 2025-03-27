@@ -17,10 +17,10 @@ export interface ApplicationBase {
   posting: string;
 }
 
-export type ApplicationReqBody = Partial<ApplicationBase>;
-
 export interface Application extends ApplicationBase {
   id: string;
 }
+
+export type ApplicationReqBody = Partial<Application>;
 
 export type Applications = Array<Application>;

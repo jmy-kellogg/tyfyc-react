@@ -30,10 +30,9 @@
       "@/components/*": ["src/components/*"],
       "@/reducers/*": ["src/store/reducers/*"],
       "@/types/*": ["src/types/*"],
+      "@/api": ["src/api/*"],
       "@/*": ["src/*"],
       /* alias */
-      "@api": ["src/api.ts"],
-      "@types": ["src/types/index.ts"],
       "@store": ["src/store/index.ts"],
       "@utils": ["src/utils/index.ts"],
       "@options": ["src/utils/options.ts"],
