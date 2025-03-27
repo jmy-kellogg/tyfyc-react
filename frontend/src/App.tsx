@@ -11,6 +11,7 @@ import {
   setActiveTab,
   getTabs,
   getActiveTab,
+  isApplicationDetail,
 } from "./store/reducers/settingsSlice";
 import type { State } from "./store";
 
@@ -18,9 +19,8 @@ function App() {
   const dispatch = useDispatch();
   const tabs = useSelector(getTabs);
   const activeTab = useSelector(getActiveTab);
-  const smallDisplay = useSelector(
-    ({ settings }: State) => settings.smallDisplay
-  );
+  const showApplication = useSelector(isApplicationDetail);
+  const { smallDisplay } = useSelector((state: State) => state.settings);
 
   const setActive = (activeValue: string) => {
     dispatch(setActiveTab(activeValue));
@@ -31,16 +31,26 @@ function App() {
       <div className="flex">
         <SideMenu />
         <div className="m-3 w-full">
-          {smallDisplay && (
-            <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
+          {smallDisplay ? (
+            <>
+              <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
+              <div className="flex bg-white justify-center">
+                {activeTab === "profile" && <Profile />}
+                {activeTab === "resume" && <Resume />}
+                {activeTab === "applications" && (
+                  <ApplicationsList showTabs={false} />
+                )}
+                {showApplication && <ApplicationDetails />}
+              </div>
+            </>
+          ) : (
+            <div className="flex gap-4">
+              <Profile />
+              <Resume />
+              <ApplicationsList showTabs={true} />
+              <ApplicationDetails />
+            </div>
           )}
-
-          <div className={`${smallDisplay ? "flex bg-white" : "flex gap-4"}`}>
-            <Profile />
-            <Resume />
-            <ApplicationsList />
-            <ApplicationDetails />
-          </div>
         </div>
       </div>
     </>

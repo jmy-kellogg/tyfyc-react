@@ -37,7 +37,6 @@ function ApplicationDoc({ applicationId }: Props) {
   };
 
   const getRecommendedResume = async () => {
-    console.log("hit");
     try {
       const response = await axios.post(
         "http://localhost:8000/resume-recommendation",

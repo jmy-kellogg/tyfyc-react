@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
 import { getApplications, deleteApplication } from "src/api/applications";
@@ -12,19 +12,17 @@ import NewJobModal from "./NewJobModal";
 import {
   setActiveTab,
   addJobTabs,
-  getActiveTab,
+  removeJobTab,
 } from "src/store/reducers/settingsSlice";
-import type { State } from "src/store";
 import type { Application, Applications } from "@/types/applications";
 
-function ApplicationsList() {
+interface Props {
+  showTabs: boolean;
+}
+
+function ApplicationsList({ showTabs }: Props) {
   const dispatch = useDispatch();
   const [applications, setApplications] = useState<Applications>([]);
-  const [showDisplay, setShowDisplay] = useState<boolean>(true);
-  const activeTab = useSelector(getActiveTab);
-  const { showApplications, smallDisplay } = useSelector(
-    (state: State) => state.settings
-  );
 
   const sortApplications = (applications: Applications): Applications => {
     const order = [
@@ -40,6 +38,9 @@ function ApplicationsList() {
         const aDate = new Date(a.dateApplied).getTime();
         const bDate = new Date(b.dateApplied).getTime();
         return bDate - aDate;
+      })
+      .sort((a, b) => {
+        return a.company.localeCompare(b.company);
       })
       .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
 
@@ -65,6 +66,7 @@ function ApplicationsList() {
     try {
       await deleteApplication(applicationId);
       fetchData();
+      dispatch(removeJobTab(applicationId));
     } catch (err) {
       console.error(err);
     }
@@ -84,63 +86,65 @@ function ApplicationsList() {
   };
 
   useEffect(() => {
-    const show = smallDisplay ? activeTab === "applications" : showApplications;
-    setShowDisplay(show);
-  }, [smallDisplay, activeTab, showApplications]);
-
-  useEffect(() => {
-    if (showDisplay) {
-      fetchData();
-    }
-  }, [showDisplay, fetchData]);
+    fetchData();
+  }, [fetchData]);
 
   return (
     <>
-      {showDisplay && (
-        <div className="w-full">
-          {!smallDisplay && (
-            <Tabs
-              tabs={[
-                {
-                  label: "Applications",
-                  value: "applications",
-                },
-              ]}
-              active="applications"
-            />
-          )}
-          <div className="bg-white p-5">
-            <div className="flex justify-end">
-              {getFlag("FULL_EXPORT_FEATURE") && <ImportCSV />}
+      <div>
+        {showTabs && (
+          <Tabs
+            tabs={[
+              {
+                label: "Applications",
+                value: "applications",
+              },
+            ]}
+            active="applications"
+          />
+        )}
+        <div className="page">
+          <div className="flex justify-between">
+            <div className="flex">
               <ExportCSV applications={applications} />
+              {getFlag("FULL_EXPORT_FEATURE") && (
+                <ImportCSV fetchData={fetchData} />
+              )}
             </div>
+            <NewJobModal />
+          </div>
+          <div>
             {applications.map((application) => (
               <div
-                className="flex border-b-1 border-zinc-300"
+                className="flex justify-between border-b-1 border-zinc-300"
                 key={application.id}
               >
                 <button
-                  className="flex place-content-between w-full text-l hover:bg-indigo-100 hover:cursor-pointer"
+                  className="hover:bg-indigo-100 hover:cursor-pointer"
                   onClick={() => openApplication(application)}
                 >
-                  <div className="p-3">
-                    <b>{application.company}</b>
-                  </div>
-
-                  <div className="p-3">{application.title}</div>
-
-                  <div className="p-3 content-center min-w-50">
-                    |{" "}
-                    <b
-                      className={`rounded-md p-1 ${getStatusColor(
-                        application.status
-                      )}`}
-                    >
-                      {getStatus(application.status)?.label || ""}
-                    </b>{" "}
-                    | {getFormattedDate(application.dateApplied || "")}
+                  <div className="text-l flex justify-between items-center">
+                    <div className="w-30 text-left font-bold my-3 mx-1">
+                      {application.company}
+                    </div>
+                    <div className="w-75 text-left my-3 mx-1">
+                      {application.title}
+                    </div>
+                    <div className="w-30 text-right my-3 mx-1">
+                      <p
+                        className={`font-bold ${getStatusColor(
+                          application.status
+                        )}`}
+                      >
+                        {getStatus(application.status)?.label || ""}
+                      </p>
+                    </div>
+                    <div className="w-15 text-right my-3 mx-1">
+                      {getFormattedDate(application.dateApplied || "")}
+                    </div>
                   </div>
                 </button>
+
                 <button
                   type="button"
                   className="rounded-md align-sub text-red-600 m-1 p-1 hover:bg-red-100 hover:cursor-pointer"
@@ -163,10 +167,9 @@ function ApplicationsList() {
                 </button>
               </div>
             ))}
-            <NewJobModal />
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

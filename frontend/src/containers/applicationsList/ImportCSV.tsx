@@ -4,7 +4,11 @@ import { ChangeEvent } from "react";
 import type { Applications, ApplicationReqBody } from "@/types/applications";
 import { getApplications, addApplication } from "@/api/applications";
 
-function ImportCSV() {
+interface Props {
+  fetchData: () => void;
+}
+
+function ImportCSV({ fetchData }: Props) {
   const isObject = (item: unknown): boolean => {
     return (
       item !== null && typeof item === "object" && Object.keys(item).length > 0
@@ -26,6 +30,7 @@ function ImportCSV() {
         uploadList.forEach(async (application) => {
           await addApplication(application);
         });
+        fetchData();
       }
     } catch (err) {
       console.error(err);
@@ -44,7 +49,7 @@ function ImportCSV() {
           if (!csvData) {
             console.error("No data from CSV found");
           } else {
-            uploadApplications(csvData);
+            await uploadApplications(csvData);
           }
         },
         error: function (error) {
@@ -56,23 +61,17 @@ function ImportCSV() {
 
   return (
     <>
-      <div className="bg-white mx-5">
-        <div className="flex">
-          <div className="flex">
-            <label className="self-center rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500">
-              <span>Import CSV</span>
-              <input
-                id="csv-upload"
-                name="csvUpload"
-                type="file"
-                className="sr-only"
-                accept=".csv"
-                onChange={onFilePicked}
-              />
-            </label>
-          </div>
-        </div>
-      </div>
+      <label className="self-center rounded-md bg-indigo-600 border-2 border-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 hover:border-indigo-500">
+        <span>Import CSV</span>
+        <input
+          id="csv-upload"
+          name="csvUpload"
+          type="file"
+          className="sr-only"
+          accept=".csv"
+          onChange={onFilePicked}
+        />
+      </label>
     </>
   );
 }

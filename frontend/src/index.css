@@ -17,3 +17,11 @@
 body {
   background-color: #f4f2ef;
 }
+
+.page {
+  height: calc(100vh - 75px);
+  background-color: white;
+  padding: 15px;
+  overflow: auto;
+  width: max-content;
+}
