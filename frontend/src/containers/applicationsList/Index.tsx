@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
-import api from "src/api";
-import { getApplications } from "src/api/applications";
+import { getApplications, deleteApplication } from "src/api/applications";
 import getFlag from "@featureFlags";
 import Tabs from "src/components/Tabs";
 import ExportCSV from "./ExportCSV";
@@ -19,6 +18,7 @@ import type { State } from "src/store";
 import type { Application, Applications } from "@/types/applications";
 
 function ApplicationsList() {
+  const dispatch = useDispatch();
   const [applications, setApplications] = useState<Applications>([]);
   const [showDisplay, setShowDisplay] = useState<boolean>(true);
   const activeTab = useSelector(getActiveTab);
@@ -26,32 +26,35 @@ function ApplicationsList() {
     (state: State) => state.settings
   );
 
-  const dispatch = useDispatch();
+  const sortApplications = (applications: Applications): Applications => {
+    const order = [
+      "interviewing",
+      "applied",
+      "pending",
+      "declined",
+      "no_offer",
+      "auto_rejected",
+    ];
+    const sortedList = [...applications]
+      .sort((a, b) => {
+        const aDate = new Date(a.dateApplied).getTime();
+        const bDate = new Date(b.dateApplied).getTime();
+        return bDate - aDate;
+      })
+      .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
 
-  const fetchData = async () => {
+    return sortedList;
+  };
+
+  const fetchData = useCallback(async () => {
     try {
       const dbApplications = await getApplications();
-      const order = [
-        "interviewing",
-        "applied",
-        "pending",
-        "declined",
-        "no_offer",
-        "auto_rejected",
-      ];
-      const sortedList = [...dbApplications]
-        .sort((a, b) => {
-          const aDate = new Date(a.dateApplied).getTime();
-          const bDate = new Date(b.dateApplied).getTime();
-          return bDate - aDate;
-        })
-        .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
-
+      const sortedList = sortApplications(dbApplications);
       setApplications(sortedList);
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
 
   const openApplication = ({ company, id }: Application) => {
     dispatch(addJobTabs({ label: company || "Job", value: id }));
@@ -60,7 +63,7 @@ function ApplicationsList() {
 
   const remove = async (applicationId: string) => {
     try {
-      await api.delete(`/applications/${applicationId}`);
+      await deleteApplication(applicationId);
       fetchData();
     } catch (err) {
       console.error(err);
@@ -81,13 +84,15 @@ function ApplicationsList() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     const show = smallDisplay ? activeTab === "applications" : showApplications;
     setShowDisplay(show);
   }, [smallDisplay, activeTab, showApplications]);
+
+  useEffect(() => {
+    if (showDisplay) {
+      fetchData();
+    }
+  }, [showDisplay, fetchData]);
 
   return (
     <>

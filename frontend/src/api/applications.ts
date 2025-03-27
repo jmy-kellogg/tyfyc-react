@@ -29,3 +29,11 @@ export const addApplication = async (application: ApplicationReqBody) => {
     console.error(err);
   }
 };
+
+export const deleteApplication = async (applicationId: string) => {
+  try {
+    await api.delete(`/applications/${applicationId}`);
+  } catch (err) {
+    console.error(err);
+  }
+};
