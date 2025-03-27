@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
 import api from "@/api";
+import getFlag from "@featureFlags";
 import Tabs from "src/components/Tabs";
 import ExportCSV from "./ExportCSV";
 import ImportCSV from "./ImportCSV";
@@ -104,7 +105,7 @@ function ApplicationsList() {
           )}
           <div className="bg-white p-5">
             <div className="flex justify-end">
-              <ImportCSV />
+              {getFlag("FULL_EXPORT_FEATURE") && <ImportCSV />}
               <ExportCSV applications={applications} />
             </div>
             {applications.map((application) => (

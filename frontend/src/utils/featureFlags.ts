@@ -1,4 +1,4 @@
-type FeatureFlagNames = "OPENAI_FEATURE_FLAG";
+type FeatureFlagNames = "OPENAI_FEATURE_FLAG" | "FULL_EXPORT_FEATURE";
 
 const getFlag = (flagName: FeatureFlagNames) => {
   if (process.env[flagName] === "true") {

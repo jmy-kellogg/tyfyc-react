@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { CSVLink } from "react-csv";
 
+import getFlag from "@featureFlags";
 import type { Application, Applications } from "@/types/applications";
 
 type HeaderRow = Array<keyof Application>;
@@ -15,17 +16,32 @@ function ExportCSV({ applications }: Props) {
   const [data, setData] = useState<CsvData>([]);
 
   useEffect(() => {
-    const headers: HeaderRow = [
+    const fullHeaders: HeaderRow = [
       "company",
       "title",
       "status",
       "dateApplied",
+      "location",
       "salary",
       "postingLink",
       "companySite",
       "id",
       "posting",
     ];
+    const partialHeaders: HeaderRow = [
+      "company",
+      "title",
+      "location",
+      "dateApplied",
+      "status",
+      "salary",
+      "postingLink",
+      "companySite",
+    ];
+
+    const headers: HeaderRow = getFlag("FULL_EXPORT_FEATURE")
+      ? fullHeaders
+      : partialHeaders;
 
     const values: CsvData = applications.map((app) =>
       headers.map((key) => app[key] || "")
