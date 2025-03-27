@@ -3,6 +3,11 @@ from app.schemas.skills import Skills
 
 router = APIRouter()
 
+tags_metadata = {
+    "name": "skills",
+    "description": "Operations with technical skills"
+}
+
 options =  [
     {
       "label": "JavaScript",
@@ -265,7 +270,7 @@ options =  [
   ]
 
 
-@router.get("/skills", response_model=Skills)
+@router.get("/skills", tags=["skills"], response_model=Skills)
 def get_skills_options():
     return Skills(options=options)
 

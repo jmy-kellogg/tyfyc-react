@@ -8,14 +8,18 @@ from app.database import get_db
 from app.models import Application
 
 router = APIRouter()
+tags_metadata = {
+    "name": "applications",
+    "description": "Operations with tracking job applications.",
+}
 
-@router.get("/applications", response_model=List[ApplicationResp])
+@router.get("/applications", tags=["applications"], response_model=List[ApplicationResp])
 def fetch_all_applications(db: Session = Depends(get_db), skip: int=0, limit: int=100):    
     applications = db.query(Application).offset(skip).limit(limit).all()
     
     return applications
 
-@router.post("/applications", response_model=ApplicationResp)
+@router.post("/applications", tags=["applications"], response_model=ApplicationResp)
 def create_application(application: ApplicationCreate, db: Session = Depends(get_db)):
     db_application = Application(**application.dict())
     
@@ -25,7 +29,7 @@ def create_application(application: ApplicationCreate, db: Session = Depends(get
     
     return db_application
 
-@router.get("/applications/{application_id}", response_model=ApplicationResp)
+@router.get("/applications/{application_id}", tags=["applications"], response_model=ApplicationResp)
 def fetch_application_by_id(application_id: str, db: Session = Depends(get_db)):
     application = db.get(Application, application_id)
     
@@ -34,7 +38,7 @@ def fetch_application_by_id(application_id: str, db: Session = Depends(get_db)):
     
     return application
 
-@router.put("/applications/{application_id}", response_model=ApplicationResp)
+@router.put("/applications/{application_id}", tags=["applications"], response_model=ApplicationResp)
 def update_application_by_id(application_id: str, application: ApplicationUpdate, db: Session = Depends(get_db)):
     db_application = db.get(Application, application_id)
     
@@ -46,7 +50,7 @@ def update_application_by_id(application_id: str, application: ApplicationUpdate
     
     return db_application
 
-@router.delete("/applications/{application_id}", status_code=status.HTTP_200_OK)
+@router.delete("/applications/{application_id}", tags=["applications"], status_code=status.HTTP_200_OK)
 def delete_application_by_id(application_id: str, db: Session = Depends(get_db)):
     db_application = db.get(Application, application_id)
     

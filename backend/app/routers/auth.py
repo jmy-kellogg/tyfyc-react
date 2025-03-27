@@ -10,8 +10,12 @@ from app.schemas.user import Token, UserCreate, UserResponse
 from app.models import User
 
 router = APIRouter()
+tags_metadata = {
+    "name": "auth",
+    "description": "Operations with authentication for the app",
+}
 
-@router.post("/register", response_model=UserResponse)
+@router.post("/register", tags=["auth"], response_model=UserResponse)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = get_user(db, user.username)
     if db_user:
@@ -37,7 +41,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.post("/token")
+@router.post("/token", tags=["auth"])
 async def login_for_access_token(
         form_data: OAuth2PasswordRequestForm = Depends(),
         db: Session = Depends(get_db)

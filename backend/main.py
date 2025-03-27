@@ -4,12 +4,18 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 
-from app.routers import skills, applications, auth, user
-from app.models import createSkills
+from app.routers import auth, user, applications, skills
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(debug=True)
+tags_metadata = [
+  auth.tags_metadata,
+  user.tags_metadata,
+  applications.tags_metadata,
+  skills.tags_metadata
+]
+
+app = FastAPI(debug=True, openapi_tags=tags_metadata)
 
 origins = [
   "http://localhost:8000",
