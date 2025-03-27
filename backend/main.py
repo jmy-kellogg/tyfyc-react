@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 
 from app.routers import skills, applications, auth, user
+from app.models import createSkills
 
 Base.metadata.create_all(bind=engine)
 

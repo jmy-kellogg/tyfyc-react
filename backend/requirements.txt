@@ -10,3 +10,4 @@ PyJWT
 python-decouple
 python-multipart
 dotenv
+alembic

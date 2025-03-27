@@ -34,3 +34,9 @@ class User(Base):
     linked_in = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+
+class Skill(Base):
+    __tablename__ = "skills"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    name = Column(String, nullable=False)
+    default_category = Column(String, nullable=True)
