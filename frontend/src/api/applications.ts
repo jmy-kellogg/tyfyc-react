@@ -15,6 +15,33 @@ export const getApplications = async (): Promise<Applications> => {
   }
 };
 
+export const getApplication = async (
+  applicationId: string
+): Promise<ApplicationResBody> => {
+  try {
+    const response = await api.get(`/applications/${applicationId}`);
+    return response.data || {};
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
+};
+
+export const updateApplication = async (
+  application: ApplicationReqBody
+): Promise<ApplicationResBody> => {
+  try {
+    const response = await api.put(
+      `/applications/${application.id}`,
+      application
+    );
+    return response.data || {};
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
+};
+
 export const addApplication = async (
   application: ApplicationReqBody
 ): Promise<ApplicationResBody> => {

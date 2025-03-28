@@ -33,7 +33,7 @@ function ApplicationDetails() {
           <Tabs tabs={jobTabs || []} active={activeTab} setActive={setActive} />
         )}
         {showApplicationDetails && (
-          <div className="p-5 bg-white">
+          <div className={`${smallDisplay ? "full-page" : "page"}`}>
             <div className="text-end">
               <button
                 className="rounded-full border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"

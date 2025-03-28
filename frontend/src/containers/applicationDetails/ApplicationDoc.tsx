@@ -8,9 +8,9 @@ import { getStatus, getFormattedDate } from "@utils";
 
 import { setPersonal } from "src/store/reducers/personalSlice";
 import { updateApplication } from "src/store/reducers/applicationsSlice";
+import { getApplication } from "@/api/applications";
 import getFlag from "@featureFlags";
 import type { State } from "src/store";
-import api from "src/api";
 import type { Application } from "@/types/applications";
 
 interface Props {
@@ -63,8 +63,7 @@ function ApplicationDoc({ applicationId }: Props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const dbApplication =
-          (await api.get(`/applications/${applicationId}`))?.data || {};
+        const dbApplication = await getApplication(applicationId);
 
         setApplication(dbApplication);
       } catch (err) {

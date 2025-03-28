@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { removePunctuation } from "@utils";
 import { statusOptions } from "@options";
-import api from "src/api";
+import { getApplication, updateApplication } from "@/api/applications";
 
 import type { Application } from "@/types/applications";
 
@@ -14,26 +14,6 @@ type ParsedText = Array<string>;
 function ApplicationEdit({ applicationId }: Props) {
   const [formData, setFormData] = useState<Partial<Application>>({});
 
-  const updateApplication = async (data: Partial<Application>) => {
-    const application = {
-      company: data?.company || "",
-      title: data?.title || "",
-      status: data?.status || "",
-      dateApplied: data?.dateApplied || "",
-      location: data?.location || "",
-      salary: data?.salary || "",
-      postingLink: data?.postingLink || "",
-      companySite: data?.companySite || "",
-      posting: data?.posting || "",
-    };
-
-    try {
-      await api.put(`/applications/${applicationId}`, application);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const onChangeData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -43,8 +23,12 @@ function ApplicationEdit({ applicationId }: Props) {
     setFormData({ ...formData, [field]: value });
   };
 
-  const onChangeForm = () => {
-    updateApplication(formData);
+  const onChangeForm = async () => {
+    try {
+      await updateApplication(formData);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const getCandidates = (parsedText: ParsedText): ParsedText => {
@@ -123,9 +107,7 @@ function ApplicationEdit({ applicationId }: Props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const dbApplication =
-          (await api.get(`/applications/${applicationId}`))?.data || {};
-
+        const dbApplication = await getApplication(applicationId);
         setFormData(dbApplication);
       } catch (err) {
         console.error(err);
