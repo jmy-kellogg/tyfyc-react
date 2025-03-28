@@ -30,16 +30,14 @@ function App() {
     <>
       <div className="flex">
         <SideMenu />
-        <div className="m-3 w-full">
+        <div className="m-3">
           {smallDisplay ? (
             <>
               <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
               <div className="flex bg-white justify-center">
                 {activeTab === "profile" && <Profile />}
                 {activeTab === "resume" && <Resume />}
-                {activeTab === "applications" && (
-                  <ApplicationsList showTabs={false} />
-                )}
+                {activeTab === "applications" && <ApplicationsList />}
                 {showApplication && <ApplicationDetails />}
               </div>
             </>
@@ -47,7 +45,7 @@ function App() {
             <div className="flex gap-4">
               <Profile />
               <Resume />
-              <ApplicationsList showTabs={true} />
+              <ApplicationsList />
               <ApplicationDetails />
             </div>
           )}

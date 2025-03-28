@@ -18,6 +18,14 @@ body {
   background-color: #f4f2ef;
 }
 
+.full-page{
+  height: calc(100vh - 75px);
+  background-color: white;
+  overflow: auto;
+  padding: 15px;
+  width: calc(100vw - 100px);
+}
+
 .page {
   height: calc(100vh - 75px);
   background-color: white;
