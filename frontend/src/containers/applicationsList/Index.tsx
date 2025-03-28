@@ -33,12 +33,12 @@ function ApplicationsList() {
     ];
     const sortedList = [...applications]
       .sort((a, b) => {
+        return a.company.localeCompare(b.company);
+      })
+      .sort((a, b) => {
         const aDate = new Date(a.dateApplied).getTime();
         const bDate = new Date(b.dateApplied).getTime();
         return bDate - aDate;
-      })
-      .sort((a, b) => {
-        return a.company.localeCompare(b.company);
       })
       .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
 

@@ -11,7 +11,6 @@ import {
   setActiveTab,
   getTabs,
   getActiveTab,
-  isApplicationDetail,
 } from "./store/reducers/settingsSlice";
 import type { State } from "./store";
 
@@ -19,7 +18,6 @@ function App() {
   const dispatch = useDispatch();
   const tabs = useSelector(getTabs);
   const activeTab = useSelector(getActiveTab);
-  const showApplication = useSelector(isApplicationDetail);
   const { smallDisplay } = useSelector((state: State) => state.settings);
 
   const setActive = (activeValue: string) => {
@@ -38,7 +36,9 @@ function App() {
                 {activeTab === "profile" && <Profile />}
                 {activeTab === "resume" && <Resume />}
                 {activeTab === "applications" && <ApplicationsList />}
-                {showApplication && <ApplicationDetails />}
+                {!["profile", "resume", "applications"].includes(activeTab) && (
+                  <ApplicationDetails />
+                )}
               </div>
             </>
           ) : (

@@ -49,7 +49,7 @@ function NewJobModal() {
   return (
     <>
       <button
-        className="rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
+        className="rounded-md bg-indigo-600 text-white m-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
         type="button"
         onClick={() => setShowModal(true)}
       >

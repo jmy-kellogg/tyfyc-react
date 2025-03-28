@@ -23,7 +23,7 @@ def find_company(parsed_text: List[str]) -> str:
     is_lower = re.compile(r'[a-z(]')
 
     candidate = next(
-        (text for text in parsed_text if text[:2].lower() == "at" and is_cap.search(text.split(" ")[1])), 
+        (text for text in parsed_text if (text[:2].lower() == "at" or text[:2].lower() == "about") and is_cap.search(text.split(" ")[1])), 
         None
     )
 
