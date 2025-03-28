@@ -34,19 +34,19 @@ app.post("/parser", upload.single("file"), (req: Request, res: Response) => {
 });
 
 app.post("/job-posting", async (req: Request, res: Response) => {
-  const description: string = `${req.query.description}` || "";
+  const posting: string = `${req.query.posting}` || "";
 
-  if (!description) {
-    return res.status(400).send({ error: "Must give description" });
+  if (!posting) {
+    return res.status(400).send({ error: "Must give posting" });
   }
 
   if (getFlag("OPENAI_FEATURE_FLAG")) {
-    if (description) {
-      const applicationData = await jobPostingAiParse(description);
+    if (posting) {
+      const applicationData = await jobPostingAiParse(posting);
       return res.status(200).send(applicationData);
     }
   } else {
-    const manualParse = jobPostingManualParse(description);
+    const manualParse = jobPostingManualParse(posting);
     return res.status(200).send(manualParse);
   }
 });

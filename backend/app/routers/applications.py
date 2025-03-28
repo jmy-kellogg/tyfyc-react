@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.schemas.applications import  ApplicationResp, ApplicationCreate, ApplicationUpdate
+from app.parser.application import parse_application
 from app.database import get_db
 from app.models import Application
 
@@ -21,8 +22,8 @@ def fetch_all_applications(db: Session = Depends(get_db), skip: int=0, limit: in
 
 @router.post("/applications", tags=["applications"], response_model=ApplicationResp)
 def create_application(application: ApplicationCreate, db: Session = Depends(get_db)):
-    db_application = Application(**application.dict())
-    
+    pared_application = parse_application(application.dict())
+    db_application = Application(**pared_application)
     db.add(db_application)
     db.commit()
     db.refresh(db_application)

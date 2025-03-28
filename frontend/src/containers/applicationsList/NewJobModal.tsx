@@ -1,21 +1,23 @@
-import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import api from "src/api";
+import { addApplication } from "@/api/applications";
 import { getToday } from "@/utils";
 
 import { setActiveTab, addJobTabs } from "src/store/reducers/settingsSlice";
-import type { Application } from "@/types/applications";
+import type {
+  ApplicationReqBody,
+  ApplicationResBody,
+} from "@/types/applications";
 
 function NewJobModal() {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [posting, setPosting] = useState<string>("");
-  const dispatch = useDispatch();
 
   const submit = async () => {
     try {
-      const defaultApplication = {
+      const reqBody: ApplicationReqBody = {
         company: "",
         posting: posting,
         title: "",
@@ -23,35 +25,22 @@ function NewJobModal() {
         dateApplied: getToday(),
         location: "",
         status: "applied",
-        notes: "",
         postingLink: "",
         companySite: "",
       };
-      const response = await axios.post(
-        "http://localhost:8000/job-posting",
-        null,
-        {
-          params: {
-            posting,
-          },
-        }
-      );
-      const parsedData = response?.data || {};
 
-      // ToDo: autofill new post
-      const application: Application = await api.post("/applications", {
-        ...defaultApplication,
-        ...parsedData,
-      });
+      const application: ApplicationResBody = await addApplication(reqBody);
 
-      dispatch(
-        addJobTabs({
-          label: application.company || "Job",
-          value: application.id,
-        })
-      );
-      dispatch(setActiveTab(application.id));
-      setShowModal(false);
+      if (application.id) {
+        dispatch(
+          addJobTabs({
+            label: application.company || "Job",
+            value: application.id,
+          })
+        );
+        dispatch(setActiveTab(application.id));
+        setShowModal(false);
+      }
     } catch {
       console.error("Invalid Job Posting");
     }
@@ -70,9 +59,9 @@ function NewJobModal() {
       {showModal && (
         <div
           id="default-modal"
-          className="backdrop-brightness-50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-full"
+          className="backdrop-brightness-50 overflow-y-auto overflow-x-hidden fixed z-50 w-full md:inset-0 h-full"
         >
-          <div className="bg-white m-10 p-4 w-2xl h-auto rounded-lg">
+          <div className="bg-white p-4 w-2xl h-auto rounded-lg m-auto mt-10">
             <div className="flex items-center justify-between p-4 border-b border-slate-300 rounded-t">
               <h3 className="text-xl font-semibold">Add New</h3>
               <button

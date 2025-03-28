@@ -22,5 +22,6 @@ export interface Application extends ApplicationBase {
 }
 
 export type ApplicationReqBody = Partial<Application>;
+export type ApplicationResBody = Partial<Application>;
 
 export type Applications = Array<Application>;

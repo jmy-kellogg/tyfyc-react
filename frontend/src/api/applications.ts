@@ -1,16 +1,23 @@
 import api from ".";
-import type { ApplicationReqBody, Applications } from "@/types/applications";
+import type {
+  ApplicationReqBody,
+  ApplicationResBody,
+  Applications,
+} from "@/types/applications";
 
 export const getApplications = async (): Promise<Applications> => {
   try {
-    return (await api.get("/applications"))?.data || [];
+    const response = await api.get("/applications");
+    return response?.data || [];
   } catch (err) {
     console.error(err);
     return [];
   }
 };
 
-export const addApplication = async (application: ApplicationReqBody) => {
+export const addApplication = async (
+  application: ApplicationReqBody
+): Promise<ApplicationResBody> => {
   const formattedApplication = {
     company: application.company || "",
     title: application.title || "",
@@ -24,9 +31,11 @@ export const addApplication = async (application: ApplicationReqBody) => {
   };
 
   try {
-    await api.post("/applications", formattedApplication);
+    const response = await api.post("/applications", formattedApplication);
+    return response.data || {};
   } catch (err) {
     console.error(err);
+    return {};
   }
 };
 
