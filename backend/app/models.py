@@ -1,5 +1,6 @@
 import uuid
-from sqlalchemy import Column, String, TEXT, Boolean
+from datetime import datetime
+from sqlalchemy import Column, String, TEXT, Boolean, DateTime
 from app.database import Base
 
 def generate_uuid():
@@ -40,3 +41,12 @@ class Skill(Base):
     id = Column(String, primary_key=True, default=generate_uuid)
     name = Column(String, nullable=False)
     default_category = Column(String, nullable=True)
+
+class Feature_flag(Base):
+    __tablename__ = "feature_flags"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    name = Column(String, nullable=False, unique=True, index=True)
+    date_created = Column(DateTime, default=datetime.utcnow)
+    description = Column(String)
+    is_active  = Column(Boolean, default=True)
+

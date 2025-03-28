@@ -4,13 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 
-from app.routers import auth, user, applications, skills
+from app.routers import auth, user, feature_flags,  applications, skills
 
 Base.metadata.create_all(bind=engine)
 
 tags_metadata = [
   auth.tags_metadata,
   user.tags_metadata,
+  feature_flags.tags_metadata,
   applications.tags_metadata,
   skills.tags_metadata
 ]
@@ -31,8 +32,9 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(user.router)
-app.include_router(skills.router)
+app.include_router(feature_flags.router)
 app.include_router(applications.router)
+app.include_router(skills.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080)
