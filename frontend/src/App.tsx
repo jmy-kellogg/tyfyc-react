@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import ApplicationDetails from "./containers/applicationDetails/Index";
-import Profile from "./containers/profile/Index";
-import Resume from "./containers/resume/Index";
-import ApplicationsList from "./containers/applicationsList/Index";
+import ApplicationDetails from "./containers/ApplicationDetails";
+import Profile from "./containers/Profile";
+import Resume from "./containers/Resume";
+import ApplicationsList from "./containers/ApplicationsList";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
 

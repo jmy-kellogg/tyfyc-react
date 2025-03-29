@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 
 import Tabs from "src/components/Tabs";
 
-import Title from "./inputs/Title";
-import Contact from "./inputs/Contact";
-import Summary from "./inputs/Summary";
-import Skills from "./inputs/Skills";
-import JobsHistory from "./inputs/JobsHistory";
-import Education from "./inputs/Education";
-import Projects from "./inputs/Projects";
+import Title from "./Inputs/Title";
+import Contact from "./Inputs/Contact";
+import Summary from "./Inputs/Summary";
+import Skills from "./Inputs/Skills";
+import JobsHistory from "./Inputs/JobsHistory";
+import Education from "./Inputs/Education";
+import Projects from "./Inputs/Projects";
 import { getActiveTab } from "src/store/reducers/settingsSlice";
 import type { State } from "src/store";
 

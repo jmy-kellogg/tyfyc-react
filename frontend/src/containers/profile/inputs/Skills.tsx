@@ -2,7 +2,7 @@ import { useState } from "react";
 import Select, { ActionMeta, MultiValue } from "react-select";
 import { useSelector, useDispatch } from "react-redux";
 
-import DndSort from "src/components/sortable/DndSort";
+import DndSort from "@/components/Sortable/DndSort";
 import Divider from "src/components/Divider";
 import { skillsOptions } from "@options";
 
