@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, TEXT, Boolean, DateTime
+from sqlalchemy import Column, String, TEXT, Boolean, DateTime, ForeignKey
 from app.database import Base
 
 def generate_uuid():
@@ -49,4 +49,10 @@ class Feature_flag(Base):
     date_created = Column(DateTime, default=datetime.utcnow)
     description = Column(String)
     is_active  = Column(Boolean, default=True)
+
+class Summary(Base):
+    __tablename__ = "summary"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    summary = Column(String)
+    application_id = Column(String, ForeignKey("applications.id"))
 
