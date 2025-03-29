@@ -15,6 +15,7 @@ export interface ApplicationBase {
   postingLink: string;
   companySite: string;
   posting: string;
+  summary: string;
 }
 
 export interface Application extends ApplicationBase {

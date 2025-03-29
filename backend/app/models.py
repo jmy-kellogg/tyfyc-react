@@ -18,6 +18,7 @@ class Application(Base):
   posting_link = Column(String)
   company_site = Column(String)
   posting = Column(TEXT)
+  summary = Column(String)
 
 class User(Base):
     __tablename__ = "users"
@@ -49,10 +50,4 @@ class Feature_flag(Base):
     date_created = Column(DateTime, default=datetime.utcnow)
     description = Column(String)
     is_active  = Column(Boolean, default=True)
-
-class Summary(Base):
-    __tablename__ = "summary"
-    id = Column(String, primary_key=True, default=generate_uuid)
-    summary = Column(String)
-    application_id = Column(String, ForeignKey("applications.id"))
 

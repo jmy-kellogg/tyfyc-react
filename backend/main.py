@@ -4,7 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 
-from app.routers import auth, user, feature_flags,  applications, skills
+from app.routers import auth, user, feature_flags, applications, skills
+from sqlalchemy import text
 
 Base.metadata.create_all(bind=engine)
 
