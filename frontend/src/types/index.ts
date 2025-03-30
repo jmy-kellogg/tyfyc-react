@@ -1,6 +1,26 @@
 import { ReactElement } from "react";
 import { Application } from "./applications";
 
+export interface LoginReq {
+  username: string;
+  password: string;
+}
+
+export interface RegisterUserReq {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  password: string;
+  jobTitle?: string;
+  summary?: string;
+  city?: string;
+  state?: string;
+  phone?: string;
+  gitHub?: string;
+  linkedIn?: string;
+}
+
 export type Tab = {
   label: string;
   value: string;
