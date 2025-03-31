@@ -36,10 +36,10 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
         {tabs.map(({ label, value }) => (
           <div
             key={value}
-            className={`flex p-2 rounded-t-lg border-zinc-300 ${
+            className={`flex p-2 rounded-t-lg ${
               active == value
-                ? " font-bold bg-white mb-0 border-r-2 "
-                : "border-r-3"
+                ? " font-bold bg-white mb-0"
+                : "border-zinc-300 hover:border-2 hover:border-b-0"
             }`}
           >
             <button
