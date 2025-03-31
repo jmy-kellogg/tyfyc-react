@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
+import { AuthContext } from "@/context/AuthContext";
 import ApplicationDetails from "./containers/ApplicationDetails";
 import Profile from "./containers/Profile";
 import Resume from "./containers/Resume";
@@ -13,9 +16,12 @@ import {
   getActiveTab,
 } from "./store/reducers/settingsSlice";
 import type { State } from "./store";
+import { useEffect } from "react";
 
 function App() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { token } = useContext(AuthContext);
   const tabs = useSelector(getTabs);
   const activeTab = useSelector(getActiveTab);
   const { smallDisplay } = useSelector((state: State) => state.settings);
@@ -24,33 +30,41 @@ function App() {
     dispatch(setActiveTab(activeValue));
   };
 
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
   return (
     <>
-      <div className="flex">
-        <SideMenu />
-        <div className="m-3">
-          {smallDisplay ? (
-            <>
-              <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
-              <div className="flex bg-white justify-center">
-                {activeTab === "profile" && <Profile />}
-                {activeTab === "resume" && <Resume />}
-                {activeTab === "applications" && <ApplicationsList />}
-                {!["profile", "resume", "applications"].includes(activeTab) && (
-                  <ApplicationDetails />
-                )}
+      {token && (
+        <div className="flex">
+          <SideMenu />
+          <div className="m-3">
+            {smallDisplay ? (
+              <>
+                <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
+                <div className="flex bg-white justify-center">
+                  {activeTab === "profile" && <Profile />}
+                  {activeTab === "resume" && <Resume />}
+                  {activeTab === "applications" && <ApplicationsList />}
+                  {!["profile", "resume", "applications"].includes(
+                    activeTab
+                  ) && <ApplicationDetails />}
+                </div>
+              </>
+            ) : (
+              <div className="flex gap-4">
+                <Profile />
+                <Resume />
+                <ApplicationsList />
+                <ApplicationDetails />
               </div>
-            </>
-          ) : (
-            <div className="flex gap-4">
-              <Profile />
-              <Resume />
-              <ApplicationsList />
-              <ApplicationDetails />
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

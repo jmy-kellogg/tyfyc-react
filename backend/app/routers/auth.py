@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 
 from app.auth.auth_handler import authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_user, get_password_hash
 from app.database import get_db
-from app.schemas.user import Token, UserCreate, UserResponse
+from app.schemas.auth import Token
+from app.schemas.user import UserCreate, UserResponse
 from app.models import User
 
 router = APIRouter()
@@ -15,7 +16,7 @@ tags_metadata = {
     "description": "Operations with authentication for the app",
 }
 
-@router.post("/register", tags=["auth"], response_model=UserResponse)
+@router.post("/auth/register", tags=["auth"], response_model=UserResponse)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = get_user(db, user.username)
     if db_user:
@@ -41,7 +42,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.post("/token", tags=["auth"])
+@router.post("/auth/token", tags=["auth"])
 async def login_for_access_token(
         form_data: OAuth2PasswordRequestForm = Depends(),
         db: Session = Depends(get_db)

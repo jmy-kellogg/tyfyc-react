@@ -46,7 +46,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       };
       getUser();
     } else {
-      ("Logout");
+      console.log("No User", token);
+      navigate("/login");
     }
   }, [token, navigate]);
 

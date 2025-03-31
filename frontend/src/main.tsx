@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import App from "./App.tsx";
 import Login from "./containers/Login";
+import Logout from "./components/Logout.tsx";
 import { persistor, store } from "./store";
 
 import "./index.css";
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

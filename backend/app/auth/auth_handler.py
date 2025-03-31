@@ -10,7 +10,7 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.schemas.user import TokenData
+from app.schemas.auth import TokenData
 from app.models import User
 
 
@@ -18,7 +18,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 720
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
@@ -65,7 +65,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        print(token)
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
@@ -74,25 +73,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
     except InvalidTokenError:
         raise credentials_exception
 
-    query = db.select([
-        User.first_name,
-        User.last_name,
-        User.email,
-        User.username,
-        User.job_title,
-        User.summary,
-        User.city, 
-        User.state, 
-        User.phone,
-        User.git_hub,
-        User.linked_in
-    ])
-    user = query().filter(User.username == token_data.username).first()
+    user = db.query(User).filter(User.username == token_data.username).first()
     if user is None:
         raise credentials_exception
     return user
 
 
+
 async def get_current_active_user(current_user: User = Depends(get_current_user)):
-    print(current_user)
     return current_user

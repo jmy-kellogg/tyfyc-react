@@ -9,7 +9,7 @@ export const loginUser = async ({ username, password }: LoginReq) => {
     params.append("username", username);
     params.append("password", password);
 
-    const response = await api.post(`/token`, params, {
+    const response = await api.post(`/auth/token`, params, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -23,7 +23,7 @@ export const loginUser = async ({ username, password }: LoginReq) => {
 
 export const registerUser = async (userData: RegisterUserReq) => {
   try {
-    await api.post(`/register`, userData);
+    await api.post(`/auth/register`, userData);
   } catch (error) {
     console.error("Registration error:", error);
     throw error;
