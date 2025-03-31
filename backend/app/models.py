@@ -40,8 +40,22 @@ class User(Base):
 class Skill(Base):
     __tablename__ = "skills"
     id = Column(String, primary_key=True, default=generate_uuid)
+    category = Column(String)
+    user_id = Column(String, ForeignKey("users.id"))
+    skill_options_id = Column(String, ForeignKey("skill_options.id"))
+
+class SkillsOption(Base):
+    __tablename__ = "skill_options"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    # toDo: make unique name
     name = Column(String, nullable=False)
     default_category = Column(String, nullable=True)
+
+class SkillsAlias(Base):
+    __tablename__ = "skill_aliases"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    skill_options_id = Column(String, ForeignKey("skill_options.id"), nullable=False)
+    alias = Column(String, nullable=False)
 
 class Feature_flag(Base):
     __tablename__ = "feature_flags"

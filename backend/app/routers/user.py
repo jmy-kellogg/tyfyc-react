@@ -12,5 +12,4 @@ tags_metadata = {
 
 @router.get("/users/me/", tags=["user"], response_model=UserResponse)
 async def fetch_user(current_user: User = Depends(get_current_active_user)):
-    print(current_user)
     return current_user
