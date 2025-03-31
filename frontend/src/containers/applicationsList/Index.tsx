@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
@@ -20,6 +20,8 @@ import type { State } from "@/store";
 function ApplicationsList() {
   const dispatch = useDispatch();
   const [applications, setApplications] = useState<Applications>([]);
+  const [filteredList, setFilteredList] = useState<Applications>([]);
+  const [search, setSearch] = useState("");
   const { smallDisplay } = useSelector((state: State) => state.settings);
 
   const sortApplications = (applications: Applications): Applications => {
@@ -82,10 +84,22 @@ function ApplicationsList() {
     };
     return colorMap[status];
   };
+  const handleFilter = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setFilteredList(
+      applications.filter(({ company }) =>
+        company.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  };
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    setFilteredList(applications);
+  }, [applications]);
 
   return (
     <>
@@ -103,6 +117,17 @@ function ApplicationsList() {
         )}
         <div className={`${smallDisplay ? "full-page" : "page"}`}>
           <div className="max-w-max justify-self-center">
+            <div>
+              <input
+                id="search"
+                name="search"
+                type="text"
+                placeholder="Search Companies"
+                className="mx-3 w-2xl rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                value={search}
+                onChange={handleFilter}
+              ></input>
+            </div>
             <div className="flex justify-between">
               <div className="flex">
                 <ExportCSV applications={applications} />
@@ -113,7 +138,7 @@ function ApplicationsList() {
               <NewJobModal />
             </div>
             <div>
-              {applications.map((application) => (
+              {filteredList.map((application) => (
                 <div
                   className="flex justify-between border-b-1 border-zinc-300"
                   key={application.id}

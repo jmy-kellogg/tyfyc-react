@@ -41,12 +41,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     if (token) {
       const getUser = async () => {
-        const userProfile = await fetchUserProfile(token);
-        setUser(userProfile);
+        try {
+          const userProfile = await fetchUserProfile(token);
+          setUser(userProfile);
+        } catch {
+          navigate("/login");
+        }
       };
       getUser();
     } else {
-      console.log("No User", token);
       navigate("/login");
     }
   }, [token, navigate]);
