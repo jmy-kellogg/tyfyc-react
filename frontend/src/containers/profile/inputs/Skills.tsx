@@ -1,47 +1,107 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Select, { ActionMeta, MultiValue } from "react-select";
-import { useSelector, useDispatch } from "react-redux";
 
 import DndSort from "@/components/Sortable/DndSort";
 import Divider from "src/components/Divider";
-import { skillsOptions } from "@options";
 
-import { setSkills } from "src/store/reducers/skillsSlice";
-import type { State } from "src/store";
-import type { Skill, SkillsList, SortableItem, SortableList } from "@/types";
+import {
+  getSkills,
+  addSkill,
+  deleteSkill,
+  getSkillOptions,
+} from "@/api/skills";
+import type { SortableList } from "@/types";
+import type { Skill } from "@/types/skills";
 
 interface Props {
   editAll: boolean;
   lockEdit: boolean;
 }
 
-function Skills({ editAll, lockEdit }: Props) {
-  const dispatch = useDispatch();
-  const skills: SkillsList = useSelector((state: State) => state.skills);
-  const [hover, setHover] = useState(false);
-  const [open, setOpen] = useState(false);
+// ToDo: update the skill mapping
+interface SkillSelect {
+  label: string;
+  value: string;
+  id: string;
+}
 
-  const onChange = (
-    newValue: MultiValue<Skill>,
-    actionMeta: ActionMeta<Skill>
+function Skills({ editAll, lockEdit }: Props) {
+  const [skills, setSkills] = useState<SkillSelect[]>([]);
+  const [skillOptions, setSkillOptions] = useState<SkillSelect[]>([]);
+  const [hover, setHover] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const fetchSkillOptions = useCallback(async () => {
+    try {
+      const dbSkillOptions = await getSkillOptions();
+      setSkillOptions(
+        dbSkillOptions.map(({ id, name }) => ({
+          label: name,
+          value: id,
+          id: "",
+        }))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  const fetchSkills = useCallback(async () => {
+    try {
+      const dbSkills = await getSkills();
+      setSkills(
+        dbSkills.map(({ id, name, skillOptionsId }) => ({
+          label: name,
+          value: skillOptionsId,
+          id,
+        }))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  const onChange = async (
+    _newValue: MultiValue<SkillSelect>,
+    actionMeta: ActionMeta<SkillSelect>
   ) => {
-    if (actionMeta.action === "select-option") {
-      const updatedSkills: SkillsList = [...newValue];
-      dispatch(setSkills(updatedSkills));
-      setHover(false);
+    try {
+      if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
+        const skill: Skill | undefined = await addSkill({
+          skillOptionsId: actionMeta.option.value,
+          category: "",
+        });
+
+        if (skill) {
+          setSkills([
+            ...skills,
+            { label: skill.name, value: skill.skillOptionsId, id: skill.id },
+          ]);
+        }
+        setHover(false);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const removeSkill = (value: string) => {
-    const updatedSkills: SkillsList = skills.filter(
-      (skill) => skill.value !== value
+  const removeSkill = async (id: string) => {
+    if (!id) return;
+
+    const updatedSkills: SkillSelect[] = skills.filter(
+      (skill) => skill.id !== id
     );
-    dispatch(setSkills(updatedSkills));
+
+    try {
+      await deleteSkill(id);
+      setSkills(updatedSkills);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const formatSortList = (skill: Skill): SortableItem => ({
+  const formatSortList = (skill: SkillSelect) => ({
     ...skill,
-    id: skill.value,
     component: (
       <div className="flex rounded-sm border-1 border-indigo-600 text-indigo-600 m-1 pl-1 shadow-md hover:cursor-grab hover:bg-indigo-100">
         {skill.label}
@@ -51,7 +111,7 @@ function Skills({ editAll, lockEdit }: Props) {
           viewBox="0 0 20 20"
           fill="currentColor"
           className="size-5 self-center hover:cursor-pointer hover:font-bold hover:text-red-600"
-          onClick={() => removeSkill(skill.value)}
+          onClick={() => removeSkill(skill.id || "")}
         >
           <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
         </svg>
@@ -60,11 +120,13 @@ function Skills({ editAll, lockEdit }: Props) {
   });
 
   const handleSort = (list: SortableList) => {
-    const updatedSkills: SkillsList = list.map(({ label, value }) => ({
+    // ToDo: save order in DB
+    const updatedSkills: SkillSelect[] = list.map(({ label, value, id }) => ({
       label,
       value,
+      id,
     }));
-    dispatch(setSkills(updatedSkills));
+    setSkills(updatedSkills);
   };
 
   const ValueContainer = () => {
@@ -78,6 +140,14 @@ function Skills({ editAll, lockEdit }: Props) {
       </div>
     );
   };
+
+  useEffect(() => {
+    fetchSkillOptions();
+  }, [fetchSkillOptions]);
+
+  useEffect(() => {
+    fetchSkills();
+  }, [fetchSkills]);
 
   return (
     <>
@@ -98,8 +168,7 @@ function Skills({ editAll, lockEdit }: Props) {
             classNamePrefix="select"
             className="basic-single"
             placeholder="Technologies"
-            defaultValue={skillsOptions[0]}
-            options={skillsOptions}
+            options={skillOptions}
             value={skills}
             onChange={onChange}
             onMenuOpen={() => setOpen(true)}

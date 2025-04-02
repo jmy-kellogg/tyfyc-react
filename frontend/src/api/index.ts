@@ -6,11 +6,21 @@ const api = axios.create({
   timeout: 10000,
 });
 
+const noAuthUrls = ["/auth/register", "/auth/token"];
+
 // Create parity for Python and JS keys naming conventions
 // Convert request data keys from camel case to snake case
 api.interceptors.request.use(
   function (config) {
+    const token = localStorage.getItem("token");
+    const url = config.url || "";
+
+    if (token && !noAuthUrls.includes(url)) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+
     config.data = jsToPythonKeys(config.data);
+
     return config;
   },
   function (error) {
