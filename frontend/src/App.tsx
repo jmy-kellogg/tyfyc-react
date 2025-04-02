@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "@/context/AuthContext";
 import ApplicationDetails from "./containers/ApplicationDetails";
@@ -16,10 +15,8 @@ import {
   getActiveTab,
 } from "./store/reducers/settingsSlice";
 import type { State } from "./store";
-import { useEffect } from "react";
 
 function App() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useContext(AuthContext);
   const tabs = useSelector(getTabs);
@@ -29,12 +26,6 @@ function App() {
   const setActive = (activeValue: string) => {
     dispatch(setActiveTab(activeValue));
   };
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
-  }, [token, navigate]);
 
   return (
     <>

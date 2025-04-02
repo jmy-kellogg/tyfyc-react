@@ -1,7 +1,6 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import Tabs from "@/components/Tabs";
 import { AuthContext } from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [tab, setTab] = useState("login");
@@ -13,8 +12,7 @@ function Login() {
     firstName: "",
     lastName: "",
   });
-  const { login, register, token } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { login, register } = useContext(AuthContext);
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -46,12 +44,6 @@ function Login() {
       }
     }
   };
-
-  useEffect(() => {
-    if (token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
 
   return (
     <>
