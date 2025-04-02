@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, TEXT, Boolean, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from app.database import Base
 
 def generate_uuid():
@@ -47,7 +48,6 @@ class Skill(Base):
 class SkillsOption(Base):
     __tablename__ = "skill_options"
     id = Column(String, primary_key=True, default=generate_uuid)
-    # toDo: make unique name
     name = Column(String, nullable=False)
     default_category = Column(String, nullable=True)
 

@@ -6,21 +6,20 @@ class SkillBase(BaseModel):
     skill_options_id: str
     category: str
 
+
 class SkillCreate(BaseModel):
     skill_options_id: str
-    category: str | None = ""
+    category: str
 
 class SkillResp(SkillBase):
     id: str
-    user_id: str
+    name: str
+    default_category: str | None
     class Config:
         orm_mode = True
-
-
-class SkillOptions(BaseModel):
+class SkillOptionsBase(BaseModel):
     name: str
-    default_category: str
-
+    default_category: str  | None
 class SkillOptionCreate(BaseModel):
     name: str
     default_category: str | None = ""
@@ -29,7 +28,7 @@ class SkillOptionUpdate(BaseModel):
     name:  Optional[str]
     default_category:  Optional[str]
 
-class SkillOptionsResp(SkillOptions):
+class SkillOptionsResp(SkillOptionsBase):
     id: str
     class Config:
         orm_mode = True
