@@ -10,3 +10,12 @@ export const getEmploymentList = async (): Promise<Employment[]> => {
     throw err;
   }
 };
+
+export const deleteEmployment = async (employmentId: string) => {
+  try {
+    await api.delete(`/employment/${employmentId}`);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};

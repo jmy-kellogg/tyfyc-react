@@ -7,9 +7,10 @@ interface Props {
   employment: Employment;
   editAll: boolean;
   lockEdit: boolean;
+  remove: (id: string) => void;
 }
 
-function EmploymentItem({ employment, lockEdit, editAll }: Props) {
+function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
   const [hover, setHover] = useState<boolean>(false);
   const [employmentForm, setEmploymentForm] = useState(employment);
 
@@ -19,10 +20,6 @@ function EmploymentItem({ employment, lockEdit, editAll }: Props) {
     const key = e.target.name;
     const value = e.target.value;
     setEmploymentForm({ ...employmentForm, [key]: value });
-  };
-
-  const remove = () => {
-    console.log("Remove NEW");
   };
 
   return (
@@ -96,7 +93,7 @@ function EmploymentItem({ employment, lockEdit, editAll }: Props) {
             <button
               type="button"
               className="rounded-md text-sm/6 my-3 px-2 py-1 outline-1 -outline-offset-1 outline-gray-300 font-semibold shadow-sm hover:bg-indigo-300 outline-1"
-              onClick={remove}
+              onClick={() => remove(employment.id)}
             >
               Remove {employmentForm.company}
             </button>
