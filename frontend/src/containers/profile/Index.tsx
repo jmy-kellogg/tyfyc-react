@@ -7,7 +7,7 @@ import Title from "./Inputs/Title";
 import Contact from "./Inputs/Contact";
 import Summary from "./Inputs/Summary";
 import Skills from "./Inputs/Skills";
-import JobsHistory from "./Inputs/JobsHistory";
+import Employment from "./Inputs/Employment";
 import Education from "./Inputs/Education";
 import Projects from "./Inputs/Projects";
 import { getActiveTab } from "src/store/reducers/settingsSlice";
@@ -138,7 +138,7 @@ function Profile() {
                 <div className="px-5">
                   <Summary editAll={editAll} lockEdit={lockEdit} />
                   <Skills editAll={editAll} lockEdit={lockEdit} />
-                  <JobsHistory editAll={editAll} lockEdit={lockEdit} />
+                  <Employment editAll={editAll} lockEdit={lockEdit} />
                   <Education editAll={editAll} lockEdit={lockEdit} />
                   <Projects editAll={editAll} lockEdit={lockEdit} />
                 </div>
