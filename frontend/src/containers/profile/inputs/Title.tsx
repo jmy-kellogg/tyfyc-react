@@ -12,10 +12,10 @@ interface Props {
 
 function Title({ editAll, lockEdit }: Props) {
   const { user } = useContext(AuthContext);
-  const [firstName, setFirstName] = useState(user?.firstName || "");
-  const [lastName, setLastName] = useState(user?.lastName || "");
-  const [jobTitle, setJobTitle] = useState(user?.jobTitle || "");
   const [hover, setHover] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
 
   const validateData = () => {
     if (!firstName || !lastName || !jobTitle) {

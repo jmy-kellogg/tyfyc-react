@@ -1,9 +1,9 @@
-import { useState, ChangeEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, useContext } from "react";
 
 import Divider from "src/components/Divider";
-import { setPersonal } from "src/store/reducers/personalSlice";
-import type { State } from "src/store";
+
+import { AuthContext } from "@/context/AuthContext";
+import { updateUser } from "@/api/user";
 
 interface Props {
   editAll: boolean;
@@ -11,17 +11,48 @@ interface Props {
 }
 
 function Contact({ editAll, lockEdit }: Props) {
-  const dispatch = useDispatch();
-  const personal = useSelector((state: State) => state.personal);
+  const { user } = useContext(AuthContext);
   const [hover, setHover] = useState(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [linkedIn, setLinkedIn] = useState("");
+  const [gitHub, setGitHub] = useState("");
 
-  const updateData = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const field = e.target.name;
-    const value = e.target.value;
-    dispatch(setPersonal({ [field]: value }));
+  const validateData = () => {
+    if (!email || !phone || !city || !state || !linkedIn || !gitHub) {
+      return false;
+    } else if (
+      email === user?.email &&
+      phone === user?.phone &&
+      city === user?.city &&
+      state === user?.state &&
+      linkedIn === user?.linkedIn &&
+      gitHub === user?.gitHub
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   };
+
+  const updateData = () => {
+    if (validateData()) {
+      updateUser({ email, phone, city, state, linkedIn, gitHub });
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setCity(user.city || "");
+      setState(user.state || "");
+      setLinkedIn(user.linkedIn || "");
+      setGitHub(user.gitHub || "");
+    }
+  }, [user]);
 
   return (
     <>
@@ -39,8 +70,9 @@ function Contact({ editAll, lockEdit }: Props) {
                   type="email"
                   placeholder="Email address"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={personal.email}
-                  onChange={updateData}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onMouseLeave={updateData}
                 />
               </div>
               <div className="m-1">
@@ -50,8 +82,9 @@ function Contact({ editAll, lockEdit }: Props) {
                   type="tel"
                   placeholder="Phone"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={personal.phone}
-                  onChange={updateData}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  onMouseLeave={updateData}
                 />
               </div>
               <div className="m-1">
@@ -61,8 +94,9 @@ function Contact({ editAll, lockEdit }: Props) {
                   type="text"
                   placeholder="City"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={personal.city}
-                  onChange={updateData}
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  onMouseLeave={updateData}
                 />
               </div>
               <div className="m-1 w-20">
@@ -72,8 +106,9 @@ function Contact({ editAll, lockEdit }: Props) {
                   type="text"
                   placeholder="State"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={personal.state}
-                  onChange={updateData}
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  onMouseLeave={updateData}
                 />
               </div>
             </div>
@@ -85,8 +120,9 @@ function Contact({ editAll, lockEdit }: Props) {
                   type="text"
                   placeholder="LinkedIn"
                   className="text-center block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={personal.linkedIn || "www.linkedin.com/in/"}
-                  onChange={updateData}
+                  value={linkedIn || "www.linkedin.com/in/"}
+                  onChange={(e) => setLinkedIn(e.target.value)}
+                  onMouseLeave={updateData}
                 />
               </div>
               <div className="m-1 w-90">
@@ -96,8 +132,9 @@ function Contact({ editAll, lockEdit }: Props) {
                   type="text"
                   placeholder="GitHub"
                   className="text-center block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={personal.gitHub || "www.github.com/"}
-                  onChange={updateData}
+                  value={gitHub || "www.github.com/"}
+                  onChange={(e) => setGitHub(e.target.value)}
+                  onMouseLeave={updateData}
                 />
               </div>
             </div>
@@ -105,11 +142,10 @@ function Contact({ editAll, lockEdit }: Props) {
         ) : (
           <div className="text-center">
             <p>
-              Email: {personal.email} | Phone: {personal.phone} | Location:{" "}
-              {personal.city + ", " + personal.state}
+              Email: {email} | Phone: {phone} | Location: {city + ", " + state}
             </p>
             <p>
-              LinkedIn: {personal.linkedIn} | GitHub: {personal.gitHub}
+              LinkedIn: {linkedIn} | GitHub: {gitHub}
             </p>
           </div>
         )}
