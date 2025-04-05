@@ -1,10 +1,9 @@
-import { useState, ChangeEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, useContext } from "react";
 
 import Divider from "src/components/Divider";
 
-import { setPersonal } from "src/store/reducers/personalSlice";
-import type { State } from "src/store";
+import { AuthContext } from "@/context/AuthContext";
+import { updateUser } from "@/api/user";
 
 interface Props {
   editAll: boolean;
@@ -12,15 +11,21 @@ interface Props {
 }
 
 function Summary({ editAll, lockEdit }: Props) {
-  const dispatch = useDispatch();
-  const personal = useSelector((state: State) => state.personal);
+  const { user } = useContext(AuthContext);
   const [hover, setHover] = useState(false);
+  const [summary, setSummary] = useState("");
 
-  const updateData = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const field = e.target.name;
-    const value = e.target.value;
-    dispatch(setPersonal({ [field]: value }));
+  const updateData = () => {
+    if (summary && summary !== user?.summary) {
+      updateUser({ summary });
+    }
   };
+
+  useEffect(() => {
+    if (user) {
+      setSummary(user.summary || "");
+    }
+  }, [user]);
 
   return (
     <>
@@ -36,13 +41,14 @@ function Summary({ editAll, lockEdit }: Props) {
               id="summary"
               name="summary"
               className="block w-full rounded-md bg-white px-3 py-1.5 h-32 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-              value={personal.summary}
-              onChange={updateData}
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+              onMouseLeave={updateData}
             ></textarea>
           </div>
         ) : (
           <div>
-            <p>{personal.summary}</p>
+            <p>{summary}</p>
           </div>
         )}
       </div>

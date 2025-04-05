@@ -15,7 +15,7 @@ import type { State } from "src/store";
 
 function Profile() {
   const [showDisplay, setShowDisplay] = useState<boolean>(true);
-  const [lockEdit, setLockEdit] = useState<boolean>(false);
+  const [lockEdit, setLockEdit] = useState<boolean>(true);
   const [editAll, setEditAll] = useState<boolean>(false);
 
   const activeTab = useSelector(getActiveTab);
