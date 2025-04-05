@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import { getFormattedDate } from "@utils";
 
+import { updateEmployment } from "@/api/employment";
 import type { Employment } from "@/types/employment";
 
 interface Props {
@@ -12,14 +13,32 @@ interface Props {
 
 function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
   const [hover, setHover] = useState<boolean>(false);
-  const [employmentForm, setEmploymentForm] = useState(employment);
+  const [form, setForm] = useState<Employment>(employment);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const key = e.target.name;
     const value = e.target.value;
-    setEmploymentForm({ ...employmentForm, [key]: value });
+    setForm({ ...form, [key]: value });
+  };
+
+  const updateData = async (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const key = e.target.name || "";
+    const value = e.target.value || "";
+    if (value && employment[key] !== value) {
+      const updateBody = {
+        jobTitle: form.jobTitle,
+        company: form.company,
+        start: form.start,
+        end: form.end,
+        location: form.location,
+        description: form.description,
+      };
+      await updateEmployment(employment.id, updateBody);
+    }
   };
 
   return (
@@ -36,8 +55,9 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
               type="text"
               placeholder="Job Title"
               className="m-1 block font-bold w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={employmentForm.jobTitle}
+              value={form.jobTitle}
               onChange={handleChange}
+              onBlur={updateData}
             />
             <div className="flex">
               <input
@@ -46,8 +66,9 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 type="text"
                 placeholder="Company"
                 className="m-1 block font-bold w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={employmentForm.company}
+                value={form.company}
                 onChange={handleChange}
+                onBlur={updateData}
               />
 
               <input
@@ -56,8 +77,9 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 type="text"
                 placeholder="Location"
                 className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={employmentForm.location}
+                value={form.location}
                 onChange={handleChange}
+                onBlur={updateData}
               />
 
               <input
@@ -66,8 +88,9 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 type="month"
                 placeholder="Start Date"
                 className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={employmentForm.start}
+                value={form.start}
                 onChange={handleChange}
+                onBlur={updateData}
               />
               <p className="font-bold self-center"> - </p>
               <input
@@ -76,8 +99,9 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 type="month"
                 placeholder="End Date"
                 className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={employmentForm.end}
+                value={form.end}
                 onChange={handleChange}
+                onBlur={updateData}
               />
             </div>
 
@@ -86,7 +110,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
               id="description"
               name="description"
               className="block w-full rounded-md bg-white px-3 py-1.5 h-32 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={employmentForm.description}
+              value={form.description}
               onChange={handleChange}
             ></textarea>
 
@@ -95,29 +119,27 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
               className="rounded-md text-sm/6 my-3 px-2 py-1 outline-1 -outline-offset-1 outline-gray-300 font-semibold shadow-sm hover:bg-indigo-300 outline-1"
               onClick={() => remove(employment.id)}
             >
-              Remove {employmentForm.company}
+              Remove {form.company}
             </button>
           </div>
         ) : (
           <div key={employment.id}>
             <div>
-              <h3>{employmentForm.jobTitle || "New Employment"}</h3>
+              <h3>{form.jobTitle || "New Employment"}</h3>
               <h4>
-                {employmentForm.company} - {employmentForm.location}
+                {form.company} - {form.location}
                 {" | "}
-                {getFormattedDate(employmentForm.start, {
+                {getFormattedDate(form.start, {
                   month: "short",
                   year: "numeric",
                 }) +
                   " - " +
-                  getFormattedDate(employmentForm.end, {
+                  getFormattedDate(form.end, {
                     month: "short",
                     year: "numeric",
                   })}
               </h4>
-              <p className="whitespace-pre-wrap">
-                {employmentForm.description}
-              </p>
+              <p className="whitespace-pre-wrap">{form.description}</p>
             </div>
           </div>
         )}
