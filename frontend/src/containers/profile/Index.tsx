@@ -49,7 +49,10 @@ function Profile() {
               {!lockEdit && (
                 <button
                   className="rounded-full border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                  onClick={() => setEditAll(!editAll)}
+                  onClick={() => {
+                    setLockEdit(!lockEdit);
+                    setEditAll(!editAll);
+                  }}
                 >
                   {editAll ? (
                     <svg
@@ -92,7 +95,10 @@ function Profile() {
               {!editAll && (
                 <button
                   className="rounded-full mx-2 border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                  onClick={() => setLockEdit(!lockEdit)}
+                  onClick={() => {
+                    setLockEdit(!lockEdit);
+                    setEditAll(!editAll);
+                  }}
                 >
                   {lockEdit ? (
                     <svg

@@ -75,3 +75,11 @@ class Employment(Base):
     description = Column(String)
     location = Column(String)
     user_id = Column(String, ForeignKey("users.id"))
+
+class Education(Base):
+    __tablename__ = "education"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    degree = Column(String)
+    school = Column(String)
+    grad_year = Column(String)
+    user_id = Column(String, ForeignKey("users.id"))
