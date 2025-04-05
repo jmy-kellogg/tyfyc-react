@@ -1,11 +1,12 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { loginUser, fetchUserProfile, registerUser } from "../api/auth";
-import type { RegisterUserReq } from "../types";
+import { loginUser, registerUser } from "../api/auth";
+import { fetchUser } from "../api/user";
+import type { User } from "../types";
 
 interface AuthContextType {
   token: string | null;
-  user: RegisterUserReq | null;
+  user: User | null;
   login: ((username: string, password: string) => Promise<void>) | null;
   register:
     | ((
@@ -35,7 +36,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [user, setUser] = useState<RegisterUserReq | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -45,7 +46,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (response?.accessToken) {
       setToken(response.accessToken);
       localStorage.setItem("token", response.accessToken);
-      const userProfile = await fetchUserProfile(response.accessToken);
+      const userProfile = await fetchUser();
       setUser(userProfile);
       navigate("/");
     }
@@ -70,17 +71,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchData = async () => {
       try {
         if (token) {
-          const userProfile = await fetchUserProfile(token);
-          setUser(userProfile);
+          const userProfile = await fetchUser();
+          if (userProfile) {
+            setUser(userProfile);
+          }
         }
       } catch {
         setToken(null);
       }
     };
-    fetchUser();
+    fetchData();
   }, [token]);
 
   useEffect(() => {

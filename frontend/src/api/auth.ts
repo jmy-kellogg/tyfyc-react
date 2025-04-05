@@ -29,17 +29,3 @@ export const registerUser = async (userData: RegisterUserReq) => {
     throw error;
   }
 };
-
-export const fetchUserProfile = async (token: string) => {
-  try {
-    const response = await api.get(`/users/me/`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Fetch user profile error:", error);
-    throw error;
-  }
-};

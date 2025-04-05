@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
-
+from typing import Optional
 
 class SkillBase(BaseModel):
     skill_options_id: str

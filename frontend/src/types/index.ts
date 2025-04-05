@@ -37,7 +37,22 @@ export interface SortableItem {
 
 export type SortableList = Array<SortableItem>;
 
-// Resume
+export interface User {
+  firstName: string;
+  lastName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  city: string;
+  state: string;
+  linkedIn: string;
+  gitHub: string;
+  summary: string;
+  username: string;
+  id: string;
+  hashedPassword: string;
+}
+
 export interface Personal {
   firstName: string;
   lastName: string;
