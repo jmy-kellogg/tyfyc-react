@@ -83,3 +83,12 @@ class Education(Base):
     school = Column(String)
     grad_year = Column(String)
     user_id = Column(String, ForeignKey("users.id"))
+
+class Project(Base):
+    __tablename__ = "projects"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    title = Column(String)
+    description = Column(String)
+    year = Column(String)
+    url = Column(String)
+    user_id = Column(String, ForeignKey("users.id"))
