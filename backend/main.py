@@ -5,7 +5,7 @@ from fastapi.security import HTTPBasic
 
 from app.database import Base, engine
 
-from app.routers import auth, user, feature_flags, applications, skills
+from app.routers import auth, user, feature_flags, applications, skills, employment
 from sqlalchemy import text
 
 Base.metadata.create_all(bind=engine)
@@ -38,6 +38,7 @@ app.include_router(user.router)
 app.include_router(feature_flags.router)
 app.include_router(applications.router)
 app.include_router(skills.router)
+app.include_router(employment.router)
 
 security = HTTPBasic()
 

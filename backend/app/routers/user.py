@@ -19,9 +19,7 @@ async def fetch_user(current_user: User = Depends(get_current_active_user)):
 
 @router.put("/users/me",  tags=["user"], response_model=UserResponse)
 async def fetch_user(user: UserUpdate, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    print(user)
     for field, value in user.dict().items():
-        print(field, value)
         if(value):
             setattr(current_user, field, value)
     
