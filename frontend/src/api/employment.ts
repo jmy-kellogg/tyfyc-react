@@ -11,13 +11,25 @@ export const getEmploymentList = async (): Promise<Employment[]> => {
   }
 };
 
+export const createEmployment = async (
+  employment: EmploymentUpdate
+): Promise<Employment> => {
+  try {
+    const response = await api.post(`/employment`, employment);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 export const updateEmployment = async (
   employment_id: string,
   employment: EmploymentUpdate
 ): Promise<Employment> => {
   try {
     const response = await api.put(`/employment/${employment_id}`, employment);
-    return response.data || {};
+    return response.data;
   } catch (err) {
     console.error(err);
     throw err;

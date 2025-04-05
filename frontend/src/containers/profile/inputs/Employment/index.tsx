@@ -2,7 +2,11 @@ import { useState, useCallback, useEffect } from "react";
 
 import Divider from "src/components/Divider";
 
-import { getEmploymentList, deleteEmployment } from "@/api/employment";
+import {
+  getEmploymentList,
+  createEmployment,
+  deleteEmployment,
+} from "@/api/employment";
 import type { Employment } from "@/types/employment";
 import EmploymentItem from "./EmploymentItem";
 
@@ -17,21 +21,30 @@ function Employment({ editAll, lockEdit }: Props) {
   const [showAdd, setShowAdd] = useState(false);
   const [employmentList, setEmploymentList] = useState<Employment[]>([]);
 
-  const addNew = () => {
-    setEmploymentList([
-      ...employmentList,
-      {
-        jobTitle: "",
-        company: "",
-        start: "",
-        end: "",
-        location: "",
-        description: "",
-        id: TEMP_EMPLOYMENT_ID,
-        userId: "",
-      },
-    ]);
-    setShowAdd(false);
+  const addNew = async () => {
+    const lastItem = employmentList[employmentList.length - 1];
+    if (
+      lastItem.jobTitle ||
+      lastItem.company ||
+      lastItem.start ||
+      lastItem.end ||
+      lastItem.location ||
+      lastItem.description
+    ) {
+      try {
+        const employment = await createEmployment({
+          jobTitle: "",
+          company: "",
+          start: "",
+          end: "",
+          location: "",
+          description: "",
+        });
+        setEmploymentList([...employmentList, employment]);
+      } catch (err) {
+        console.error(err);
+      }
+    }
   };
 
   const remove = async (id: string) => {
