@@ -36,12 +36,8 @@ function Login() {
     e.preventDefault();
     const { username, email, password, firstName, lastName } = registerForm;
     if (username && password && email && firstName && lastName && register) {
-      try {
-        await register(username, email, password, firstName, lastName);
-        setTab("login");
-      } catch (err) {
-        console.error(err);
-      }
+      await register(username, email, password, firstName, lastName);
+      setTab("login");
     }
   };
 

@@ -11,6 +11,7 @@ import personalReducer, { PersonalState } from "./reducers/personalSlice";
 import settingsReducer, { SettingsState } from "./reducers/settingsSlice";
 import skillsReducer, { SkillsState } from "./reducers/skillsSlice";
 import projectsReducer, { ProjectsState } from "./reducers/projectsSlice";
+import alertsReducer, { AlertsState } from "./reducers/alertsSlice";
 
 export type AppStore = typeof store;
 export type RootState = ReturnType<AppStore["getState"]>;
@@ -23,6 +24,7 @@ export interface State {
   settings: SettingsState;
   skills: SkillsState;
   projects: ProjectsState;
+  alerts: AlertsState;
 }
 
 const persistConfig = {
@@ -38,6 +40,7 @@ const rootReducer = combineReducers({
   settings: settingsReducer,
   skills: skillsReducer,
   projects: projectsReducer,
+  alerts: alertsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

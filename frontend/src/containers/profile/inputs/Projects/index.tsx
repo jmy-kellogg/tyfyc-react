@@ -23,36 +23,24 @@ function Projects({ editAll, lockEdit }: Props) {
       lastItem.year ||
       lastItem.url
     ) {
-      try {
-        const project = await createProject({
-          title: "",
-          description: "",
-          year: "",
-          url: "",
-        });
-        setProjects([...projects, project]);
-      } catch (err) {
-        console.error(err);
-      }
+      const project = await createProject({
+        title: "",
+        description: "",
+        year: "",
+        url: "",
+      });
+      setProjects([...projects, project]);
     }
   };
 
   const remove = async (id: string) => {
-    try {
-      await deleteProject(id);
-      setProjects(projects.filter((project) => project.id !== id));
-    } catch (err) {
-      console.error(err);
-    }
+    await deleteProject(id);
+    setProjects(projects.filter((project) => project.id !== id));
   };
 
   const fetchProjects = useCallback(async () => {
-    try {
-      const projects = await getProjects();
-      setProjects(projects);
-    } catch (err) {
-      console.error(err);
-    }
+    const projects = await getProjects();
+    setProjects(projects);
   }, []);
 
   useEffect(() => {

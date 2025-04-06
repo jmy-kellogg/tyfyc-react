@@ -6,40 +6,25 @@ import type {
 } from "@/types/applications";
 
 export const getApplications = async (): Promise<Applications> => {
-  try {
-    const response = await api.get("/applications");
-    return response?.data || [];
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
+  const response = await api.get("/applications");
+  return response?.data || [];
 };
 
 export const getApplication = async (
   applicationId: string
 ): Promise<ApplicationResBody> => {
-  try {
-    const response = await api.get(`/applications/${applicationId}`);
-    return response.data || {};
-  } catch (err) {
-    console.error(err);
-    return {};
-  }
+  const response = await api.get(`/applications/${applicationId}`);
+  return response?.data || {};
 };
 
 export const updateApplication = async (
   application: ApplicationReqBody
 ): Promise<ApplicationResBody> => {
-  try {
-    const response = await api.put(
-      `/applications/${application.id}`,
-      application
-    );
-    return response.data || {};
-  } catch (err) {
-    console.error(err);
-    return {};
-  }
+  const response = await api.put(
+    `/applications/${application.id}`,
+    application
+  );
+  return response?.data || {};
 };
 
 export const addApplication = async (
@@ -57,19 +42,10 @@ export const addApplication = async (
     posting: application.posting || "",
   };
 
-  try {
-    const response = await api.post("/applications", formattedApplication);
-    return response.data || {};
-  } catch (err) {
-    console.error(err);
-    return {};
-  }
+  const response = await api.post("/applications", formattedApplication);
+  return response?.data || {};
 };
 
 export const deleteApplication = async (applicationId: string) => {
-  try {
-    await api.delete(`/applications/${applicationId}`);
-  } catch (err) {
-    console.error(err);
-  }
+  await api.delete(`/applications/${applicationId}`);
 };

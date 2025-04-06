@@ -1,6 +1,9 @@
 import axios from "axios";
 import { jsToPythonKeys, pythonToJsKeys } from "@/utils";
 
+import { addAlert } from "@/reducers/alertsSlice";
+import { store } from "@/store";
+
 const api = axios.create({
   baseURL: "http://localhost:8080",
   timeout: 10000,
@@ -24,6 +27,8 @@ api.interceptors.request.use(
     return config;
   },
   function (error) {
+    // passes all error message to Alert Component
+    store.dispatch(addAlert({ type: "error", message: error.message || "" }));
     return Promise.reject(error);
   }
 );
@@ -40,6 +45,8 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
+    // passes all error message to Alert Component
+    store.dispatch(addAlert({ type: "error", message: error.message || "" }));
     return Promise.reject(error);
   }
 );

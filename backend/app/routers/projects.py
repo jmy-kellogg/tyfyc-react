@@ -43,10 +43,10 @@ def fetch_projects_by_id(projects_id: str, current_user: User = Depends(get_curr
     db_projects = db.get(Project, projects_id)
     
     if(db_projects.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Project not found")
     
     if not db_projects:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Project not found")
     
     return db_projects
 
@@ -56,7 +56,7 @@ def update_projects_by_id(projects_id: str, projects: ProjectUpdate, current_use
     db_projects = db.get(Project, projects_id)
 
     if(db_projects.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Project not found")
     
     for field, value in projects.dict().items():
         if(value):
@@ -73,7 +73,7 @@ def delete_projects_by_id(projects_id: str, current_user: User = Depends(get_cur
     db_projects = db.get(Project, projects_id)
     
     if(db_projects.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Project not found")
     if not db_projects:
         raise HTTPException(status_code=404, detail="Project not found")
     

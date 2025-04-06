@@ -16,33 +16,29 @@ function NewJobModal() {
   const [posting, setPosting] = useState<string>("");
 
   const submit = async () => {
-    try {
-      const reqBody: ApplicationReqBody = {
-        company: "",
-        posting: posting,
-        title: "",
-        salary: "",
-        dateApplied: getToday(),
-        location: "",
-        status: "applied",
-        postingLink: "",
-        companySite: "",
-      };
+    const reqBody: ApplicationReqBody = {
+      company: "",
+      posting: posting,
+      title: "",
+      salary: "",
+      dateApplied: getToday(),
+      location: "",
+      status: "applied",
+      postingLink: "",
+      companySite: "",
+    };
 
-      const application: ApplicationResBody = await addApplication(reqBody);
+    const application: ApplicationResBody = await addApplication(reqBody);
 
-      if (application.id) {
-        dispatch(
-          addJobTabs({
-            label: application.company || "Job",
-            value: application.id,
-          })
-        );
-        dispatch(setActiveTab(application.id));
-        setShowModal(false);
-      }
-    } catch {
-      console.error("Invalid Job Posting");
+    if (application.id) {
+      dispatch(
+        addJobTabs({
+          label: application.company || "Job",
+          value: application.id,
+        })
+      );
+      dispatch(setActiveTab(application.id));
+      setShowModal(false);
     }
   };
 

@@ -47,29 +47,15 @@ function ApplicationsList() {
     return sortedList;
   };
 
-  const fetchData = useCallback(async () => {
-    try {
-      const dbApplications = await getApplications();
-      const sortedList = sortApplications(dbApplications);
-      setApplications(sortedList);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
   const openApplication = ({ company, id }: Application) => {
     dispatch(addJobTabs({ label: company || "Job", value: id }));
     dispatch(setActiveTab(id));
   };
 
   const remove = async (applicationId: string) => {
-    try {
-      await deleteApplication(applicationId);
-      fetchData();
-      dispatch(removeJobTab(applicationId));
-    } catch (err) {
-      console.error(err);
-    }
+    await deleteApplication(applicationId);
+    fetchData();
+    dispatch(removeJobTab(applicationId));
   };
 
   const getStatusColor = (status: Application["status"]) => {
@@ -92,6 +78,12 @@ function ApplicationsList() {
       )
     );
   };
+
+  const fetchData = useCallback(async () => {
+    const dbApplications = await getApplications();
+    const sortedList = sortApplications(dbApplications);
+    setApplications(sortedList);
+  }, []);
 
   useEffect(() => {
     fetchData();

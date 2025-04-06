@@ -62,13 +62,8 @@ function ApplicationDoc({ applicationId }: Props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const dbApplication = await getApplication(applicationId);
-
-        setApplication(dbApplication);
-      } catch (err) {
-        console.error(err);
-      }
+      const dbApplication = await getApplication(applicationId);
+      setApplication(dbApplication);
     };
     fetchData();
   }, [applicationId]);

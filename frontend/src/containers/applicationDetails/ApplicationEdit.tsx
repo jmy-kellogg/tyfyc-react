@@ -24,11 +24,7 @@ function ApplicationEdit({ applicationId }: Props) {
   };
 
   const onChangeForm = async () => {
-    try {
-      await updateApplication(formData);
-    } catch (err) {
-      console.error(err);
-    }
+    await updateApplication(formData);
   };
 
   const getCandidates = (parsedText: ParsedText): ParsedText => {
@@ -106,12 +102,8 @@ function ApplicationEdit({ applicationId }: Props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const dbApplication = await getApplication(applicationId);
-        setFormData(dbApplication);
-      } catch (err) {
-        console.error(err);
-      }
+      const dbApplication = await getApplication(applicationId);
+      setFormData(dbApplication);
     };
     fetchData();
   }, [applicationId]);

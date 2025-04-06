@@ -22,35 +22,23 @@ function Education({ editAll, lockEdit }: Props) {
   const addNew = async () => {
     const lastItem = eduList[eduList.length - 1];
     if (lastItem.school || lastItem.degree || lastItem.gradYear) {
-      try {
-        const newEdu = await createEducation({
-          school: "",
-          degree: "",
-          gradYear: "",
-        });
-        setEduList([...eduList, newEdu]);
-      } catch (err) {
-        console.error(err);
-      }
+      const newEdu = await createEducation({
+        school: "",
+        degree: "",
+        gradYear: "",
+      });
+      setEduList([...eduList, newEdu]);
     }
   };
 
   const remove = async (id: string) => {
-    try {
-      await deleteEducation(id);
-      setEduList(eduList.filter((edu) => edu.id !== id));
-    } catch (err) {
-      console.error(err);
-    }
+    await deleteEducation(id);
+    setEduList(eduList.filter((edu) => edu.id !== id));
   };
 
   const fetchEducation = useCallback(async () => {
-    try {
-      const education = await getEducationList();
-      setEduList(education);
-    } catch (err) {
-      console.error(err);
-    }
+    const education = await getEducationList();
+    setEduList(education);
   }, []);
 
   useEffect(() => {

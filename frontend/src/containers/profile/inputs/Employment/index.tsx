@@ -31,19 +31,15 @@ function Employment({ editAll, lockEdit }: Props) {
       lastItem.location ||
       lastItem.description
     ) {
-      try {
-        const employment = await createEmployment({
-          jobTitle: "",
-          company: "",
-          start: "",
-          end: "",
-          location: "",
-          description: "",
-        });
-        setEmploymentList([...employmentList, employment]);
-      } catch (err) {
-        console.error(err);
-      }
+      const employment = await createEmployment({
+        jobTitle: "",
+        company: "",
+        start: "",
+        end: "",
+        location: "",
+        description: "",
+      });
+      setEmploymentList([...employmentList, employment]);
     }
   };
 
@@ -53,22 +49,14 @@ function Employment({ editAll, lockEdit }: Props) {
       setEmploymentList(newList);
       setShowAdd(true);
     } else {
-      try {
-        await deleteEmployment(id);
-        setEmploymentList(newList);
-      } catch (err) {
-        console.error(err);
-      }
+      await deleteEmployment(id);
+      setEmploymentList(newList);
     }
   };
 
   const fetchEmployment = useCallback(async () => {
-    try {
-      const employment = await getEmploymentList();
-      setEmploymentList(employment);
-    } catch (err) {
-      console.error(err);
-    }
+    const employment = await getEmploymentList();
+    setEmploymentList(employment);
   }, []);
 
   useEffect(() => {

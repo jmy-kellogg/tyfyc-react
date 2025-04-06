@@ -45,10 +45,10 @@ def fetch_employment_by_id(employment_id: str, current_user: User = Depends(get_
     db_employment = db.get(Employment, employment_id)
     
     if(db_employment.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Employment not found")
     
     if not db_employment:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Employment not found")
     
     return db_employment
 
@@ -58,7 +58,7 @@ def update_employment_by_id(employment_id: str, employment: EmploymentUpdate, cu
     db_employment = db.get(Employment, employment_id)
 
     if(db_employment.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Employment not found")
     
     for field, value in employment.dict().items():
         if(value):
@@ -75,7 +75,7 @@ def delete_employment_by_id(employment_id: str, current_user: User = Depends(get
     db_employment = db.get(Employment, employment_id)
     
     if(db_employment.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Employment not found")
     if not db_employment:
         raise HTTPException(status_code=404, detail="Employment not found")
     

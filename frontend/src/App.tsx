@@ -8,6 +8,7 @@ import Resume from "./containers/Resume";
 import ApplicationsList from "./containers/ApplicationsList";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
+import Alerts from "./components/Alerts";
 
 import {
   setActiveTab,
@@ -54,6 +55,7 @@ function App() {
               </div>
             )}
           </div>
+          <Alerts />
         </div>
       )}
     </>

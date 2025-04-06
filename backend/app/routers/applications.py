@@ -35,7 +35,7 @@ def fetch_application_by_id(application_id: str, db: Session = Depends(get_db)):
     application = db.get(Application, application_id)
     
     if not application:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Application not found")
     
     return application
 

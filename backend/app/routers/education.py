@@ -42,10 +42,10 @@ def fetch_education_by_id(education_id: str, current_user: User = Depends(get_cu
     db_education = db.get(Education, education_id)
     
     if(db_education.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Education not found")
     
     if not db_education:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Education not found")
     
     return db_education
 
@@ -55,7 +55,7 @@ def update_education_by_id(education_id: str, education: EducationUpdate, curren
     db_education = db.get(Education, education_id)
 
     if(db_education.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Education not found")
     
     for field, value in education.dict().items():
         if(value):
@@ -72,7 +72,7 @@ def delete_education_by_id(education_id: str, current_user: User = Depends(get_c
     db_education = db.get(Education, education_id)
     
     if(db_education.user_id != user_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Education not found")
     if not db_education:
         raise HTTPException(status_code=404, detail="Education not found")
     

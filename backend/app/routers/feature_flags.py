@@ -33,7 +33,7 @@ def fetch_feature_flag_by_name(name: str, db: Session = Depends(get_db)):
     db_feature_flag = db.query(Feature_flag).filter(Feature_flag.name==name).first()
     
     if not db_feature_flag:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Feature Flag not found")
     
     return db_feature_flag
 

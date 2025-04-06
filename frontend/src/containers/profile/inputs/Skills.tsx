@@ -31,57 +31,23 @@ function Skills({ editAll, lockEdit }: Props) {
   const [hover, setHover] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
-  const fetchSkillOptions = useCallback(async () => {
-    try {
-      const dbSkillOptions = await getSkillOptions();
-      setSkillOptions(
-        dbSkillOptions.map(({ id, name }) => ({
-          label: name,
-          value: id,
-          id: "",
-        }))
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
-  const fetchSkills = useCallback(async () => {
-    try {
-      const dbSkills = await getSkills();
-      setSkills(
-        dbSkills.map(({ id, name, skillOptionsId }) => ({
-          label: name,
-          value: skillOptionsId,
-          id,
-        }))
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
   const onChange = async (
     _newValue: MultiValue<SkillSelect>,
     actionMeta: ActionMeta<SkillSelect>
   ) => {
-    try {
-      if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
-        const skill: Skill | undefined = await addSkill({
-          skillOptionsId: actionMeta.option.value,
-          category: "",
-        });
+    if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
+      const skill: Skill | undefined = await addSkill({
+        skillOptionsId: actionMeta.option.value,
+        category: "",
+      });
 
-        if (skill) {
-          setSkills([
-            ...skills,
-            { label: skill.name, value: skill.skillOptionsId, id: skill.id },
-          ]);
-        }
-        setHover(false);
+      if (skill) {
+        setSkills([
+          ...skills,
+          { label: skill.name, value: skill.skillOptionsId, id: skill.id },
+        ]);
       }
-    } catch (err) {
-      console.error(err);
+      setHover(false);
     }
   };
 
@@ -92,12 +58,8 @@ function Skills({ editAll, lockEdit }: Props) {
       (skill) => skill.id !== id
     );
 
-    try {
-      await deleteSkill(id);
-      setSkills(updatedSkills);
-    } catch (err) {
-      console.error(err);
-    }
+    await deleteSkill(id);
+    setSkills(updatedSkills);
   };
 
   const formatSortList = (skill: SkillSelect) => ({
@@ -140,6 +102,36 @@ function Skills({ editAll, lockEdit }: Props) {
       </div>
     );
   };
+
+  const fetchSkillOptions = useCallback(async () => {
+    try {
+      const dbSkillOptions = await getSkillOptions();
+      setSkillOptions(
+        dbSkillOptions.map(({ id, name }) => ({
+          label: name,
+          value: id,
+          id: "",
+        }))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  const fetchSkills = useCallback(async () => {
+    try {
+      const dbSkills = await getSkills();
+      setSkills(
+        dbSkills.map(({ id, name, skillOptionsId }) => ({
+          label: name,
+          value: skillOptionsId,
+          id,
+        }))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
   useEffect(() => {
     fetchSkillOptions();
