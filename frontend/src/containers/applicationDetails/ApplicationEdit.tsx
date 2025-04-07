@@ -1,18 +1,17 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { removePunctuation } from "@utils";
 import { statusOptions } from "@options";
 import { getApplication, updateApplication } from "@/api/applications";
 
 import type { Application } from "@/types/applications";
+import RichEditor from "@/components/RichEditor";
 
 interface Props {
   applicationId: string;
 }
 
-type ParsedText = Array<string>;
-
 function ApplicationEdit({ applicationId }: Props) {
   const [formData, setFormData] = useState<Partial<Application>>({});
+  const [posting, setPosting] = useState<string>("");
 
   const onChangeData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -27,83 +26,17 @@ function ApplicationEdit({ applicationId }: Props) {
     await updateApplication(formData);
   };
 
-  const getCandidates = (parsedText: ParsedText): ParsedText => {
-    const firstItems = parsedText.slice(0, 10);
-    return firstItems.filter((str) => str.length < 50);
-  };
-
-  const findJobTitle = (parsedText: ParsedText) => {
-    const title = parsedText.find((text) => {
-      const lcText = text.toLocaleLowerCase();
-      return lcText.includes("engineer") || lcText.includes("developer");
-    });
-    return title || "";
-  };
-
-  const findCompany = (parsedText: ParsedText) => {
-    const isCap = /[A-Z]/;
-    const isLower = /[a-z(]/;
-
-    const candidate: string | undefined = parsedText.find((text) => {
-      const startsWithAt = text.slice(0, 2).toLocaleLowerCase() === "at";
-      const nextWord = text.split(" ")[1];
-      return startsWithAt && isCap.test(nextWord);
-    });
-
-    if (candidate) {
-      const words: ParsedText = candidate.split(" ");
-      // remove the "At"
-      words.shift();
-      const firstLowerCase = words.findIndex((str) => isLower.test(str[0]));
-      const company = words.slice(0, firstLowerCase).join(" ");
-
-      return removePunctuation(company);
-    } else {
-      return "";
-    }
-  };
-
-  // ToDo: Find city locations
-  const findLocation = (parsedText: Array<string>): string => {
-    let locationText: string = "";
-    const locationTag = parsedText.find((text) => text.includes("Location: "));
-    const remoteText = parsedText.find((text) =>
-      text.toLocaleLowerCase().includes("remote")
-    );
-
-    if (locationTag) {
-      locationText = locationTag.replace("Location: ", "");
-    } else if (remoteText) {
-      locationText = remoteText;
-    }
-
-    return locationText;
-  };
-
-  const updatePosting = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    const parsedText = value.split("\n").filter((str) => !!str);
-    const newApp = { ...formData, posting: value };
-    const candidates = getCandidates(parsedText);
-
-    if (!newApp.title) {
-      newApp.title = findJobTitle(candidates);
-    }
-    if (!newApp.location) {
-      newApp.location = findLocation(candidates);
-    }
-    if (!newApp.company) {
-      newApp.company = findCompany(parsedText);
-    }
-
-    setFormData(newApp);
-    updateApplication(newApp);
+  const savePosting = async (posting: string) => {
+    await updateApplication({ ...formData, posting });
   };
 
   useEffect(() => {
     const fetchData = async () => {
       const dbApplication = await getApplication(applicationId);
       setFormData(dbApplication);
+      if (dbApplication.posting) {
+        setPosting(dbApplication.posting);
+      }
     };
     fetchData();
   }, [applicationId]);
@@ -240,14 +173,9 @@ function ApplicationEdit({ applicationId }: Props) {
 
             <div className="col-span-full">
               <label className="block text-sm/6 font-medium">Job Posting</label>
-              <textarea
-                id="posting"
-                name="posting"
-                className="w-full min-h-100 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                value={formData.posting}
-                onChange={onChangeData}
-                onBlur={updatePosting}
-              ></textarea>
+              {posting && (
+                <RichEditor content={posting} handleTextChange={savePosting} />
+              )}
             </div>
           </div>
         </div>

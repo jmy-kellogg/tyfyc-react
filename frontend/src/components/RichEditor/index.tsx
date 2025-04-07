@@ -1,4 +1,4 @@
-// src/Tiptap.tsx
+import { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Focus from "@tiptap/extension-focus";
@@ -28,6 +28,11 @@ const RichEditor = ({ content, handleTextChange }: Props) => {
   const handleBlur = () => {
     if (editor) handleTextChange(editor.getHTML());
   };
+
+  useEffect(() => {
+    const formattedContent = content[0] === "<" ? content : `<p>${content}</p>`;
+    editor?.commands.setContent(formattedContent);
+  }, [content, editor]);
 
   return (
     <>

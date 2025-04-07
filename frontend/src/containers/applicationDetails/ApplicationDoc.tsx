@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
-import JobDescription from "./JobDescription";
+import ReadOnly from "@/components/RichEditor/ReadOnly";
 import Recommendation from "./Recommendation";
 import { getStatus, getFormattedDate } from "@utils";
 
@@ -23,6 +23,7 @@ function ApplicationDoc({ applicationId }: Props) {
   const storedApplications = useSelector((state: State) => state.applications);
   const targetJobTitle = useSelector((state: State) => state.personal.jobTitle);
   const summary = useSelector((state: State) => state.personal.summary);
+  const [posting, setPosting] = useState<string>("");
   const dispatch = useDispatch();
 
   const updateResumeJobTitle = () => {
@@ -64,6 +65,9 @@ function ApplicationDoc({ applicationId }: Props) {
     const fetchData = async () => {
       const dbApplication = await getApplication(applicationId);
       setApplication(dbApplication);
+      if (dbApplication.posting) {
+        setPosting(dbApplication.posting);
+      }
     };
     fetchData();
   }, [applicationId]);
@@ -157,11 +161,10 @@ function ApplicationDoc({ applicationId }: Props) {
               <b>Salary: </b> {application.salary || "unknown"}
             </p>
           </div>
-          {application.posting && (
+          {posting && (
             <div className="my-5">
               <h3>Job Description: </h3>
-
-              <JobDescription description={application.posting} />
+              <ReadOnly content={posting} />
             </div>
           )}
         </div>
