@@ -33,3 +33,8 @@ body {
   overflow: auto;
   width: max-content;
 }
+
+/* tip to override */
+.ProseMirror-focused {
+  outline: none;
+}
