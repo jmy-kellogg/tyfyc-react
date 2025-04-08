@@ -27,7 +27,7 @@ function LargeDisplayView() {
     <>
       <div className="flex gap-4">
         {showProfile && (
-          <div>
+          <div className="w-4xl">
             <Tabs
               tabs={[
                 {
@@ -41,7 +41,7 @@ function LargeDisplayView() {
           </div>
         )}
         {showResume && (
-          <div>
+          <div className="w-4xl">
             <Tabs
               tabs={[
                 {
@@ -55,7 +55,7 @@ function LargeDisplayView() {
           </div>
         )}
         {showApplications && (
-          <div>
+          <div className="w-3xl">
             <Tabs
               tabs={[
                 {
@@ -69,7 +69,7 @@ function LargeDisplayView() {
           </div>
         )}
         {!!jobTabs.length && (
-          <div>
+          <div className="w-4xl">
             <Tabs
               tabs={jobTabs || []}
               active={activeTab}
