@@ -5,10 +5,7 @@ import { addApplication } from "@/api/applications";
 import { getToday } from "@/utils";
 
 import { setActiveTab, addJobTabs } from "src/store/reducers/settingsSlice";
-import type {
-  ApplicationReqBody,
-  ApplicationResBody,
-} from "@/types/applications";
+import type { ApplicationCreate, Application } from "@/types/applications";
 
 function NewJobModal() {
   const dispatch = useDispatch();
@@ -16,19 +13,13 @@ function NewJobModal() {
   const [posting, setPosting] = useState<string>("");
 
   const submit = async () => {
-    const reqBody: ApplicationReqBody = {
-      company: "",
+    const reqBody: ApplicationCreate = {
       posting: posting,
-      title: "",
-      salary: "",
       dateApplied: getToday(),
-      location: "",
       status: "applied",
-      postingLink: "",
-      companySite: "",
     };
 
-    const application: ApplicationResBody = await addApplication(reqBody);
+    const application: Application = await addApplication(reqBody);
 
     if (application.id) {
       dispatch(

@@ -1,7 +1,7 @@
 import Papa from "papaparse";
 import { ChangeEvent } from "react";
 
-import type { Applications, ApplicationReqBody } from "@/types/applications";
+import type { Applications, ApplicationUpdate } from "@/types/applications";
 import { getApplications, addApplication } from "@/api/applications";
 
 interface Props {
@@ -20,9 +20,9 @@ function ImportCSV({ fetchData }: Props) {
     try {
       const dbApplications: Applications = await getApplications();
       const jobIdLists = dbApplications.map(({ id }) => id);
-      const uploadList: Array<ApplicationReqBody> = csvData
+      const uploadList: Array<ApplicationUpdate> = csvData
         .filter(isObject)
-        .filter((item: ApplicationReqBody) => {
+        .filter((item: ApplicationUpdate) => {
           return !item?.id || !jobIdLists.includes(item?.id);
         });
 

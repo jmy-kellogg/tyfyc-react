@@ -1,3 +1,4 @@
+// Deprecated
 import { useState, useEffect, ChangeEvent } from "react";
 import { statusOptions } from "@options";
 import { getApplication, updateApplication } from "@/api/applications";
@@ -182,7 +183,7 @@ function ApplicationEdit({ applicationId }: Props) {
               <label className="block text-sm/6 font-medium">Notes</label>
               <RichEditor content={notes} handleTextChange={saveNotes} />
             </div>
-            <div className="col-span-full my-2">
+            <div className="col-span-full">
               <label className="block text-sm/6 font-medium">Job Posting</label>
               <RichEditor content={posting} handleTextChange={savePosting} />
             </div>

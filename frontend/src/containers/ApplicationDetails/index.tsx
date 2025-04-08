@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import ApplicationEdit from "./ApplicationEdit";
-import ApplicationDoc from "./ApplicationDoc";
 import Tabs from "src/components/Tabs";
+import Application from "./Application";
 
 import { setActiveTab, getActiveTab } from "src/store/reducers/settingsSlice";
 import type { State } from "src/store";
@@ -73,11 +72,7 @@ function ApplicationDetails() {
             </button>
           </div>
           <div className="px-5 w-3xl justify-self-center">
-            {showForm ? (
-              <ApplicationEdit applicationId={activeTab} />
-            ) : (
-              <ApplicationDoc applicationId={activeTab} />
-            )}
+            <Application applicationId={activeTab} showForm={showForm} />
           </div>
         </div>
       </div>

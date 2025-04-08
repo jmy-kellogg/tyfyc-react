@@ -23,7 +23,7 @@ export interface Application extends ApplicationBase {
   id: string;
 }
 
-export type ApplicationReqBody = Partial<Application>;
-export type ApplicationResBody = Partial<Application>;
+export type ApplicationCreate = Partial<ApplicationBase>;
+export type ApplicationUpdate = Partial<Application>;
 
 export type Applications = Array<Application>;

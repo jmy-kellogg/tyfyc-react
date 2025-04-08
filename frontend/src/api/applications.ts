@@ -1,8 +1,9 @@
 import api from ".";
 import type {
-  ApplicationReqBody,
-  ApplicationResBody,
+  ApplicationCreate,
+  ApplicationUpdate,
   Applications,
+  Application,
 } from "@/types/applications";
 
 export const getApplications = async (): Promise<Applications> => {
@@ -12,14 +13,14 @@ export const getApplications = async (): Promise<Applications> => {
 
 export const getApplication = async (
   applicationId: string
-): Promise<ApplicationResBody> => {
+): Promise<Application> => {
   const response = await api.get(`/applications/${applicationId}`);
   return response?.data || {};
 };
 
 export const updateApplication = async (
-  application: ApplicationReqBody
-): Promise<ApplicationResBody> => {
+  application: ApplicationUpdate
+): Promise<Application> => {
   const response = await api.put(
     `/applications/${application.id}`,
     application
@@ -28,21 +29,14 @@ export const updateApplication = async (
 };
 
 export const addApplication = async (
-  application: ApplicationReqBody
-): Promise<ApplicationResBody> => {
-  const formattedApplication = {
-    company: application.company || "",
-    title: application.title || "",
+  application: ApplicationCreate
+): Promise<Application> => {
+  const reqBody = {
+    ...addApplication,
     status: application.status || "applied",
-    location: application.location || "",
-    dateApplied: application.dateApplied || "",
-    salary: application.salary || "",
-    postingLink: application.postingLink || "",
-    companySite: application.companySite || "",
-    posting: application.posting || "",
   };
 
-  const response = await api.post("/applications", formattedApplication);
+  const response = await api.post("/applications", reqBody);
   return response?.data || {};
 };
 

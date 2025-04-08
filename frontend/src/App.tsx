@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { AuthContext } from "@/context/AuthContext";
-import Application from "./containers/Application";
+import ApplicationDetails from "./containers/ApplicationDetails";
 import Profile from "./containers/Profile";
 import Resume from "./containers/Resume";
-import Applications from "./containers/Applications";
+import ApplicationsList from "./containers/ApplicationsList";
 import Tabs from "./components/Tabs";
 import SideMenu from "./components/SideMenu";
 import Alerts from "./components/Alerts";
@@ -40,18 +40,18 @@ function App() {
                 <div className="flex bg-white justify-center">
                   {activeTab === "profile" && <Profile />}
                   {activeTab === "resume" && <Resume />}
-                  {activeTab === "applications" && <Applications />}
+                  {activeTab === "applications" && <ApplicationsList />}
                   {!["profile", "resume", "applications"].includes(
                     activeTab
-                  ) && <Application />}
+                  ) && <ApplicationDetails />}
                 </div>
               </>
             ) : (
               <div className="flex gap-4">
                 <Profile />
                 <Resume />
-                <Applications />
-                <Application />
+                <ApplicationsList />
+                <ApplicationDetails />
               </div>
             )}
           </div>
