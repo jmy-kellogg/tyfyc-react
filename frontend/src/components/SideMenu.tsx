@@ -16,9 +16,9 @@ function SideMenu() {
   const dispatch = useDispatch();
   const { logout } = useContext(AuthContext);
   const activeTab = useSelector(getActiveTab);
-  const jobTabs = useSelector(({ settings }: State) => settings.jobTabs);
+  const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const smallDisplay = useSelector(
-    ({ settings }: State) => settings.smallDisplay
+    (state: State) => state.settings.smallDisplay
   );
 
   const toggleDisplay = () => {
@@ -180,6 +180,7 @@ function SideMenu() {
               />
             </svg>
           )}
+
           {jobTabs.map(({ label, value }) => (
             <button
               key={value}
@@ -196,6 +197,7 @@ function SideMenu() {
             </button>
           ))}
         </div>
+
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -32,7 +32,7 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
 
   return (
     <>
-      <div className="flex ">
+      <div className="flex full-page overflow-auto">
         {tabs.map(({ label, value }) => (
           <div
             key={value}
@@ -43,7 +43,7 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
             }`}
           >
             <button
-              className={`m-1 flex align-sub hover:font-bold ${
+              className={`m-1 mb-2 flex align-sub text-sm w-full max-w-20 hover:font-bold hover:max-w-100 ${
                 active !== value ? "hover:cursor-pointer" : ""
               }`}
               onClick={() => setActive && setActive(value)}
@@ -97,12 +97,14 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
                 </svg>
               )}
 
-              {label}
+              <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                {label}
+              </p>
             </button>
 
             {clearable && (
               <button
-                className="ml-1 align-sub rounded-lg hover:cursor-pointer hover:font-bold hover:bg-gray-300"
+                className="ml-1 mt-1 self-start rounded-lg text-gray-500 hover:cursor-pointer hover:font-bold hover:bg-gray-200"
                 onClick={() => removeTab(value)}
               >
                 <svg
