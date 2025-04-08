@@ -19,11 +19,7 @@ body {
 }
 
 .full-page{
-  height: calc(100vh - 75px);
-  background-color: white;
-  overflow: auto;
-  padding: 15px;
-  width: calc(100vw - 100px);
+  width: calc(100vw - 75px);
 }
 
 .page {
@@ -31,7 +27,6 @@ body {
   background-color: white;
   padding: 15px;
   overflow: auto;
-  width: max-content;
 }
 
 /* tip to override */
