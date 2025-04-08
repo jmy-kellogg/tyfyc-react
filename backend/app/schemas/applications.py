@@ -12,6 +12,7 @@ class ApplicationBase(BaseModel):
     company_site: str
     posting: str
     summary: str
+    notes: str
 
 class ApplicationCreate(BaseModel):
     company: str | None = "" 
@@ -24,6 +25,7 @@ class ApplicationCreate(BaseModel):
     company_site: str | None = ""
     posting: str | None = ""
     summary: str | None = "" 
+    notes: str | None = "" 
 
 class ApplicationUpdate(BaseModel):
     company:  Optional[str]
@@ -36,6 +38,7 @@ class ApplicationUpdate(BaseModel):
     company_site:  Optional[str]
     posting:  Optional[str]
     summary:  Optional[str]
+    notes:  Optional[str]
 
 class ApplicationResp(ApplicationBase):
     id: str

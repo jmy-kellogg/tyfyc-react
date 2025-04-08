@@ -20,10 +20,11 @@ interface Props {
 function ApplicationDoc({ applicationId }: Props) {
   const [popover, setPopover] = useState<boolean>(false);
   const [application, setApplication] = useState<Partial<Application>>({});
+  const [posting, setPosting] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
   const storedApplications = useSelector((state: State) => state.applications);
   const targetJobTitle = useSelector((state: State) => state.personal.jobTitle);
   const summary = useSelector((state: State) => state.personal.summary);
-  const [posting, setPosting] = useState<string>("");
   const dispatch = useDispatch();
 
   const updateResumeJobTitle = () => {
@@ -67,6 +68,9 @@ function ApplicationDoc({ applicationId }: Props) {
       setApplication(dbApplication);
       if (dbApplication.posting) {
         setPosting(dbApplication.posting);
+      }
+      if (dbApplication.notes) {
+        setNotes(dbApplication.notes);
       }
     };
     fetchData();
@@ -161,6 +165,12 @@ function ApplicationDoc({ applicationId }: Props) {
               <b>Salary: </b> {application.salary || "unknown"}
             </p>
           </div>
+          {notes && (
+            <div className="my-5">
+              <h3>Notes: </h3>
+              <ReadOnly content={notes} />
+            </div>
+          )}
           {posting && (
             <div className="my-5">
               <h3>Job Description: </h3>

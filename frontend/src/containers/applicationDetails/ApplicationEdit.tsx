@@ -12,6 +12,7 @@ interface Props {
 function ApplicationEdit({ applicationId }: Props) {
   const [formData, setFormData] = useState<Partial<Application>>({});
   const [posting, setPosting] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
 
   const onChangeData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -26,6 +27,10 @@ function ApplicationEdit({ applicationId }: Props) {
     await updateApplication(formData);
   };
 
+  const saveNotes = async (notes: string) => {
+    await updateApplication({ ...formData, notes });
+  };
+
   const savePosting = async (posting: string) => {
     await updateApplication({ ...formData, posting });
   };
@@ -36,6 +41,9 @@ function ApplicationEdit({ applicationId }: Props) {
       setFormData(dbApplication);
       if (dbApplication.posting) {
         setPosting(dbApplication.posting);
+      }
+      if (dbApplication.notes) {
+        setNotes(dbApplication.notes);
       }
     };
     fetchData();
@@ -170,12 +178,13 @@ function ApplicationEdit({ applicationId }: Props) {
                 />
               </div>
             </div>
-
-            <div className="col-span-full">
+            <div className="col-span-full min-h-100 my-2">
+              <label className="block text-sm/6 font-medium">Notes</label>
+              <RichEditor content={notes} handleTextChange={saveNotes} />
+            </div>
+            <div className="col-span-full my-2">
               <label className="block text-sm/6 font-medium">Job Posting</label>
-              {posting && (
-                <RichEditor content={posting} handleTextChange={savePosting} />
-              )}
+              <RichEditor content={posting} handleTextChange={savePosting} />
             </div>
           </div>
         </div>

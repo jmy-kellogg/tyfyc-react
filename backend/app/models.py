@@ -45,6 +45,7 @@ class Application(Base):
   company_site = Column(String)
   posting = Column(TEXT)
   summary = Column(String)
+  notes = Column(TEXT)
 
 class Skill(Base):
     __tablename__ = "skills"
