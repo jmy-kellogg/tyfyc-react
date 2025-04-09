@@ -9,10 +9,10 @@ import type { ApplicationUpdate } from "@/types/applications";
 
 interface Props {
   applicationId: string;
-  showForm: boolean;
 }
 
-function Application({ applicationId, showForm }: Props) {
+function Application({ applicationId }: Props) {
+  const [showForm, setShowForm] = useState<boolean>(false);
   const [application, setApplication] = useState<ApplicationUpdate>({});
 
   useEffect(() => {
@@ -21,19 +21,17 @@ function Application({ applicationId, showForm }: Props) {
       setApplication(dbApplication);
     };
     fetchData();
-  }, [applicationId]);
+  }, [applicationId, showForm]);
 
   return (
     <>
-      <div className="p-4 space-y-4">
+      <div className="w-3xl justify-self-center">
         {showForm ? (
-          <InfoEdit application={application} />
+          <InfoEdit application={application} setShowForm={setShowForm} />
         ) : (
-          <InfoDoc application={application} />
+          <InfoDoc application={application} setShowForm={setShowForm} />
         )}
-        <hr />
         <Notes application={application} showForm={showForm} />
-        <hr />
         <Posting application={application} showForm={showForm} />
       </div>
     </>

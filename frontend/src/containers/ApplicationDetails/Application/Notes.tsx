@@ -35,6 +35,7 @@ function Notes({ application, showForm }: Props) {
           {!showForm && !!notes && <ReadOnly content={notes} />}
         </div>
       </div>
+      {!showForm && <hr />}
     </>
   );
 }
