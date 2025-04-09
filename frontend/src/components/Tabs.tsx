@@ -43,7 +43,7 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
             }`}
           >
             <button
-              className={`m-1 mb-2 flex align-sub text-sm w-full max-w-20 hover:font-bold hover:max-w-100 ${
+              className={`m-1 mb-2 flex align-sub text-sm w-full max-w-30 hover:font-bold hover:max-w-100 ${
                 active !== value ? "hover:cursor-pointer" : ""
               }`}
               onClick={() => setActive && setActive(value)}
