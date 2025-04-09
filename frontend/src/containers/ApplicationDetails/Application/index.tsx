@@ -31,7 +31,9 @@ function Application({ applicationId, showForm }: Props) {
         ) : (
           <InfoDoc application={application} />
         )}
+        <hr />
         <Notes application={application} showForm={showForm} />
+        <hr />
         <Posting application={application} showForm={showForm} />
       </div>
     </>

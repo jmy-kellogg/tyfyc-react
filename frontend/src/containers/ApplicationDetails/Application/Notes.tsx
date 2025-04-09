@@ -26,14 +26,13 @@ function Notes({ application, showForm }: Props) {
 
   return (
     <>
-      <div className="col-span-full min-h-100 my-2">
-        <h2 className="block text-sm/6 font-medium">Notes</h2>
+      <div className="col-span-full min-h-20 my-2">
+        <h2 className="block text-sm/6 font-medium">Notes:</h2>
         <div className="m-3">
-          {showForm ? (
+          {showForm && (
             <RichEditor content={notes} handleTextChange={saveNotes} />
-          ) : (
-            <ReadOnly content={notes} />
           )}
+          {!showForm && !!notes && <ReadOnly content={notes} />}
         </div>
       </div>
     </>

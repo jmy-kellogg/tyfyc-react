@@ -27,7 +27,7 @@ function Posting({ application, showForm }: Props) {
   return (
     <>
       <div className="col-span-full min-h-100 my-2">
-        <h2 className="block text-sm/6 font-medium">Posting</h2>
+        <h2 className="block text-sm/6 font-medium">Posting:</h2>
         <div className="m-3">
           {showForm ? (
             <RichEditor content={posting} handleTextChange={savePosting} />
