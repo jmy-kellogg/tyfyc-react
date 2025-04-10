@@ -11,35 +11,14 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 - [X] Saves locally in cookies
 - [X] Autofill resume from an existing resume
 - [X] Saves Application details to csv
+- [X] Auth login and access token api validation
+- [ ] Feature flags
 - [ ] Updates resume according to job posting
 
 ## OpenAI
 add .env file in `/frontend` with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality. 
 
 # Development
-
-## Backend
-```
-cd backend
-```
-
-Set up Python environment
-```
-python -m venv venv
-source ./venv/bin/activate
-```
-
-Install Requirements
-```
-pip install requirements.txt
-```
-
-Start backend
-```
-python ./main.py
-```
-Runs locally on http://localhost:8080/
-
 
 ## Frontend
 ```
@@ -62,21 +41,72 @@ Run locally http://localhost:8000/
 npm run build
 ```
 
+## Backend
+```
+cd backend
+```
+
+Set up Python environment
+```
+python -m venv venv
+source ./venv/bin/activate
+```
+
+Install Requirements
+```
+pip install requirements.txt
+```
+
+Start backend
+```
+python ./main.py
+```
+Runs locally on http://localhost:8080/
+Open API Docs on http://localhost:8080/docs#
+
+### Database migration
+Make revision
+```
+alembic revision -m "description here"
+```
+Run migration
+upgrade
+```
+alembic upgrade head
+// or
+alembic upgrade [revision_number]
+```
+downgrade
+```
+alembic downgrade [revision_number]
+```
+
 ## Project Structure
 ```
 tyfyc/
 │── public/                     # Static assets
 │── backend/                    # FastAPI Backend
+    │── alembic/                # Database revisions
+    │── app/
+        ├── auth/               # Auth and Token handler
+        ├── parser/             # Document parser
+        ├── routers/            # API Router
+        ├── schemas/            # Schema and Typing
+        ├── database.py         # sqlite database setup
+        ├── models.py           # Database tables models
+    |── main.py                 # Entry into the backend 
 │── frontend/                   # React Frontend
     │── src/
-    │   ├── components/         # Reusable components
-    │   ├── containers/         # Containers
-    │   ├── store/              # Redux store
-    │   ├── App.vue             # Root component
-    │   ├── main.ts             # Entry file
-    │   ├── types/              # TypeScript interfaces
-    │   ├── api.ts              # Axio routing
-    │── index.html              # Html
+        ├── api/                # API connecting to backend
+        ├── components/         # Reusable components
+        ├── containers/         # Pages and Views
+        ├── store/              # Redux store
+        ├── server/             # Legacy backend
+        ├── types/              # TypeScript interfaces
+        ├── App.tsx             # Root component
+        ├── index.css           # Apps CSS
+        ├── main.ts             # Entry file
+    │── index.html              # Entry HTML
     │── package.json            # Dependencies and scripts
     │── vite.config.js          # Vite configuration
 │── README.md                   # Project documentation
@@ -87,8 +117,11 @@ tyfyc/
 - Vite
 - TypeScript
 - HTML & CSS
-- Express
+- Tailwind
+- Tiptap
 - FastAPI
+- Sqlite
+- Alembic
 - OpenAI "gpt-3.5-turbo"
 - License
 
