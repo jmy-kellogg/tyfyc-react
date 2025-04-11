@@ -26,16 +26,23 @@ function Notes({ application, showForm }: Props) {
 
   return (
     <>
-      <div className="col-span-full min-h-20 my-2">
-        <h2 className="block text-sm/6 font-medium">Notes:</h2>
-        <div className="m-3">
-          {showForm && (
+      {showForm && (
+        <div className="col-span-full min-h-20 my-2">
+          <h2 className="block text-sm/6 font-medium">Notes:</h2>
+          <div className="m-3">
             <RichEditor content={notes} handleTextChange={saveNotes} />
-          )}
-          {!showForm && !!notes && <ReadOnly content={notes} />}
+          </div>
         </div>
-      </div>
-      {!showForm && <hr />}
+      )}
+      {!showForm && !!notes && (
+        <div className="col-span-full min-h-20 my-2">
+          <h2 className="block text-sm/6 font-medium">Notes:</h2>
+          <div className="m-3">
+            <ReadOnly content={notes} />{" "}
+          </div>
+          {!showForm && <hr />}
+        </div>
+      )}
     </>
   );
 }
