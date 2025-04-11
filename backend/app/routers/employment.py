@@ -44,10 +44,10 @@ def fetch_employment_by_id(employment_id: str, current_user: User = Depends(get_
     user_id = current_user.id
     db_employment = db.get(Employment, employment_id)
     
-    if(db_employment.user_id != user_id):
+    if not db_employment:
         raise HTTPException(status_code=404, detail="Employment not found")
     
-    if not db_employment:
+    if(db_employment.user_id != user_id):
         raise HTTPException(status_code=404, detail="Employment not found")
     
     return db_employment

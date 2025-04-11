@@ -1,7 +1,6 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, TEXT, Boolean, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
 from app.database import Base
 
 def generate_uuid():
@@ -33,19 +32,20 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
 class Application(Base):
-  __tablename__ = "applications"
-  id = Column(String, primary_key=True, default=generate_uuid)
-  company = Column(String)
-  title = Column(String)
-  status = Column(String)
-  date_applied = Column(String)
-  location = Column(String)
-  salary = Column(String)
-  posting_link = Column(String)
-  company_site = Column(String)
-  posting = Column(TEXT)
-  summary = Column(String)
-  notes = Column(TEXT)
+    __tablename__ = "applications"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    company = Column(String)
+    title = Column(String)
+    status = Column(String)
+    date_applied = Column(String)
+    location = Column(String)
+    salary = Column(String)
+    posting_link = Column(String)
+    company_site = Column(String)
+    posting = Column(TEXT)
+    summary = Column(String)
+    notes = Column(TEXT)
+    user_id = Column(String, ForeignKey("users.id"))
 
 class Skill(Base):
     __tablename__ = "skills"
