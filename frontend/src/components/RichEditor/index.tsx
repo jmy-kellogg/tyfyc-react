@@ -1,5 +1,10 @@
 import { useEffect } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import {
+  useEditor,
+  EditorContent,
+  FloatingMenu,
+  BubbleMenu,
+} from "@tiptap/react";
 
 import ButtonMenu from "./ButtonMenu";
 
@@ -86,6 +91,14 @@ const RichEditor = ({ content, handleTextChange }: Props) => {
             <div className="m-3">
               <EditorContent editor={editor} />
             </div>
+            <FloatingMenu editor={editor}>
+              <ButtonMenu editor={editor} />
+            </FloatingMenu>
+            <BubbleMenu editor={editor}>
+              <div className="p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
+                <ButtonMenu editor={editor} />
+              </div>
+            </BubbleMenu>
           </div>
         </>
       )}
