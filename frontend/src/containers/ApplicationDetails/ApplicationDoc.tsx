@@ -1,5 +1,5 @@
 // Deprecated
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -10,7 +10,8 @@ import { getStatus, getFormattedDate } from "@utils";
 import { setPersonal } from "src/store/reducers/personalSlice";
 import { updateApplication } from "src/store/reducers/applicationsSlice";
 import { getApplication } from "@/api/applications";
-import getFlag from "@featureFlags";
+import { AuthContext } from "@/context/AuthContext";
+
 import type { State } from "src/store";
 import type { Application } from "@/types/applications";
 
@@ -19,6 +20,7 @@ interface Props {
 }
 
 function ApplicationDoc({ applicationId }: Props) {
+  const { flags } = useContext(AuthContext);
   const [popover, setPopover] = useState<boolean>(false);
   const [application, setApplication] = useState<Partial<Application>>({});
   const [posting, setPosting] = useState<string>("");
@@ -49,7 +51,7 @@ function ApplicationDoc({ applicationId }: Props) {
             summary,
             description: application.posting,
           },
-        },
+        }
       );
       const updatedResume = {
         ...application,
@@ -79,7 +81,7 @@ function ApplicationDoc({ applicationId }: Props) {
 
   return (
     <>
-      {getFlag("OPENAI_FEATURE_FLAG") && !getResumeSummary() && (
+      {flags.includes("OPENAI_FEATURE_FLAG") && !getResumeSummary() && (
         <button
           className="float-right rounded-md border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
           onClick={() => getRecommendedResume()}

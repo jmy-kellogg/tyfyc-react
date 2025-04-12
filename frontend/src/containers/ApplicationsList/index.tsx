@@ -1,9 +1,15 @@
-import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  useContext,
+} from "react";
 import { useDispatch } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
 import { getApplications, deleteApplication } from "src/api/applications";
-import getFlag from "@featureFlags";
+import { AuthContext } from "@/context/AuthContext";
 import ExportCSV from "./ExportCSV";
 import ImportCSV from "./ImportCSV";
 import NewJobModal from "./NewJobModal";
@@ -17,6 +23,7 @@ import type { Application, Applications } from "@/types/applications";
 
 function ApplicationsList() {
   const dispatch = useDispatch();
+  const { flags } = useContext(AuthContext);
   const [applications, setApplications] = useState<Applications>([]);
   const [filteredList, setFilteredList] = useState<Applications>([]);
   const [search, setSearch] = useState("");
@@ -71,8 +78,8 @@ function ApplicationsList() {
     setSearch(e.target.value);
     setFilteredList(
       applications.filter(({ company }) =>
-        company.toLowerCase().includes(search.toLowerCase()),
-      ),
+        company.toLowerCase().includes(search.toLowerCase())
+      )
     );
   };
 
@@ -106,7 +113,7 @@ function ApplicationsList() {
           <div className="flex justify-between">
             <div className="flex">
               <ExportCSV applications={applications} />
-              {getFlag("FULL_EXPORT_FEATURE") && (
+              {flags.includes("FULL_EXPORT_FEATURE") && (
                 <ImportCSV fetchData={fetchData} />
               )}
             </div>
@@ -132,7 +139,7 @@ function ApplicationsList() {
                     <div className="w-30 text-right my-3 mx-1">
                       <p
                         className={`font-bold ${getStatusColor(
-                          application.status,
+                          application.status
                         )}`}
                       >
                         {getStatus(application.status)?.label || ""}

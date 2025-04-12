@@ -21,6 +21,14 @@ export interface RegisterUserReq {
   linkedIn?: string;
 }
 
+export interface FeatureFlag {
+  dateCreated: string;
+  description: string;
+  id: string;
+  isActive: boolean;
+  name: string;
+}
+
 export type Tab = {
   label: string;
   value: string;

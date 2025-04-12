@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { loginUser, registerUser } from "../api/auth";
+import { loginUser, registerUser, getFeatureFlags } from "../api/auth";
 import { fetchUser } from "../api/user";
 import type { User } from "../types";
 
@@ -14,10 +14,11 @@ interface AuthContextType {
         email: string,
         password: string,
         firstName: string,
-        lastName: string,
+        lastName: string
       ) => Promise<void>)
     | null;
   logout: (() => void) | null;
+  flags: string[];
 }
 
 interface AuthProviderProps {
@@ -30,12 +31,14 @@ const AuthContext = createContext<AuthContextType>({
   login: null,
   register: null,
   logout: null,
+  flags: [],
 });
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token"),
+    localStorage.getItem("token")
   );
+  const [flags, setFlags] = useState<string[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -64,7 +67,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     email: string,
     password: string,
     firstName: string,
-    lastName: string,
+    lastName: string
   ): Promise<void> => {
     await registerUser({ username, email, password, firstName, lastName });
     navigate("/login");
@@ -72,15 +75,26 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        if (token) {
+      if (token) {
+        try {
           const userProfile = await fetchUser();
           if (userProfile) {
             setUser(userProfile);
           }
+        } catch {
+          setToken(null);
         }
-      } catch {
-        setToken(null);
+
+        try {
+          const featureFlags = (await getFeatureFlags()) || [];
+          setFlags(
+            featureFlags
+              .filter(({ isActive }) => isActive)
+              .map(({ name }) => name)
+          );
+        } catch {
+          setFlags([]);
+        }
       }
     };
     fetchData();
@@ -95,7 +109,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [pathname, navigate, user, token]);
 
   return (
-    <AuthContext.Provider value={{ token, user, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ token, user, login, register, logout, flags }}
+    >
       {children}
     </AuthContext.Provider>
   );
