@@ -27,7 +27,7 @@ body {
   background-color: #f4f2ef;
 }
 
-.full-page{
+.full-page {
   width: calc(100vw - 75px);
 }
 
@@ -48,7 +48,7 @@ body {
     margin-top: 0;
   }
 
-  ul{
+  ul {
     margin-left: 1rem;
     list-style: circle;
   }
@@ -64,7 +64,7 @@ body {
   }
   /* List styles */
   ul[class="bulletList"] {
-      list-style: circle;
+    list-style: circle;
   }
 
   /* Task list specific styles */
@@ -77,13 +77,13 @@ body {
       align-items: flex-start;
       display: flex;
 
-      >label {
+      > label {
         flex: 0 0 auto;
         margin-right: 0.5rem;
         user-select: none;
       }
 
-      >div {
+      > div {
         flex: 1 1 auto;
       }
     }
@@ -99,6 +99,6 @@ body {
 }
 
 hr {
-    border-top: 1px solid #a8a8aec9;
-    margin: 3px 0px;
+  border-top: 1px solid #a8a8aec9;
+  margin: 3px 0px;
 }

@@ -1,6 +1,6 @@
-import { statusOptions } from "@options";
-import type { Skill, StatusOption } from "@/types";
-import type { Application } from "@/types/applications";
+import { statusOptions } from "./options";
+import type { Skill, StatusOption } from "../types";
+import type { Application } from "../types/applications";
 
 // This is to allow us to see sections when importing pdf, until we have a more robust parser
 export const divider = (): string => {
@@ -19,7 +19,7 @@ export const removePunctuation = (str: string): string => {
 };
 
 export const getStatus = (
-  statusValue: Application["status"]
+  statusValue: Application["status"],
 ): StatusOption | undefined => {
   return statusOptions.find(({ value }) => value === statusValue);
 };
@@ -29,7 +29,7 @@ export const getFormattedDate = (
   options: Intl.DateTimeFormatOptions | undefined = {
     day: "numeric",
     month: "short",
-  }
+  },
 ): string => {
   const lang = navigator?.language || "en-US";
   const dateOptions = {
@@ -63,7 +63,7 @@ export const snakeToCamelCase = (str: string): string => {
   return str
     .toLowerCase()
     .replace(/([-_][a-z])/g, (group) =>
-      group.toUpperCase().replace("-", "").replace("_", "")
+      group.toUpperCase().replace("-", "").replace("_", ""),
     );
 };
 

@@ -26,7 +26,7 @@ function NewJobModal() {
         addJobTabs({
           label: application.company || "Job",
           value: application.id,
-        })
+        }),
       );
       dispatch(setActiveTab(application.id));
       setShowModal(false);

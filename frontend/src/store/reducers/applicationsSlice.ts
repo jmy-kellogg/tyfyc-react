@@ -24,13 +24,13 @@ export const ApplicationsSlice = createSlice({
   reducers: {
     updateApplicationsList: (
       _state: ApplicationsState,
-      action: PayloadAction<ApplicationsState>
+      action: PayloadAction<ApplicationsState>,
     ) => {
       return action.payload;
     },
     addNewApplication: (
       state: ApplicationsState,
-      action: PayloadAction<ApplicationStore | undefined>
+      action: PayloadAction<ApplicationStore | undefined>,
     ) => {
       const application = action.payload || {};
       const id = uuidv4();
@@ -60,16 +60,16 @@ export const ApplicationsSlice = createSlice({
     },
     removeApplication: (
       state: ApplicationsState,
-      action: PayloadAction<string>
+      action: PayloadAction<string>,
     ) => {
       return state.filter(({ jobId }) => jobId !== action.payload);
     },
     updateApplication: (
       state: ApplicationsState,
-      action: PayloadAction<Partial<ApplicationStore>>
+      action: PayloadAction<Partial<ApplicationStore>>,
     ) => {
       const index = state.findIndex(
-        ({ jobId }) => jobId === action.payload.jobId
+        ({ jobId }) => jobId === action.payload.jobId,
       );
       state[index] = { ...state[index], ...action.payload };
     },

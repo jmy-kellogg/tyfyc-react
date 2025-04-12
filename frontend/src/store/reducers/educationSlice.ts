@@ -17,7 +17,7 @@ export const educationSlice = createSlice({
   reducers: {
     setEducation: (
       _state: EducationState,
-      action: PayloadAction<EducationList>
+      action: PayloadAction<EducationList>,
     ) => {
       return action.payload;
     },

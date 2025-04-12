@@ -1,4 +1,10 @@
-const ButtonMenu = ({ editor }) => {
+import type { Editor } from "@tiptap/core";
+
+interface Props {
+  editor: Editor;
+}
+
+const ButtonMenu = ({ editor }: Props) => {
   return (
     <>
       <div className="flex">

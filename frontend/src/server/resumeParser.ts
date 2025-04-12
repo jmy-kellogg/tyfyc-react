@@ -38,7 +38,7 @@ const getPersonal = (textData: Array<string> = []): Personal => {
   const sites = personal[3]?.split("|") || [];
   const summary = personal.slice(
     personal.indexOf("Summary") + 1,
-    personal.length
+    personal.length,
   );
 
   return {
@@ -60,7 +60,7 @@ const getSkills = (textData: Array<string> = []) => {
     textData
       .slice(
         textData.indexOf("Skills") + 1,
-        textData.indexOf("Professional Experience") - 1
+        textData.indexOf("Professional Experience") - 1,
       )[0]
       ?.split(", ")
       .map((skill) => ({
@@ -74,7 +74,7 @@ const getJobs = (textData: Array<string> = []): JobHistoryList => {
   const jobHistory = textData
     .slice(
       textData.indexOf("Professional Experience") + 1,
-      textData.indexOf("Education") - 1
+      textData.indexOf("Education") - 1,
     )
     .reduce(splitSubSection, [[]]);
 

@@ -16,7 +16,7 @@ function LargeDisplayView() {
   const showResume = useSelector((state: State) => state.settings.showResume);
   const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const showApplications = useSelector(
-    (state: State) => state.settings.showApplications
+    (state: State) => state.settings.showApplications,
   );
 
   const setActive = (activeValue: string) => {

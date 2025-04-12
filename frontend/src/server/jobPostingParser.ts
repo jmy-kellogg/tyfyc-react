@@ -47,7 +47,7 @@ const findLocation = (parsedText: ParsedText): string => {
   let locationText: string = "";
   const locationTag = parsedText.find((text) => text.includes("Location: "));
   const remoteText = parsedText.find((text) =>
-    text.toLocaleLowerCase().includes("remote")
+    text.toLocaleLowerCase().includes("remote"),
   );
 
   if (locationTag) {
@@ -81,7 +81,7 @@ const client = new OpenAI({
 });
 
 export const jobPostingAiParse = async (
-  posting: string
+  posting: string,
 ): Promise<ParsedData> => {
   let applicationData: ParsedData = {
     company: "",

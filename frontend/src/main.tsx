@@ -24,5 +24,5 @@ createRoot(document.getElementById("root")!).render(
         </AuthProvider>
       </BrowserRouter>
     </PersistGate>
-  </Provider>
+  </Provider>,
 );

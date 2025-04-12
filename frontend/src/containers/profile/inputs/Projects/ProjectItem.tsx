@@ -17,18 +17,14 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
   const [hover, setHover] = useState<boolean>(false);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const key = e.target.name;
     const value = e.target.value;
     setForm({ ...form, [key]: value });
   };
 
-  const updateData = async (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.target.name || "";
-    const value = e.target.value || "";
+  const updateData = async (key: keyof Project, value: string) => {
     if (value && project[key] !== value) {
       const updateBody = {
         title: form.title,
@@ -57,7 +53,7 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
                 className="w-75 m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.title}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("title", e.target.value)}
               />
 
               <input
@@ -68,7 +64,7 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
                 className="block m-1 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.url}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("url", e.target.value)}
               />
               <button
                 type="button"
@@ -98,7 +94,7 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
               className="m-1 w-full rounded-md bg-white px-3 py-1.5 h-24 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.description}
               onChange={handleChange}
-              onBlur={updateData}
+              onBlur={(e) => updateData("description", e.target.value)}
             ></textarea>
 
             <label className="block text-sm/6 font-medium">Created</label>
@@ -109,7 +105,7 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
               className="m-1 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.year}
               onChange={handleChange}
-              onBlur={updateData}
+              onBlur={(e) => updateData("year", e.target.value)}
             />
           </div>
         ) : (

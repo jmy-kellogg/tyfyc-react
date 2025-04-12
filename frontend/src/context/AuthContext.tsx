@@ -14,7 +14,7 @@ interface AuthContextType {
         email: string,
         password: string,
         firstName: string,
-        lastName: string
+        lastName: string,
       ) => Promise<void>)
     | null;
   logout: (() => void) | null;
@@ -34,7 +34,7 @@ const AuthContext = createContext<AuthContextType>({
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
+    localStorage.getItem("token"),
   );
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     email: string,
     password: string,
     firstName: string,
-    lastName: string
+    lastName: string,
   ): Promise<void> => {
     await registerUser({ username, email, password, firstName, lastName });
     navigate("/login");

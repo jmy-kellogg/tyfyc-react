@@ -30,7 +30,7 @@ api.interceptors.request.use(
     // passes all error message to Alert Component
     store.dispatch(addAlert({ type: "error", message: error.message || "" }));
     return Promise.reject(error);
-  }
+  },
 );
 
 // Convert response data keys from snake case to camel case
@@ -48,7 +48,7 @@ api.interceptors.response.use(
     // passes all error message to Alert Component
     store.dispatch(addAlert({ type: "error", message: error.message || "" }));
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

@@ -16,7 +16,7 @@ function Info({ application, setShowForm }: Props) {
   const [isSavable, setIsSavable] = useState<boolean>(false);
 
   const onChangeData = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const field = e.target.name;
     const value = e.target.value;

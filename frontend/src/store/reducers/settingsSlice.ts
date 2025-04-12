@@ -69,7 +69,7 @@ export const settingsSlice = createSlice({
     },
     setShowApplications: (
       state: SettingsState,
-      action: PayloadAction<boolean>
+      action: PayloadAction<boolean>,
     ) => {
       const tabExists = checkForTab(state.tabs, "applications");
       state.showApplications = action.payload;
@@ -98,12 +98,12 @@ export const settingsSlice = createSlice({
     },
     removeJobTab: (state: SettingsState, action: PayloadAction<string>) => {
       state.jobTabs = state.jobTabs.filter(
-        ({ value }) => value !== action.payload
+        ({ value }) => value !== action.payload,
       );
     },
     setJobTab: (state: SettingsState, action: PayloadAction<Tab>) => {
       const index = state.jobTabs.findIndex(
-        ({ value }) => value === action.payload.value
+        ({ value }) => value === action.payload.value,
       );
       state.jobTabs[index] = action.payload;
     },
@@ -140,7 +140,7 @@ export const getActiveTab = createDraftSafeSelector(
       return tabs.pop()?.value || "";
     }
     return settings.activeTab;
-  }
+  },
 );
 
 export const isApplicationDetail = createDraftSafeSelector(
@@ -148,5 +148,5 @@ export const isApplicationDetail = createDraftSafeSelector(
   (settings) => {
     const nonDetailPage = ["profile", "resume", "applications"];
     return !nonDetailPage.includes(settings.activeTab);
-  }
+  },
 );

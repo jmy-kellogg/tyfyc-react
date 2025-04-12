@@ -44,7 +44,7 @@ function ExportCSV({ applications }: Props) {
       : partialHeaders;
 
     const values: CsvData = applications.map((app) =>
-      headers.map((key) => app[key] || "")
+      headers.map((key) => app[key] || ""),
     );
 
     setData([headers, ...values]);

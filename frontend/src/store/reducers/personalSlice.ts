@@ -24,7 +24,7 @@ export const personalSlice = createSlice({
   reducers: {
     setPersonal: (
       state: PersonalState,
-      action: PayloadAction<PersonalStateUpdate>
+      action: PayloadAction<PersonalStateUpdate>,
     ) => {
       return { ...state, ...action.payload };
     },

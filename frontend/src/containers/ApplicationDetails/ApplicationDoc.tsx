@@ -49,7 +49,7 @@ function ApplicationDoc({ applicationId }: Props) {
             summary,
             description: application.posting,
           },
-        }
+        },
       );
       const updatedResume = {
         ...application,

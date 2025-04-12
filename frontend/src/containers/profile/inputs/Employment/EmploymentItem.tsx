@@ -16,18 +16,14 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
   const [form, setForm] = useState<Employment>(employment);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const key = e.target.name;
     const value = e.target.value;
     setForm({ ...form, [key]: value });
   };
 
-  const updateData = async (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.target.name || "";
-    const value = e.target.value || "";
+  const updateData = async (key: keyof Employment, value: string) => {
     if (value && employment[key] !== value) {
       const updateBody = {
         jobTitle: form.jobTitle,
@@ -57,7 +53,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
               className="m-1 block font-bold w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.jobTitle}
               onChange={handleChange}
-              onBlur={updateData}
+              onBlur={(e) => updateData("jobTitle", e.target.value)}
             />
             <div className="flex">
               <input
@@ -68,7 +64,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 className="m-1 block font-bold w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.company}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("company", e.target.value)}
               />
 
               <input
@@ -79,7 +75,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.location}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("location", e.target.value)}
               />
 
               <input
@@ -90,7 +86,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.start}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("start", e.target.value)}
               />
               <p className="font-bold self-center"> - </p>
               <input
@@ -101,7 +97,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                 className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.end}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("end", e.target.value)}
               />
             </div>
 

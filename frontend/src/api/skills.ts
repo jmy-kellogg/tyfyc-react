@@ -7,7 +7,7 @@ export const getSkills = async (): Promise<Skill[]> => {
 };
 
 export const addSkill = async (
-  skill: SkillCreate
+  skill: SkillCreate,
 ): Promise<Skill | undefined> => {
   const formattedSkill = {
     skillOptionsId: skill.skillOptionsId || "",

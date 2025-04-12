@@ -31,7 +31,7 @@ function DocUploader() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       // ToDo: move the request and updates to the store
       // also make sure to sync with localStorage

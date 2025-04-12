@@ -18,7 +18,7 @@ function SideMenu() {
   const activeTab = useSelector(getActiveTab);
   const jobTabs = useSelector((state: State) => state.settings.jobTabs);
   const smallDisplay = useSelector(
-    (state: State) => state.settings.smallDisplay
+    (state: State) => state.settings.smallDisplay,
   );
 
   const toggleDisplay = () => {

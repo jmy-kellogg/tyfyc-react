@@ -16,7 +16,7 @@ function ApplicationEdit({ applicationId }: Props) {
   const [notes, setNotes] = useState<string>("");
 
   const onChangeData = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const field = e.target.name;
     const value = e.target.value;

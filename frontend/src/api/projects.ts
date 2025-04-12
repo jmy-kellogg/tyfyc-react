@@ -7,7 +7,7 @@ export const getProjects = async (): Promise<Project[]> => {
 };
 
 export const createProject = async (
-  project: ProjectUpdate
+  project: ProjectUpdate,
 ): Promise<Project> => {
   const response = await api.post(`/projects`, project);
   return response?.data || {};
@@ -15,7 +15,7 @@ export const createProject = async (
 
 export const updateProject = async (
   projectId: string,
-  project: ProjectUpdate
+  project: ProjectUpdate,
 ): Promise<Project> => {
   const response = await api.put(`/projects/${projectId}`, project);
   return response?.data || {};

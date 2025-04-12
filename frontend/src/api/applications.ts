@@ -12,24 +12,24 @@ export const getApplications = async (): Promise<Applications> => {
 };
 
 export const getApplication = async (
-  applicationId: string
+  applicationId: string,
 ): Promise<Application> => {
   const response = await api.get(`/applications/${applicationId}`);
   return response?.data || {};
 };
 
 export const updateApplication = async (
-  application: ApplicationUpdate
+  application: ApplicationUpdate,
 ): Promise<Application> => {
   const response = await api.put(
     `/applications/${application.id}`,
-    application
+    application,
   );
   return response?.data || {};
 };
 
 export const addApplication = async (
-  application: ApplicationCreate
+  application: ApplicationCreate,
 ): Promise<Application> => {
   const reqBody = {
     ...addApplication,

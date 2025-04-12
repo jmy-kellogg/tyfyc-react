@@ -92,7 +92,7 @@ describe("snake_case_string", () => {
   test("handles mixed cases and special cases", () => {
     expect(snake_case_string("SnakeCase123Test")).toBe("snake_case123_test");
     expect(snake_case_string("HTTPServerResponse")).toBe(
-      "http_server_response"
+      "http_server_response",
     );
   });
 });

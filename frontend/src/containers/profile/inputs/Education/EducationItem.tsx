@@ -17,18 +17,14 @@ function EducationItem({ education, editAll, lockEdit, remove }: Props) {
   const [hover, setHover] = useState<boolean>(false);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const key = e.target.name;
     const value = e.target.value;
     setForm({ ...form, [key]: value });
   };
 
-  const updateData = async (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.target.name || "";
-    const value = e.target.value || "";
+  const updateData = async (key: keyof Education, value: string) => {
     if (value && education[key] !== value) {
       const updateBody = {
         school: form.school,
@@ -56,7 +52,7 @@ function EducationItem({ education, editAll, lockEdit, remove }: Props) {
                 className="w-50 rounded-md bg-white m-1 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.school}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("school", e.target.value)}
               />
               <input
                 id="grad-year"
@@ -66,7 +62,7 @@ function EducationItem({ education, editAll, lockEdit, remove }: Props) {
                 className="w-50 rounded-md bg-white m-1 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.gradYear}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("gradYear", e.target.value)}
               />
               <button
                 type="button"
@@ -98,7 +94,7 @@ function EducationItem({ education, editAll, lockEdit, remove }: Props) {
                 className="rounded-md w-full bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={form.degree}
                 onChange={handleChange}
-                onBlur={updateData}
+                onBlur={(e) => updateData("degree", e.target.value)}
               />
             </div>
           </div>
