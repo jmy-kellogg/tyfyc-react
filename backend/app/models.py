@@ -47,6 +47,7 @@ class Application(Base):
     summary = Column(String)
     notes = Column(TEXT)
     user_id = Column(String, ForeignKey("users.id"))
+    resume = Column(TEXT)
 
 class Skill(Base):
     __tablename__ = "skills"

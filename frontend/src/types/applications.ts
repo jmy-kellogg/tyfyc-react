@@ -17,6 +17,7 @@ export interface ApplicationBase {
   posting: string;
   summary: string;
   notes: string;
+  resume: string;
 }
 
 export interface Application extends ApplicationBase {
