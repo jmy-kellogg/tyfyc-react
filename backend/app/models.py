@@ -30,6 +30,7 @@ class User(Base):
     linked_in = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    resume = Column(TEXT)
 
 class Application(Base):
     __tablename__ = "applications"

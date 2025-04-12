@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 
 import Divider from "src/components/Divider";
+import EmploymentItem from "./EmploymentItem";
 
 import {
   getEmploymentList,
@@ -8,7 +9,6 @@ import {
   deleteEmployment,
 } from "@/api/employment";
 import type { Employment } from "@/types/employment";
-import EmploymentItem from "./EmploymentItem";
 
 interface Props {
   editAll: boolean;

@@ -13,6 +13,7 @@ class UserBase(BaseModel):
     phone: str
     git_hub: str
     linked_in: str 
+    resume: str
 
 class UserCreate(BaseModel):
     first_name: str
@@ -27,6 +28,7 @@ class UserCreate(BaseModel):
     phone: str | None = "" 
     git_hub: str | None = "" 
     linked_in: str | None = "" 
+    resume: str | None = "" 
 
 class UserUpdate(BaseModel):
     first_name: Optional[str] =  None
@@ -39,6 +41,7 @@ class UserUpdate(BaseModel):
     phone: Optional[str] =  None
     git_hub: Optional[str] =  None
     linked_in: Optional[str] =  None
+    resume: Optional[str] =  None
  
 class UserResponse(UserBase):
     id: str

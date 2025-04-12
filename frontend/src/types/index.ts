@@ -51,6 +51,7 @@ export interface User {
   username: string;
   id: string;
   hashedPassword: string;
+  resume: string;
 }
 
 export interface Personal {

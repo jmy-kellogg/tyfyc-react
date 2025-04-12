@@ -11,7 +11,7 @@ h2 {
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
 
@@ -44,3 +44,13 @@ h4 {
   color: #a8a8aec9;
   font-size: 13px;
  }
+
+.horizonRule {
+  border-top: 1px solid #a8a8aec9;
+  margin: 3px 0px;
+}
+
+hr {
+  border-top: 1px solid #a8a8aec9;
+  margin: 3px 0px;
+}
