@@ -48,13 +48,13 @@ function InputLink({
       <div className="flex justify-center">
         {edit ? (
           <form className="flex" onSubmit={handleSubmit}>
-            <div className="w-75">
+            <div className="w-100">
               <input
                 id={inputName}
                 name={inputName}
                 placeholder={label}
                 type="text"
-                className="block w-full m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                className="w-full m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={formData[inputName]}
                 onChange={onChangeData}
               />
@@ -63,12 +63,12 @@ function InputLink({
                 name={linkName}
                 placeholder="Link"
                 type="text"
-                className="block w-full m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                className="w-full m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 value={formData[linkName]}
                 onChange={onChangeData}
               />
             </div>
-            <div className="block">
+            <div>
               <button type="submit">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

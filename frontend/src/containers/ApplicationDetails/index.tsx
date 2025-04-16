@@ -34,24 +34,22 @@ function ApplicationDetails() {
   return (
     <div className="page">
       <div className="w-3xl m-3 justify-self-center">
-        <div className="flex justify-around">
-          <InputLink
-            label="Company Name"
-            inputName="company"
-            inputValue={application.company || ""}
-            linkName="companySite"
-            linkValue={application.companySite || ""}
-            onUpdate={handleUpdate}
-          />
-          <InputLink
-            label="Job Title"
-            inputName="title"
-            inputValue={application.title || ""}
-            linkName="postingLink"
-            linkValue={application.postingLink || ""}
-            onUpdate={handleUpdate}
-          />
-        </div>
+        <InputLink
+          label="Company Name"
+          inputName="company"
+          inputValue={application.company || ""}
+          linkName="companySite"
+          linkValue={application.companySite || ""}
+          onUpdate={handleUpdate}
+        />
+        <InputLink
+          label="Job Title"
+          inputName="title"
+          inputValue={application.title || ""}
+          linkName="postingLink"
+          linkValue={application.postingLink || ""}
+          onUpdate={handleUpdate}
+        />
 
         <div className="flex justify-between m-3">
           <div className="flex items-center">
