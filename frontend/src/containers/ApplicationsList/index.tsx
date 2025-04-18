@@ -76,11 +76,16 @@ function ApplicationsList() {
   };
   const handleFilter = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    setFilteredList(
-      applications.filter(({ company }) =>
-        company.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+
+    if (!e.target.value) {
+      setFilteredList(applications);
+    } else {
+      setFilteredList(
+        applications.filter(({ company }) =>
+          company.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   };
 
   const fetchData = useCallback(async () => {
