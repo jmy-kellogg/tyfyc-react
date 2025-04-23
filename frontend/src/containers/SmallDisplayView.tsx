@@ -28,7 +28,7 @@ function SmallDisplayView() {
         {activeTab === "profile" && <Profile />}
         {activeTab === "resume" && <Resume />}
         {activeTab === "applications" && <ApplicationsList />}
-        {!["profile", "resume", "applications"].includes(activeTab) && (
+        {!["profile", "resume", "applications", ""].includes(activeTab) && (
           <ApplicationDetails />
         )}
       </div>

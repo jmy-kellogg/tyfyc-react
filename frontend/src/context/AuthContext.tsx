@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { loginUser, registerUser, getFeatureFlags } from "../api/auth";
 import { fetchUser } from "../api/user";
+import { useDispatch } from "react-redux";
+import { setTabsToDefault } from "src/store/reducers/settingsSlice";
 import type { User } from "../types";
 
 interface AuthContextType {
@@ -35,6 +37,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const dispatch = useDispatch();
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
@@ -59,6 +62,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
+    dispatch(setTabsToDefault());
     navigate("/login");
   };
 
