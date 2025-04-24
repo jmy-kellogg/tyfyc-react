@@ -1,15 +1,8 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-  ChangeEvent,
-  useContext,
-} from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { getStatus, getFormattedDate } from "@utils";
 import { getApplications, deleteApplication } from "src/api/applications";
-import { AuthContext } from "@/context/AuthContext";
 import ExportCSV from "./ExportCSV";
 import ImportCSV from "./ImportCSV";
 import NewJobModal from "./NewJobModal";
@@ -20,10 +13,11 @@ import {
   removeJobTab,
 } from "src/store/reducers/navigationSlice";
 import type { Application, Applications } from "@/types/applications";
+import type { State } from "@/store";
 
 function ApplicationsList() {
   const dispatch = useDispatch();
-  const { flags } = useContext(AuthContext);
+  const flags = useSelector((state: State) => state.auth.flags);
   const [applications, setApplications] = useState<Applications>([]);
   const [filteredList, setFilteredList] = useState<Applications>([]);
   const [search, setSearch] = useState("");

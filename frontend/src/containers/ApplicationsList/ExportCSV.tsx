@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { CSVLink } from "react-csv";
 
-import { AuthContext } from "@/context/AuthContext";
 import type { Application, Applications } from "@/types/applications";
+import type { State } from "@/store";
 
 type HeaderRow = Array<keyof Application>;
 type CsvRow = Array<Application[keyof Application]>;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 function ExportCSV({ applications }: Props) {
-  const { flags } = useContext(AuthContext);
+  const flags = useSelector((state: State) => state.auth.flags);
   const [data, setData] = useState<CsvData>([]);
 
   useEffect(() => {

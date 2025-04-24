@@ -12,6 +12,7 @@ import navigationReducer, { NavigationState } from "./reducers/navigationSlice";
 import skillsReducer, { SkillsState } from "./reducers/skillsSlice";
 import projectsReducer, { ProjectsState } from "./reducers/projectsSlice";
 import alertsReducer, { AlertsState } from "./reducers/alertsSlice";
+import authReducer, { AuthState } from "./reducers/authSlice";
 
 export type AppStore = typeof store;
 export type RootState = ReturnType<AppStore["getState"]>;
@@ -25,6 +26,7 @@ export interface State {
   skills: SkillsState;
   projects: ProjectsState;
   alerts: AlertsState;
+  auth: AuthState;
 }
 
 const persistConfig = {
@@ -41,6 +43,7 @@ const rootReducer = combineReducers({
   skills: skillsReducer,
   projects: projectsReducer,
   alerts: alertsReducer,
+  auth: authReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

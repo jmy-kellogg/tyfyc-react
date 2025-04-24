@@ -1,14 +1,14 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { loginUser, registerUser, getFeatureFlags } from "../api/auth";
-import { fetchUser } from "../api/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { loginUser, registerUser } from "@/api/auth";
 import { setTabsToDefault } from "src/store/reducers/navigationSlice";
-import type { User } from "../types";
+import { setToken, clearAuth } from "src/store/reducers/authSlice";
+
+import type { State } from "@/store";
 
 interface AuthContextType {
-  token: string | null;
-  user: User | null;
   login: ((username: string, password: string) => Promise<void>) | null;
   register:
     | ((
@@ -20,7 +20,6 @@ interface AuthContextType {
       ) => Promise<void>)
     | null;
   logout: (() => void) | null;
-  flags: string[];
 }
 
 interface AuthProviderProps {
@@ -28,21 +27,14 @@ interface AuthProviderProps {
 }
 
 const AuthContext = createContext<AuthContextType>({
-  token: null,
-  user: null,
   login: null,
   register: null,
   logout: null,
-  flags: [],
 });
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useDispatch();
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  );
-  const [flags, setFlags] = useState<string[]>([]);
-  const [user, setUser] = useState<User | null>(null);
+  const token = useSelector((state: State) => state.auth.token);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -50,18 +42,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const response = await loginUser({ username, password });
 
     if (response?.accessToken) {
-      setToken(response.accessToken);
-      localStorage.setItem("token", response.accessToken);
-      const userProfile = await fetchUser();
-      setUser(userProfile);
+      dispatch(setToken(response.accessToken));
       navigate("/");
     }
   };
 
   const logout = (): void => {
-    setToken(null);
-    setUser(null);
-    localStorage.removeItem("token");
+    dispatch(clearAuth());
     dispatch(setTabsToDefault());
     navigate("/login");
   };
@@ -78,44 +65,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (token) {
-        try {
-          const userProfile = await fetchUser();
-          if (userProfile) {
-            setUser(userProfile);
-          }
-        } catch {
-          setToken(null);
-        }
-
-        try {
-          const featureFlags = (await getFeatureFlags()) || [];
-          setFlags(
-            featureFlags
-              .filter(({ isActive }) => isActive)
-              .map(({ name }) => name)
-          );
-        } catch {
-          setFlags([]);
-        }
-      }
-    };
-    fetchData();
-  }, [token]);
-
-  useEffect(() => {
-    if (user && pathname !== "/") {
+    if (token && pathname !== "/") {
       navigate("/");
     } else if (!token && pathname !== "/login") {
       navigate("/login");
     }
-  }, [pathname, navigate, user, token]);
+  }, [navigate, pathname, token]);
 
   return (
-    <AuthContext.Provider
-      value={{ token, user, login, register, logout, flags }}
-    >
+    <AuthContext.Provider value={{ login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

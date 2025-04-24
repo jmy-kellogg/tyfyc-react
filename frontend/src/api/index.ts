@@ -1,6 +1,7 @@
 import axios from "axios";
 import { jsToPythonKeys, pythonToJsKeys } from "@/utils";
 
+import { setToken } from "@/reducers/authSlice";
 import { addAlert } from "@/reducers/alertsSlice";
 import { store } from "@/store";
 
@@ -27,10 +28,14 @@ api.interceptors.request.use(
     return config;
   },
   function (error) {
-    // passes all error message to Alert Component
-    store.dispatch(addAlert({ type: "error", message: error.message || "" }));
-    return Promise.reject(error);
-  },
+    if (error.status === 401) {
+      store.dispatch(setToken(null));
+    } else {
+      // passes all error message to Alert Component
+      store.dispatch(addAlert({ type: "error", message: error.message || "" }));
+      return Promise.reject(error);
+    }
+  }
 );
 
 // Convert response data keys from snake case to camel case
@@ -45,10 +50,14 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
-    // passes all error message to Alert Component
-    store.dispatch(addAlert({ type: "error", message: error.message || "" }));
-    return Promise.reject(error);
-  },
+    if (error.status === 401) {
+      store.dispatch(setToken(null));
+    } else {
+      // passes all error message to Alert Component
+      store.dispatch(addAlert({ type: "error", message: error.message || "" }));
+      return Promise.reject(error);
+    }
+  }
 );
 
 export default api;

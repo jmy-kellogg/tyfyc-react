@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import Divider from "src/components/Divider";
-
-import { AuthContext } from "@/context/AuthContext";
 import { updateUser } from "@/api/user";
+import type { State } from "@/store";
 
 interface Props {
   editAll: boolean;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 function Summary({ editAll, lockEdit }: Props) {
-  const { user } = useContext(AuthContext);
+  const user = useSelector((state: State) => state.auth.user);
   const [hover, setHover] = useState(false);
   const [summary, setSummary] = useState("");
 

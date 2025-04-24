@@ -1,9 +1,9 @@
 import jsPDF from "jspdf";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import "./ResumeDoc.css";
 import PopupEditor from "@/components/RichEditor/PopupEditor";
-import { AuthContext } from "@/context/AuthContext";
 import { getFormattedDate } from "@utils";
 import { getSkills } from "@/api/skills";
 import { getEmploymentList } from "@/api/employment";
@@ -14,11 +14,12 @@ import type { Education } from "@/types/education";
 import type { Project } from "@/types/projects";
 import type { Employment } from "@/types/employment";
 import type { User } from "@/types/index";
+import type { State } from "@/store";
 
 function Resume() {
   const [content, setContent] = useState("");
   const [hasChanged, setHasChanged] = useState(false);
-  const { user } = useContext(AuthContext);
+  const user = useSelector((state: State) => state.auth.user);
 
   const onPrint = () => {
     const element = document.getElementById("resume-content");
