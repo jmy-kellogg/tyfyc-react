@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { addApplication } from "@/api/applications";
 import { getToday } from "@/utils";
 
-import { setActiveTab, addJobTabs } from "src/store/reducers/settingsSlice";
+import { setActiveTab, addJobTabs } from "src/store/reducers/navigationSlice";
 import type { ApplicationCreate, Application } from "@/types/applications";
 
 function NewJobModal() {

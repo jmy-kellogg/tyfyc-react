@@ -10,7 +10,7 @@ import {
   setActiveTab,
   getTabs,
   getActiveTab,
-} from "@/store/reducers/settingsSlice";
+} from "@/store/reducers/navigationSlice";
 
 function SmallDisplayView() {
   const dispatch = useDispatch();

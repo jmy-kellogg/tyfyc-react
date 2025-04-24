@@ -6,7 +6,7 @@ import type { ApplicationUpdate } from "@/types/applications";
 
 import { getApplication } from "@/api/applications";
 import { updateApplication } from "@/api/applications";
-import { getActiveTab } from "@/store/reducers/settingsSlice";
+import { getActiveTab } from "@/store/reducers/navigationSlice";
 import InputLink from "@/components/InputLink";
 import Input from "@/components/Input";
 import Dropdown from "@/components/DropDown";

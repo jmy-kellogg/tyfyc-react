@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { loginUser, registerUser, getFeatureFlags } from "../api/auth";
 import { fetchUser } from "../api/user";
 import { useDispatch } from "react-redux";
-import { setTabsToDefault } from "src/store/reducers/settingsSlice";
+import { setTabsToDefault } from "src/store/reducers/navigationSlice";
 import type { User } from "../types";
 
 interface AuthContextType {

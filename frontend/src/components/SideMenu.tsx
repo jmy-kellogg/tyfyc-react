@@ -9,16 +9,16 @@ import {
   setActiveTab,
   setSmallDisplay,
   getActiveTab,
-} from "src/store/reducers/settingsSlice";
+} from "src/store/reducers/navigationSlice";
 import type { State } from "src/store";
 
 function SideMenu() {
   const dispatch = useDispatch();
   const { logout } = useContext(AuthContext);
   const activeTab = useSelector(getActiveTab);
-  const jobTabs = useSelector((state: State) => state.settings.jobTabs);
+  const jobTabs = useSelector((state: State) => state.navigation.jobTabs);
   const smallDisplay = useSelector(
-    (state: State) => state.settings.smallDisplay,
+    (state: State) => state.navigation.smallDisplay
   );
 
   const toggleDisplay = () => {

@@ -6,7 +6,7 @@ import {
 import type { Tab, TabsList } from "@/types";
 import type { State } from "../index";
 
-export interface SettingsState {
+export interface NavigationState {
   smallDisplay: boolean;
   showProfile: boolean;
   showResume: boolean;
@@ -16,7 +16,7 @@ export interface SettingsState {
   jobTabs: TabsList;
 }
 
-const initialState: SettingsState = {
+const initialState: NavigationState = {
   smallDisplay: false,
   showProfile: true,
   showResume: true,
@@ -34,14 +34,20 @@ const checkForTab = (tabs: TabsList, tabValue: string): boolean => {
   return !!tabs.map(({ value }) => value).includes(tabValue);
 };
 
-export const settingsSlice = createSlice({
-  name: "settings",
+export const navigationSlice = createSlice({
+  name: "navigation",
   initialState,
   reducers: {
-    setSmallDisplay: (state: SettingsState, action: PayloadAction<boolean>) => {
+    setSmallDisplay: (
+      state: NavigationState,
+      action: PayloadAction<boolean>
+    ) => {
       state.smallDisplay = action.payload;
     },
-    setShowProfile: (state: SettingsState, action: PayloadAction<boolean>) => {
+    setShowProfile: (
+      state: NavigationState,
+      action: PayloadAction<boolean>
+    ) => {
       const tabExists = checkForTab(state.tabs, "profile");
       state.showProfile = action.payload;
 
@@ -54,7 +60,7 @@ export const settingsSlice = createSlice({
         state.tabs = state.tabs.filter(({ value }) => value !== "profile");
       }
     },
-    setShowResume: (state: SettingsState, action: PayloadAction<boolean>) => {
+    setShowResume: (state: NavigationState, action: PayloadAction<boolean>) => {
       const tabExists = checkForTab(state.tabs, "resume");
       state.showResume = action.payload;
 
@@ -68,7 +74,7 @@ export const settingsSlice = createSlice({
       }
     },
     setShowApplications: (
-      state: SettingsState,
+      state: NavigationState,
       action: PayloadAction<boolean>
     ) => {
       const tabExists = checkForTab(state.tabs, "applications");
@@ -86,28 +92,28 @@ export const settingsSlice = createSlice({
         state.tabs.pop();
       }
     },
-    setActiveTab: (state: SettingsState, action: PayloadAction<string>) => {
+    setActiveTab: (state: NavigationState, action: PayloadAction<string>) => {
       state.activeTab = action.payload;
     },
-    addJobTabs: (state: SettingsState, action: PayloadAction<Tab>) => {
+    addJobTabs: (state: NavigationState, action: PayloadAction<Tab>) => {
       const tabExists = checkForTab(state.jobTabs, action.payload.value);
       if (!tabExists) {
         const jobTabs = state.jobTabs || [];
         state.jobTabs = [...jobTabs, action.payload];
       }
     },
-    removeJobTab: (state: SettingsState, action: PayloadAction<string>) => {
+    removeJobTab: (state: NavigationState, action: PayloadAction<string>) => {
       state.jobTabs = state.jobTabs.filter(
         ({ value }) => value !== action.payload
       );
     },
-    setJobTab: (state: SettingsState, action: PayloadAction<Tab>) => {
+    setJobTab: (state: NavigationState, action: PayloadAction<Tab>) => {
       const index = state.jobTabs.findIndex(
         ({ value }) => value === action.payload.value
       );
       state.jobTabs[index] = action.payload;
     },
-    setTabsToDefault: (state: SettingsState) => {
+    setTabsToDefault: (state: NavigationState) => {
       state.tabs = [
         { label: "Profile", value: "profile" },
         { label: "Resume", value: "resume" },
@@ -128,34 +134,37 @@ export const {
   addJobTabs,
   removeJobTab,
   setTabsToDefault,
-} = settingsSlice.actions;
-export default settingsSlice.reducer;
+} = navigationSlice.actions;
+export default navigationSlice.reducer;
 
-const selectSettings = (state: State) => state.settings;
+const selectNavigation = (state: State) => state.navigation;
 
-export const getTabs = createDraftSafeSelector(selectSettings, (settings) => {
-  return [...settings.tabs, ...settings.jobTabs];
-});
+export const getTabs = createDraftSafeSelector(
+  selectNavigation,
+  (navigation) => {
+    return [...navigation.tabs, ...navigation.jobTabs];
+  }
+);
 
 export const getActiveTab = createDraftSafeSelector(
-  selectSettings,
-  (settings) => {
-    const tabs = settings.smallDisplay
-      ? [...settings.tabs, ...settings.jobTabs]
-      : [...settings.jobTabs];
-    const tabExists = checkForTab(tabs, settings.activeTab);
+  selectNavigation,
+  (navigation) => {
+    const tabs = navigation.smallDisplay
+      ? [...navigation.tabs, ...navigation.jobTabs]
+      : [...navigation.jobTabs];
+    const tabExists = checkForTab(tabs, navigation.activeTab);
 
     if (!tabExists) {
       return tabs.pop()?.value || "";
     }
-    return settings.activeTab;
+    return navigation.activeTab;
   }
 );
 
 export const isApplicationDetail = createDraftSafeSelector(
-  selectSettings,
-  (settings) => {
+  selectNavigation,
+  (navigation) => {
     const nonDetailPage = ["profile", "resume", "applications"];
-    return !nonDetailPage.includes(settings.activeTab);
+    return !nonDetailPage.includes(navigation.activeTab);
   }
 );

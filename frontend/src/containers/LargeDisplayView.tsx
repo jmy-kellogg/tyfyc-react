@@ -6,17 +6,19 @@ import Resume from "./Resume";
 import ApplicationsList from "./ApplicationsList";
 import Tabs from "@/components/Tabs";
 
-import { setActiveTab, getActiveTab } from "@/store/reducers/settingsSlice";
+import { setActiveTab, getActiveTab } from "@/store/reducers/navigationSlice";
 import type { State } from "@/store";
 
 function LargeDisplayView() {
   const dispatch = useDispatch();
   const activeTab = useSelector(getActiveTab);
-  const showProfile = useSelector((state: State) => state.settings.showProfile);
-  const showResume = useSelector((state: State) => state.settings.showResume);
-  const jobTabs = useSelector((state: State) => state.settings.jobTabs);
+  const showProfile = useSelector(
+    (state: State) => state.navigation.showProfile
+  );
+  const showResume = useSelector((state: State) => state.navigation.showResume);
+  const jobTabs = useSelector((state: State) => state.navigation.jobTabs);
   const showApplications = useSelector(
-    (state: State) => state.settings.showApplications,
+    (state: State) => state.navigation.showApplications
   );
 
   const setActive = (activeValue: string) => {

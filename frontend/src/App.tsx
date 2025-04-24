@@ -11,7 +11,7 @@ import type { State } from "./store";
 
 function App() {
   const { token } = useContext(AuthContext);
-  const { smallDisplay } = useSelector((state: State) => state.settings);
+  const { smallDisplay } = useSelector((state: State) => state.navigation);
 
   return (
     <>

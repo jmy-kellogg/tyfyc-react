@@ -18,7 +18,7 @@ import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
-} from "src/store/reducers/settingsSlice";
+} from "src/store/reducers/navigationSlice";
 import type { Application, Applications } from "@/types/applications";
 
 function ApplicationsList() {

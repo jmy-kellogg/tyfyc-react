@@ -8,7 +8,7 @@ import applicationsReducer, {
 import educationReducer, { EducationState } from "./reducers/educationSlice";
 import jobHistoryReducer, { JobsState } from "./reducers/jobHistorySlice";
 import personalReducer, { PersonalState } from "./reducers/personalSlice";
-import settingsReducer, { SettingsState } from "./reducers/settingsSlice";
+import navigationReducer, { NavigationState } from "./reducers/navigationSlice";
 import skillsReducer, { SkillsState } from "./reducers/skillsSlice";
 import projectsReducer, { ProjectsState } from "./reducers/projectsSlice";
 import alertsReducer, { AlertsState } from "./reducers/alertsSlice";
@@ -21,7 +21,7 @@ export interface State {
   education: EducationState;
   jobHistory: JobsState;
   personal: PersonalState;
-  settings: SettingsState;
+  navigation: NavigationState;
   skills: SkillsState;
   projects: ProjectsState;
   alerts: AlertsState;
@@ -37,7 +37,7 @@ const rootReducer = combineReducers({
   education: educationReducer,
   jobHistory: jobHistoryReducer,
   personal: personalReducer,
-  settings: settingsReducer,
+  navigation: navigationReducer,
   skills: skillsReducer,
   projects: projectsReducer,
   alerts: alertsReducer,
