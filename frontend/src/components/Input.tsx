@@ -35,7 +35,7 @@ function Input({ inputName, inputValue, label, onUpdate }: Props) {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center w-max">
         {edit ? (
           <form className="flex" onSubmit={handleSubmit}>
             <input
@@ -83,7 +83,7 @@ function Input({ inputName, inputValue, label, onUpdate }: Props) {
         ) : (
           <>
             <button
-              className="hover:cursor-text"
+              className="hover:cursor-text mx-1"
               onClick={(e) => {
                 e.stopPropagation();
                 setEdit(true);

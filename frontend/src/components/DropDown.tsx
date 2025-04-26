@@ -31,7 +31,7 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center w-max">
         {edit ? (
           <div className="flex w-full">
             <select
@@ -70,7 +70,7 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
         ) : (
           <>
             <button
-              className="hover:cursor-text mx-2"
+              className="hover:cursor-pointer mx-1"
               onClick={(e) => {
                 e.stopPropagation();
                 setEdit(true);

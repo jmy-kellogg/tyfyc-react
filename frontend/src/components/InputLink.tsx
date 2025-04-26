@@ -11,6 +11,7 @@ interface Props {
   linkName: string;
   linkValue: string;
   onUpdate: (data: FormData) => void;
+  tag?: "h1" | "h2" | "h3";
 }
 
 function InputLink({
@@ -20,6 +21,7 @@ function InputLink({
   linkName,
   linkValue,
   onUpdate,
+  tag = "h2",
 }: Props) {
   const [hover, setHover] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -48,13 +50,13 @@ function InputLink({
       <div className="flex justify-center">
         {edit ? (
           <form className="flex" onSubmit={handleSubmit}>
-            <div className="w-100">
+            <div className="flex w-full">
               <input
                 id={inputName}
                 name={inputName}
                 placeholder={label}
                 type="text"
-                className="w-full m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                className="w-100 h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 value={formData[inputName]}
                 onChange={onChangeData}
               />
@@ -63,12 +65,12 @@ function InputLink({
                 name={linkName}
                 placeholder="Link"
                 type="text"
-                className="w-full m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 value={formData[linkName]}
                 onChange={onChangeData}
               />
             </div>
-            <div>
+            <div className="flex">
               <button type="submit">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +108,7 @@ function InputLink({
         ) : (
           <>
             <button
-              className="hover:cursor-text"
+              className="hover:cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
                 setEdit(true);
@@ -115,7 +117,8 @@ function InputLink({
               onMouseOut={() => setHover(false)}
             >
               <span className="flex">
-                <h1>{inputValue || label}</h1>
+                {tag === "h1" && <h1>{inputValue || label}</h1>}
+                {tag === "h2" && <h2>{inputValue || label}</h2>}
                 {hover && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

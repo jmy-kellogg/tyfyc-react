@@ -41,6 +41,7 @@ function ApplicationDetails() {
           linkName="companySite"
           linkValue={application.companySite || ""}
           onUpdate={handleUpdate}
+          tag="h1"
         />
         <InputLink
           label="Job Title"
@@ -51,38 +52,38 @@ function ApplicationDetails() {
           onUpdate={handleUpdate}
         />
 
-        <div className="flex justify-between m-3">
+        <div className="flex flex-wrap justify-between m-3">
           <div className="flex items-center">
-            <b className="mx-1">Status: </b>
+            <b>Status: </b>
             <Dropdown
               inputName="status"
               inputValue={application.status || ""}
               options={statusOptions}
               onUpdate={handleUpdate}
             />
-            <span className="mx-1">{"|"}</span>
           </div>
+          <span>{"|"}</span>
           <div className="flex items-center">
-            <b className="mx-1">Date Applied: </b>
+            <b className="mx-1 w-max">Date Applied: </b>
             <DateInput
               inputName="dateApplied"
               inputValue={application.dateApplied || ""}
               onUpdate={handleUpdate}
             />
-            <span className="mx-1">{"|"}</span>
           </div>
+          <span>{"|"}</span>
           <div className="flex items-center">
-            <b className="mx-1">Location: </b>
+            <b>Location: </b>
             <Input
               label="Location"
               inputName="location"
               inputValue={application.location || ""}
               onUpdate={handleUpdate}
             />
-            <span className="mx-1">{"|"}</span>
           </div>
+          <span>{"|"}</span>
           <div className="flex items-center">
-            <b className="mx-1">Salary: </b>
+            <b>Salary: </b>
             <Input
               label="Salary"
               inputName="salary"
