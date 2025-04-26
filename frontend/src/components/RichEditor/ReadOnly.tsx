@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-
-// define your extension array
-const extensions = [StarterKit];
+import extensions from "./extensions";
 
 interface Props {
   content: string;
