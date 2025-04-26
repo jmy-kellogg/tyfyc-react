@@ -1,63 +1,57 @@
+import re
+from bs4 import BeautifulSoup
+
 from app.schemas.applications import  ApplicationUpdate
 from typing import List
-import re
 
-
-def get_candidates(parsed_text: List[str]) -> List[str]:
-    first_items = parsed_text[:10]
-    return [s for s in first_items if len(s) < 50]
-
-
-def find_job_title(parsed_text: List[str]) -> str:
-    title = next(
-        (text for text in parsed_text if "engineer" in text.lower() or "developer" in text.lower()), 
-        ""
-    )
-    return title
-
-def remove_punctuation(text: str) -> str:
-    return re.sub(r'[^\w\s]', '', text)
-
-def find_company(parsed_text: List[str]) -> str:
-    is_cap = re.compile(r'[A-Z]')
-    is_lower = re.compile(r'[a-z(]')
-
-    candidate = next(
-        (text for text in parsed_text if (text[:2].lower() == "at" or text[:2].lower() == "about") and is_cap.search(text.split(" ")[1])), 
-        None
-    )
-
-    if candidate:
-        words = candidate.split(" ")
-        words.pop(0)  # Remove "At"
-        first_lower_case = next((i for i, word in enumerate(words) if is_lower.match(word[0])), len(words))
-        company = " ".join(words[:first_lower_case])
-        return remove_punctuation(company)
+def find_job_title(soup) -> str:
+    title = soup.find(string=re.compile("Engineer")) or soup.find(string=re.compile("Developer"))
     
-    return ""
+    return title if title else ""
 
-def find_location(parsed_text: List[str]) -> str:
+def find_company(soup) -> str:
+    company = ""
+    text_list = soup.get_text().split()[0:100]
+    for index, text in enumerate(text_list):
+        if text == "About" or text == "@" or text == "At":
+          company = text_list[index + 1]
+          break
+    
+    return company
+
+def find_location(soup) -> str:
+    remote_text = soup.find(string=re.compile("Remote"))
+    if remote_text:
+       return remote_text
+    
     location_text = ""
-
-    location_tag = next((text for text in parsed_text if "Location: " in text), None)
-    remote_text = next((text for text in parsed_text if "remote" in text.lower()), None)
-
-    if location_tag:
-        location_text = location_tag.replace("Location: ", "")
-    elif remote_text:
-        location_text = remote_text
-
+    text_list = soup.get_text().split()[0:100]
+    for index, text in enumerate(text_list):
+        if text == "Location" or text == "Location":
+          location_text = text_list[index + 1]
+          break
+    
     return location_text
+
+def find_salary(soup) -> str:
+   salary_string = soup.find(string=re.compile(",000"))
+   regex_query = r"\$\d{1,3}(?:,\d{3})*(?:\s*-\s*\d{1,3}(?:,\d{3})*)?"
+   salary = re.search(regex_query, salary_string).group(0)
+
+   return salary if salary else ""
 
 def parse_application(application: ApplicationUpdate):
   if application["posting"]:
-    parsed_text = [line for line in application["posting"].split("\n") if line.strip()]
-    candidates = get_candidates(parsed_text)
+    soup = BeautifulSoup(application["posting"], 'html.parser')
+
     if not application["company"]:
-      application["company"] = find_company(parsed_text)
+      application["company"] = find_company(soup)
     if not application["title"]:
-      application["title"] = find_job_title(candidates)
+      application["title"] = find_job_title(soup)
     if not application["location"]:
-      application["location"] = find_location(candidates)
+      application["location"] = find_location(soup)
+    if not application["salary"]:
+      application["salary"] = find_salary(soup)
+
   return application
 
