@@ -51,7 +51,7 @@ function NewJobModal() {
       {showModal && (
         <div
           id="default-modal"
-          className="backdrop-brightness-50 overflow-y-auto overflow-x-hidden fixed z-50 w-full md:inset-0 h-full"
+          className="backdrop-brightness-50 overflow-y-auto overflow-x-hidden fixed z-50 w-full md:inset-0"
         >
           <div className="bg-white p-4 w-2xl h-auto rounded-lg m-auto mt-10">
             <div className="flex items-center justify-between p-1 border-b border-slate-300 rounded-t">
@@ -85,11 +85,13 @@ function NewJobModal() {
                 </svg>
               </button>
             </div>
-            <div className="m-3 min-h-100">
+            <div className="m-3 h-full">
               <label className="block text-lg font-medium text-center">
                 Copy/Paste job Posting
               </label>
-              <RichEditor content={posting} handleTextChange={setText} />
+              <div className="flex min-h-120">
+                <RichEditor content={posting} handleTextChange={setText} />
+              </div>
             </div>
           </div>
         </div>

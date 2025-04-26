@@ -36,9 +36,9 @@ def find_location(soup) -> str:
 def find_salary(soup) -> str:
    salary_string = soup.find(string=re.compile(",000"))
    regex_query = r"\$\d{1,3}(?:,\d{3})*(?:\s*-\s*\d{1,3}(?:,\d{3})*)?"
-   salary = re.search(regex_query, salary_string).group(0)
+   salary = re.search(regex_query, salary_string)
 
-   return salary if salary else ""
+   return salary.group(0) if salary else ""
 
 def parse_application(application: ApplicationUpdate):
   if application["posting"]:

@@ -28,21 +28,19 @@ const RichEditor = ({ content, handleTextChange }: Props) => {
   return (
     <>
       {editor && editor.on("blur", handleBlur) && (
-        <>
-          <div className="w-full h-full bg-white rounded-sm border-1 border-gray-300">
-            <div className="p-1 bg-white rounded-t-sm border-b-1 border-gray-400">
+        <div className="w-full min-h-auto bg-white rounded-sm border-1 border-gray-300">
+          <div className="p-1 bg-white rounded-t-sm border-b-1 border-gray-400">
+            <ButtonMenu editor={editor} />
+          </div>
+          <div className="m-3">
+            <EditorContent editor={editor} />
+          </div>
+          <BubbleMenu editor={editor}>
+            <div className="p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
               <ButtonMenu editor={editor} />
             </div>
-            <div className="m-3">
-              <EditorContent editor={editor} />
-            </div>
-            <BubbleMenu editor={editor}>
-              <div className="p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
-                <ButtonMenu editor={editor} />
-              </div>
-            </BubbleMenu>
-          </div>
-        </>
+          </BubbleMenu>
+        </div>
       )}
     </>
   );
