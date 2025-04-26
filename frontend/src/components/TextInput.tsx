@@ -102,7 +102,7 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
             </>
           )}
         </div>
-        <div className="m-3">
+        <div>
           {edit ? (
             <RichEditor content={text} handleTextChange={setText} />
           ) : (
