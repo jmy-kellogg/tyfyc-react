@@ -6,10 +6,10 @@ import ButtonMenu from "./ButtonMenu";
 
 interface Props {
   content: string;
-  handleTextChange: (text: string) => void;
+  onTextChange: (text: string) => void;
 }
 
-const RichEditor = ({ content, handleTextChange }: Props) => {
+const RichEditor = ({ content, onTextChange }: Props) => {
   const formattedContent = content[0] === "<" ? content : `<p>${content}</p>`;
   const editor = useEditor({
     extensions,
@@ -17,7 +17,7 @@ const RichEditor = ({ content, handleTextChange }: Props) => {
   });
 
   const handleBlur = () => {
-    if (editor) handleTextChange(editor.getHTML());
+    if (editor) onTextChange(editor.getHTML());
   };
 
   useEffect(() => {

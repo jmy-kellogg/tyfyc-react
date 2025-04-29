@@ -1,7 +1,8 @@
 import { useState, ChangeEvent } from "react";
 
 import { getFormattedDate } from "@utils";
-
+import RichEditor from "@/components/RichEditor";
+import ReadOnly from "@/components/RichEditor/ReadOnly";
 import { updateProject } from "@/api/projects";
 import type { Project } from "@/types/projects";
 
@@ -17,7 +18,7 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
   const [hover, setHover] = useState<boolean>(false);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const key = e.target.name;
     const value = e.target.value;
@@ -34,6 +35,10 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
       };
       await updateProject(project.id, updateBody);
     }
+  };
+
+  const setDescription = (text: string) => {
+    setForm({ ...form, description: text });
   };
 
   return (
@@ -88,14 +93,18 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
               </button>
             </div>
             <label className="block text-sm/6 font-medium">Description</label>
-            <textarea
+            {/* <textarea
               id="project-description"
               name="description"
               className="m-1 w-full rounded-md bg-white px-3 py-1.5 h-24 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.description}
               onChange={handleChange}
               onBlur={(e) => updateData("description", e.target.value)}
-            ></textarea>
+            ></textarea> */}
+            <RichEditor
+              content={form.description}
+              onTextChange={setDescription}
+            />
 
             <label className="block text-sm/6 font-medium">Created</label>
             <input
@@ -119,7 +128,7 @@ function ProjectItem({ project, editAll, lockEdit, remove }: Props) {
               ) : (
                 <h3>{form.title}</h3>
               )}
-              <p>{form.description}</p>
+              <ReadOnly content={form.description} />
               {form.year && (
                 <p>
                   {getFormattedDate(form.year, {

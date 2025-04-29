@@ -63,7 +63,11 @@ function Title({ editAll, lockEdit }: Props) {
                   className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  onMouseLeave={updateData}
+                  onMouseLeave={() => {
+                    if (user?.firstName !== firstName) {
+                      updateData();
+                    }
+                  }}
                 />
               </div>
               <div className="m-1">
@@ -75,7 +79,11 @@ function Title({ editAll, lockEdit }: Props) {
                   className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  onMouseLeave={updateData}
+                  onMouseLeave={() => {
+                    if (user?.lastName !== lastName) {
+                      updateData();
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -88,7 +96,11 @@ function Title({ editAll, lockEdit }: Props) {
                 className="text-center block w-full rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
-                onMouseLeave={updateData}
+                onMouseLeave={() => {
+                  if (user?.jobTitle !== jobTitle) {
+                    updateData();
+                  }
+                }}
               />
             </div>
           </form>

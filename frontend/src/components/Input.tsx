@@ -43,7 +43,7 @@ function Input({ inputName, inputValue, label, onUpdate }: Props) {
               name={inputName}
               placeholder={label}
               type="text"
-              className="block w-full m-1 rounded-md bg-white px-3 py-1 h-min text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              className="w-max m-1 rounded-md bg-white p-1 h-min text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={formData[inputName]}
               onChange={onChangeData}
             />

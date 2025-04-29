@@ -104,7 +104,7 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
         </div>
         <div>
           {edit ? (
-            <RichEditor content={text} handleTextChange={setText} />
+            <RichEditor content={text} onTextChange={setText} />
           ) : (
             <ReadOnly content={text} />
           )}

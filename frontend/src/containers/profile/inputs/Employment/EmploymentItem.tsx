@@ -1,6 +1,8 @@
 import { useState, ChangeEvent } from "react";
 import { getFormattedDate } from "@utils";
 
+import RichEditor from "@/components/RichEditor";
+import ReadOnly from "@/components/RichEditor/ReadOnly";
 import { updateEmployment } from "@/api/employment";
 import type { Employment } from "@/types/employment";
 
@@ -16,7 +18,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
   const [form, setForm] = useState<Employment>(employment);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const key = e.target.name;
     const value = e.target.value;
@@ -35,6 +37,10 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
       };
       await updateEmployment(employment.id, updateBody);
     }
+  };
+
+  const setDescription = (text: string) => {
+    setForm({ ...form, description: text });
   };
 
   return (
@@ -102,13 +108,11 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
             </div>
 
             <label className="block text-sm/6 font-medium">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              className="block w-full rounded-md bg-white px-3 py-1.5 h-32 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={form.description}
-              onChange={handleChange}
-            ></textarea>
+
+            <RichEditor
+              content={form.description}
+              onTextChange={setDescription}
+            />
 
             <button
               type="button"
@@ -135,7 +139,7 @@ function EmploymentItem({ employment, lockEdit, editAll, remove }: Props) {
                     year: "numeric",
                   })}
               </h4>
-              <p className="whitespace-pre-wrap">{form.description}</p>
+              <ReadOnly content={form.description} />
             </div>
           </div>
         )}

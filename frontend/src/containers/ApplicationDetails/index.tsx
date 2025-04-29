@@ -52,7 +52,7 @@ function ApplicationDetails() {
           onUpdate={handleUpdate}
         />
 
-        <div className="flex flex-wrap justify-between m-3">
+        <div className="flex flex-wrap items-center justify-between m-3">
           <div className="flex items-center">
             <b>Status: </b>
             <Dropdown
@@ -62,16 +62,16 @@ function ApplicationDetails() {
               onUpdate={handleUpdate}
             />
           </div>
-          <span>{"|"}</span>
+          <span className="px-1">{"|"}</span>
           <div className="flex items-center">
-            <b className="mx-1 w-max">Date Applied: </b>
+            <b className="mx-1 w-max">Applied: </b>
             <DateInput
               inputName="dateApplied"
               inputValue={application.dateApplied || ""}
               onUpdate={handleUpdate}
             />
           </div>
-          <span>{"|"}</span>
+          <span className="px-1">{"|"}</span>
           <div className="flex items-center">
             <b>Location: </b>
             <Input
@@ -81,7 +81,7 @@ function ApplicationDetails() {
               onUpdate={handleUpdate}
             />
           </div>
-          <span>{"|"}</span>
+          <span className="px-1">{"|"}</span>
           <div className="flex items-center">
             <b>Salary: </b>
             <Input

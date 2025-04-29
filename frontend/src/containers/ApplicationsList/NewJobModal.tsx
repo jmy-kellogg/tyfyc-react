@@ -90,7 +90,7 @@ function NewJobModal() {
                 Copy/Paste job Posting
               </label>
               <div className="flex min-h-120">
-                <RichEditor content={posting} handleTextChange={setText} />
+                <RichEditor content={posting} onTextChange={setText} />
               </div>
             </div>
           </div>
