@@ -10,14 +10,12 @@ def find_job_title(soup) -> str:
     return title if title else ""
 
 def find_company(soup) -> str:
-    company = ""
-    text_list = soup.get_text().split()[0:100]
-    for index, text in enumerate(text_list):
-        if text == "About" or text == "@" or text == "At":
-          company = text_list[index + 1]
-          break
-    
-    return company
+    text_candidate = soup.find(string=re.compile("At")) or soup.find(string=re.compile("@")) or ""
+    text_list = text_candidate.split()
+
+    if text_list[0] == "At" or text_list[0] == "@":
+      return text_list[1] or ""
+
 
 def find_location(soup) -> str:
     remote_text = soup.find(string=re.compile("Remote"))
@@ -34,9 +32,9 @@ def find_location(soup) -> str:
     return location_text
 
 def find_salary(soup) -> str:
-   salary_string = soup.find(string=re.compile(",000"))
+   salary_string = soup.find(string=re.compile(",000")) or soup.find(string=re.compile("0K"))
    regex_query = r"\$\d{1,3}(?:,\d{3})*(?:\s*-\s*\d{1,3}(?:,\d{3})*)?"
-   salary = re.search(regex_query, salary_string)
+   salary = re.search(regex_query, salary_string) if salary_string else ""
 
    return salary.group(0) if salary else ""
 
