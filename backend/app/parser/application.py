@@ -10,11 +10,14 @@ def find_job_title(soup) -> str:
     return title if title else ""
 
 def find_company(soup) -> str:
-    text_candidate = soup.find(string=re.compile("At")) or soup.find(string=re.compile("@")) or ""
-    text_list = text_candidate.split()
+    text_candidate = soup.find(string=re.compile("At")) or soup.find(string=re.compile("@"))
+    text_list = text_candidate.split() if text_candidate else []
+    company_text = ""
 
-    if text_list[0] == "At" or text_list[0] == "@":
-      return text_list[1] or ""
+    if text_list and (text_list[0] == "At" or text_list[0] == "@"):
+      company_text = text_list[1] or ""
+
+    return company_text
 
 
 def find_location(soup) -> str:
