@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import type { User } from "@/types";
@@ -14,12 +14,12 @@ interface Props {
 function Contact({ editAll, lockEdit }: Props) {
   const user: User | null = useSelector((state: State) => state.auth.user);
   const [hover, setHover] = useState(false);
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [linkedIn, setLinkedIn] = useState("");
-  const [gitHub, setGitHub] = useState("");
+  const [email, setEmail] = useState(user?.email || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [city, setCity] = useState(user?.city || "");
+  const [state, setState] = useState(user?.state || "");
+  const [linkedIn, setLinkedIn] = useState(user?.linkedIn || "");
+  const [gitHub, setGitHub] = useState(user?.gitHub || "");
 
   const validateData = () => {
     if (!email || !phone || !city || !state || !linkedIn || !gitHub) {
@@ -43,17 +43,6 @@ function Contact({ editAll, lockEdit }: Props) {
       updateUser({ email, phone, city, state, linkedIn, gitHub });
     }
   };
-
-  useEffect(() => {
-    if (user) {
-      setEmail(user.email || "");
-      setPhone(user.phone || "");
-      setCity(user.city || "");
-      setState(user.state || "");
-      setLinkedIn(user.linkedIn || "");
-      setGitHub(user.gitHub || "");
-    }
-  }, [user]);
 
   return (
     <>

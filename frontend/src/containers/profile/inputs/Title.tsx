@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import Divider from "src/components/Divider";
@@ -13,9 +13,9 @@ interface Props {
 function Title({ editAll, lockEdit }: Props) {
   const user = useSelector((state: State) => state.auth.user);
   const [hover, setHover] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [jobTitle, setJobTitle] = useState(user?.jobTitle || "");
 
   const validateData = () => {
     if (!firstName || !lastName || !jobTitle) {
@@ -36,14 +36,6 @@ function Title({ editAll, lockEdit }: Props) {
       updateUser({ firstName, lastName, jobTitle });
     }
   };
-
-  useEffect(() => {
-    if (user) {
-      setFirstName(user.firstName || "");
-      setLastName(user.lastName || "");
-      setJobTitle(user.jobTitle || "");
-    }
-  }, [user]);
 
   return (
     <>
