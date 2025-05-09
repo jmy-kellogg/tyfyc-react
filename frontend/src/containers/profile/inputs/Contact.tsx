@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import type { User } from "@/types";
@@ -43,6 +43,17 @@ function Contact({ editAll, lockEdit }: Props) {
       updateUser({ email, phone, city, state, linkedIn, gitHub });
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setCity(user.city || "");
+      setState(user.state || "");
+      setLinkedIn(user.linkedIn || "");
+      setGitHub(user.gitHub || "");
+    }
+  }, [user]);
 
   return (
     <>

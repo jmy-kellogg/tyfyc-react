@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import Divider from "src/components/Divider";
@@ -36,6 +36,14 @@ function Title({ editAll, lockEdit }: Props) {
       updateUser({ firstName, lastName, jobTitle });
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
+      setJobTitle(user.jobTitle || "");
+    }
+  }, [user]);
 
   return (
     <>

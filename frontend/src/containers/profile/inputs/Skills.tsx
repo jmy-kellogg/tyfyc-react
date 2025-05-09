@@ -33,7 +33,7 @@ function Skills({ editAll, lockEdit }: Props) {
 
   const onChange = async (
     _newValue: MultiValue<SkillSelect>,
-    actionMeta: ActionMeta<SkillSelect>,
+    actionMeta: ActionMeta<SkillSelect>
   ) => {
     if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
       const skill: Skill | undefined = await addSkill({
@@ -55,7 +55,7 @@ function Skills({ editAll, lockEdit }: Props) {
     if (!id) return;
 
     const updatedSkills: SkillSelect[] = skills.filter(
-      (skill) => skill.id !== id,
+      (skill) => skill.id !== id
     );
 
     await deleteSkill(id);
@@ -111,7 +111,7 @@ function Skills({ editAll, lockEdit }: Props) {
           label: name,
           value: id,
           id: "",
-        })),
+        }))
       );
     } catch (err) {
       console.error(err);
@@ -126,7 +126,7 @@ function Skills({ editAll, lockEdit }: Props) {
           label: name,
           value: skillOptionsId,
           id,
-        })),
+        }))
       );
     } catch (err) {
       console.error(err);

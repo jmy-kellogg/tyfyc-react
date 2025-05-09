@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-
 import Divider from "src/components/Divider";
 import { updateUser } from "@/api/user";
 import type { State } from "@/store";
@@ -13,13 +12,19 @@ interface Props {
 function Summary({ editAll, lockEdit }: Props) {
   const user = useSelector((state: State) => state.auth.user);
   const [hover, setHover] = useState(false);
-  const [summary, setSummary] = useState(user?.summary || "");
+  const [summary, setSummary] = useState("");
 
   const updateData = () => {
     if (summary && summary !== user?.summary) {
       updateUser({ summary });
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setSummary(user.summary || "");
+    }
+  }, [user]);
 
   return (
     <>
