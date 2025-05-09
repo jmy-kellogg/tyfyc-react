@@ -5,12 +5,7 @@ import storage from "redux-persist/lib/storage";
 import applicationsReducer, {
   ApplicationsState,
 } from "./reducers/applicationsSlice";
-import educationReducer, { EducationState } from "./reducers/educationSlice";
-import jobHistoryReducer, { JobsState } from "./reducers/jobHistorySlice";
-import personalReducer, { PersonalState } from "./reducers/personalSlice";
 import navigationReducer, { NavigationState } from "./reducers/navigationSlice";
-import skillsReducer, { SkillsState } from "./reducers/skillsSlice";
-import projectsReducer, { ProjectsState } from "./reducers/projectsSlice";
 import alertsReducer, { AlertsState } from "./reducers/alertsSlice";
 import authReducer, { AuthState } from "./reducers/authSlice";
 
@@ -19,12 +14,7 @@ export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
 export interface State {
   applications: ApplicationsState;
-  education: EducationState;
-  jobHistory: JobsState;
-  personal: PersonalState;
   navigation: NavigationState;
-  skills: SkillsState;
-  projects: ProjectsState;
   alerts: AlertsState;
   auth: AuthState;
 }
@@ -36,12 +26,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   applications: applicationsReducer,
-  education: educationReducer,
-  jobHistory: jobHistoryReducer,
-  personal: personalReducer,
   navigation: navigationReducer,
-  skills: skillsReducer,
-  projects: projectsReducer,
   alerts: alertsReducer,
   auth: authReducer,
 });
