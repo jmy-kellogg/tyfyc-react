@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import "./ResumeDoc.css";
@@ -17,9 +17,9 @@ import type { User } from "@/types/index";
 import type { State } from "@/store";
 
 function Resume() {
-  const [content, setContent] = useState("");
-  const [hasChanged, setHasChanged] = useState(false);
   const user = useSelector((state: State) => state.auth.user);
+  const [content, setContent] = useState(user?.resume || "");
+  const [hasChanged, setHasChanged] = useState(false);
 
   const onPrint = () => {
     const element = document.getElementById("resume-content");
@@ -164,13 +164,6 @@ function Resume() {
     setContent(defaultResume);
     setHasChanged(true);
   };
-
-  useEffect(() => {
-    if (user?.resume) {
-      setContent(user.resume);
-      setHasChanged(false);
-    }
-  }, [user]);
 
   return (
     <>
