@@ -16,7 +16,7 @@ tags_metadata = {
 }
 
 @router.get("/applications", tags=["applications"], response_model=List[ApplicationResp])
-def fetch_all_applications(current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db), skip: int=0, limit: int=100):    
+def fetch_all_applications(current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db), skip: int=0, limit: int=500):    
     user_id = current_user.id
     applications = db.query(Application).filter(Application.user_id == user_id).offset(skip).limit(limit).all()
     
