@@ -41,6 +41,11 @@ function InputLink({
     setHover(false);
   };
 
+  const handleBlur = (e: SyntheticEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    onUpdate(formData);
+  };
+
   useEffect(() => {
     setFormData({ [inputName]: inputValue, [linkName]: linkValue });
   }, [inputName, inputValue, linkName, linkValue]);
@@ -59,6 +64,7 @@ function InputLink({
                 className="w-100 h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 value={formData[inputName]}
                 onChange={onChangeData}
+                onBlur={handleBlur}
               />
               <input
                 id={linkName}
@@ -68,6 +74,7 @@ function InputLink({
                 className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 value={formData[linkName]}
                 onChange={onChangeData}
+                onBlur={handleBlur}
               />
             </div>
             <div className="flex">
@@ -79,6 +86,7 @@ function InputLink({
                   strokeWidth={2}
                   stroke="currentColor"
                   className="size-4 m-1 hover:size-5 hover:cursor-pointer hover:text-green-500"
+                  id="save-icon"
                 >
                   <path
                     strokeLinecap="round"
@@ -95,6 +103,7 @@ function InputLink({
                   strokeWidth={2}
                   stroke="currentColor"
                   className="size-4 m-1 hover:size-5 hover:cursor-pointer hover:text-red-500"
+                  id="cancel-icon"
                 >
                   <path
                     strokeLinecap="round"
@@ -127,6 +136,7 @@ function InputLink({
                     strokeWidth={1.5}
                     stroke="currentColor"
                     className="size-4"
+                    id="edit-icon"
                   >
                     <path
                       strokeLinecap="round"
