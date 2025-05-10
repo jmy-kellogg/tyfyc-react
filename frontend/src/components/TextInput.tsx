@@ -15,12 +15,21 @@ interface Props {
 function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
   const [hover, setHover] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(inputValue);
 
-  const handleSubmit = () => {
-    onUpdate({ [inputName]: text });
+  const handleUpdate = (textString: string) => {
+    onUpdate({ [inputName]: textString });
     setEdit(false);
     setHover(false);
+  };
+
+  const handleTextChange = (textString: string) => {
+    setText(textString);
+    handleUpdate(textString);
+  };
+
+  const handleSubmit = () => {
+    handleUpdate(text);
   };
 
   useEffect(() => {
@@ -30,7 +39,6 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
   return (
     <>
       <div
-        className="hover:cursor-pointer"
         onClick={(e) => {
           e.stopPropagation();
           setEdit(true);
@@ -104,9 +112,13 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
         </div>
         <div>
           {edit ? (
-            <RichEditor content={text} onTextChange={setText} />
+            <div className="hover:cursor-text">
+              <RichEditor content={text} onTextChange={handleTextChange} />
+            </div>
           ) : (
-            <ReadOnly content={text} />
+            <div className="hover:cursor-pointer">
+              <ReadOnly content={text} />
+            </div>
           )}
         </div>
       </div>
