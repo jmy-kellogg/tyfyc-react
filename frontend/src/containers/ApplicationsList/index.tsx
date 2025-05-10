@@ -82,6 +82,11 @@ function ApplicationsList() {
     }
   };
 
+  const clearSearch = () => {
+    setSearch("");
+    setFilteredList(applications);
+  };
+
   const fetchData = useCallback(async () => {
     const dbApplications = await getApplications();
     const sortedList = sortApplications(dbApplications);
@@ -100,15 +105,31 @@ function ApplicationsList() {
     <>
       <div className="page">
         <div className="max-w-max justify-self-center">
-          <input
-            id="search"
-            name="search"
-            type="text"
-            placeholder="Search Companies"
-            className="m-3 w-2xl rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-            value={search}
-            onChange={handleFilter}
-          />
+          <div className="flex bg-white outline-1 -outline-offset-1 outline-gray-300 rounded-lg bg-gray-100">
+            <input
+              id="search"
+              name="search"
+              type="text"
+              placeholder="Search Companies"
+              className="py-2 px-4 place-content-between w-2xl text-base placeholder:text-gray-400 rounded-lg focus:outline-none"
+              value={search}
+              onChange={handleFilter}
+            />
+            <button
+              className="m-auto p-1 mx-2 self-start rounded-lg text-gray-500 hover:cursor-pointer hover:font-bold hover:bg-gray-200"
+              onClick={clearSearch}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="size-5"
+                id="clear-icon"
+              >
+                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+              </svg>
+            </button>
+          </div>
           <div className="flex justify-between">
             <div className="flex">
               <ExportCSV applications={applications} />
