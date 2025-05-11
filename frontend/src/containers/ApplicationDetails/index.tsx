@@ -17,6 +17,8 @@ function ApplicationDetails() {
   const applicationId = useSelector(getActiveTab);
 
   const [application, setApplication] = useState<ApplicationUpdate>({});
+  const [notesToggle, setNotesToggle] = useState<boolean>(false);
+  const [postingToggle, setPostingToggle] = useState<boolean>(true);
 
   const handleUpdate = async (form: ApplicationUpdate) => {
     const updatedApp = await updateApplication({ ...application, ...form });
@@ -25,8 +27,11 @@ function ApplicationDetails() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const dbApplication = await getApplication(applicationId);
-      setApplication(dbApplication);
+      const dbApp = await getApplication(applicationId);
+      const hasNotes = !!dbApp.notes && dbApp.notes !== "<p></p>";
+
+      setApplication(dbApp);
+      setNotesToggle(hasNotes);
     };
     fetchData();
   }, [applicationId]);
@@ -94,18 +99,50 @@ function ApplicationDetails() {
         </div>
         <hr />
         <div className="m-3">
-          <TextInput
-            label="Notes:"
-            inputName="notes"
-            inputValue={application.notes || ""}
-            onUpdate={handleUpdate}
-          />
-          <TextInput
-            label="Posting:"
-            inputName="posting"
-            inputValue={application.posting || ""}
-            onUpdate={handleUpdate}
-          />
+          <label className="mx-2 inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              value=""
+              className="sr-only peer"
+              checked={notesToggle}
+              onChange={() => setNotesToggle(!notesToggle)}
+            />
+            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600 dark:peer-checked:bg-indigo-600"></div>
+            <span className="ms-3 text-md font-bold text-gray-900 dark:text-gray-300">
+              Notes
+            </span>
+          </label>
+          <label className="mx-2 inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              value=""
+              className="sr-only peer"
+              checked={postingToggle}
+              onChange={() => setPostingToggle(!postingToggle)}
+            />
+            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600 dark:peer-checked:bg-indigo-600"></div>
+            <span className="ms-3 text-md font-bold text-gray-900 dark:text-gray-300">
+              Posting
+            </span>
+          </label>
+        </div>
+        <div className="m-3">
+          {notesToggle && (
+            <TextInput
+              label="Notes:"
+              inputName="notes"
+              inputValue={application.notes || ""}
+              onUpdate={handleUpdate}
+            />
+          )}
+          {postingToggle && (
+            <TextInput
+              label="Posting:"
+              inputName="posting"
+              inputValue={application.posting || ""}
+              onUpdate={handleUpdate}
+            />
+          )}
         </div>
       </div>
     </div>
