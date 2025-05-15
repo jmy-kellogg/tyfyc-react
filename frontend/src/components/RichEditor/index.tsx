@@ -26,9 +26,6 @@ const RichEditor = ({ content, onTextChange }: Props) => {
           className="w-full min-h-auto bg-white rounded-sm border-1 border-gray-300"
           onBlur={handleBlur}
         >
-          <div className="p-1 bg-white rounded-t-sm border-b-1 border-gray-400">
-            <ButtonMenu editor={editor} />
-          </div>
           <div className="m-3">
             <EditorContent editor={editor} />
           </div>

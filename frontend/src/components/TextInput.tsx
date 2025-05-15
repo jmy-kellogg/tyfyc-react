@@ -19,8 +19,6 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
 
   const handleUpdate = (textString: string) => {
     onUpdate({ [inputName]: textString });
-    setEdit(false);
-    setHover(false);
   };
 
   const handleTextChange = (textString: string) => {
@@ -29,7 +27,10 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
   };
 
   const handleSubmit = () => {
-    handleUpdate(text);
+    if (inputValue !== text) {
+      handleUpdate(text);
+    }
+    setEdit(false);
   };
 
   useEffect(() => {
@@ -43,8 +44,12 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
           e.stopPropagation();
           setEdit(true);
         }}
-        onMouseOver={() => setHover(true)}
-        onMouseOut={() => setHover(false)}
+        onMouseEnter={() => {
+          setHover(true);
+        }}
+        onMouseLeave={() => {
+          setHover(false);
+        }}
       >
         <div className="flex">
           <h2 className="block text-sm/6 font-medium">{label}</h2>

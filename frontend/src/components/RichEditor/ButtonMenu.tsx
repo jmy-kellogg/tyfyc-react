@@ -10,9 +10,10 @@ const ButtonMenu = ({ editor }: Props) => {
       <div className="flex">
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleHeading({ level: 1 }).run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -32,9 +33,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleHeading({ level: 2 }).run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,9 +56,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleHeading({ level: 3 }).run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +79,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().toggleBold().run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleBold().run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +101,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleItalic().run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +123,10 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleUnderline().run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +145,10 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().toggleStrike().run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleStrike().run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -153,9 +168,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#FAF594" }).run()
-          }
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleHighlight({ color: "#FAF594" }).run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +191,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().setHorizontalRule().run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +210,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleBulletList().run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -211,7 +233,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().toggleTaskList().run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().toggleTaskList().run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -231,7 +256,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().setTextAlign("left").run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -251,7 +279,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().setTextAlign("center").run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -271,7 +302,10 @@ const ButtonMenu = ({ editor }: Props) => {
 
         <button
           className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.chain().focus().setTextAlign("right").run();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
