@@ -36,7 +36,6 @@
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
     "jspdf": "^2.5.2",
     "multer": "^1.4.5-lts.1",
     "openai": "^4.87.3",
@@ -57,7 +56,6 @@
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@testing-library/react": "^16.2.0",
-    "@types/express": "4.17.21",
     "@types/jest": "^29.5.14",
     "@types/papaparse": "^5.3.15",
     "@types/react": "^19.0.8",

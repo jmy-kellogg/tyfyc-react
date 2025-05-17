@@ -101,7 +101,6 @@ tyfyc/
         ├── components/         # Reusable components
         ├── containers/         # Pages and Views
         ├── store/              # Redux store
-        ├── server/             # Legacy backend
         ├── types/              # TypeScript interfaces
         ├── App.tsx             # Root component
         ├── index.css           # Apps CSS
