@@ -1,23 +1,17 @@
-export interface Project {
+export interface ProjectBase {
   title: string;
   description: string;
   year: string;
   url: string;
+}
+
+export interface Project extends ProjectBase {
   id: string;
   userId: string;
 }
 
-export interface ProjectCreate {
-  title: string;
-  description: string;
-  year: string;
-  url: string;
-  gradYear: string;
-}
+export type ProjectCreate = Partial<ProjectBase>;
 
-export interface ProjectUpdate {
-  title?: string;
-  description?: string;
-  year?: string;
-  url?: string;
-}
+export type ProjectUpdate = Partial<ProjectBase>;
+
+export type ProjectsList = Array<Project>;

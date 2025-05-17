@@ -8,7 +8,7 @@ import {
   createEmployment,
   deleteEmployment,
 } from "@/api/employment";
-import type { Employment } from "@/types/employment";
+import type { Employment } from "@/types";
 
 interface Props {
   editAll: boolean;

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getToday } from "@utils";
-import type { Application } from "@/types/applications";
+import type { Application } from "@/types";
 
 export interface ApplicationStore extends Application {
   description: string;

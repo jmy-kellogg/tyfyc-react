@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { statusOptions } from "@options";
-import type { ApplicationUpdate } from "@/types/applications";
-import type { SkillOption } from "@/types/skills";
+import type { ApplicationUpdate, SkillOption } from "@/types";
 import { getApplication } from "@/api/applications";
 import { getSkillOptions, getSkills, addSkill } from "@/api/skills";
 import { updateApplication } from "@/api/applications";

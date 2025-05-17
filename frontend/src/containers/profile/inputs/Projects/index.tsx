@@ -4,7 +4,7 @@ import Divider from "src/components/Divider";
 import ProjectItem from "./ProjectItem";
 
 import { getProjects, createProject, deleteProject } from "@/api/projects";
-import type { Project } from "@/types/projects";
+import type { Project } from "@/types";
 
 interface Props {
   editAll: boolean;

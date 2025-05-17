@@ -4,7 +4,7 @@ import { getFormattedDate } from "@utils";
 import RichEditor from "@/components/RichEditor";
 import ReadOnly from "@/components/RichEditor/ReadOnly";
 import { updateEmployment } from "@/api/employment";
-import type { Employment } from "@/types/employment";
+import type { Employment } from "@/types";
 
 interface Props {
   employment: Employment;

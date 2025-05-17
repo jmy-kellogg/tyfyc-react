@@ -10,10 +10,8 @@ import { getEmploymentList } from "@/api/employment";
 import { getEducationList } from "@/api/education";
 import { getProjects } from "@/api/projects";
 import { updateUser } from "@/api/user";
-import type { Education } from "@/types/education";
-import type { Project } from "@/types/projects";
-import type { Employment } from "@/types/employment";
-import type { User } from "@/types/index";
+
+import type { Education, Project, Employment, User } from "@/types";
 import type { State } from "@/store";
 
 function Resume() {

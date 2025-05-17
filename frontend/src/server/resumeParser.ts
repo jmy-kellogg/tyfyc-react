@@ -1,11 +1,5 @@
 import { snake_case_string, divider } from "@utils";
-import type {
-  JobHistoryList,
-  EducationList,
-  Personal,
-  ParsedData,
-  ProjectsList,
-} from "../types";
+import type { EmploymentList, Personal } from "../types";
 
 const getInputDate = (str: string): string => {
   if (str.length) {
@@ -38,7 +32,7 @@ const getPersonal = (textData: Array<string> = []): Personal => {
   const sites = personal[3]?.split("|") || [];
   const summary = personal.slice(
     personal.indexOf("Summary") + 1,
-    personal.length,
+    personal.length
   );
 
   return {
@@ -60,7 +54,7 @@ const getSkills = (textData: Array<string> = []) => {
     textData
       .slice(
         textData.indexOf("Skills") + 1,
-        textData.indexOf("Professional Experience") - 1,
+        textData.indexOf("Professional Experience") - 1
       )[0]
       ?.split(", ")
       .map((skill) => ({
@@ -70,15 +64,15 @@ const getSkills = (textData: Array<string> = []) => {
   return skills;
 };
 
-const getJobs = (textData: Array<string> = []): JobHistoryList => {
+const getJobs = (textData: Array<string> = []): EmploymentList => {
   const jobHistory = textData
     .slice(
       textData.indexOf("Professional Experience") + 1,
-      textData.indexOf("Education") - 1,
+      textData.indexOf("Education") - 1
     )
     .reduce(splitSubSection, [[]]);
 
-  const respJobs: JobHistoryList = [];
+  const respJobs: EmploymentList = [];
 
   jobHistory.forEach((job) => {
     if (job.length) {
@@ -102,11 +96,11 @@ const getJobs = (textData: Array<string> = []): JobHistoryList => {
   return respJobs;
 };
 
-const getEducation = (textData: Array<string> = []): EducationList => {
+const getEducation = (textData: Array<string> = []) => {
   const education = textData
     .slice(textData.indexOf("Education") + 1, textData.indexOf("Projects") - 1)
     .reduce(splitSubSection, [[]]);
-  const respEdu: EducationList = [];
+  const respEdu = [];
 
   education.forEach((edu) => {
     if (edu.length == 2) {
@@ -121,11 +115,11 @@ const getEducation = (textData: Array<string> = []): EducationList => {
   return respEdu;
 };
 
-const getProjects = (textData: Array<string> = []): ProjectsList => {
+const getProjects = (textData: Array<string> = []) => {
   const projects = textData
     .slice(textData.indexOf("Projects") + 1, textData.length - 1)
     .reduce(splitSubSection, [[]]);
-  const respProjects: ProjectsList = [];
+  const respProjects = [];
 
   projects.forEach((project) => {
     if (project.length) {
@@ -140,7 +134,7 @@ const getProjects = (textData: Array<string> = []): ProjectsList => {
   return respProjects;
 };
 
-const parseResume = (rawText: string = ""): ParsedData => {
+const parseResume = (rawText: string = "") => {
   const textData = rawText
     .split("\r\n")
     .filter((str) => !str.includes("---Page (") && !!str.trim());

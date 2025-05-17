@@ -4,7 +4,7 @@ import type {
   ApplicationUpdate,
   Applications,
   Application,
-} from "@/types/applications";
+} from "@/types";
 
 export const getApplications = async (): Promise<Applications> => {
   const response = await api.get("/applications");

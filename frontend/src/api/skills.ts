@@ -1,5 +1,5 @@
 import api from ".";
-import type { Skill, SkillOption, SkillCreate } from "@/types/skills";
+import type { Skill, SkillOption, SkillCreate } from "@/types";
 
 export const getSkills = async (): Promise<Skill[]> => {
   const response = await api.get("/skills");
@@ -7,7 +7,7 @@ export const getSkills = async (): Promise<Skill[]> => {
 };
 
 export const addSkill = async (
-  skill: SkillCreate,
+  skill: SkillCreate
 ): Promise<Skill | undefined> => {
   const formattedSkill = {
     skillOptionsId: skill.skillOptionsId || "",

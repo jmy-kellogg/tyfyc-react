@@ -1,7 +1,7 @@
 import Papa from "papaparse";
 import { ChangeEvent } from "react";
 
-import type { Applications, ApplicationUpdate } from "@/types/applications";
+import type { Applications, ApplicationUpdate } from "@/types";
 import { getApplications, addApplication } from "@/api/applications";
 
 interface Props {

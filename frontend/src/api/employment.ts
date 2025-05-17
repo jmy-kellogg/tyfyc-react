@@ -1,5 +1,5 @@
 import api from ".";
-import type { Employment, EmploymentUpdate } from "@/types/employment";
+import type { Employment, EmploymentUpdate } from "@/types";
 
 export const getEmploymentList = async (): Promise<Employment[]> => {
   const response = await api.get("/employment");
@@ -7,7 +7,7 @@ export const getEmploymentList = async (): Promise<Employment[]> => {
 };
 
 export const createEmployment = async (
-  employment: EmploymentUpdate,
+  employment: EmploymentUpdate
 ): Promise<Employment> => {
   const response = await api.post(`/employment`, employment);
   return response?.data || {};
@@ -15,7 +15,7 @@ export const createEmployment = async (
 
 export const updateEmployment = async (
   employment_id: string,
-  employment: EmploymentUpdate,
+  employment: EmploymentUpdate
 ): Promise<Employment> => {
   const response = await api.put(`/employment/${employment_id}`, employment);
   return response?.data || {};

@@ -8,7 +8,7 @@ import {
   createEducation,
   deleteEducation,
 } from "@/api/education";
-import type { Education } from "@/types/education";
+import type { Education } from "@/types";
 
 interface Props {
   editAll: boolean;

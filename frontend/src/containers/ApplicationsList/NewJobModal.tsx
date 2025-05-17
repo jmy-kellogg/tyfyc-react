@@ -6,7 +6,7 @@ import { addApplication } from "@/api/applications";
 import { getToday } from "@/utils";
 
 import { setActiveTab, addJobTabs } from "src/store/reducers/navigationSlice";
-import type { ApplicationCreate, Application } from "@/types/applications";
+import type { ApplicationCreate, Application } from "@/types";
 
 function NewJobModal() {
   const dispatch = useDispatch();

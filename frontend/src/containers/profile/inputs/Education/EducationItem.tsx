@@ -3,7 +3,7 @@ import { useState, ChangeEvent } from "react";
 import { getFormattedDate } from "@utils";
 
 import { updateEducation } from "@/api/education";
-import type { Education } from "@/types/education";
+import type { Education } from "@/types";
 
 interface Props {
   education: Education;
@@ -17,7 +17,7 @@ function EducationItem({ education, editAll, lockEdit, remove }: Props) {
   const [hover, setHover] = useState<boolean>(false);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const key = e.target.name;
     const value = e.target.value;

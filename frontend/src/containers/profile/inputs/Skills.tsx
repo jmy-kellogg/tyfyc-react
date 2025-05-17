@@ -10,8 +10,7 @@ import {
   deleteSkill,
   getSkillOptions,
 } from "@/api/skills";
-import type { SortableList } from "@/types";
-import type { Skill } from "@/types/skills";
+import type { SortableList, Skill } from "@/types";
 
 interface Props {
   editAll: boolean;

@@ -25,6 +25,7 @@ export interface Application extends ApplicationBase {
 }
 
 export type ApplicationCreate = Partial<ApplicationBase>;
+
 export type ApplicationUpdate = Partial<Application>;
 
 export type Applications = Array<Application>;

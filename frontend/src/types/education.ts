@@ -1,19 +1,15 @@
-export interface Education {
+export interface EducationBase {
   degree: string;
   school: string;
   gradYear: string;
+}
+
+export interface Education extends EducationBase {
   id: string;
   userId: string;
 }
+export type EducationCreate = Partial<EducationBase>;
 
-export interface EducationCreate {
-  degree: string;
-  school: string;
-  gradYear: string;
-}
+export type EducationUpdate = Partial<EducationBase>;
 
-export interface EducationUpdate {
-  degree?: string;
-  school?: string;
-  gradYear?: string;
-}
+export type EducationList = Array<Education>;

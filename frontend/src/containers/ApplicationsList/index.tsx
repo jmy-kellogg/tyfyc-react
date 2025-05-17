@@ -12,7 +12,7 @@ import {
   addJobTabs,
   removeJobTab,
 } from "src/store/reducers/navigationSlice";
-import type { Application, Applications } from "@/types/applications";
+import type { Application, Applications } from "@/types";
 import type { State } from "@/store";
 
 function ApplicationsList() {

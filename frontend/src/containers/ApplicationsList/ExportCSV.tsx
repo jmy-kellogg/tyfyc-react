@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { CSVLink } from "react-csv";
 
-import type { Application, Applications } from "@/types/applications";
+import type { Application, Applications } from "@/types";
 import type { State } from "@/store";
 
 type HeaderRow = Array<keyof Application>;
