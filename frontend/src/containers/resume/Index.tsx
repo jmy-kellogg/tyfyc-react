@@ -21,7 +21,7 @@ function Resume() {
 
   const onPrint = () => {
     const element = document.getElementById("resume-content");
-    const doc = new jsPDF({ format: "letter" });
+    const doc = new jsPDF({ format: "A4" });
     if (element) {
       doc.setProperties({
         author: "tyfyc",
@@ -31,10 +31,9 @@ function Resume() {
         callback: function (doc) {
           doc.save(`${user?.lastName || "tyfyc"}_resume.pdf`);
         },
-        width: 210,
-        margin: [5, 0, 5, 0],
-        windowWidth: 816,
-        autoPaging: "text",
+        width: 200,
+        margin: [5, 5, 5, 5],
+        windowWidth: 794,
       });
     }
   };
@@ -52,7 +51,8 @@ function Resume() {
   };
 
   const employmentItem = (job: Employment) => {
-    return `<p>
+    return `
+      <p>
         <h3>${job.jobTitle}</h3>
         <h4>
           ${job.company} - ${job.location}${" | "}
@@ -69,7 +69,6 @@ function Resume() {
           }
         </h4>
         <p className="whitespace-pre-wrap">${job.description}</p>
-        <hr />
       </p>`;
   };
 
@@ -87,7 +86,6 @@ function Resume() {
                })
              }
            </p>
-          <hr />
        </p>
     `;
   };
@@ -113,7 +111,6 @@ function Resume() {
             </p>`
               : ""
           }
-        <hr />
       </p>
     `;
   };
@@ -136,7 +133,6 @@ function Resume() {
       <hr />
       <h2 style="text-align: center">Summary</h2>
       <p>${personal.summary}</p>
-      <hr />
     </p>`;
   };
 
@@ -149,14 +145,19 @@ function Resume() {
     const defaultResume = `
       <p>
         ${user ? defaultPersonal(user) : ""}
+        <hr />
         <h2 style="text-align: center">Skills</h2>
         <p>${skills.map(({ name }) => name).join(", ")}</p>
+        <hr />
         <h2 style="text-align: center">Professional Experience</h2>
         ${employment.map((job) => employmentItem(job)).join("")}
-        <h2 style="text-align: center">Education</h2>
-        ${education.map((edu) => educationItem(edu)).join("")}
+        <hr />
         <h2 style="text-align: center">Projects</h2>
         ${projects.map((project) => projectItem(project)).join("")}
+        <hr />
+        <h2 style="text-align: center">Education</h2>
+        <span style="display: flex">${education.map((edu) => educationItem(edu)).join("")}</span>
+        <hr />
       </p>
     `;
     setContent(defaultResume);
@@ -198,8 +199,10 @@ function Resume() {
               Export Resume
             </button>
           </div>
-          <div id="resume-content">
-            <PopupEditor content={content} handleTextChange={updateResume} />
+          <div className="document">
+            <div id="resume-content">
+              <PopupEditor content={content} handleTextChange={updateResume} />
+            </div>
           </div>
         </div>
       </div>

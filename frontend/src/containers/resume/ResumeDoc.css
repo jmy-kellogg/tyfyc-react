@@ -20,7 +20,8 @@ h4 {
 }
 
 #resume-content {
-  width: 816px;
+  width: 790x;
+  margin: 5px;
 }
 
 .personal-section {
@@ -47,6 +48,28 @@ h4 {
 .horizonRule {
   border-top: 1px solid #a8a8aec9;
   margin: 3px 0px;
+}
+
+.document {
+  /* A4 paper size ratio */
+  width: 794px;
+  height: 1123px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  position: relative;
+  border: 1px solid #a8a8aec9;
+}
+
+.document::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #a8a8aec9;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.document::after {
+  top: 1123px;
 }
 
 hr {
