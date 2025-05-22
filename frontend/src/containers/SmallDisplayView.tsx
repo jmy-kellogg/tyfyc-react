@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import ApplicationDetails from "./ApplicationDetails";
 import Profile from "./Profile";
-import Resume from "./Resume";
+import Resumes from "./Resumes";
 import ApplicationsList from "./ApplicationsList";
 import Tabs from "@/components/Tabs";
 
@@ -26,7 +26,7 @@ function SmallDisplayView() {
       <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
       <div className="full-page">
         {activeTab === "profile" && <Profile />}
-        {activeTab === "resume" && <Resume />}
+        {activeTab === "resume" && <Resumes />}
         {activeTab === "applications" && <ApplicationsList />}
         {!["profile", "resume", "applications", ""].includes(activeTab) && (
           <ApplicationDetails />

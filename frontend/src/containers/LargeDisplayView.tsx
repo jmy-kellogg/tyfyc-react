@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import ApplicationDetails from "./ApplicationDetails";
 import Profile from "./Profile";
-import Resume from "./Resume";
+import Resumes from "./Resumes";
 import ApplicationsList from "./ApplicationsList";
 import Tabs from "@/components/Tabs";
 
@@ -53,7 +53,7 @@ function LargeDisplayView() {
               ]}
               active="resume"
             />
-            <Resume />
+            <Resumes />
           </div>
         )}
         {showApplications && (

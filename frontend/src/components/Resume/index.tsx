@@ -9,12 +9,17 @@ import { getSkills } from "@/api/skills";
 import { getEmploymentList } from "@/api/employment";
 import { getEducationList } from "@/api/education";
 import { getProjects } from "@/api/projects";
-import { updateUser } from "@/api/user";
 
 import type { Education, Project, Employment, User } from "@/types";
 import type { State } from "@/store";
 
-function Resume() {
+export interface ResumeProps {
+  resume: string;
+  onSave: (resume: string) => void;
+  jobTitle?: string;
+}
+
+function Resume({ resume, onSave, jobTitle }: ResumeProps) {
   const [content, setContent] = useState("");
   const [hasChanged, setHasChanged] = useState(false);
   const user = useSelector((state: State) => state.auth.user);
@@ -45,7 +50,7 @@ function Resume() {
 
   const saveResume = async () => {
     if (content) {
-      await updateUser({ resume: content });
+      onSave(content);
       setHasChanged(false);
     }
   };
@@ -121,7 +126,7 @@ function Resume() {
       <h1 style="text-align: center">${
         personal.firstName + " " + personal.lastName
       }</h1>
-      <h2 style="text-align: center">${personal.jobTitle}</h2>
+      <h2 style="text-align: center">${jobTitle || personal.jobTitle}</h2>
       <hr />
       <p style="text-align: center">
         Email: ${personal.email} | Phone: ${personal.phone} | Location: 
@@ -136,18 +141,24 @@ function Resume() {
     </p>`;
   };
 
+  const createSkills = async () => {
+    const skills = (await getSkills()) || [];
+    const skillsList = skills.map(({ name }) => name);
+
+    return <p>{skillsList.join(", ")}</p>;
+  };
+
   const createResume = async () => {
     const employment = (await getEmploymentList()) || [];
     const education = (await getEducationList()) || [];
     const projects = (await getProjects()) || [];
-    const skills = (await getSkills()) || [];
 
     const defaultResume = `
       <p>
         ${user ? defaultPersonal(user) : ""}
         <hr />
         <h2 style="text-align: center">Skills</h2>
-        <p>${skills.map(({ name }) => name).join(", ")}</p>
+        ${createSkills()}
         <hr />
         <h2 style="text-align: center">Professional Experience</h2>
         ${employment.map((job) => employmentItem(job)).join("")}
@@ -165,11 +176,11 @@ function Resume() {
   };
 
   useEffect(() => {
-    if (user?.resume) {
-      setContent(user.resume);
+    if (resume) {
+      setContent(resume);
       setHasChanged(false);
     }
-  }, [user]);
+  }, [resume]);
 
   return (
     <>

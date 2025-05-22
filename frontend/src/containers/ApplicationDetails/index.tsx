@@ -12,6 +12,7 @@ import Input from "@/components/Input";
 import Dropdown from "@/components/DropDown";
 import DateInput from "@/components/DateInput";
 import TextInput from "@/components/TextInput";
+import Resume from "@/components/Resume";
 
 function ApplicationDetails() {
   const applicationId = useSelector(getActiveTab);
@@ -20,6 +21,7 @@ function ApplicationDetails() {
   const [skills, setSkills] = useState<string[]>([]);
   const [postingSkills, setPostingSkills] = useState<SkillOption[]>([]);
   const [notesToggle, setNotesToggle] = useState<boolean>(false);
+  const [resumeToggle, setResumeToggle] = useState<boolean>(false);
   const [skillsToggle, setSkillsToggle] = useState<boolean>(true);
   const [postingToggle, setPostingToggle] = useState<boolean>(true);
 
@@ -34,6 +36,10 @@ function ApplicationDetails() {
       category: "",
     });
     setSkills([...skills, skill.id]);
+  };
+
+  const saveResume = (resume: string) => {
+    handleUpdate({ resume });
   };
 
   useEffect(() => {
@@ -59,8 +65,8 @@ function ApplicationDetails() {
   }, [applicationId]);
 
   return (
-    <div className="page">
-      <div className="w-3xl m-3 justify-self-center">
+    <div className="page flex flex-wrap justify-center">
+      <div className="max-w-3xl m-3">
         <InputLink
           label="Company Name"
           inputName="company"
@@ -132,6 +138,19 @@ function ApplicationDetails() {
             <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600 dark:peer-checked:bg-indigo-600"></div>
             <span className="ms-3 text-md font-bold text-gray-900 dark:text-gray-300">
               Notes
+            </span>
+          </label>
+          <label className="mx-2 inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              value=""
+              className="sr-only peer"
+              checked={resumeToggle}
+              onChange={() => setResumeToggle(!resumeToggle)}
+            />
+            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600 dark:peer-checked:bg-indigo-600"></div>
+            <span className="ms-3 text-md font-bold text-gray-900 dark:text-gray-300">
+              Resume
             </span>
           </label>
           <label className="mx-2 inline-flex items-center ≈-pointer">
@@ -212,6 +231,15 @@ function ApplicationDetails() {
             />
           )}
         </div>
+      </div>
+      <div className="w-4xl">
+        {resumeToggle && (
+          <Resume
+            resume={application.resume || ""}
+            onSave={saveResume}
+            jobTitle={application.title}
+          />
+        )}
       </div>
     </div>
   );
