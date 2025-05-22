@@ -167,12 +167,20 @@ function Contact({ editAll, lockEdit }: Props) {
         ) : (
           <div className="text-center">
             <p>
-              <strong>Email:</strong> {email} | <strong>Phone:</strong> {phone}{" "}
-              | <strong>Location:</strong> {city + ", " + state}
+              <strong>Email:</strong>{" "}
+              <span className="select-all hover:cursor-pointer">{email}</span> |{" "}
+              <strong>Phone:</strong>
+              <span className="select-all hover:cursor-pointer">
+                {phone}
+              </span> | <strong>Location:</strong>{" "}
+              <span className="select-all hover:cursor-pointer">
+                {city + ", " + state}
+              </span>
             </p>
             <p>
-              <strong>LinkedIn:</strong> {linkedIn} | <strong>GitHub:</strong>{" "}
-              {gitHub}
+              <strong>LinkedIn:</strong> <a href={linkedIn}>{linkedIn}</a> |{" "}
+              <strong>GitHub:</strong>
+              <a href={gitHub}>{gitHub}</a>
             </p>
           </div>
         )}
