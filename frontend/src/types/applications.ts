@@ -3,10 +3,13 @@ export interface ApplicationBase {
   title: string;
   status:
     | "applied"
+    | "accepted"
     | "interviewing"
     | "no_offer"
+    | "rejected"
     | "declined"
     | "auto_rejected"
+    | "no_response"
     | "pending"
     | "";
   dateApplied: string;

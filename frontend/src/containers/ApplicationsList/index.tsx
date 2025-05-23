@@ -27,9 +27,12 @@ function ApplicationsList() {
       "interviewing",
       "applied",
       "pending",
+      "accepted",
       "declined",
       "no_offer",
+      "rejected",
       "auto_rejected",
+      "no_response",
     ];
     const sortedList = [...applications]
       .sort((a, b) => {
@@ -61,9 +64,12 @@ function ApplicationsList() {
     const colorMap = {
       applied: "text-blue-400",
       interviewing: "text-emerald-400",
-      no_offer: "text-amber-400",
+      accepted: "text-emerald-600",
+      no_offer: "text-amber-500",
+      rejected: "text-amber-400",
       declined: "text-rose-400",
-      auto_rejected: "text-gray-400",
+      auto_rejected: "text-gray-600",
+      no_response: "text-gray-400",
       pending: "text-purple-400",
     };
     return colorMap[status];
