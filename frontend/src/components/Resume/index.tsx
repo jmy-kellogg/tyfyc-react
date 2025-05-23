@@ -10,7 +10,7 @@ import { getEmploymentList } from "@/api/employment";
 import { getEducationList } from "@/api/education";
 import { getProjects } from "@/api/projects";
 
-import type { Education, Project, Employment, User } from "@/types";
+import type { Education, Project, Employment, User, Skill } from "@/types";
 import type { State } from "@/store";
 
 export interface ResumeProps {
@@ -141,24 +141,24 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
     </p>`;
   };
 
-  const createSkills = async () => {
-    const skills = (await getSkills()) || [];
+  const createSkills = (skills: Skill[]) => {
     const skillsList = skills.map(({ name }) => name);
 
-    return <p>{skillsList.join(", ")}</p>;
+    return `<p>${skillsList.join(", ")}</p>`;
   };
 
   const createResume = async () => {
     const employment = (await getEmploymentList()) || [];
     const education = (await getEducationList()) || [];
     const projects = (await getProjects()) || [];
+    const skills = (await getSkills()) || [];
 
     const defaultResume = `
       <p>
         ${user ? defaultPersonal(user) : ""}
         <hr />
         <h2 style="text-align: center">Skills</h2>
-        ${createSkills()}
+        ${createSkills(skills)}
         <hr />
         <h2 style="text-align: center">Professional Experience</h2>
         ${employment.map((job) => employmentItem(job)).join("")}
