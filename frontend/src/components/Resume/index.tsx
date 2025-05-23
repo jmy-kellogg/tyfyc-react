@@ -184,36 +184,34 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
 
   return (
     <>
-      <div className="page">
-        <div className="w-3xl justify-self-center">
-          <div className="flex justify-between">
-            <div className="flex">
-              <button
-                className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                onClick={createResume}
-              >
-                Generate Resume
-              </button>
-              {hasChanged && (
-                <button
-                  className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                  onClick={saveResume}
-                >
-                  Save Resume
-                </button>
-              )}
-            </div>
+      <div className="w-3xl justify-self-center">
+        <div className="flex justify-between">
+          <div className="flex">
             <button
               className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-              onClick={onPrint}
+              onClick={createResume}
             >
-              Export Resume
+              Generate Resume
             </button>
+            {hasChanged && (
+              <button
+                className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
+                onClick={saveResume}
+              >
+                Save Resume
+              </button>
+            )}
           </div>
-          <div className="document">
-            <div id="resume-content">
-              <PopupEditor content={content} handleTextChange={updateResume} />
-            </div>
+          <button
+            className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
+            onClick={onPrint}
+          >
+            Export Resume
+          </button>
+        </div>
+        <div className="document">
+          <div id="resume-content">
+            <PopupEditor content={content} handleTextChange={updateResume} />
           </div>
         </div>
       </div>

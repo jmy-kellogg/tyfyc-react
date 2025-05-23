@@ -22,7 +22,7 @@ function ApplicationDetails() {
   const [postingSkills, setPostingSkills] = useState<SkillOption[]>([]);
   const [notesToggle, setNotesToggle] = useState<boolean>(false);
   const [resumeToggle, setResumeToggle] = useState<boolean>(false);
-  const [skillsToggle, setSkillsToggle] = useState<boolean>(true);
+  const [skillsToggle, setSkillsToggle] = useState<boolean>(false);
   const [postingToggle, setPostingToggle] = useState<boolean>(true);
 
   const handleUpdate = async (form: ApplicationUpdate) => {
@@ -66,7 +66,7 @@ function ApplicationDetails() {
 
   return (
     <div className="page flex flex-wrap justify-center">
-      <div className="max-w-3xl m-3">
+      <div className="max-w-3xl grow md:w-md">
         <InputLink
           label="Company Name"
           inputName="company"
@@ -221,6 +221,7 @@ function ApplicationDetails() {
               </button>
             ))}
         </div>
+
         <div className="m-3">
           {postingToggle && (
             <TextInput
@@ -232,7 +233,7 @@ function ApplicationDetails() {
           )}
         </div>
       </div>
-      <div className="w-4xl">
+      <div className="m-3">
         {resumeToggle && (
           <Resume
             resume={application.resume || ""}
