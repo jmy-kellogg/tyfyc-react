@@ -4,13 +4,14 @@ import { useDispatch } from "react-redux";
 import RichEditor from "@/components/RichEditor";
 import { addApplication } from "@/api/applications";
 import { getToday } from "@/utils";
-
 import { setActiveTab, addJobTabs } from "src/store/reducers/navigationSlice";
 import type { ApplicationCreate, Application } from "@/types";
 
 function NewJobModal() {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [companySite, setCompanySite] = useState<string>("");
+  const [postingLink, setPostingLink] = useState<string>("");
   const [posting, setPosting] = useState<string>("");
 
   const setText = async (text: string) => {
@@ -19,6 +20,8 @@ function NewJobModal() {
 
   const submit = async () => {
     const reqBody: ApplicationCreate = {
+      companySite: companySite,
+      postingLink: postingLink,
       posting: posting,
       dateApplied: getToday(),
       status: "applied",
@@ -86,6 +89,28 @@ function NewJobModal() {
               </button>
             </div>
             <div className="m-3 h-full">
+              <label className="block text-lg font-medium text-center">
+                Links
+              </label>
+              <input
+                id="companySite"
+                name="companySite"
+                placeholder="Company Site"
+                type="text"
+                className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                value={companySite}
+                onChange={(e) => setCompanySite(e.target.value)}
+              />
+              <input
+                id="postingLink"
+                name="postingLink"
+                placeholder="Posting Link"
+                type="text"
+                className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                value={postingLink}
+                onChange={(e) => setPostingLink(e.target.value)}
+              />
+
               <label className="block text-lg font-medium text-center">
                 Copy/Paste job Posting
               </label>
