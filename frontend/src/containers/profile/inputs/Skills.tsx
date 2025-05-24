@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
-import Select, { ActionMeta, MultiValue } from "react-select";
+import { ActionMeta, MultiValue } from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 import DndSort from "@/components/Sortable/DndSort";
 import Divider from "src/components/Divider";
@@ -9,6 +10,7 @@ import {
   addSkill,
   deleteSkill,
   getSkillOptions,
+  addSkillOption,
 } from "@/api/skills";
 import type { SortableList, Skill } from "@/types";
 
@@ -27,27 +29,49 @@ interface SkillSelect {
 function Skills({ editAll, lockEdit }: Props) {
   const [skills, setSkills] = useState<SkillSelect[]>([]);
   const [skillOptions, setSkillOptions] = useState<SkillSelect[]>([]);
+  const [toggleSort, setToggleSort] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+
+  const handleAddSkill = async (skillOptionsId: string) => {
+    const skill: Skill | undefined = await addSkill({
+      skillOptionsId,
+      category: "",
+    });
+
+    if (skill) {
+      setSkills([
+        ...skills,
+        { label: skill.name, value: skill.skillOptionsId, id: skill.id },
+      ]);
+    }
+  };
 
   const onChange = async (
     _newValue: MultiValue<SkillSelect>,
     actionMeta: ActionMeta<SkillSelect>
   ) => {
     if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
-      const skill: Skill | undefined = await addSkill({
-        skillOptionsId: actionMeta.option.value,
-        category: "",
-      });
-
-      if (skill) {
-        setSkills([
-          ...skills,
-          { label: skill.name, value: skill.skillOptionsId, id: skill.id },
-        ]);
-      }
+      await handleAddSkill(actionMeta.option.value);
+      setHover(false);
+    } else if (
+      actionMeta.action === "remove-value" &&
+      actionMeta?.removedValue?.id
+    ) {
+      await removeSkill(actionMeta.removedValue.id);
       setHover(false);
     }
+  };
+
+  const onCreateOption = async (inputValue: string) => {
+    const skillOption = await addSkillOption({ name: inputValue });
+
+    handleAddSkill(skillOption.id);
+
+    setSkillOptions([
+      ...skillOptions,
+      { label: skillOption.name, value: skillOption.id, id: skillOption.id },
+    ]);
   };
 
   const removeSkill = async (id: string) => {
@@ -87,19 +111,8 @@ function Skills({ editAll, lockEdit }: Props) {
       value,
       id,
     }));
-    setSkills(updatedSkills);
-  };
 
-  const ValueContainer = () => {
-    return (
-      <div className="flex flex-wrap w-9/10">
-        <DndSort
-          list={skills.map(formatSortList)}
-          direction="horizontal"
-          onSort={handleSort}
-        ></DndSort>
-      </div>
-    );
+    setSkills(updatedSkills);
   };
 
   const fetchSkillOptions = useCallback(async () => {
@@ -146,28 +159,96 @@ function Skills({ editAll, lockEdit }: Props) {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        <h2>
-          <b>Skills</b>
-        </h2>
+        <div className="flex items-center gap-2">
+          <h2>
+            <b>Skills</b>
+          </h2>
+          {toggleSort ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 hover:cursor-pointer"
+              onClick={() => setToggleSort(!toggleSort)}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 hover:cursor-pointer"
+              onClick={() => setToggleSort(!toggleSort)}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+              />
+            </svg>
+          )}
+        </div>
         {!lockEdit && (editAll || hover || open) ? (
-          <Select
-            isMulti
-            isClearable={false}
-            components={{ ValueContainer }}
-            name="skills"
-            isSearchable
-            classNamePrefix="select"
-            className="basic-single"
-            placeholder="Technologies"
-            options={skillOptions}
-            value={skills}
-            onChange={onChange}
-            onMenuOpen={() => setOpen(true)}
-            onMenuClose={() => setOpen(false)}
-          />
+          <>
+            {toggleSort ? (
+              <div className="flex flex-wrap w-9/10">
+                <DndSort
+                  list={skills.map(formatSortList)}
+                  direction="horizontal"
+                  onSort={handleSort}
+                ></DndSort>
+              </div>
+            ) : (
+              <CreatableSelect
+                isMulti
+                isClearable={false}
+                name="skills"
+                isSearchable
+                classNamePrefix="select"
+                className="basic-single"
+                placeholder="Technologies"
+                options={skillOptions}
+                value={skills}
+                onChange={onChange}
+                onMenuOpen={() => setOpen(true)}
+                onMenuClose={() => setOpen(false)}
+                onCreateOption={onCreateOption}
+                styles={{
+                  multiValue: (styles) => {
+                    return {
+                      ...styles,
+                      backgroundColor: "#a3b3ff",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      borderRadius: "3px",
+                    };
+                  },
+                }}
+              />
+            )}
+          </>
         ) : (
           <div>
-            <p>{skills.map(({ label }) => label).join(", ")}</p>
+            {toggleSort ? (
+              <div className="flex flex-wrap w-9/10">
+                <DndSort
+                  list={skills.map(formatSortList)}
+                  direction="horizontal"
+                  onSort={handleSort}
+                ></DndSort>
+              </div>
+            ) : (
+              <p>{skills.map(({ label }) => label).join(", ")}</p>
+            )}
           </div>
         )}
       </div>

@@ -90,14 +90,14 @@ def delete_by_id(skill_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/skill_options", tags=["skills"], response_model=List[SkillOptionsResp])
-def get_skills_options(db: Session = Depends(get_db), skip: int=0, limit: int=100):    
+def get_skills_options(db: Session = Depends(get_db), skip: int=0, limit: int=1000):    
     skill_options = db.query(SkillsOption).offset(skip).limit(limit).all()
     
     return skill_options
 
 @router.post("/skill_options", tags=["skills"], response_model=SkillOptionsResp)
 def create_skill_option(skill_option: SkillOptionCreate, db: Session = Depends(get_db)):
-    existing_skill_option = db.query(SkillOptionCreate).filter(SkillOptionCreate.name == skill_option.name).first()
+    existing_skill_option = db.query(SkillsOption).filter(SkillsOption.name == skill_option.name).first()
     if existing_skill_option:
         raise HTTPException(status_code=404, detail="Skill Option already exists")
     

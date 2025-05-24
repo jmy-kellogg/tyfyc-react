@@ -24,3 +24,8 @@ export interface SkillOption {
   name: string;
   defaultCategory: string | null;
 }
+
+export interface SkillOptionCreate {
+  name: string;
+  defaultCategory?: string;
+}
