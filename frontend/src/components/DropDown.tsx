@@ -7,7 +7,7 @@ interface FormData {
 interface Props {
   inputName: string;
   inputValue: string;
-  options: Array<{ label: string; value: string }>;
+  options: Array<{ label: string; value: string; style?: string }>;
   onUpdate: (data: FormData) => void;
 }
 
@@ -22,8 +22,13 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
       return inputValue;
     }
   }, [options, inputValue]);
+  const inputStyle = useMemo(() => {
+    const option = options.find(({ value }) => value === inputValue);
+    return option?.style;
+  }, [options, inputValue]);
 
   const onChangeData = (e: ChangeEvent<HTMLSelectElement>) => {
+    e.stopPropagation();
     onUpdate({ [inputName]: e.target.value });
     setEdit(false);
     setHover(false);
@@ -79,7 +84,7 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
               onMouseOut={() => setHover(false)}
             >
               <div className="flex">
-                <p> {inputLabel} </p>
+                <p className={`font-bold ${inputStyle}`}> {inputLabel} </p>
                 {hover && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

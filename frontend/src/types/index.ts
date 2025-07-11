@@ -8,9 +8,10 @@ export * from "./skills";
 import type { Application } from "./applications";
 
 export interface StatusOption {
+  id: string;
   label: string;
   value: Application["status"];
-  color: string;
+  style: string;
 }
 
 // // API

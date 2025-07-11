@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getStatus, getFormattedDate } from "@utils";
+import { getFormattedDate } from "@utils";
 import { getApplications, deleteApplication } from "src/api/applications";
 import ExportCSV from "./ExportCSV";
 import ImportCSV from "./ImportCSV";
 import NewJobModal from "./NewJobModal";
+import Dropdown from "@/components/DropDown";
+
+import { statusOptions } from "@options";
+import { updateApplication } from "@/api/applications";
 
 import {
   setActiveTab,
@@ -57,21 +61,6 @@ function ApplicationsList() {
     dispatch(removeJobTab(applicationId));
   };
 
-  const getStatusColor = (status: Application["status"]) => {
-    if (!status) return "";
-    const colorMap = {
-      applied: "text-blue-400",
-      interviewing: "text-emerald-400",
-      accepted: "text-emerald-600",
-      no_offer: "text-amber-500",
-      rejected: "text-amber-400",
-      declined: "text-rose-400",
-      auto_rejected: "text-gray-600",
-      no_response: "text-gray-400",
-      pending: "text-purple-400",
-    };
-    return colorMap[status];
-  };
   const handleFilter = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
 
@@ -160,20 +149,23 @@ function ApplicationsList() {
                     <div className="w-75 text-left my-3 mx-1">
                       {application.title}
                     </div>
-                    <div className="w-30 text-right my-3 mx-1">
-                      <p
-                        className={`font-bold ${getStatusColor(
-                          application.status
-                        )}`}
-                      >
-                        {getStatus(application.status)?.label || ""}
-                      </p>
-                    </div>
-                    <div className="w-15 text-right my-3 mx-1">
-                      {getFormattedDate(application.dateApplied || "")}
-                    </div>
                   </div>
                 </button>
+                <div className="w-30 text-right my-3 mx-1">
+                  <Dropdown
+                    inputName="status"
+                    inputValue={application.status || ""}
+                    options={statusOptions}
+                    onUpdate={async (status) => {
+                      await updateApplication({ ...application, ...status });
+                      fetchData();
+                    }}
+                  />
+                </div>
+                <div className="w-15 text-right my-3 mx-1">
+                  {getFormattedDate(application.dateApplied || "")}
+                </div>
+
                 <DeleteBtn
                   application={application}
                   onRemove={() => remove(application.id)}
