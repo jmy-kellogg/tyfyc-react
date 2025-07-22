@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Application } from "@/types";
 
 interface Props {
-  application: Application;
+  application: Partial<Application>;
   onRemove: () => void;
 }
 
@@ -37,21 +37,23 @@ function DeleteBtn({ application, onRemove }: Props) {
           id="default-modal"
           className="backdrop-brightness-50 overflow-auto fixed z-50 w-full md:inset-0"
         >
-          <div className="bg-white p-4 w-2xl rounded-lg m-auto mt-100">
+          <div className="bg-white p-4 w-2xl rounded-lg m-auto mt-100 text-center">
             <div className="items-center justify-between p-1 border-b border-slate-300 rounded-t">
               <div className="text-lg">
-                Are you sure you want to delete your application for the
+                <span>{"Are you sure you want to"}</span>
+                <span className="font-bold text-red-500">{" delete "}</span>
+                <span>{"your application at"}</span>
               </div>
-              <div>
-                <span className="font-bold text-lg"> {application.title}</span>
-                <span className="text-lg"> {" position at "}</span>
-                <span className="font-bold text-lg">
-                  {" "}
+              <div className="text-lg">
+                <span className="font-bold text-xl text-purple-400">
                   {application.company}
                 </span>
+                <span>{" for the"}</span>
+                <span className="font-bold"> {application.title}</span>
+                <span> {" position?"}</span>
               </div>
             </div>
-            <div className="m-3 h-full justify-self-end">
+            <div className="h-full justify-self-end">
               <button
                 type="button"
                 className="rounded-md bg-gray-400 text-white m-2 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
@@ -60,7 +62,7 @@ function DeleteBtn({ application, onRemove }: Props) {
                 Cancel
               </button>
               <button
-                className="rounded-md bg-red-500 text-white m-2 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
+                className="rounded-md bg-red-500 text-white m-2 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-white hover:text-red-500 hover:border hover:border-red-500 hover:"
                 onClick={() => onRemove()}
               >
                 Delete

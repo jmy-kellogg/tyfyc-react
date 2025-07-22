@@ -3,16 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { statusOptions } from "@options";
 import type { ApplicationUpdate, SkillOption } from "@/types";
-import { getApplication } from "@/api/applications";
+import { getApplication, deleteApplication } from "@/api/applications";
 import { getSkillOptions, getSkills, addSkill } from "@/api/skills";
 import { updateApplication } from "@/api/applications";
-import { getActiveTab, setJobTab } from "@/store/reducers/navigationSlice";
+import {
+  getActiveTab,
+  setJobTab,
+  removeJobTab,
+} from "@/store/reducers/navigationSlice";
 import InputLink from "@/components/InputLink";
 import Input from "@/components/Input";
 import Dropdown from "@/components/DropDown";
 import DateInput from "@/components/DateInput";
 import TextInput from "@/components/TextInput";
 import Resume from "@/components/Resume";
+import DeleteBtn from "@/components/DeleteBtn";
 
 function ApplicationDetails() {
   const dispatch = useDispatch();
@@ -51,6 +56,11 @@ function ApplicationDetails() {
     handleUpdate(companyInfo);
   };
 
+  const remove = async () => {
+    await deleteApplication(applicationId);
+    dispatch(removeJobTab(applicationId));
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const dbApp = await getApplication(applicationId);
@@ -76,6 +86,10 @@ function ApplicationDetails() {
   return (
     <div className="page flex flex-wrap justify-center">
       <div className="max-w-3xl grow md:w-md">
+        <div className="float-end">
+          <DeleteBtn application={application} onRemove={remove} />
+        </div>
+
         <InputLink
           label="Company Name"
           inputName="company"
@@ -93,7 +107,6 @@ function ApplicationDetails() {
           linkValue={application.postingLink || ""}
           onUpdate={handleUpdate}
         />
-
         <div className="flex flex-wrap items-center justify-between m-3">
           <div className="flex items-center">
             <b>Status: </b>
