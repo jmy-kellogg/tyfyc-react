@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { statusOptions } from "@options";
 import type { ApplicationUpdate, SkillOption } from "@/types";
 import { getApplication } from "@/api/applications";
 import { getSkillOptions, getSkills, addSkill } from "@/api/skills";
 import { updateApplication } from "@/api/applications";
-import { getActiveTab } from "@/store/reducers/navigationSlice";
+import { getActiveTab, setJobTab } from "@/store/reducers/navigationSlice";
 import InputLink from "@/components/InputLink";
 import Input from "@/components/Input";
 import Dropdown from "@/components/DropDown";
@@ -15,6 +15,7 @@ import TextInput from "@/components/TextInput";
 import Resume from "@/components/Resume";
 
 function ApplicationDetails() {
+  const dispatch = useDispatch();
   const applicationId = useSelector(getActiveTab);
 
   const [application, setApplication] = useState<ApplicationUpdate>({});
@@ -40,6 +41,14 @@ function ApplicationDetails() {
 
   const saveResume = (resume: string) => {
     handleUpdate({ resume });
+  };
+
+  const updateCompanyName = (companyInfo: ApplicationUpdate) => {
+    const companyName = companyInfo.company;
+    if (companyName && companyName !== application.company) {
+      dispatch(setJobTab({ label: companyName, value: applicationId }));
+    }
+    handleUpdate(companyInfo);
   };
 
   useEffect(() => {
@@ -73,7 +82,7 @@ function ApplicationDetails() {
           inputValue={application.company || ""}
           linkName="companySite"
           linkValue={application.companySite || ""}
-          onUpdate={handleUpdate}
+          onUpdate={updateCompanyName}
           tag="h1"
         />
         <InputLink
