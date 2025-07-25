@@ -21,9 +21,13 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
     onUpdate({ [inputName]: textString });
   };
 
-  const handleTextChange = (textString: string) => {
+  const updateText = (textString: string) => {
+    if (textString !== inputValue) {
+      handleUpdate(textString);
+    }
+
     setText(textString);
-    handleUpdate(textString);
+    setEdit(false);
   };
 
   const handleSubmit = () => {
@@ -40,6 +44,7 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
   return (
     <>
       <div
+        id={`${inputName}-text-input`}
         onClick={(e) => {
           e.stopPropagation();
           setEdit(true);
@@ -91,34 +96,13 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
                   />
                 </svg>
               </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setEdit(false);
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="size-4 m-2 hover:size-5 hover:cursor-pointer hover:text-red-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
             </>
           )}
         </div>
         <div>
           {edit ? (
             <div className="hover:cursor-text">
-              <RichEditor content={text} onTextChange={handleTextChange} />
+              <RichEditor content={text} onTextChange={updateText} />
             </div>
           ) : (
             <div className="hover:cursor-pointer">
