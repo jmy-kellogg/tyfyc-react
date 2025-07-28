@@ -63,7 +63,10 @@ function DeleteBtn({ application, onRemove }: Props) {
               </button>
               <button
                 className="rounded-md bg-red-500 text-white m-2 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-white hover:text-red-500 hover:border hover:border-red-500 hover:"
-                onClick={() => onRemove()}
+                onClick={() => {
+                  onRemove();
+                  setShowModal(false);
+                }}
               >
                 Delete
               </button>
