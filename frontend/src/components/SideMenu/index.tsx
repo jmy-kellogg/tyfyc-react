@@ -10,8 +10,16 @@ import JobTabsBtn from "./JobTabsBtn";
 import LogoutBtn from "./LogoutBtn";
 
 function SideMenu() {
-  const [openMenu, setOpenMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(
+    () => localStorage.getItem("openMenu") === "true"
+  );
   const activeTab = useSelector(getActiveTab);
+
+  const toggleMenu = () => {
+    const menuStatus = !openMenu;
+    localStorage.setItem("openMenu", menuStatus.toString());
+    setOpenMenu(menuStatus);
+  };
 
   return (
     <>
@@ -20,7 +28,7 @@ function SideMenu() {
       >
         <button
           className="p-2 m-1 w-min rounded-lg hover:cursor-pointer hover:inset-shadow-sm hover:inset-shadow-slate-400 hover:text-indigo-400"
-          onClick={() => setOpenMenu(!openMenu)}
+          onClick={toggleMenu}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
