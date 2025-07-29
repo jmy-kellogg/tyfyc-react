@@ -5,6 +5,7 @@ import type { User } from "@/types";
 import type { State } from "@/store";
 import { updateUser } from "@/api/user";
 import Divider from "src/components/Divider";
+import TextCopy from "@/components/TextCopy";
 
 interface Props {
   editAll: boolean;
@@ -42,6 +43,12 @@ function Contact({ editAll, lockEdit }: Props) {
     if (validateData()) {
       updateUser({ email, phone, city, state, linkedIn, gitHub });
     }
+  };
+
+  // ToDo: make text parser more robust
+  const getUrlText = (url: string) => {
+    const text = url.split("/").filter((word) => !!word) || [];
+    return text[text.length - 1] || url;
   };
 
   useEffect(() => {
@@ -166,22 +173,30 @@ function Contact({ editAll, lockEdit }: Props) {
           </form>
         ) : (
           <div className="text-center">
-            <p>
-              <strong>Email:</strong>{" "}
-              <span className="select-all hover:cursor-pointer">{email}</span> |{" "}
-              <strong>Phone:</strong>
-              <span className="select-all hover:cursor-pointer">
-                {phone}
-              </span> | <strong>Location:</strong>{" "}
-              <span className="select-all hover:cursor-pointer">
-                {city + ", " + state}
-              </span>
-            </p>
-            <p>
-              <strong>LinkedIn:</strong> <a href={linkedIn}>{linkedIn}</a> |{" "}
-              <strong>GitHub:</strong>
-              <a href={gitHub}>{gitHub}</a>
-            </p>
+            <div className="flex place-content-center">
+              <TextCopy label="Email" copyText={email} />
+              <span className="mr-2">|</span>
+              <TextCopy label="Phone" copyText={phone} />
+              <span className="mr-2">|</span>
+              <TextCopy
+                label="Location"
+                displayText={city + ", " + state}
+                copyText={city}
+              />
+            </div>
+            <div className="flex place-content-center">
+              <TextCopy
+                label="LinkedIn"
+                displayText={getUrlText(linkedIn)}
+                copyText={linkedIn}
+              />
+              <span className="mr-2">|</span>
+              <TextCopy
+                label="GitHub"
+                displayText={getUrlText(gitHub)}
+                copyText={gitHub}
+              />
+            </div>
           </div>
         )}
       </div>
