@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import ApplicationDetails from "./ApplicationDetails";
+import Settings from "./Settings";
 import Profile from "./Profile";
 import Resumes from "./Resumes";
 import ApplicationsList from "./ApplicationsList";
@@ -17,6 +18,7 @@ function SmallDisplayView() {
   const tabs = useSelector(getTabs);
   const activeTab = useSelector(getActiveTab);
 
+  console.log(activeTab);
   const setActive = (activeValue: string) => {
     dispatch(setActiveTab(activeValue));
   };
@@ -25,12 +27,13 @@ function SmallDisplayView() {
     <>
       <Tabs tabs={tabs} active={activeTab} setActive={setActive} />
       <div className="full-page">
+        {activeTab === "settings" && <Settings />}
         {activeTab === "profile" && <Profile />}
         {activeTab === "resume" && <Resumes />}
         {activeTab === "applications" && <ApplicationsList />}
-        {!["profile", "resume", "applications", ""].includes(activeTab) && (
-          <ApplicationDetails />
-        )}
+        {!["settings", "profile", "resume", "applications", ""].includes(
+          activeTab
+        ) && <ApplicationDetails />}
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import ApplicationDetails from "./ApplicationDetails";
 import Profile from "./Profile";
 import Resumes from "./Resumes";
 import ApplicationsList from "./ApplicationsList";
+import Settings from "./Settings";
 import Tabs from "@/components/Tabs";
 
 import { setActiveTab, getActiveTab } from "@/store/reducers/navigationSlice";
@@ -12,6 +13,9 @@ import type { State } from "@/store";
 function LargeDisplayView() {
   const dispatch = useDispatch();
   const activeTab = useSelector(getActiveTab);
+  const showSettings = useSelector(
+    (state: State) => state.navigation.showSettings
+  );
   const showProfile = useSelector(
     (state: State) => state.navigation.showProfile
   );
@@ -28,6 +32,20 @@ function LargeDisplayView() {
   return (
     <>
       <div className="flex gap-4">
+        {showSettings && (
+          <div className="w-4xl">
+            <Tabs
+              tabs={[
+                {
+                  label: "Settings",
+                  value: "settings",
+                },
+              ]}
+              active="settings"
+            />
+            <Settings />
+          </div>
+        )}
         {showProfile && (
           <div className="w-4xl">
             <Tabs

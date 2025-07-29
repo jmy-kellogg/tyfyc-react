@@ -8,6 +8,7 @@ import type { State } from "../index";
 
 export interface NavigationState {
   smallDisplay: boolean;
+  showSettings: boolean;
   showProfile: boolean;
   showResume: boolean;
   showApplications: boolean;
@@ -18,6 +19,7 @@ export interface NavigationState {
 
 const initialState: NavigationState = {
   smallDisplay: false,
+  showSettings: false,
   showProfile: true,
   showResume: true,
   showApplications: true,
@@ -43,6 +45,22 @@ export const navigationSlice = createSlice({
       action: PayloadAction<boolean>
     ) => {
       state.smallDisplay = action.payload;
+    },
+    setShowSettings: (
+      state: NavigationState,
+      action: PayloadAction<boolean>
+    ) => {
+      const tabExists = checkForTab(state.tabs, "settings");
+      state.showSettings = action.payload;
+
+      if (action.payload && state.smallDisplay) {
+        state.activeTab = "settings";
+      }
+      if (action.payload && !tabExists) {
+        state.tabs.unshift({ label: "Settings", value: "settings" });
+      } else if (!action.payload && tabExists) {
+        state.tabs = state.tabs.filter(({ value }) => value !== "settings");
+      }
     },
     setShowProfile: (
       state: NavigationState,
@@ -126,6 +144,7 @@ export const navigationSlice = createSlice({
 
 export const {
   setSmallDisplay,
+  setShowSettings,
   setShowProfile,
   setShowResume,
   setShowApplications,

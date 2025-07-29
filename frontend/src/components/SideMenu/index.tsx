@@ -8,6 +8,7 @@ import ResumeBtn from "./ResumeBtn";
 import ApplicationBtn from "./ApplicationBtn";
 import JobTabsBtn from "./JobTabsBtn";
 import LogoutBtn from "./LogoutBtn";
+import SettingsBtn from "./SettingsBtn";
 
 function SideMenu() {
   const [openMenu, setOpenMenu] = useState(
@@ -53,6 +54,7 @@ function SideMenu() {
           <ApplicationBtn openMenu={openMenu} activeTab={activeTab} />
           <JobTabsBtn openMenu={openMenu} activeTab={activeTab} />
         </div>
+        <SettingsBtn openMenu={openMenu} activeTab={activeTab} />
         <LogoutBtn openMenu={openMenu} />
       </div>
     </>
