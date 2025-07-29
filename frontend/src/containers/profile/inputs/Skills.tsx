@@ -15,7 +15,6 @@ import {
 import type { SortableList, Skill } from "@/types";
 
 interface Props {
-  editAll: boolean;
   lockEdit: boolean;
 }
 
@@ -26,11 +25,11 @@ interface SkillSelect {
   id: string;
 }
 
-function Skills({ editAll, lockEdit }: Props) {
+function Skills({ lockEdit }: Props) {
   const [skills, setSkills] = useState<SkillSelect[]>([]);
   const [skillOptions, setSkillOptions] = useState<SkillSelect[]>([]);
   const [toggleSort, setToggleSort] = useState<boolean>(false);
-  const [hover, setHover] = useState<boolean>(false);
+
   const [open, setOpen] = useState<boolean>(false);
 
   const handleAddSkill = async (skillOptionsId: string) => {
@@ -53,13 +52,13 @@ function Skills({ editAll, lockEdit }: Props) {
   ) => {
     if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
       await handleAddSkill(actionMeta.option.value);
-      setHover(false);
+      // setHover(false);
     } else if (
       actionMeta.action === "remove-value" &&
       actionMeta?.removedValue?.id
     ) {
       await removeSkill(actionMeta.removedValue.id);
-      setHover(false);
+      // setHover(false);
     }
   };
 
@@ -154,11 +153,8 @@ function Skills({ editAll, lockEdit }: Props) {
   }, [fetchSkills]);
 
   return (
-    <>
-      <div
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
+    <div>
+      <div>
         <div className="flex items-center gap-2">
           <h2>
             <b>Skills</b>
@@ -197,7 +193,21 @@ function Skills({ editAll, lockEdit }: Props) {
             </svg>
           )}
         </div>
-        {!lockEdit && (editAll || hover || open) ? (
+        {lockEdit ? (
+          <div>
+            {toggleSort ? (
+              <div className="flex flex-wrap w-9/10">
+                <DndSort
+                  list={skills.map(formatSortList)}
+                  direction="horizontal"
+                  onSort={handleSort}
+                ></DndSort>
+              </div>
+            ) : (
+              <p>{skills.map(({ label }) => label).join(", ")}</p>
+            )}
+          </div>
+        ) : (
           <>
             {toggleSort ? (
               <div className="flex flex-wrap w-9/10">
@@ -236,24 +246,10 @@ function Skills({ editAll, lockEdit }: Props) {
               />
             )}
           </>
-        ) : (
-          <div>
-            {toggleSort ? (
-              <div className="flex flex-wrap w-9/10">
-                <DndSort
-                  list={skills.map(formatSortList)}
-                  direction="horizontal"
-                  onSort={handleSort}
-                ></DndSort>
-              </div>
-            ) : (
-              <p>{skills.map(({ label }) => label).join(", ")}</p>
-            )}
-          </div>
         )}
       </div>
       <Divider />
-    </>
+    </div>
   );
 }
 

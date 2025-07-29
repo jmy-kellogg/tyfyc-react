@@ -11,13 +11,11 @@ import {
 import type { Education } from "@/types";
 
 interface Props {
-  editAll: boolean;
   lockEdit: boolean;
 }
 
-function Education({ editAll, lockEdit }: Props) {
+function Education({ lockEdit }: Props) {
   const [eduList, setEduList] = useState<Education[]>([]);
-  const [showAdd, setShowAdd] = useState(false);
 
   const addNew = async () => {
     const lastItem = eduList[eduList.length - 1];
@@ -47,34 +45,28 @@ function Education({ editAll, lockEdit }: Props) {
 
   return (
     <>
-      <div
-        onMouseEnter={() => setShowAdd(true)}
-        onMouseLeave={() => setShowAdd(false)}
-      >
-        <h2>
-          <b>Education </b>
-          {!lockEdit && (editAll || showAdd) && (
-            <button
-              type="button"
-              className="float-right rounded-md bg-indigo-600 m-1 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={addNew}
-            >
-              Add Job
-            </button>
-          )}
-        </h2>
-        {eduList.map((education: Education) => (
-          <div key={education.id}>
-            <EducationItem
-              education={education}
-              editAll={editAll}
-              lockEdit={lockEdit}
-              remove={remove}
-            />
-            <Divider />
-          </div>
-        ))}
-      </div>
+      <h2>
+        <b>Education </b>
+        {!lockEdit && (
+          <button
+            type="button"
+            className="float-right rounded-md bg-indigo-600 m-1 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={addNew}
+          >
+            Add Education
+          </button>
+        )}
+      </h2>
+      {eduList.map((education: Education) => (
+        <div key={education.id}>
+          <EducationItem
+            education={education}
+            lockEdit={lockEdit}
+            remove={remove}
+          />
+          <Divider />
+        </div>
+      ))}
     </>
   );
 }

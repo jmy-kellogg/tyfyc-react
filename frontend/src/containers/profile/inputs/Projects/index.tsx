@@ -7,13 +7,11 @@ import { getProjects, createProject, deleteProject } from "@/api/projects";
 import type { Project } from "@/types";
 
 interface Props {
-  editAll: boolean;
   lockEdit: boolean;
 }
 
-function Projects({ editAll, lockEdit }: Props) {
+function Projects({ lockEdit }: Props) {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [showAdd, setShowAdd] = useState(false);
 
   const addNew = async () => {
     const lastItem = projects[projects.length - 1];
@@ -49,34 +47,24 @@ function Projects({ editAll, lockEdit }: Props) {
 
   return (
     <>
-      <div
-        onMouseEnter={() => setShowAdd(true)}
-        onMouseLeave={() => setShowAdd(false)}
-      >
-        <h2>
-          <b>Projects </b>
-        </h2>
-        {projects.map((project: Project) => (
-          <div key={project.id}>
-            <ProjectItem
-              project={project}
-              editAll={editAll}
-              lockEdit={lockEdit}
-              remove={remove}
-            />
-            <Divider />
-          </div>
-        ))}
-        {!lockEdit && (editAll || showAdd) && (
+      <h2>
+        <b>Projects </b>
+        {!lockEdit && (
           <button
             type="button"
-            className="rounded-md bg-indigo-600 m-1 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="float-right rounded-md bg-indigo-600 m-1 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={addNew}
           >
-            Add Job
+            Add Project
           </button>
         )}
-      </div>
+      </h2>
+      {projects.map((project: Project) => (
+        <div key={project.id}>
+          <ProjectItem project={project} lockEdit={lockEdit} remove={remove} />
+          <Divider />
+        </div>
+      ))}
     </>
   );
 }

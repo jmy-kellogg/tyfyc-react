@@ -6,13 +6,11 @@ import { updateUser } from "@/api/user";
 import type { State } from "@/store";
 
 interface Props {
-  editAll: boolean;
   lockEdit: boolean;
 }
 
-function Title({ editAll, lockEdit }: Props) {
+function Title({ lockEdit }: Props) {
   const user = useSelector((state: State) => state.auth.user);
-  const [hover, setHover] = useState(false);
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [jobTitle, setJobTitle] = useState(user?.jobTitle || "");
@@ -47,70 +45,65 @@ function Title({ editAll, lockEdit }: Props) {
 
   return (
     <>
-      <div
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        {!lockEdit && (editAll || hover) ? (
-          <form>
-            <div className="flex justify-center">
-              <div className="m-1">
-                <input
-                  id="first-name"
-                  name="firstName"
-                  type="text"
-                  placeholder="First Name"
-                  className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  onMouseLeave={() => {
-                    if (user?.firstName !== firstName) {
-                      updateData();
-                    }
-                  }}
-                />
-              </div>
-              <div className="m-1">
-                <input
-                  id="last-name"
-                  name="lastName"
-                  type="text"
-                  placeholder="Last Name"
-                  className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  onMouseLeave={() => {
-                    if (user?.lastName !== lastName) {
-                      updateData();
-                    }
-                  }}
-                />
-              </div>
-            </div>
-            <div className="m-1 w-100 justify-self-center">
+      {lockEdit ? (
+        <div className="text-center">
+          <h1>{firstName + " " + lastName}</h1>
+          <h3>{jobTitle}</h3>
+        </div>
+      ) : (
+        <form>
+          <div className="flex justify-center">
+            <div className="m-1">
               <input
-                id="job-title"
-                name="jobTitle"
+                id="first-name"
+                name="firstName"
                 type="text"
-                placeholder="Target Job Title"
-                className="text-center block w-full rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
-                onMouseLeave={() => {
-                  if (user?.jobTitle !== jobTitle) {
+                placeholder="First Name"
+                className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                onBlur={() => {
+                  if (user?.firstName !== firstName) {
                     updateData();
                   }
                 }}
               />
             </div>
-          </form>
-        ) : (
-          <div className="text-center">
-            <h1>{firstName + " " + lastName}</h1>
-            <h3>{jobTitle}</h3>
+            <div className="m-1">
+              <input
+                id="last-name"
+                name="lastName"
+                type="text"
+                placeholder="Last Name"
+                className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                onBlur={() => {
+                  if (user?.lastName !== lastName) {
+                    updateData();
+                  }
+                }}
+              />
+            </div>
           </div>
-        )}
-      </div>
+          <div className="m-1 w-100 justify-self-center">
+            <input
+              id="job-title"
+              name="jobTitle"
+              type="text"
+              placeholder="Target Job Title"
+              className="text-center block w-full rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+              onBlur={() => {
+                if (user?.jobTitle !== jobTitle) {
+                  updateData();
+                }
+              }}
+            />
+          </div>
+        </form>
+      )}
       <Divider />
     </>
   );
