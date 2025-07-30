@@ -2,20 +2,24 @@ import { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getFormattedDate } from "@utils";
-import { getApplications, deleteApplication } from "src/api/applications";
+import {
+  getApplications,
+  deleteApplication,
+  updateApplication,
+} from "src/api/applications";
 import ExportCSV from "./ExportCSV";
 import ImportCSV from "./ImportCSV";
 import NewJobModal from "./NewJobModal";
 import Dropdown from "@/components/DropDown";
 
 import { statusOptions } from "@options";
-import { updateApplication } from "@/api/applications";
 
 import {
   setActiveTab,
   addJobTabs,
   removeJobTab,
 } from "src/store/reducers/navigationSlice";
+import { addAlert } from "@/reducers/alertsSlice";
 import type { Application, Applications } from "@/types";
 import type { State } from "@/store";
 import DeleteBtn from "@/components/DeleteBtn";
@@ -80,9 +84,41 @@ function ApplicationsList() {
     setFilteredList(applications);
   };
 
+  // ToDo: move logic to the Auth layer and eventually the BE
+  const checkForExpired = async (applications: Applications) => {
+    if (localStorage.getItem("expiredAppCleanUp") !== "true") {
+      const appExpireDate = new Date();
+      appExpireDate.setMonth(appExpireDate.getMonth() - 3);
+
+      const applied = applications.filter(({ status }) => status === "applied");
+      const expiredList = applied.filter(
+        ({ dateApplied }) => new Date(dateApplied) < appExpireDate
+      );
+
+      if (expiredList.length) {
+        await Promise.all(
+          expiredList.map(async (application) => {
+            dispatch(
+              addAlert({
+                type: "info",
+                message: `Updating no response for ${application.company}`,
+              })
+            );
+            await updateApplication({ ...application, status: "no_response" });
+          })
+        );
+        fetchData();
+      }
+      // this is removed on clearAuth() when user logout
+      localStorage.setItem("expiredAppCleanUp", "true");
+    }
+  };
+
   const fetchData = useCallback(async () => {
     const dbApplications = await getApplications();
     const sortedList = sortApplications(dbApplications);
+
+    checkForExpired(dbApplications);
     setApplications(sortedList);
   }, []);
 

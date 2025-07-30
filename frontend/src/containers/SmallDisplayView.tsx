@@ -18,7 +18,6 @@ function SmallDisplayView() {
   const tabs = useSelector(getTabs);
   const activeTab = useSelector(getActiveTab);
 
-  console.log(activeTab);
   const setActive = (activeValue: string) => {
     dispatch(setActiveTab(activeValue));
   };
