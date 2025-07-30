@@ -10,12 +10,25 @@ def find_job_title(soup) -> str:
     return title if title else ""
 
 def find_company(soup) -> str:
-    text_candidate = soup.find(string=re.compile("At")) or soup.find(string=re.compile("at")) or soup.find(string=re.compile("@"))
+    text_candidate = soup.find(string=re.compile("At"))
     text_list = text_candidate.split() if text_candidate else []
     company_text = ""
 
     if len(text_list) > 1:
-      company_text = text_list[1] or ""
+      keyword_index = text_list.index("At")
+      company_text = text_list[keyword_index + 1] or ""
+      if text_list[keyword_index +2][-1] == ",":
+        company_text = company_text + " " + text_list[2]
+
+    if company_text == "":
+      text_candidate = soup.find(string=re.compile("is a tech company")) or soup.find(string=re.compile("is an equal opportunity"))
+      text_list = text_candidate.split() if text_candidate else []
+
+      if len(text_list) > 1:
+        if text_list[1] == "is":
+          company_text = text_list[0]
+        elif text_list[2] == "is":
+          company_text = text_list[0] + " " + text_list[1]
 
     return company_text.rstrip('.,')
 
