@@ -35,7 +35,7 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
 
   return (
     <>
-      <div className="flex full-page overflow-auto">
+      <div className="flex overflow-auto">
         {tabs.map(({ label, value }) => (
           <div
             key={value}

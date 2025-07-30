@@ -9,7 +9,6 @@ import {
 } from "src/api/applications";
 import ExportCSV from "./ExportCSV";
 import ImportCSV from "./ImportCSV";
-import NewJobModal from "./NewJobModal";
 import Dropdown from "@/components/DropDown";
 
 import { statusOptions } from "@options";
@@ -160,13 +159,10 @@ function ApplicationsList() {
             </button>
           </div>
           <div className="flex justify-between">
-            <div className="flex">
-              <ExportCSV applications={applications} />
-              {flags.includes("FULL_EXPORT_FEATURE") && (
-                <ImportCSV fetchData={fetchData} />
-              )}
-            </div>
-            <NewJobModal />
+            <ExportCSV applications={applications} />
+            {flags.includes("FULL_EXPORT_FEATURE") && (
+              <ImportCSV fetchData={fetchData} />
+            )}
           </div>
           <div>
             {filteredList.map((application) => (

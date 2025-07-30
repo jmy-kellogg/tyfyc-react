@@ -11,6 +11,7 @@ import { getFeatureFlags } from "@/api/auth";
 import { fetchUser } from "@/api/user";
 import { setUser, setFlags } from "src/store/reducers/authSlice";
 import type { State } from "./store";
+import NewJobModal from "@/components/NewJobModal";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,13 +37,16 @@ function App() {
   return (
     <>
       {token && (
-        <div className="flex">
-          <SideMenu />
-          <div className="m-3">
-            {smallDisplay ? <SmallDisplayView /> : <LargeDisplayView />}
+        <>
+          <NewJobModal />
+          <div className="flex">
+            <SideMenu />
+            <div className="m-3 w-full">
+              {smallDisplay ? <SmallDisplayView /> : <LargeDisplayView />}
+            </div>
+            <Alerts />
           </div>
-          <Alerts />
-        </div>
+        </>
       )}
     </>
   );
