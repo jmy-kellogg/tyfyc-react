@@ -3,9 +3,15 @@ import { useDispatch } from "react-redux";
 
 import RichEditor from "@/components/RichEditor";
 import { addApplication } from "@/api/applications";
+import { getCompanyResearch } from "@/api/companies";
 import { getToday } from "@/utils";
 import { setActiveTab, addJobTabs } from "src/store/reducers/navigationSlice";
 import type { ApplicationCreate, Application } from "@/types";
+
+interface CompanyInfo {
+  status: string;
+  message: string;
+}
 
 function NewJobModal() {
   const dispatch = useDispatch();
@@ -14,9 +20,17 @@ function NewJobModal() {
   const [companySite, setCompanySite] = useState<string>("");
   const [postingLink, setPostingLink] = useState<string>("");
   const [posting, setPosting] = useState<string>("");
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo>({
+    status: "",
+    message: "",
+  });
 
   const setText = async (text: string) => {
     setPosting(text);
+  };
+
+  const clearResearchMessage = () => {
+    setCompanyInfo({ status: "", message: "" });
   };
 
   const submit = async () => {
@@ -39,6 +53,25 @@ function NewJobModal() {
       );
       dispatch(setActiveTab(application.id));
       setShowModal(false);
+    }
+  };
+
+  const research = async () => {
+    setCompanyInfo({ status: "loading", message: "Loading..." });
+    const companyResearch = await getCompanyResearch(companySite);
+    if (companyResearch.error) {
+      setCompanyInfo({ status: "error", message: companyResearch.error });
+    } else {
+      const { name, location, size, industry, funding } = companyResearch;
+      const message = [
+        `Company Name: ${name}`,
+        `HQ Location: ${location}`,
+        `Company Size: ${size}`,
+        `Industry: ${industry}`,
+        `Latest Funding: ${funding}`,
+      ].join("\n");
+
+      setCompanyInfo({ status: "success", message: message });
     }
   };
 
@@ -82,11 +115,13 @@ function NewJobModal() {
               >
                 Submit
               </button>
-
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  clearResearchMessage();
+                }}
               >
                 <svg
                   className="w-3 h-3"
@@ -94,6 +129,7 @@ function NewJobModal() {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 14 14"
+                  id="close-new-job-modal"
                 >
                   <path
                     stroke="currentColor"
@@ -105,19 +141,33 @@ function NewJobModal() {
                 </svg>
               </button>
             </div>
+            {/* ToDo: Hide OpenAI features behind a flag */}
             <div className="m-3 h-full">
               <label className="block text-lg font-medium text-center">
                 Links
               </label>
-              <input
-                id="companySite"
-                name="companySite"
-                placeholder="Company Site"
-                type="text"
-                className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                value={companySite}
-                onChange={(e) => setCompanySite(e.target.value)}
-              />
+              <div className="flex">
+                <input
+                  id="companySite"
+                  name="companySite"
+                  placeholder="Company Site"
+                  type="text"
+                  className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                  value={companySite}
+                  onChange={(e) => setCompanySite(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="rounded-md bg-indigo-600 text-white m-1 px-3 py-1.5 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
+                  onClick={research}
+                  disabled={
+                    companyInfo.status === "success" ||
+                    companyInfo.status === "loading"
+                  }
+                >
+                  Research
+                </button>
+              </div>
               <input
                 id="postingLink"
                 name="postingLink"
@@ -127,11 +177,52 @@ function NewJobModal() {
                 value={postingLink}
                 onChange={(e) => setPostingLink(e.target.value)}
               />
-
+              <div>
+                {companyInfo.status && (
+                  <div className="flex">
+                    <label className="block text-lg font-medium text-center">
+                      Company Information
+                    </label>
+                    <button
+                      type="button"
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                      onClick={() => {
+                        clearResearchMessage();
+                      }}
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 14"
+                        id="clear-research"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+                {companyInfo.status === "loading" && <div>Loading...</div>}
+                {companyInfo.status === "error" && (
+                  <div>Error: {companyInfo.message}</div>
+                )}
+                {companyInfo.status === "success" && (
+                  <div className="m-2 whitespace-pre-line">
+                    {companyInfo.message}
+                  </div>
+                )}
+              </div>
               <label className="block text-lg font-medium text-center">
                 Copy/Paste job Posting
               </label>
-              <div className="flex min-h-120">
+              <div className="flex min-h-200">
                 <RichEditor content={posting} onTextChange={setText} />
               </div>
             </div>

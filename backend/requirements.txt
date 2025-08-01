@@ -11,3 +11,4 @@ python-decouple
 python-multipart
 dotenv
 alembic
+openai==0.28

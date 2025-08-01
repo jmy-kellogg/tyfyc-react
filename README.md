@@ -12,6 +12,9 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 - [X] Autofill resume from an existing resume
 - [X] Saves Application details to csv
 - [X] Auth login and access token api validation
+- [X] Tracks applications
+- [X] Auto update applications statuses
+- [X] Option to research potential companies via OpenAI
 - [ ] Feature flags
 - [ ] Updates resume according to job posting
 
@@ -54,7 +57,7 @@ source ./venv/bin/activate
 
 Install Requirements
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 Start backend
