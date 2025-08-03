@@ -29,7 +29,11 @@ function NewJobModal() {
     setPosting(text);
   };
 
-  const clearResearchMessage = () => {
+  const clearAndClose = () => {
+    setShowModal(false);
+    setCompanySite("");
+    setPostingLink("");
+    setPosting("");
     setCompanyInfo({ status: "", message: "" });
   };
 
@@ -52,13 +56,14 @@ function NewJobModal() {
         })
       );
       dispatch(setActiveTab(application.id));
-      setShowModal(false);
+      clearAndClose();
     }
   };
 
   const research = async () => {
     setCompanyInfo({ status: "loading", message: "Loading..." });
     const companyResearch = await getCompanyResearch(companySite);
+
     if (companyResearch.error) {
       setCompanyInfo({ status: "error", message: companyResearch.error });
     } else {
@@ -108,20 +113,11 @@ function NewJobModal() {
         >
           <div className="bg-white p-4 w-2xl h-auto rounded-lg m-auto mt-10">
             <div className="flex items-center justify-between p-1 border-b border-slate-300 rounded-t">
-              <button
-                type="button"
-                className="rounded-md bg-indigo-600 text-white my-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
-                onClick={submit}
-              >
-                Submit
-              </button>
+              <h2 className="w-full text-center">New Application</h2>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                onClick={() => {
-                  setShowModal(false);
-                  clearResearchMessage();
-                }}
+                onClick={clearAndClose}
               >
                 <svg
                   className="w-3 h-3"
@@ -143,40 +139,54 @@ function NewJobModal() {
             </div>
             {/* ToDo: Hide OpenAI features behind a flag */}
             <div className="m-3 h-full">
-              <label className="block text-lg font-medium text-center">
-                Links
-              </label>
               <div className="flex">
-                <input
-                  id="companySite"
-                  name="companySite"
-                  placeholder="Company Site"
-                  type="text"
-                  className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                  value={companySite}
-                  onChange={(e) => setCompanySite(e.target.value)}
-                />
                 <button
                   type="button"
-                  className="rounded-md bg-indigo-600 text-white m-1 px-3 py-1.5 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
+                  className="rounded-md text-indigo-600 border border-indigo-600 m-1 px-3 py-1.5 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 hover:text-white"
                   onClick={research}
                   disabled={
                     companyInfo.status === "success" ||
-                    companyInfo.status === "loading"
+                    companyInfo.status === "loading" ||
+                    companySite === ""
                   }
                 >
-                  Research
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
                 </button>
+
+                <div className="w-full">
+                  <input
+                    id="companySite"
+                    name="companySite"
+                    placeholder="Company Site"
+                    type="text"
+                    className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                    value={companySite}
+                    onChange={(e) => setCompanySite(e.target.value)}
+                  />
+                  <input
+                    id="postingLink"
+                    name="postingLink"
+                    placeholder="Posting Link"
+                    type="text"
+                    className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                    value={postingLink}
+                    onChange={(e) => setPostingLink(e.target.value)}
+                  />
+                </div>
               </div>
-              <input
-                id="postingLink"
-                name="postingLink"
-                placeholder="Posting Link"
-                type="text"
-                className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                value={postingLink}
-                onChange={(e) => setPostingLink(e.target.value)}
-              />
               <div>
                 {companyInfo.status && (
                   <div className="flex">
@@ -187,7 +197,7 @@ function NewJobModal() {
                       type="button"
                       className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                       onClick={() => {
-                        clearResearchMessage();
+                        setCompanyInfo({ status: "", message: "" });
                       }}
                     >
                       <svg
@@ -218,6 +228,15 @@ function NewJobModal() {
                     {companyInfo.message}
                   </div>
                 )}
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="rounded-md bg-indigo-600 text-white mt-2 p-2 place-self-end font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
+                  onClick={submit}
+                >
+                  Submit
+                </button>
               </div>
               <label className="block text-lg font-medium text-center">
                 Copy/Paste job Posting
