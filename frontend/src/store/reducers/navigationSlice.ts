@@ -25,8 +25,9 @@ const initialState: NavigationState = {
   showApplications: true,
   activeTab: "",
   tabs: [
-    { label: "Profile", value: "profile" },
-    { label: "Resume", value: "resume" },
+    // ToDo: get tab preference from database
+    // { label: "Profile", value: "profile" },
+    // { label: "Resume", value: "resume" },
     { label: "Applications", value: "applications" },
   ],
   jobTabs: [],
