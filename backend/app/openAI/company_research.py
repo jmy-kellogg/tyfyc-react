@@ -15,12 +15,26 @@ def get_company_name_from_url(url: str) -> str:
     :return: The extracted company
     """
 
-    prompt = f"For the following website: {url}. Get company information to provide insight for a job seeker such as the company name, location, employee count, industry in three words or less, and latest round of funding or "" if not known.  It should return as JSON in this format: {{'name': 'company name', 'location': 'city, state', 'size': 'employee count', 'industry': 'industry', funding: 'latest round of funding'}}"
+    prompt = f"""
+    For the following website: {url}. Get company information to provide insight for a job seeker such as the company name, 
+    location, employee count, industry in three words or less, latest round of funding if not known, and a rating bases on how
+    likely the company is to be a good fit for a job seeker who is looking for a mid-size startup.
+    It should return as JSON in this format: {
+        {
+            'name': 'company name', 
+            'location': 'city, state', 
+            'size': 'employee count', 
+            'industry': 'industry', 
+            'funding': 'latest round of funding',
+            'rating': 'rating'
+        }
+    }
+    """
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4.1",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "You are an assistant that will help a job seeker find information about a company."},
             {"role": "user", "content": prompt}
         ]
     )
