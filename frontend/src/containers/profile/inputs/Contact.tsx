@@ -49,6 +49,24 @@ function Contact({ lockEdit }: Props) {
     return text[text.length - 1] || url;
   };
 
+  const changePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const numbers = e.target.value.replace(/[^0-9]/g, "");
+    const size = numbers.length;
+    let phone = "";
+
+    if (size > 10) {
+      return;
+    } else if (size > 6) {
+      phone = `(${numbers.slice(0, 3)})-${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`;
+    } else if (size > 3) {
+      phone = `(${numbers.slice(0, 3)})-${numbers.slice(3, 6)}`;
+    } else {
+      phone = numbers;
+    }
+
+    setPhone(phone);
+  };
+
   useEffect(() => {
     if (user) {
       setEmail(user.email || "");
@@ -116,7 +134,8 @@ function Contact({ lockEdit }: Props) {
                 placeholder="Phone"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={changePhone}
+                pattern="\(\d{3}\)\d{3}-\d{4}"
                 onBlur={() => {
                   if (user?.phone !== phone) {
                     updateData();
