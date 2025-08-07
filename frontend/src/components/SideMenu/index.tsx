@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getActiveTab } from "src/store/reducers/navigationSlice";
 import DisplayBtn from "./DisplayBtn";
 import ProfileBtn from "./ProfileBtn";
+import StatsBtn from "./StatsBtn";
 import ResumeBtn from "./ResumeBtn";
 import ApplicationBtn from "./ApplicationBtn";
 import JobTabsBtn from "./JobTabsBtn";
@@ -51,6 +52,7 @@ function SideMenu() {
           <DisplayBtn openMenu={openMenu} />
           <ProfileBtn openMenu={openMenu} activeTab={activeTab} />
           <ResumeBtn openMenu={openMenu} activeTab={activeTab} />
+          <StatsBtn openMenu={openMenu} activeTab={activeTab} />
           <ApplicationBtn openMenu={openMenu} activeTab={activeTab} />
           <JobTabsBtn openMenu={openMenu} activeTab={activeTab} />
         </div>

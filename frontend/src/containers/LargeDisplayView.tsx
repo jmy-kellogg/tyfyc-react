@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ApplicationDetails from "./ApplicationDetails";
 import Profile from "./Profile";
 import Resumes from "./Resumes";
+import Stats from "./Stats";
 import ApplicationsList from "./ApplicationsList";
 import Settings from "./Settings";
 import Tabs from "@/components/Tabs";
@@ -20,6 +21,7 @@ function LargeDisplayView() {
     (state: State) => state.navigation.showProfile
   );
   const showResume = useSelector((state: State) => state.navigation.showResume);
+  const showStats = useSelector((state: State) => state.navigation.showStats);
   const jobTabs = useSelector((state: State) => state.navigation.jobTabs);
   const showApplications = useSelector(
     (state: State) => state.navigation.showApplications
@@ -72,6 +74,20 @@ function LargeDisplayView() {
               active="resume"
             />
             <Resumes />
+          </div>
+        )}
+        {showStats && (
+          <div className="w-4xl">
+            <Tabs
+              tabs={[
+                {
+                  label: "Stats",
+                  value: "stats",
+                },
+              ]}
+              active="stats"
+            />
+            <Stats />
           </div>
         )}
         {showApplications && (

@@ -11,6 +11,7 @@ export interface NavigationState {
   showSettings: boolean;
   showProfile: boolean;
   showResume: boolean;
+  showStats: boolean;
   showApplications: boolean;
   activeTab: string;
   tabs: TabsList;
@@ -22,12 +23,14 @@ const initialState: NavigationState = {
   showSettings: false,
   showProfile: true,
   showResume: true,
+  showStats: false,
   showApplications: true,
   activeTab: "",
   tabs: [
     // ToDo: get tab preference from database
     { label: "Profile", value: "profile" },
     { label: "Resume", value: "resume" },
+    { label: "Stats", value: "stats" },
     { label: "Applications", value: "applications" },
   ],
   jobTabs: [],
@@ -77,6 +80,19 @@ export const navigationSlice = createSlice({
         state.tabs.unshift({ label: "Profile", value: "profile" });
       } else if (!action.payload && tabExists) {
         state.tabs = state.tabs.filter(({ value }) => value !== "profile");
+      }
+    },
+    setShowStats: (state: NavigationState, action: PayloadAction<boolean>) => {
+      const tabExists = checkForTab(state.tabs, "stats");
+      state.showProfile = action.payload;
+
+      if (action.payload && state.smallDisplay) {
+        state.activeTab = "stats";
+      }
+      if (action.payload && !tabExists) {
+        state.tabs.unshift({ label: "Stats", value: "stats" });
+      } else if (!action.payload && tabExists) {
+        state.tabs = state.tabs.filter(({ value }) => value !== "stats");
       }
     },
     setShowResume: (state: NavigationState, action: PayloadAction<boolean>) => {
@@ -135,7 +151,6 @@ export const navigationSlice = createSlice({
     setTabsToDefault: (state: NavigationState) => {
       state.tabs = [
         { label: "Profile", value: "profile" },
-        // { label: "Resume", value: "resume" },
         { label: "Applications", value: "applications" },
       ];
       state.jobTabs = [];
@@ -147,6 +162,7 @@ export const {
   setSmallDisplay,
   setShowSettings,
   setShowProfile,
+  setShowStats,
   setShowResume,
   setShowApplications,
   setActiveTab,

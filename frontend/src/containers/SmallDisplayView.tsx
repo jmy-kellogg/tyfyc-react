@@ -4,6 +4,7 @@ import ApplicationDetails from "./ApplicationDetails";
 import Settings from "./Settings";
 import Profile from "./Profile";
 import Resumes from "./Resumes";
+import Stats from "./Stats";
 import ApplicationsList from "./ApplicationsList";
 import Tabs from "@/components/Tabs";
 
@@ -29,10 +30,16 @@ function SmallDisplayView() {
         {activeTab === "settings" && <Settings />}
         {activeTab === "profile" && <Profile />}
         {activeTab === "resume" && <Resumes />}
+        {activeTab === "stats" && <Stats />}
         {activeTab === "applications" && <ApplicationsList />}
-        {!["settings", "profile", "resume", "applications", ""].includes(
-          activeTab
-        ) && <ApplicationDetails />}
+        {![
+          "settings",
+          "profile",
+          "resume",
+          "applications",
+          "stats",
+          "",
+        ].includes(activeTab) && <ApplicationDetails />}
       </div>
     </>
   );
