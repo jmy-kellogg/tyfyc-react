@@ -36,7 +36,7 @@ function Alerts() {
       {showAlerts &&
         alerts.map((alert) => (
           <div
-            className={`bg-${alertDict[alert.type].color}-100 border border-${alertDict[alert.type].color}-400 text-${alertDict[alert.type].color}-700 p-2 m-2 rounded justify-between flex w-100 absolute right-0 bottom-0`}
+            className={`bg-${alertDict[alert.type].color || "white"}-100 border border-${alertDict[alert.type].color || "gray"}-400 text-${alertDict[alert.type].color || "gray"}-700 p-2 m-2 rounded justify-between flex w-100 absolute right-0 bottom-0`}
             role="alert"
             key={alert.id}
           >
