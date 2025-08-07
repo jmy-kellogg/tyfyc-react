@@ -26,8 +26,8 @@ const initialState: NavigationState = {
   activeTab: "",
   tabs: [
     // ToDo: get tab preference from database
-    // { label: "Profile", value: "profile" },
-    // { label: "Resume", value: "resume" },
+    { label: "Profile", value: "profile" },
+    { label: "Resume", value: "resume" },
     { label: "Applications", value: "applications" },
   ],
   jobTabs: [],
@@ -135,7 +135,7 @@ export const navigationSlice = createSlice({
     setTabsToDefault: (state: NavigationState) => {
       state.tabs = [
         { label: "Profile", value: "profile" },
-        { label: "Resume", value: "resume" },
+        // { label: "Resume", value: "resume" },
         { label: "Applications", value: "applications" },
       ];
       state.jobTabs = [];
