@@ -12,6 +12,7 @@ export interface StatusOption {
   label: string;
   value: Application["status"];
   style: string;
+  color: string;
 }
 
 // // API
