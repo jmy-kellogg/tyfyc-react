@@ -1,4 +1,4 @@
-type TooltipPayload = ReadonlyArray<unknown>;
+import { SectorProps, Sector } from "recharts";
 
 type Coordinate = {
   x: number;
@@ -14,49 +14,50 @@ type PieSectorData = {
   value?: number;
   paddingAngle?: number;
   dataKey?: string;
-  tooltipPayload?: ReadonlyArray<TooltipPayload>;
 };
 
-type GeometrySector = {
-  cx: number;
-  cy: number;
-  innerRadius: number;
-  outerRadius: number;
-  startAngle: number;
-  endAngle: number;
-};
+type PieSectorDataItem = React.SVGProps<SVGPathElement> &
+  Partial<SectorProps> &
+  PieSectorData;
 
-type PieLabelProps = PieSectorData &
-  GeometrySector & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    tooltipPayload?: any;
-  };
-
-const RADIAN = Math.PI / 180;
-
-function renderCustomizedLabel({
+function RenderInner({
   cx,
   cy,
-  midAngle,
   innerRadius,
   outerRadius,
+  startAngle,
+  endAngle,
+  name,
   percent,
-}: PieLabelProps) {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.4;
-  const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
-  const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
-
+  value,
+  color,
+}: PieSectorDataItem) {
   return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${((percent ?? 1) * 100).toFixed(0)}%`}
-    </text>
+    <g>
+      <text x={cx} y={cy} dy={0} textAnchor="middle" fill={color} fontSize={20}>
+        {`${value} ${name}`}
+      </text>
+      <text
+        x={cx}
+        y={cy}
+        dy={20}
+        textAnchor="middle"
+        fill={color}
+        fontSize={20}
+      >
+        {`(Rate ${((percent ?? 1) * 100).toFixed(2)}%)`}
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={color}
+      />
+    </g>
   );
 }
 
-export default renderCustomizedLabel;
+export default RenderInner;

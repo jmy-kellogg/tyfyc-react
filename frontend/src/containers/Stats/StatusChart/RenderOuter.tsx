@@ -7,7 +7,7 @@ type Coordinate = {
 
 type PieSectorData = {
   percent?: number;
-  name?: string;
+  name?: string | number;
   midAngle?: number;
   middleRadius?: number;
   tooltipPosition?: Coordinate;
@@ -62,15 +62,6 @@ function RenderOuter({
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={color}
-      />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={(outerRadius ?? 0) + 6}
-        outerRadius={(outerRadius ?? 0) + 10}
         fill={color}
       />
       <path
