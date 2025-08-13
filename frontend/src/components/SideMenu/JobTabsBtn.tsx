@@ -34,7 +34,7 @@ function JobTabsBtn({ openMenu, activeTab }: Props) {
           </span>
           {openMenu && (
             <div
-              className={`${activeTab === value ? "font-bold" : ""} mx-2 content-center`}
+              className={`${activeTab === value ? "font-bold" : ""} mx-2 content-center w-max`}
             >
               {label}
             </div>

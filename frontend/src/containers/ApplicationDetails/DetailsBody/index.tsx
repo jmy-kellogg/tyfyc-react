@@ -60,6 +60,9 @@ function DetailsBody({ application, onUpdate }: Props) {
         />
       </div>
       <div className="m-3">
+        {skillsToggle && <SkillSection posting={application.posting} />}
+      </div>
+      <div className="m-3">
         {notesToggle && (
           <TextInput
             label="Notes:"
@@ -68,9 +71,6 @@ function DetailsBody({ application, onUpdate }: Props) {
             onUpdate={onUpdate}
           />
         )}
-      </div>
-      <div className="m-3">
-        {skillsToggle && <SkillSection posting={application.posting} />}
       </div>
       <div className="m-3">
         {postingToggle && (
