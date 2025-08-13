@@ -13,7 +13,7 @@ interface Props {
 function DetailsBody({ application, onUpdate }: Props) {
   const [notesToggle, setNotesToggle] = useState<boolean>(false);
   const [resumeToggle, setResumeToggle] = useState<boolean>(false);
-  const [skillsToggle, setSkillsToggle] = useState<boolean>(false);
+  const [skillsToggle, setSkillsToggle] = useState<boolean>(true);
   const [postingToggle, setPostingToggle] = useState<boolean>(true);
 
   const saveResume = (resume: string) => {
