@@ -6,6 +6,7 @@ import {
   setShowResume,
   setShowProfile,
   setShowApplications,
+  setShowStats,
 } from "src/store/reducers/navigationSlice";
 import type { TabsList } from "@/types";
 
@@ -28,6 +29,8 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
       dispatch(setShowResume(false));
     } else if (value === "applications") {
       dispatch(setShowApplications(false));
+    } else if (value === "stats") {
+      dispatch(setShowStats(false));
     } else {
       dispatch(removeJobTab(value));
     }
