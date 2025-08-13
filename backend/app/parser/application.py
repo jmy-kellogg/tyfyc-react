@@ -10,11 +10,11 @@ def find_job_title(soup) -> str:
     return title if title else ""
 
 def find_company(soup) -> str:
-    text_candidate = soup.find(string=re.compile("At"))
+    text_candidate = soup.find("At")
     text_list = text_candidate.split() if text_candidate else []
     company_text = ""
 
-    if len(text_list) > 1:
+    if "At" in text_list:
       keyword_index = text_list.index("At")
       company_text = text_list[keyword_index + 1] or ""
       if text_list[keyword_index +2][-1] == ",":
