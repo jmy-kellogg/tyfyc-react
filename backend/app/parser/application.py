@@ -21,6 +21,12 @@ def find_company(soup) -> str:
         company_text = company_text + " " + text_list[2]
 
     if company_text == "":
+      text_candidate = soup.find(string=re.compile("About"))
+      text_list = text_candidate.split() if text_candidate else []
+      if len(text_list) > 1 and len(text_list) < 4 and text_list[1].lower != "you":
+        company_text =  " ".join(text_list[1:])
+
+    if company_text == "":
       text_candidate = soup.find(string=re.compile("is a tech company")) or soup.find(string=re.compile("is an equal opportunity"))
       text_list = text_candidate.split() if text_candidate else []
 
