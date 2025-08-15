@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { useState, useEffect, useCallback, useMemo, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getFormattedDate } from "@utils";
@@ -25,23 +25,29 @@ import DeleteBtn from "@/components/DeleteBtn";
 
 function ApplicationsList() {
   const dispatch = useDispatch();
+  const order = [
+    "interviewing",
+    "applied",
+    "pending",
+    "accepted",
+    "declined",
+    "no_offer",
+    "rejected",
+    "auto_rejected",
+    "no_response",
+  ];
   const flags = useSelector((state: State) => state.auth.flags);
   const [applications, setApplications] = useState<Applications>([]);
-  const [filteredList, setFilteredList] = useState<Applications>([]);
   const [search, setSearch] = useState("");
+  const filteredList = useMemo(() => {
+    return search
+      ? applications.filter(({ company }) =>
+          company.toLowerCase().includes(search.toLowerCase())
+        )
+      : applications;
+  }, [applications, search]);
 
   const sortApplications = (applications: Applications): Applications => {
-    const order = [
-      "interviewing",
-      "applied",
-      "pending",
-      "accepted",
-      "declined",
-      "no_offer",
-      "rejected",
-      "auto_rejected",
-      "no_response",
-    ];
     const sortedList = [...applications]
       .sort((a, b) => {
         const aDate = new Date(a.dateApplied).getTime();
@@ -62,25 +68,6 @@ function ApplicationsList() {
     await deleteApplication(applicationId);
     fetchData();
     dispatch(removeJobTab(applicationId));
-  };
-
-  const handleFilter = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-
-    if (!e.target.value) {
-      setFilteredList(applications);
-    } else {
-      setFilteredList(
-        applications.filter(({ company }) =>
-          company.toLowerCase().includes(search.toLowerCase())
-        )
-      );
-    }
-  };
-
-  const clearSearch = () => {
-    setSearch("");
-    setFilteredList(applications);
   };
 
   // ToDo: move logic to the Auth layer and eventually the BE
@@ -125,10 +112,6 @@ function ApplicationsList() {
     fetchData();
   }, [fetchData]);
 
-  useEffect(() => {
-    setFilteredList(applications);
-  }, [applications]);
-
   return (
     <>
       <div className="page">
@@ -141,11 +124,11 @@ function ApplicationsList() {
               placeholder="Search Companies"
               className="py-2 px-4 place-content-between w-2xl text-base placeholder:text-gray-400 rounded-lg focus:outline-none"
               value={search}
-              onChange={handleFilter}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <button
               className="m-auto p-1 mx-2 self-start rounded-lg text-gray-500 hover:cursor-pointer hover:font-bold hover:bg-gray-200"
-              onClick={clearSearch}
+              onClick={() => setSearch("")}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
