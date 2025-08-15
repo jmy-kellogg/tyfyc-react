@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, ChangeEvent } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getFormattedDate } from "@utils";
@@ -18,24 +18,37 @@ import {
   addJobTabs,
   removeJobTab,
 } from "src/store/reducers/navigationSlice";
-import { addAlert } from "@/reducers/alertsSlice";
+
 import type { Application, Applications } from "@/types";
 import type { State } from "@/store";
 import DeleteBtn from "@/components/DeleteBtn";
 
+const order = [
+  "interviewing",
+  "applied",
+  "pending",
+  "accepted",
+  "declined",
+  "no_offer",
+  "rejected",
+  "auto_rejected",
+  "no_response",
+];
+
+const sortApplications = (applications: Applications): Applications => {
+  const sortedList = [...applications]
+    .sort((a, b) => {
+      const aDate = new Date(a.dateApplied).getTime();
+      const bDate = new Date(b.dateApplied).getTime();
+      return bDate - aDate;
+    })
+    .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
+
+  return sortedList;
+};
+
 function ApplicationsList() {
   const dispatch = useDispatch();
-  const order = [
-    "interviewing",
-    "applied",
-    "pending",
-    "accepted",
-    "declined",
-    "no_offer",
-    "rejected",
-    "auto_rejected",
-    "no_response",
-  ];
   const flags = useSelector((state: State) => state.auth.flags);
   const [applications, setApplications] = useState<Applications>([]);
   const [search, setSearch] = useState("");
@@ -46,18 +59,6 @@ function ApplicationsList() {
         )
       : applications;
   }, [applications, search]);
-
-  const sortApplications = (applications: Applications): Applications => {
-    const sortedList = [...applications]
-      .sort((a, b) => {
-        const aDate = new Date(a.dateApplied).getTime();
-        const bDate = new Date(b.dateApplied).getTime();
-        return bDate - aDate;
-      })
-      .sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
-
-    return sortedList;
-  };
 
   const openApplication = ({ company, id }: Application) => {
     dispatch(addJobTabs({ label: company || "Job", value: id }));
@@ -70,43 +71,12 @@ function ApplicationsList() {
     dispatch(removeJobTab(applicationId));
   };
 
-  // ToDo: move logic to the Auth layer and eventually the BE
-  const checkForExpired = async (applications: Applications) => {
-    if (localStorage.getItem("expiredAppCleanUp") !== "true") {
-      const appExpireDate = new Date();
-      appExpireDate.setMonth(appExpireDate.getMonth() - 3);
-
-      const applied = applications.filter(({ status }) => status === "applied");
-      const expiredList = applied.filter(
-        ({ dateApplied }) => new Date(dateApplied) < appExpireDate
-      );
-
-      if (expiredList.length) {
-        await Promise.all(
-          expiredList.map(async (application) => {
-            dispatch(
-              addAlert({
-                type: "info",
-                message: `Updating no response for ${application.company}`,
-              })
-            );
-            await updateApplication({ ...application, status: "no_response" });
-          })
-        );
-        fetchData();
-      }
-      // this is removed on clearAuth() when user logout
-      localStorage.setItem("expiredAppCleanUp", "true");
-    }
-  };
-
   const fetchData = useCallback(async () => {
     const dbApplications = await getApplications();
     const sortedList = sortApplications(dbApplications);
 
-    checkForExpired(dbApplications);
     setApplications(sortedList);
-  }, []);
+  }, [setApplications]);
 
   useEffect(() => {
     fetchData();

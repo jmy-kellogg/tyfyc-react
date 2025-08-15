@@ -3,8 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { loginUser, registerUser } from "@/api/auth";
+import { getApplications, updateApplication } from "src/api/applications";
 import { setTabsToDefault } from "src/store/reducers/navigationSlice";
 import { setToken, clearAuth } from "src/store/reducers/authSlice";
+import { addAlert } from "@/reducers/alertsSlice";
 
 import type { State } from "@/store";
 
@@ -38,11 +40,37 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const checkForExpired = async () => {
+    const applications = await getApplications();
+    const appExpireDate = new Date();
+    appExpireDate.setMonth(appExpireDate.getMonth() - 2);
+
+    const applied = applications.filter(({ status }) => status === "applied");
+    const expiredList = applied.filter(
+      ({ dateApplied }) => new Date(dateApplied) < appExpireDate
+    );
+
+    if (expiredList.length) {
+      await Promise.all(
+        expiredList.map(async (application) => {
+          dispatch(
+            addAlert({
+              type: "info",
+              message: `Updating no response for ${application.company}. You may need to refresh the Application list`,
+            })
+          );
+          await updateApplication({ ...application, status: "no_response" });
+        })
+      );
+    }
+  };
+
   const login = async (username: string, password: string): Promise<void> => {
     const response = await loginUser({ username, password });
 
     if (response?.accessToken) {
       dispatch(setToken(response.accessToken));
+      checkForExpired();
       navigate("/");
     }
   };

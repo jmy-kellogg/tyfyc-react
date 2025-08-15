@@ -47,7 +47,6 @@ export const authSlice = createSlice({
     },
     clearAuth: () => {
       localStorage.removeItem("token");
-      localStorage.removeItem("expiredAppCleanUp");
       return initialState;
     },
   },
