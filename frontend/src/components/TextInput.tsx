@@ -44,10 +44,6 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
   return (
     <div
       id={`${inputName}-text-input`}
-      onClick={(e) => {
-        e.stopPropagation();
-        setEdit(true);
-      }}
       onMouseEnter={() => {
         setHover(true);
       }}
@@ -75,7 +71,12 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
         )}
         {edit && (
           <>
-            <button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSubmit();
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -83,10 +84,6 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
                 strokeWidth={2}
                 stroke="currentColor"
                 className="size-4 m-2 hover:size-5 hover:cursor-pointer hover:text-green-500"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSubmit();
-                }}
               >
                 <path
                   strokeLinecap="round"
@@ -104,7 +101,7 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
             <RichEditor content={text} onTextChange={updateText} />
           </div>
         ) : (
-          <div className="hover:cursor-pointer">
+          <div className="hover:cursor-pointer" onClick={() => setEdit(true)}>
             <ReadOnly content={text} />
           </div>
         )}

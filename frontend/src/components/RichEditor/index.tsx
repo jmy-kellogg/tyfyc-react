@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 
 import extensions from "./extensions";
@@ -15,17 +16,18 @@ const RichEditor = ({ content, onTextChange }: Props) => {
     content: formattedContent,
   });
 
-  const handleBlur = () => {
-    if (editor) onTextChange(editor.getHTML());
-  };
+  useEffect(() => {
+    return () => {
+      if (editor) {
+        onTextChange(editor.getHTML());
+      }
+    };
+  }, [editor, onTextChange]);
 
   return (
     <>
       {editor && (
-        <div
-          className="w-full min-h-auto bg-white rounded-sm border-1 border-gray-300"
-          onBlur={handleBlur}
-        >
+        <div className="w-full min-h-auto bg-white rounded-sm border-1 border-gray-300">
           <div className="m-3">
             <EditorContent editor={editor} />
           </div>
