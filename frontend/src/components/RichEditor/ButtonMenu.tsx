@@ -1,17 +1,56 @@
 import type { Editor } from "@tiptap/core";
+import { useEditorState } from "@tiptap/react";
 
 interface Props {
   editor: Editor;
 }
 
 const ButtonMenu = ({ editor }: Props) => {
+  const editorState = useEditorState({
+    editor,
+    selector: (ctx) => {
+      // ToDo: expand functionality
+      return {
+        isBold: ctx.editor.isActive("bold") ?? false,
+        canBold: ctx.editor.can().chain().toggleBold().run() ?? false,
+        isItalic: ctx.editor.isActive("italic") ?? false,
+        canItalic: ctx.editor.can().chain().toggleItalic().run() ?? false,
+        isStrike: ctx.editor.isActive("strike") ?? false,
+        canStrike: ctx.editor.can().chain().toggleStrike().run() ?? false,
+        isUnderline: ctx.editor.isActive("underline") ?? false,
+        canUnderline: ctx.editor.can().chain().toggleUnderline().run() ?? false,
+        // isCode: ctx.editor.isActive("code") ?? false,
+        // canCode: ctx.editor.can().chain().toggleCode().run() ?? false,
+        // canClearMarks: ctx.editor.can().chain().unsetAllMarks().run() ?? false,
+        isParagraph: ctx.editor.isActive("paragraph") ?? false,
+        isHeading1: ctx.editor.isActive("heading", { level: 1 }) ?? false,
+        isHeading2: ctx.editor.isActive("heading", { level: 2 }) ?? false,
+        isHeading3: ctx.editor.isActive("heading", { level: 3 }) ?? false,
+        // isHeading4: ctx.editor.isActive("heading", { level: 4 }) ?? false,
+        // isHeading5: ctx.editor.isActive("heading", { level: 5 }) ?? false,
+        // isHeading6: ctx.editor.isActive("heading", { level: 6 }) ?? false,
+        isHighlight: ctx.editor.isActive("highlight") ?? false,
+        canHighlight: ctx.editor.can().chain().toggleHighlight().run() ?? false,
+
+        isBulletList: ctx.editor.isActive("bulletList") ?? false,
+
+        isTaskList: ctx.editor.isActive("taskList") ?? false,
+        canTaskList: ctx.editor.can().chain().toggleTaskList().run() ?? false,
+        // isOrderedList: ctx.editor.isActive("orderedList") ?? false,
+        // isCodeBlock: ctx.editor.isActive("codeBlock") ?? false,
+        // isBlockquote: ctx.editor.isActive("blockquote") ?? false,
+        canUndo: ctx.editor.can().chain().undo().run() ?? false,
+        canRedo: ctx.editor.can().chain().redo().run() ?? false,
+      };
+    },
+  });
+
   return (
     <>
       <div className="flex">
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isHeading1 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleHeading({ level: 1 }).run();
           }}
         >
@@ -32,9 +71,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleHeading({ level: 2 }).run();
           }}
         >
@@ -55,9 +93,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isHeading3 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleHeading({ level: 3 }).run();
           }}
         >
@@ -78,9 +115,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isBold ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleBold().run();
           }}
         >
@@ -100,9 +136,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isItalic ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleItalic().run();
           }}
         >
@@ -122,9 +157,8 @@ const ButtonMenu = ({ editor }: Props) => {
           </svg>
         </button>
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isUnderline ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleUnderline().run();
           }}
         >
@@ -144,9 +178,8 @@ const ButtonMenu = ({ editor }: Props) => {
           </svg>
         </button>
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isStrike ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleStrike().run();
           }}
         >
@@ -167,9 +200,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isHighlight ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleHighlight({ color: "#FAF594" }).run();
           }}
         >
@@ -190,9 +222,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().setHorizontalRule().run();
           }}
         >
@@ -209,9 +240,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isBulletList ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleBulletList().run();
           }}
         >
@@ -232,9 +262,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isTaskList ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().toggleTaskList().run();
           }}
         >
@@ -255,9 +284,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().setTextAlign("left").run();
           }}
         >
@@ -278,9 +306,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().setTextAlign("center").run();
           }}
         >
@@ -301,9 +328,8 @@ const ButtonMenu = ({ editor }: Props) => {
         </button>
 
         <button
-          className="p-1 hover:bg-gray-200 hover:cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
+          className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          onClick={() => {
             editor.chain().focus().setTextAlign("right").run();
           }}
         >
@@ -319,6 +345,50 @@ const ButtonMenu = ({ editor }: Props) => {
               strokeLinecap="round"
               strokeLinejoin="round"
               d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
+            />
+          </svg>
+        </button>
+        <button
+          className={`p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          disabled={!editorState.canUndo}
+          onClick={() => {
+            editor.chain().focus().undo().run();
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+            />
+          </svg>
+        </button>
+        <button
+          className={`p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
+          disabled={!editorState.canRedo}
+          onClick={() => {
+            editor.chain().focus().redo().run();
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
             />
           </svg>
         </button>

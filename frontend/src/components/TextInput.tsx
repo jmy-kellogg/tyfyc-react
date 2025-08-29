@@ -25,7 +25,6 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
     if (textString !== inputValue) {
       handleUpdate(textString);
     }
-
     setText(textString);
     setEdit(false);
   };
@@ -95,13 +94,13 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
           </>
         )}
       </div>
-      <div>
+      <div className="hover:cursor-text">
         {edit ? (
-          <div className="hover:cursor-text">
+          <div>
             <RichEditor content={text} onTextChange={updateText} />
           </div>
         ) : (
-          <div className="hover:cursor-pointer" onClick={() => setEdit(true)}>
+          <div onClick={() => setEdit(true)}>
             <ReadOnly content={text} />
           </div>
         )}
