@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { statusOptions } from "@options";
@@ -18,55 +17,46 @@ interface Props {
 
 function DetailsHeader({ application }: Props) {
   const dispatch = useDispatch();
-  const [currApp, setCurrApp] = useState<Application>(application);
-
   const handleUpdate = async (form: ApplicationUpdate) => {
-    const updatedApp = await updateApplication({ ...currApp, ...form });
-    setCurrApp(updatedApp);
+    await updateApplication({ ...application, ...form });
   };
 
   const updateCompanyName = (companyInfo: ApplicationUpdate) => {
     if (!application.id) return;
     const companyName = companyInfo.company;
-    if (companyName && companyName !== currApp.company) {
+    if (companyName && companyName !== application.company) {
       dispatch(setJobTab({ label: companyName, value: application.id }));
     }
     handleUpdate(companyInfo);
   };
 
   const remove = async () => {
-    if (currApp.id) {
-      await deleteApplication(currApp.id);
-      dispatch(removeJobTab(currApp.id));
+    if (application.id) {
+      await deleteApplication(application.id);
+      dispatch(removeJobTab(application.id));
     }
   };
-
-  useEffect(() => {
-    if (currApp.id !== application.id) {
-      setCurrApp({ ...application });
-    }
-  }, [currApp.id, application]);
 
   return (
     <div className="max-h-max">
       <div className="float-end">
-        <DeleteBtn application={currApp} onRemove={remove} />
+        <DeleteBtn application={application} onRemove={remove} />
       </div>
       <InputLink
         label="Company Name"
         inputName="company"
-        inputValue={currApp.company || ""}
+        inputValue={application.company || ""}
         linkName="companySite"
-        linkValue={currApp.companySite || ""}
+        linkValue={application.companySite || ""}
         onUpdate={updateCompanyName}
         tag="h1"
       />
       <InputLink
         label="Job Title"
         inputName="title"
-        inputValue={currApp.title || ""}
+        inputValue={application.title || ""}
         linkName="postingLink"
-        linkValue={currApp.postingLink || ""}
+        linkValue={application.postingLink || ""}
         onUpdate={handleUpdate}
       />
       <div className="flex flex-wrap items-center justify-between m-3">
@@ -74,7 +64,7 @@ function DetailsHeader({ application }: Props) {
           <b>Status: </b>
           <Dropdown
             inputName="status"
-            inputValue={currApp.status || ""}
+            inputValue={application.status || ""}
             options={statusOptions}
             onUpdate={handleUpdate}
           />
@@ -84,7 +74,7 @@ function DetailsHeader({ application }: Props) {
           <b className="mx-1 w-max">Applied: </b>
           <DateInput
             inputName="dateApplied"
-            inputValue={currApp.dateApplied || ""}
+            inputValue={application.dateApplied || ""}
             onUpdate={handleUpdate}
           />
         </div>
@@ -94,7 +84,7 @@ function DetailsHeader({ application }: Props) {
           <Input
             label="Location"
             inputName="location"
-            inputValue={currApp.location || ""}
+            inputValue={application.location || ""}
             onUpdate={handleUpdate}
           />
         </div>
@@ -104,7 +94,7 @@ function DetailsHeader({ application }: Props) {
           <Input
             label="Salary"
             inputName="salary"
-            inputValue={currApp.salary || ""}
+            inputValue={application.salary || ""}
             onUpdate={handleUpdate}
           />
         </div>

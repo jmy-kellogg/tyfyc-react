@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import RichEditor from "@/components/RichEditor";
 import ReadOnly from "@/components/RichEditor/ReadOnly";
+
 interface FormData {
   [name: string]: string;
 }
@@ -10,9 +11,16 @@ interface Props {
   inputName: string;
   inputValue: string;
   onUpdate: (data: FormData) => void;
+  popupBtnMenu?: ReactNode;
 }
 
-function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
+function TextInput({
+  label,
+  inputName,
+  inputValue,
+  onUpdate,
+  popupBtnMenu,
+}: Props) {
   const [hover, setHover] = useState(false);
   const [edit, setEdit] = useState(false);
   const [text, setText] = useState(inputValue);
@@ -47,7 +55,7 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
         setHover(true);
       }}
       onMouseLeave={() => {
-        setHover(false);
+        // setHover(false);
       }}
     >
       <div className="flex">
@@ -97,7 +105,11 @@ function TextInput({ label, inputName, inputValue, onUpdate }: Props) {
       <div className="hover:cursor-text">
         {edit ? (
           <div>
-            <RichEditor content={text} onTextChange={updateText} />
+            <RichEditor
+              content={text}
+              onTextChange={updateText}
+              popupBtnMenu={popupBtnMenu}
+            />
           </div>
         ) : (
           <div onClick={() => setEdit(true)}>

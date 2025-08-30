@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 
 import type { ApplicationUpdate, Application } from "@/types";
-import TextInput from "@/components/TextInput";
 import Resume from "@/components/Resume";
 import Toggle from "@/components/Toggle";
 import SkillSection from "./SkillsSection";
+import TextInput from "./TextInput";
+import PostingBtnMenu from "./PostingBtnMenu";
 
 interface Props {
   application: Application;
@@ -79,6 +80,7 @@ function DetailsBody({ application, onUpdate }: Props) {
             inputName="posting"
             inputValue={application.posting || ""}
             onUpdate={onUpdate}
+            popupBtnMenu={<PostingBtnMenu onUpdate={onUpdate} />}
           />
         )}
       </div>
