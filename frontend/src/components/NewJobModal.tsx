@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import RichEditor from "@/components/RichEditor";
 import { addApplication } from "@/api/applications";
@@ -7,6 +7,7 @@ import { getCompanyResearch } from "@/api/companies";
 import { getToday } from "@/utils";
 import { setActiveTab, addJobTabs } from "src/store/reducers/navigationSlice";
 import type { ApplicationCreate, Application } from "@/types";
+import type { State } from "@/store";
 
 interface CompanyInfo {
   status: string;
@@ -15,6 +16,7 @@ interface CompanyInfo {
 
 function NewJobModal() {
   const dispatch = useDispatch();
+  const flags = useSelector((state: State) => state.auth.flags);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [hover, setHover] = useState(false);
   const [companySite, setCompanySite] = useState<string>("");
@@ -137,34 +139,36 @@ function NewJobModal() {
                 </svg>
               </button>
             </div>
-            {/* ToDo: Hide OpenAI features behind a flag */}
+
             <div className="m-3 h-full">
               <div className="flex">
-                <button
-                  type="button"
-                  className="rounded-md text-indigo-600 border border-indigo-600 m-1 px-3 py-1.5 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 hover:text-white"
-                  onClick={research}
-                  disabled={
-                    companyInfo.status === "success" ||
-                    companyInfo.status === "loading" ||
-                    companySite === ""
-                  }
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-6"
+                {flags.includes("OPENAI_FEATURE_FLAG") && (
+                  <button
+                    type="button"
+                    className="rounded-md text-indigo-600 border border-indigo-600 m-1 px-3 py-1.5 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 hover:text-white"
+                    onClick={research}
+                    disabled={
+                      companyInfo.status === "success" ||
+                      companyInfo.status === "loading" ||
+                      companySite === ""
+                    }
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                      />
+                    </svg>
+                  </button>
+                )}
 
                 <div className="w-full">
                   <input
