@@ -12,6 +12,7 @@ import type { State } from "@/store";
 interface CompanyInfo {
   status: string;
   message: string;
+  company?: string;
 }
 
 function NewJobModal() {
@@ -21,10 +22,11 @@ function NewJobModal() {
   const [hover, setHover] = useState(false);
   const [companySite, setCompanySite] = useState<string>("");
   const [postingLink, setPostingLink] = useState<string>("");
-  const [posting, setPosting] = useState<string>("");
+  const [posting, setPosting] = useState<string>("<p></p>");
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>({
     status: "",
     message: "",
+    company: "",
   });
 
   const setText = async (text: string) => {
@@ -46,39 +48,55 @@ function NewJobModal() {
       posting: posting,
       dateApplied: getToday(),
       status: "applied",
+      company: companyInfo.company || "",
     };
 
-    const application: Application = await addApplication(reqBody);
+    try {
+      const application: Application = await addApplication(reqBody);
 
-    if (application.id) {
-      dispatch(
-        addJobTabs({
-          label: application.company || "Job",
-          value: application.id,
-        })
-      );
-      dispatch(setActiveTab(application.id));
+      if (application.id) {
+        dispatch(
+          addJobTabs({
+            label: application.company || "Job",
+            value: application.id,
+          })
+        );
+        dispatch(setActiveTab(application.id));
+      }
+
       clearAndClose();
+    } catch {
+      setCompanyInfo({
+        status: "error",
+        message: "Error on submit. Please try again",
+      });
     }
   };
 
   const research = async () => {
     setCompanyInfo({ status: "loading", message: "Loading..." });
-    const companyResearch = await getCompanyResearch(companySite);
+    try {
+      const companyResearch = await getCompanyResearch(companySite);
 
-    if (companyResearch.error) {
-      setCompanyInfo({ status: "error", message: companyResearch.error });
-    } else {
-      const { name, location, size, industry, funding } = companyResearch;
-      const message = [
-        `Company Name: ${name}`,
-        `HQ Location: ${location}`,
-        `Company Size: ${size}`,
-        `Industry: ${industry}`,
-        `Latest Funding: ${funding}`,
-      ].join("\n");
+      if (companyResearch.error) {
+        setCompanyInfo({ status: "error", message: companyResearch.error });
+      } else {
+        const { name, location, size, industry, funding } = companyResearch;
+        const message = [
+          `Company Name: ${name}`,
+          `HQ Location: ${location}`,
+          `Company Size: ${size}`,
+          `Industry: ${industry}`,
+          `Latest Funding: ${funding}`,
+        ].join("\n");
 
-      setCompanyInfo({ status: "success", message: message });
+        setCompanyInfo({ status: "success", message: message, company: name });
+      }
+    } catch {
+      setCompanyInfo({
+        status: "error",
+        message: "failed to get info on company",
+      });
     }
   };
 
@@ -142,44 +160,45 @@ function NewJobModal() {
 
             <div className="m-3 h-full">
               <div className="flex">
-                {flags.includes("OPENAI_FEATURE_FLAG") && (
-                  <button
-                    type="button"
-                    className="rounded-md text-indigo-600 border border-indigo-600 m-1 px-3 py-1.5 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 hover:text-white"
-                    onClick={research}
-                    disabled={
-                      companyInfo.status === "success" ||
-                      companyInfo.status === "loading" ||
-                      companySite === ""
-                    }
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                      />
-                    </svg>
-                  </button>
-                )}
-
                 <div className="w-full">
-                  <input
-                    id="companySite"
-                    name="companySite"
-                    placeholder="Company Site"
-                    type="text"
-                    className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                    value={companySite}
-                    onChange={(e) => setCompanySite(e.target.value)}
-                  />
+                  <div className="flex">
+                    <input
+                      id="companySite"
+                      name="companySite"
+                      placeholder="Company Site"
+                      type="text"
+                      className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                      value={companySite}
+                      onChange={(e) => setCompanySite(e.target.value)}
+                    />
+                    {flags.includes("OPENAI_FEATURE_FLAG") && (
+                      <button
+                        type="button"
+                        className="rounded-md text-indigo-600 border border-indigo-600 m-1 px-3 py-1.5 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 hover:text-white disabled:border-gray-200 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
+                        onClick={research}
+                        disabled={
+                          companyInfo.status === "success" ||
+                          companyInfo.status === "loading" ||
+                          companySite === ""
+                        }
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="size-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                   <input
                     id="postingLink"
                     name="postingLink"
@@ -191,10 +210,10 @@ function NewJobModal() {
                   />
                 </div>
               </div>
-              <div>
+              <div className="m-2 border border-gray-300 rounded-lg">
                 {companyInfo.status && (
                   <div className="flex">
-                    <label className="block text-lg font-medium text-center">
+                    <label className="m-2 block text-lg font-medium text-center">
                       Company Information
                     </label>
                     <button
@@ -225,10 +244,12 @@ function NewJobModal() {
                 )}
                 {companyInfo.status === "loading" && <div>Loading...</div>}
                 {companyInfo.status === "error" && (
-                  <div>Error: {companyInfo.message}</div>
+                  <div className="bg-red-100 border border-red-400 text-red-700">
+                    Error: {companyInfo.message}
+                  </div>
                 )}
                 {companyInfo.status === "success" && (
-                  <div className="m-2 whitespace-pre-line">
+                  <div className="mx-5 whitespace-pre-line">
                     {companyInfo.message}
                   </div>
                 )}
@@ -236,7 +257,8 @@ function NewJobModal() {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="rounded-md bg-indigo-600 text-white mt-2 p-2 place-self-end font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
+                  className="rounded-md bg-indigo-600 text-white mt-2 p-2 place-self-end font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 disabled:border-gray-200 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
+                  disabled={!posting || posting === "<p></p>"}
                   onClick={submit}
                 >
                   Submit
