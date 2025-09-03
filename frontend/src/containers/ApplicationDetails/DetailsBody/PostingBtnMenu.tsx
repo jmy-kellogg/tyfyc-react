@@ -1,10 +1,11 @@
-import type { ApplicationUpdate } from "@/types";
+import type { ApplicationUpdate, Application } from "@/types";
 
 interface Props {
   onUpdate: (form: ApplicationUpdate) => void;
+  application: Application;
 }
 
-const PostingBtnMenu = ({ onUpdate }: Props) => {
+const PostingBtnMenu = ({ onUpdate, application }: Props) => {
   const updateCompany = () => {
     const text = window?.getSelection()?.toString() || "";
     if (text) {
@@ -29,7 +30,7 @@ const PostingBtnMenu = ({ onUpdate }: Props) => {
   return (
     <div className="flex">
       <button
-        className="group p-1 mr-1 flex rounded-sm border-1 border-gray-300 hover:bg-gray-200 hover:cursor-pointer"
+        className={`group p-1 mr-1 flex rounded-sm border-1 ${application.company ? "border-gray-300 hover:bg-gray-200 " : "border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white"} hover:cursor-pointer`}
         onClick={updateCompany}
       >
         <svg
@@ -50,7 +51,7 @@ const PostingBtnMenu = ({ onUpdate }: Props) => {
       </button>
 
       <button
-        className="group p-1 mr-1 flex rounded-sm border-1 border-gray-300 hover:bg-gray-200 hover:cursor-pointer"
+        className={`group p-1 mr-1 flex rounded-sm border-1 ${application.location ? "border-gray-300 hover:bg-gray-200 " : "border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white"} hover:cursor-pointer`}
         onClick={updateLocation}
       >
         <svg
@@ -76,7 +77,7 @@ const PostingBtnMenu = ({ onUpdate }: Props) => {
       </button>
 
       <button
-        className="group p-1 mr-1 flex rounded-sm border-1 border-gray-300 hover:bg-gray-200 hover:cursor-pointer"
+        className={`group p-1 mr-1 flex rounded-sm border-1 ${application.salary ? "border-gray-300 hover:bg-gray-200 " : "border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white"} hover:cursor-pointer`}
         onClick={updateSalary}
       >
         <svg

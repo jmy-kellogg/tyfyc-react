@@ -80,7 +80,9 @@ function DetailsBody({ application, onUpdate }: Props) {
             inputName="posting"
             inputValue={application.posting || ""}
             onUpdate={onUpdate}
-            popupBtnMenu={<PostingBtnMenu onUpdate={onUpdate} />}
+            popupBtnMenu={
+              <PostingBtnMenu onUpdate={onUpdate} application={application} />
+            }
           />
         )}
       </div>

@@ -242,14 +242,16 @@ function NewJobModal() {
                     </button>
                   </div>
                 )}
-                {companyInfo.status === "loading" && <div>Loading...</div>}
+                {companyInfo.status === "loading" && (
+                  <div className="m-2 ml-5">Loading...</div>
+                )}
                 {companyInfo.status === "error" && (
-                  <div className="bg-red-100 border border-red-400 text-red-700">
+                  <div className="m-2 ml-5 bg-red-100 border border-red-400 text-red-700">
                     Error: {companyInfo.message}
                   </div>
                 )}
                 {companyInfo.status === "success" && (
-                  <div className="mx-5 whitespace-pre-line">
+                  <div className="m-2 ml-5 whitespace-pre-line">
                     {companyInfo.message}
                   </div>
                 )}
