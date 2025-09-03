@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { statusOptions } from "@options";
 import type { Application, ApplicationUpdate } from "@/types";
 import { deleteApplication } from "@/api/applications";
-import { updateApplication } from "@/api/applications";
 import { setJobTab, removeJobTab } from "@/store/reducers/navigationSlice";
 import InputLink from "@/components/InputLink";
 import Input from "@/components/Input";
@@ -13,13 +12,11 @@ import DeleteBtn from "@/components/DeleteBtn";
 
 interface Props {
   application: Application;
+  onUpdate: (form: ApplicationUpdate) => void;
 }
 
-function DetailsHeader({ application }: Props) {
+function DetailsHeader({ application, onUpdate }: Props) {
   const dispatch = useDispatch();
-  const handleUpdate = async (form: ApplicationUpdate) => {
-    await updateApplication({ ...application, ...form });
-  };
 
   const updateCompanyName = (companyInfo: ApplicationUpdate) => {
     if (!application.id) return;
@@ -27,7 +24,7 @@ function DetailsHeader({ application }: Props) {
     if (companyName && companyName !== application.company) {
       dispatch(setJobTab({ label: companyName, value: application.id }));
     }
-    handleUpdate(companyInfo);
+    onUpdate(companyInfo);
   };
 
   const remove = async () => {
@@ -57,7 +54,7 @@ function DetailsHeader({ application }: Props) {
         inputValue={application.title || ""}
         linkName="postingLink"
         linkValue={application.postingLink || ""}
-        onUpdate={handleUpdate}
+        onUpdate={onUpdate}
       />
       <div className="flex flex-wrap items-center justify-between m-3">
         <div className="flex items-center">
@@ -66,7 +63,7 @@ function DetailsHeader({ application }: Props) {
             inputName="status"
             inputValue={application.status || ""}
             options={statusOptions}
-            onUpdate={handleUpdate}
+            onUpdate={onUpdate}
           />
         </div>
         <span className="px-1">{"|"}</span>
@@ -75,7 +72,7 @@ function DetailsHeader({ application }: Props) {
           <DateInput
             inputName="dateApplied"
             inputValue={application.dateApplied || ""}
-            onUpdate={handleUpdate}
+            onUpdate={onUpdate}
           />
         </div>
         <span className="px-1">{"|"}</span>
@@ -85,7 +82,7 @@ function DetailsHeader({ application }: Props) {
             label="Location"
             inputName="location"
             inputValue={application.location || ""}
-            onUpdate={handleUpdate}
+            onUpdate={onUpdate}
           />
         </div>
         <span className="px-1">{"|"}</span>
@@ -95,7 +92,7 @@ function DetailsHeader({ application }: Props) {
             label="Salary"
             inputName="salary"
             inputValue={application.salary || ""}
-            onUpdate={handleUpdate}
+            onUpdate={onUpdate}
           />
         </div>
       </div>

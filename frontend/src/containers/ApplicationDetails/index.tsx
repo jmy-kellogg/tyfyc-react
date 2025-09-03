@@ -44,7 +44,7 @@ function ApplicationDetails() {
   return (
     <div className="page flex flex-wrap justify-center">
       <div className="max-w-3xl grow md:w-md flex flex-col">
-        <DetailsHeader application={application} />
+        <DetailsHeader application={application} onUpdate={handleUpdate} />
         <hr />
         <DetailsBody application={application} onUpdate={handleUpdate} />
       </div>
