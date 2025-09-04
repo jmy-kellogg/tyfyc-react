@@ -29,12 +29,7 @@ function NewJobModal() {
     company: "",
   });
 
-  const setText = async (text: string) => {
-    setPosting(text);
-  };
-
-  const clearAndClose = () => {
-    setShowModal(false);
+  const clear = () => {
     setCompanySite("");
     setPostingLink("");
     setPosting("");
@@ -64,7 +59,8 @@ function NewJobModal() {
         dispatch(setActiveTab(application.id));
       }
 
-      clearAndClose();
+      clear();
+      setShowModal(false);
     } catch {
       setCompanyInfo({
         status: "error",
@@ -137,7 +133,7 @@ function NewJobModal() {
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                onClick={clearAndClose}
+                onClick={() => setShowModal(false)}
               >
                 <svg
                   className="w-3 h-3"
@@ -256,7 +252,14 @@ function NewJobModal() {
                   </div>
                 )}
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  className="rounded-md border-2 border-indigo-600 font-semibold text-indigo-600 shadow-md m-3 p-2 hover:cursor-pointer hover:bg-indigo-500 hover:text-white"
+                  onClick={submit}
+                >
+                  clear
+                </button>
                 <button
                   type="button"
                   className="rounded-md bg-indigo-600 text-white mt-2 p-2 place-self-end font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 disabled:border-gray-200 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
@@ -270,7 +273,10 @@ function NewJobModal() {
                 Copy/Paste job Posting
               </label>
               <div className="flex min-h-200">
-                <RichEditor content={posting} onTextChange={setText} />
+                <RichEditor
+                  content={posting}
+                  onTextChange={(text) => setPosting(text)}
+                />
               </div>
             </div>
           </div>

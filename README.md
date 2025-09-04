@@ -6,85 +6,104 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 ![Alt text](public/small-preview.png)
 
 ## Features
-- [X] Manually add/change resume
-- [X] Formats resume to downloadable PDF
-- [X] Saves locally in cookies
-- [X] Autofill resume from an existing resume
-- [X] Saves Application details to csv
-- [X] Auth login and access token api validation
-- [X] Tracks applications
-- [X] Auto update applications statuses
-- [X] Option to research potential companies via OpenAI
-- [ ] Feature flags
+
+- [x] Manually add/change resume
+- [x] Formats resume to downloadable PDF
+- [x] Saves locally in cookies
+- [x] Autofill resume from an existing resume
+- [x] Saves Application details to csv
+- [x] Auth login and access token api validation
+- [x] Tracks applications
+- [x] Auto update applications statuses
+- [x] Option to research potential companies via OpenAI
+- [x] Feature flags
 - [ ] Updates resume according to job posting
 
 ## OpenAI
-add .env file in `/frontend` with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality. 
+
+add .env file in `/frontend` with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality.
 
 # Development
 
 ## Frontend
+
 ```
 cd frontend
 ```
 
 Install Requirements
+
 ```
 npm install
 ```
 
 Start Frontend
+
 ```
 npm run dev
 ```
+
 Run locally http://localhost:8000/
 
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```
 
 ## Backend
+
 ```
 cd backend
 ```
 
 Set up Python environment
+
 ```
 python -m venv venv
 source ./venv/bin/activate
 ```
 
 Install Requirements
+
 ```
 pip install -r requirements.txt
 ```
 
 Start backend
+
 ```
 python ./main.py
 ```
+
 Runs locally on http://localhost:8080/
 Open API Docs on http://localhost:8080/docs#
 
 ### Database migration
+
 Make revision
+
 ```
 alembic revision -m "description here"
 ```
+
 Run migration
 upgrade
+
 ```
 alembic upgrade head
 // or
 alembic upgrade [revision_number]
 ```
+
 downgrade
+
 ```
 alembic downgrade [revision_number]
 ```
 
 ## Project Structure
+
 ```
 tyfyc/
 │── public/                     # Static assets
@@ -97,7 +116,7 @@ tyfyc/
         ├── schemas/            # Schema and Typing
         ├── database.py         # sqlite database setup
         ├── models.py           # Database tables models
-    |── main.py                 # Entry into the backend 
+    |── main.py                 # Entry into the backend
 │── frontend/                   # React Frontend
     │── src/
         ├── api/                # API connecting to backend
@@ -115,6 +134,7 @@ tyfyc/
 ```
 
 ## Technologies Used
+
 - React.js
 - Vite
 - TypeScript

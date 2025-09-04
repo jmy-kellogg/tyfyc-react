@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import {
   useEditor,
   EditorContent,
@@ -20,15 +20,11 @@ const RichEditor = ({ content, onTextChange, popupBtnMenu }: Props) => {
   const editor = useEditor({
     extensions,
     content: formattedContent,
+    onUpdate({ editor }) {
+      const text = editor.getHTML();
+      onTextChange(text);
+    },
   });
-
-  useEffect(() => {
-    return () => {
-      if (editor) {
-        onTextChange(editor.getHTML());
-      }
-    };
-  }, [editor, onTextChange]);
 
   return (
     <>
@@ -48,7 +44,10 @@ const RichEditor = ({ content, onTextChange, popupBtnMenu }: Props) => {
             </div>
           </BubbleMenu>
 
-          <FloatingMenu editor={editor}>
+          <FloatingMenu
+            editor={editor}
+            tippyOptions={{ placement: "bottom-start" }}
+          >
             <div className="w-fit p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
               <EditBtnMenu editor={editor} />
             </div>
