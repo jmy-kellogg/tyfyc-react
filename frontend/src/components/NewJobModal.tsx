@@ -256,7 +256,7 @@ function NewJobModal() {
                 <button
                   type="button"
                   className="rounded-md border-2 border-indigo-600 font-semibold text-indigo-600 shadow-md m-3 p-2 hover:cursor-pointer hover:bg-indigo-500 hover:text-white"
-                  onClick={submit}
+                  onClick={clear}
                 >
                   clear
                 </button>
