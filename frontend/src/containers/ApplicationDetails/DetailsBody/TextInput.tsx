@@ -34,7 +34,6 @@ function TextInput({
       handleUpdate(textString);
     }
     setText(textString);
-    setEdit(false);
   };
 
   const handleSubmit = () => {

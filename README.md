@@ -7,6 +7,7 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 
 ## Features
 
+- [x] AI research company
 - [x] Manually add/change resume
 - [x] Formats resume to downloadable PDF
 - [x] Saves locally in cookies
@@ -17,7 +18,11 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 - [x] Auto update applications statuses
 - [x] Option to research potential companies via OpenAI
 - [x] Feature flags
+- [x] Stats and Analytics
+- [x] Scheduled application status update
 - [ ] Updates resume according to job posting
+- [ ] Job posting search
+- [ ] Company rating
 
 ## OpenAI
 
