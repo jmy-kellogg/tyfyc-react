@@ -2,7 +2,7 @@
 
 Tyfyc stands for “thank you for your consideration” this is to assist in customizing a person resume. This tool will allow you to upload your resume and job post you are interested in. You can then tailor your resume and track the application in one place.
 
-![Alt text](public/tyfyc-rsume.png)
+![Alt text](public/tyfyc-resume.png)
 ![Alt text](public/tyfyc-posting.png)
 ![Alt text](public/tyfyc-research.png)
 
