@@ -47,6 +47,9 @@ const PostingBtnMenu = ({ onUpdate, application }: Props) => {
             d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z"
           />
         </svg>
+        <span className="flex group-hover:hidden">
+          {application.company || "Company"}
+        </span>
         <span className="hidden group-hover:flex">Update Company</span>
       </button>
 
@@ -73,6 +76,9 @@ const PostingBtnMenu = ({ onUpdate, application }: Props) => {
             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
           />
         </svg>
+        <span className="flex group-hover:hidden">
+          {application.location || "Location"}
+        </span>
         <span className="hidden group-hover:flex">Update Location</span>
       </button>
 
@@ -94,6 +100,9 @@ const PostingBtnMenu = ({ onUpdate, application }: Props) => {
             d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
           />
         </svg>
+        <span className="flex group-hover:hidden">
+          {application.salary || "Salary"}
+        </span>
         <span className="hidden group-hover:flex">Update Salary</span>
       </button>
 

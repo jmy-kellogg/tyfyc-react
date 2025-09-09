@@ -39,7 +39,7 @@ const RichEditor = ({ content, onTextChange, popupBtnMenu }: Props) => {
           </div>
 
           <BubbleMenu editor={editor}>
-            <div className="w-fit p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
+            <div className="w-max p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
               {popupBtnMenu ? popupBtnMenu : <EditBtnMenu editor={editor} />}
             </div>
           </BubbleMenu>
@@ -48,7 +48,7 @@ const RichEditor = ({ content, onTextChange, popupBtnMenu }: Props) => {
             editor={editor}
             tippyOptions={{ placement: "bottom-start" }}
           >
-            <div className="w-fit p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
+            <div className="w-max p-1 bg-white shadow-lg rounded-sm border-1 border-gray-400">
               <EditBtnMenu editor={editor} />
             </div>
           </FloatingMenu>
