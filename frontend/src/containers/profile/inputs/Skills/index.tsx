@@ -18,17 +18,28 @@ interface Props {
   lockEdit: boolean;
 }
 
-// ToDo: update the skill mapping
 interface SkillSelect {
   label: string;
   value: string;
   id: string;
+  category: string;
+}
+
+interface SkillGroup {
+  id: string;
+  name: string;
 }
 
 function Skills({ lockEdit }: Props) {
   const [skills, setSkills] = useState<SkillSelect[]>([]);
   const [skillOptions, setSkillOptions] = useState<SkillSelect[]>([]);
   const [toggleSort, setToggleSort] = useState<boolean>(false);
+  const skillGroups: SkillGroup[] = [
+    { id: "frontend", name: "Frontend" },
+    { id: "backend", name: "Backend" },
+    { id: "database", name: "Database" },
+    { id: "", name: "General" },
+  ];
 
   const handleAddSkill = async (skillOptionsId: string) => {
     const skill: Skill | undefined = await addSkill({
@@ -39,7 +50,12 @@ function Skills({ lockEdit }: Props) {
     if (skill) {
       setSkills([
         ...skills,
-        { label: skill.name, value: skill.skillOptionsId, id: skill.id },
+        {
+          label: skill.name,
+          value: skill.skillOptionsId,
+          id: skill.id,
+          category: skill.category,
+        },
       ]);
     }
   };
@@ -65,7 +81,12 @@ function Skills({ lockEdit }: Props) {
 
     setSkillOptions([
       ...skillOptions,
-      { label: skillOption.name, value: skillOption.id, id: skillOption.id },
+      {
+        label: skillOption.name,
+        value: skillOption.id,
+        id: skillOption.id,
+        category: "",
+      },
     ]);
   };
 
@@ -101,11 +122,14 @@ function Skills({ lockEdit }: Props) {
 
   const handleSort = (list: SortableList) => {
     // ToDo: save order in DB
-    const updatedSkills: SkillSelect[] = list.map(({ label, value, id }) => ({
-      label,
-      value,
-      id,
-    }));
+    const updatedSkills: SkillSelect[] = list.map(
+      ({ label, value, id, category }) => ({
+        label,
+        value,
+        id,
+        category,
+      })
+    );
 
     setSkills(updatedSkills);
   };
@@ -118,6 +142,7 @@ function Skills({ lockEdit }: Props) {
           label: name,
           value: id,
           id: "",
+          category: "",
         }))
       );
     } catch (err) {
@@ -129,10 +154,11 @@ function Skills({ lockEdit }: Props) {
     try {
       const dbSkills = await getSkills();
       setSkills(
-        dbSkills.map(({ id, name, skillOptionsId }) => ({
+        dbSkills.map(({ id, name, skillOptionsId, category }) => ({
           label: name,
           value: skillOptionsId,
           id,
+          category,
         }))
       );
     } catch (err) {
@@ -191,44 +217,58 @@ function Skills({ lockEdit }: Props) {
         )}
       </div>
       {toggleSort ? (
-        <div className="flex flex-wrap w-9/10">
-          <DndSort
-            list={skills.map(formatSortList)}
-            direction="horizontal"
-            onSort={handleSort}
-          ></DndSort>
+        <div className="flex">
+          <b>General: </b>
+          <div className="flex flex-wrap w-9/10">
+            <DndSort
+              list={skills.map(formatSortList)}
+              direction="horizontal"
+              onSort={handleSort}
+            ></DndSort>
+          </div>
         </div>
       ) : (
         <>
           {lockEdit ? (
             <div>
-              <p>{skills.map(({ label }) => label).join(", ")}</p>
+              <div className="flex">
+                <b>General: </b>
+                <p>
+                  {skills
+                    .filter(({ category }) => !category)
+                    .map(({ label }) => label)
+                    .join(", ")}
+                </p>
+              </div>
             </div>
           ) : (
-            <CreatableSelect
-              isMulti
-              isClearable={false}
-              name="skills"
-              isSearchable
-              classNamePrefix="select"
-              className="basic-single"
-              placeholder="Technologies"
-              options={skillOptions}
-              value={skills}
-              onChange={onChange}
-              onCreateOption={onCreateOption}
-              styles={{
-                multiValue: (styles) => {
-                  return {
-                    ...styles,
-                    backgroundColor: "#a3b3ff",
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    borderRadius: "3px",
-                  };
-                },
-              }}
-            />
+            <div className="flex">
+              <b>General: </b>
+              <CreatableSelect
+                isMulti
+                isClearable={false}
+                name="skills"
+                isSearchable
+                classNamePrefix="select"
+                className="basic-single"
+                placeholder="Technologies"
+                options={skillOptions}
+                value={skills}
+                onChange={onChange}
+                onCreateOption={onCreateOption}
+                styles={{
+                  multiValue: (styles) => {
+                    return {
+                      ...styles,
+                      backgroundColor: "#a3b3ff",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      borderRadius: "3px",
+                    };
+                  },
+                }}
+              />
+            </div>
           )}
         </>
       )}
