@@ -135,9 +135,6 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
       <p style="text-align: center">
         LinkedIn: ${personal.linkedIn} | GitHub: ${personal.gitHub}
       </p>
-      <hr />
-      <h2 style="text-align: center">Summary</h2>
-      <p>${personal.summary}</p>
     </p>`;
   };
 

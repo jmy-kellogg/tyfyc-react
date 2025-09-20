@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
-
+import { useSelector } from "react-redux";
 import type { ApplicationUpdate, Application } from "@/types";
 import Resume from "@/components/Resume";
 import Toggle from "@/components/Toggle";
 import SkillSection from "./SkillsSection";
 import TextInput from "./TextInput";
 import PostingBtnMenu from "./PostingBtnMenu";
+import type { State } from "@/store";
 
 interface Props {
   application: Application;
   onUpdate: (form: ApplicationUpdate) => void;
 }
 function DetailsBody({ application, onUpdate }: Props) {
+  const user = useSelector((state: State) => state.auth.user);
   const [notesToggle, setNotesToggle] = useState<boolean>(false);
   const [resumeToggle, setResumeToggle] = useState<boolean>(false);
   const [skillsToggle, setSkillsToggle] = useState<boolean>(true);
@@ -26,7 +28,7 @@ function DetailsBody({ application, onUpdate }: Props) {
     if (!notesToggle && !application.notes) {
       // ToDo: allow this to be customizable
       onUpdate({
-        notes: `<h3>Intro:</h3><p></p><h3><strong>Questions:</strong></h3><p>What are the most important qualities they are looking for?</p><p>What is the team?</p><p>What will I be working on?</p><p></p><h3><strong>About Company:</strong></h3><p></p><h3><strong>Steps:</strong></h3><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p><strong>Recruiter Interview</strong> - 30 Mins</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p><strong>HM Interview </strong>- 30 Mins</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p><strong>Technical Challenge</strong></p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><p><strong>Onsite:</strong></p><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>Code Interview</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>Behavior Interview</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>System Design</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><p></p>`,
+        notes: `<h3>Intro:</h3><p>${user?.summary || ""}</p><h3><strong>Questions:</strong></h3><p>What are the most important qualities they are looking for?</p><p>What is the team?</p><p>What will I be working on?</p><p></p><h3><strong>About Company:</strong></h3><p></p><h3><strong>Steps:</strong></h3><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p><strong>Recruiter Interview</strong> - 30 Mins</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p><strong>HM Interview </strong>- 30 Mins</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p><strong>Technical Challenge</strong></p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><p><strong>Onsite:</strong></p><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>Code Interview</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>Behavior Interview</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><ul class="taskList" data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>System Design</p></div></li></ul><ul class="bulletList"><li><p>Notes:</p></li></ul><p></p>`,
       });
     }
   };
