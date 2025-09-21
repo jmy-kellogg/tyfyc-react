@@ -4,11 +4,13 @@ from typing import Optional
 class SkillBase(BaseModel):
     skill_options_id: str
     category: str
+    rank: int | None
 
 
 class SkillCreate(BaseModel):
     skill_options_id: str
     category: str
+    rank: int | None
 
 class SkillResp(SkillBase):
     id: str

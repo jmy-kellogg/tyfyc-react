@@ -24,6 +24,7 @@ def get_skills(current_user: User = Depends(get_current_active_user), db: Sessio
         Skill.id,
         Skill.category,
         Skill.skill_options_id,
+        Skill.rank,
         SkillsOption.name,
         SkillsOption.default_category
     ).select_from(Skill).join(
@@ -38,8 +39,9 @@ def get_skills(current_user: User = Depends(get_current_active_user), db: Sessio
             "id": item[0],
             "category": item[1],
             "skill_options_id": item[2],
-            "name": item[3],
-            "default_category": item[4]
+            "rank": item[3],
+            "name": item[4],
+            "default_category": item[5],
         }
         for item in results
     ]
@@ -61,6 +63,7 @@ def create_skill(skill: SkillCreate, current_user: User = Depends(get_current_ac
     db_skill = Skill(
       category=skill.category,
       skill_options_id=skill.skill_options_id,
+      rank=skill.rank,
       user_id=user_id
     )
     db.add(db_skill)
@@ -71,6 +74,39 @@ def create_skill(skill: SkillCreate, current_user: User = Depends(get_current_ac
         "id": db_skill.id,
         "category": db_skill.category,
         "skill_options_id":  db_skill.skill_options_id,
+        "rank": db_skill.rank,
+        "name": skill_option.name,
+        "default_category": skill_option.default_category
+    }
+    
+    return skill_response
+
+@router.put("/skills/{skill_id}", tags=["skills"], response_model=SkillResp)
+def update_skill(skill_id: str, skill: SkillCreate, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    user_id = current_user.id
+    skill_option = db.get(SkillsOption, skill.skill_options_id)
+    db_skill = db.get(Skill, skill_id)
+
+    if not skill_option:
+        raise HTTPException(status_code=404, detail="Skill option not found")
+    
+    if not db_skill or db_skill.user_id != user_id:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    
+    if skill.category != db_skill.category:
+        setattr(db_skill, "category", skill.category)    
+
+    if skill.rank != db_skill.rank:
+        setattr(db_skill, "rank", skill.rank)    
+    
+    db.commit()
+    db.refresh(db_skill)
+
+    skill_response = {
+        "id": db_skill.id,
+        "category": db_skill.category,
+        "skill_options_id":  db_skill.skill_options_id,
+        "rank": db_skill.rank,
         "name": skill_option.name,
         "default_category": skill_option.default_category
     }
