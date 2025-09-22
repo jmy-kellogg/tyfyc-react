@@ -10,7 +10,7 @@ class SkillBase(BaseModel):
 class SkillCreate(BaseModel):
     skill_options_id: str
     category: str
-    rank: int | None
+    rank: Optional[int] = None
 
 class SkillResp(SkillBase):
     id: str

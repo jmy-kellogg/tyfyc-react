@@ -1,18 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
-import { ActionMeta, MultiValue } from "react-select";
-import CreatableSelect from "react-select/creatable";
-
-import DndSort from "@/components/Sortable/DndSort";
+import { getSkills, getSkillOptions } from "@/api/skills";
 import Divider from "src/components/Divider";
-
-import {
-  getSkills,
-  addSkill,
-  deleteSkill,
-  getSkillOptions,
-  addSkillOption,
-} from "@/api/skills";
-import type { SortableList, Skill } from "@/types";
+import SkillsGroup from "./SkillGroup";
 
 interface Props {
   lockEdit: boolean;
@@ -23,116 +12,25 @@ interface SkillSelect {
   value: string;
   id: string;
   category: string;
+  rank: number | null;
 }
 
 interface SkillGroup {
-  id: string;
+  id: "frontend" | "backend" | "database" | "";
   name: string;
 }
 
 function Skills({ lockEdit }: Props) {
-  const [skills, setSkills] = useState<SkillSelect[]>([]);
+  const [allSkills, setAllSkills] = useState<SkillSelect[]>([]);
   const [skillOptions, setSkillOptions] = useState<SkillSelect[]>([]);
   const [toggleSort, setToggleSort] = useState<boolean>(false);
-  const skillGroups: SkillGroup[] = [
-    { id: "frontend", name: "Frontend" },
-    { id: "backend", name: "Backend" },
-    { id: "database", name: "Database" },
-    { id: "", name: "General" },
+
+  const skillGroups: Array<SkillGroup["id"]> = [
+    "frontend",
+    "backend",
+    "database",
+    "",
   ];
-
-  const handleAddSkill = async (skillOptionsId: string) => {
-    const skill: Skill | undefined = await addSkill({
-      skillOptionsId,
-      category: "",
-    });
-
-    if (skill) {
-      setSkills([
-        ...skills,
-        {
-          label: skill.name,
-          value: skill.skillOptionsId,
-          id: skill.id,
-          category: skill.category,
-        },
-      ]);
-    }
-  };
-
-  const onChange = async (
-    _newValue: MultiValue<SkillSelect>,
-    actionMeta: ActionMeta<SkillSelect>
-  ) => {
-    if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
-      await handleAddSkill(actionMeta.option.value);
-    } else if (
-      actionMeta.action === "remove-value" &&
-      actionMeta?.removedValue?.id
-    ) {
-      await removeSkill(actionMeta.removedValue.id);
-    }
-  };
-
-  const onCreateOption = async (inputValue: string) => {
-    const skillOption = await addSkillOption({ name: inputValue });
-
-    handleAddSkill(skillOption.id);
-
-    setSkillOptions([
-      ...skillOptions,
-      {
-        label: skillOption.name,
-        value: skillOption.id,
-        id: skillOption.id,
-        category: "",
-      },
-    ]);
-  };
-
-  const removeSkill = async (id: string) => {
-    if (!id) return;
-
-    const updatedSkills: SkillSelect[] = skills.filter(
-      (skill) => skill.id !== id
-    );
-
-    await deleteSkill(id);
-    setSkills(updatedSkills);
-  };
-
-  const formatSortList = (skill: SkillSelect) => ({
-    ...skill,
-    component: (
-      <div className="flex rounded-sm border-1 border-indigo-600 text-indigo-600 m-1 pl-1 shadow-md hover:cursor-grab hover:bg-indigo-100">
-        {skill.label}
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="size-5 self-center hover:cursor-pointer hover:font-bold hover:text-red-600"
-          onClick={() => removeSkill(skill.id || "")}
-        >
-          <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-        </svg>
-      </div>
-    ),
-  });
-
-  const handleSort = (list: SortableList) => {
-    // ToDo: save order in DB
-    const updatedSkills: SkillSelect[] = list.map(
-      ({ label, value, id, category }) => ({
-        label,
-        value,
-        id,
-        category,
-      })
-    );
-
-    setSkills(updatedSkills);
-  };
 
   const fetchSkillOptions = useCallback(async () => {
     try {
@@ -143,6 +41,7 @@ function Skills({ lockEdit }: Props) {
           value: id,
           id: "",
           category: "",
+          rank: null,
         }))
       );
     } catch (err) {
@@ -153,14 +52,16 @@ function Skills({ lockEdit }: Props) {
   const fetchSkills = useCallback(async () => {
     try {
       const dbSkills = await getSkills();
-      setSkills(
-        dbSkills.map(({ id, name, skillOptionsId, category }) => ({
+      const formattedList: SkillSelect[] = dbSkills.map(
+        ({ id, name, skillOptionsId, category, rank }) => ({
           label: name,
           value: skillOptionsId,
           id,
           category,
-        }))
+          rank,
+        })
       );
+      setAllSkills(formattedList);
     } catch (err) {
       console.error(err);
     }
@@ -216,62 +117,16 @@ function Skills({ lockEdit }: Props) {
           </svg>
         )}
       </div>
-      {toggleSort ? (
-        <div className="flex">
-          <b>General: </b>
-          <div className="flex flex-wrap w-9/10">
-            <DndSort
-              list={skills.map(formatSortList)}
-              direction="horizontal"
-              onSort={handleSort}
-            ></DndSort>
-          </div>
-        </div>
-      ) : (
-        <>
-          {lockEdit ? (
-            <div>
-              <div className="flex">
-                <b>General: </b>
-                <p>
-                  {skills
-                    .filter(({ category }) => !category)
-                    .map(({ label }) => label)
-                    .join(", ")}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="flex">
-              <b>General: </b>
-              <CreatableSelect
-                isMulti
-                isClearable={false}
-                name="skills"
-                isSearchable
-                classNamePrefix="select"
-                className="basic-single"
-                placeholder="Technologies"
-                options={skillOptions}
-                value={skills}
-                onChange={onChange}
-                onCreateOption={onCreateOption}
-                styles={{
-                  multiValue: (styles) => {
-                    return {
-                      ...styles,
-                      backgroundColor: "#a3b3ff",
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                      borderRadius: "3px",
-                    };
-                  },
-                }}
-              />
-            </div>
-          )}
-        </>
-      )}
+      {skillGroups.map((group) => (
+        <SkillsGroup
+          key={group || "general"}
+          lockEdit={lockEdit}
+          toggleSort={toggleSort}
+          allSkills={allSkills}
+          skillOptions={skillOptions}
+          groupId={group}
+        />
+      ))}
 
       <Divider />
     </>

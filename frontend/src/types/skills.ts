@@ -10,6 +10,7 @@ export interface Skill {
   id: string;
   skillOptionsId: string;
   category: string;
+  rank: number | null;
   name: string;
   defaultCategory: string | null;
 }
