@@ -99,7 +99,7 @@ function SkillsGroup({
   const formatSortList = (skill: SkillSelect) => ({
     ...skill,
     component: (
-      <div className="flex rounded-sm border-1 border-indigo-600 text-indigo-600 m-1 pl-1 shadow-md hover:cursor-grab hover:bg-indigo-100">
+      <div className="grid grid-cols-[1fr_auto] items-center rounded-sm border-1 border-indigo-600 text-indigo-600 m-1 pl-1 shadow-md hover:cursor-grab hover:bg-indigo-100">
         {skill.label}
 
         <svg
@@ -139,11 +139,11 @@ function SkillsGroup({
   }, [allSkills, groupId]);
 
   return (
-    <>
+    <div className="m-2">
       {toggleSort ? (
-        <div className="flex">
-          <b>{displayName}: </b>
-          <div className="flex flex-wrap w-9/10">
+        <div className="grid grid-cols-[5rem_1fr] items-start gap-2">
+          <b>{`${displayName}: `}</b>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-2 w-9/10">
             <DndSort
               list={skills
                 .filter(({ category }) => category == groupId)
@@ -157,8 +157,8 @@ function SkillsGroup({
         <>
           {lockEdit ? (
             <div>
-              <div className="flex">
-                <b>{displayName}: </b>
+              <div className="grid grid-cols-[5rem_1fr] items-start gap-2">
+                <b>{`${displayName}: `}</b>
                 <p>
                   {skills
                     .filter(({ category }) => category == groupId)
@@ -168,8 +168,8 @@ function SkillsGroup({
               </div>
             </div>
           ) : (
-            <div className="flex">
-              <b>{displayName}: </b>
+            <div className="grid grid-cols-[5rem_1fr] items-start gap-2">
+              <b>{`${displayName}: `}</b>
               <CreatableSelect
                 isMulti
                 isClearable={false}
@@ -198,7 +198,7 @@ function SkillsGroup({
           )}
         </>
       )}
-    </>
+    </div>
   );
 }
 
