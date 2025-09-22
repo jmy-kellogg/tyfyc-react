@@ -54,11 +54,22 @@ def find_location(soup) -> str:
     return location_text
 
 def find_salary(soup) -> str:
-   salary_string = soup.find(string=re.compile(",000")) or soup.find(string=re.compile("0K"))
-   regex_query = r"\$\d{1,3}(?:,\d{3})*(?:\s*-\s*\d{1,3}(?:,\d{3})*)?"
-   salary = re.search(regex_query, salary_string) if salary_string else ""
+    text = soup.get_text() if hasattr(soup, 'get_text') else str(soup)
 
-   return salary.group(0) if salary else ""
+    salary_patterns = [
+        r'\$\d{1,3}(?:,?\d{3})*\s*-\s*\$?\d{1,3}(?:,?\d{3})*',
+        r'\$?\d{1,3}k?\s*-\s*\$?\d{1,3}k',
+        r'\d{1,3}(?:,\d{3})*\s*-\s*\d{1,3}(?:,\d{3})*(?:\s*USD)?',
+        r'\$\d{1,3}(?:,?\d{3})*(?:k)?',
+        r'\d{1,3}(?:,\d{3})*(?:\s*USD)?'
+    ]
+
+    for pattern in salary_patterns:
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            return match.group(0).strip()
+
+    return ""
 
 def parse_application(application: ApplicationUpdate):
   if application["posting"]:
