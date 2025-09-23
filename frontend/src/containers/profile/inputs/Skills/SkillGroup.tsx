@@ -10,14 +10,20 @@ import {
   deleteSkill,
   addSkillOption,
 } from "@/api/skills";
-import type { SortableList, SkillSelect, SkillGroup, Skill } from "@/types";
+import type {
+  SortableList,
+  SkillSelect,
+  SkillGroup,
+  Skill,
+  SkillOption,
+} from "@/types";
 
 interface Props {
   lockEdit: boolean;
   toggleSort: boolean;
   allSkills: SkillSelect[];
   skillOptions: SkillSelect[];
-  groupId: string;
+  groupId: SkillGroup["id"];
 }
 
 const groups: SkillGroup[] = [
@@ -34,13 +40,14 @@ function SkillsGroup({
   skillOptions,
   groupId = "general",
 }: Props) {
-  const displayName = groups.find(({ id }) => id == groupId)?.name || "General";
+  const displayName: string =
+    groups.find(({ id }) => id === groupId)?.name || "General";
   const [skills, setSkills] = useState<SkillSelect[]>([]);
 
-  const handleAddSkill = async (skillOptionsId: string) => {
-    const skill: SkillSelect | undefined = allSkills.find(({ value }) => {
-      return value === skillOptionsId;
-    });
+  const handleAddSkill = async (skillOptionsId: string): Promise<void> => {
+    const skill: SkillSelect | undefined = allSkills.find(
+      ({ value }) => value === skillOptionsId
+    );
     let skillResp: Skill | undefined;
 
     try {
@@ -69,15 +76,15 @@ function SkillsGroup({
           },
         ]);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      console.error("Failed to add skill:", err);
     }
   };
 
   const onChange = (
     _newValue: MultiValue<SkillSelect>,
     actionMeta: ActionMeta<SkillSelect>
-  ) => {
+  ): void => {
     if (actionMeta.action === "select-option" && actionMeta?.option?.value) {
       handleAddSkill(actionMeta.option.value);
     } else if (
@@ -88,13 +95,18 @@ function SkillsGroup({
     }
   };
 
-  const onCreateOption = async (inputValue: string) => {
-    const skillOption = await addSkillOption({ name: inputValue });
-
-    handleAddSkill(skillOption.id);
+  const onCreateOption = async (inputValue: string): Promise<void> => {
+    try {
+      const skillOption: SkillOption = await addSkillOption({
+        name: inputValue,
+      });
+      await handleAddSkill(skillOption.id);
+    } catch (err: unknown) {
+      console.error("Failed to create skill option:", err);
+    }
   };
 
-  const removeSkill = async (id: string) => {
+  const removeSkill = async (id: string): Promise<void> => {
     if (!id) return;
 
     const updatedSkills: SkillSelect[] = skills.filter(
@@ -103,12 +115,12 @@ function SkillsGroup({
     try {
       await deleteSkill(id);
       setSkills([...updatedSkills]);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      console.error("Failed to remove skill:", err);
     }
   };
 
-  const formatSortList = (skill: SkillSelect) => ({
+  const formatSortList = (skill: SkillSelect): SortableList[number] => ({
     ...skill,
     component: (
       <div className="grid grid-cols-[1fr_auto] items-center rounded-sm border-1 border-indigo-600 text-indigo-600 m-1 pl-1 shadow-md hover:cursor-grab hover:bg-indigo-100">
@@ -119,7 +131,7 @@ function SkillsGroup({
           viewBox="0 0 20 20"
           fill="currentColor"
           className="size-5 self-center hover:cursor-pointer hover:font-bold hover:text-red-600"
-          onClick={() => removeSkill(skill.id || "")}
+          onClick={() => removeSkill(skill.id)}
         >
           <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
         </svg>
@@ -127,9 +139,9 @@ function SkillsGroup({
     ),
   });
 
-  const handleSort = async (list: SortableList) => {
+  const handleSort = async (list: SortableList): Promise<void> => {
     const updatedSkills: SkillSelect[] = list.map(
-      ({ label, value, id, category }, index) => ({
+      ({ label, value, id, category }, index): SkillSelect => ({
         label,
         value,
         id,
@@ -144,7 +156,7 @@ function SkillsGroup({
     for (const skill of updatedSkills) {
       try {
         await updateSkill(skill.id, { rank: skill.rank });
-      } catch (error) {
+      } catch (error: unknown) {
         console.error(`Failed to update rank for skill ${skill.id}:`, error);
       }
     }
@@ -152,7 +164,7 @@ function SkillsGroup({
 
   useEffect(() => {
     const filteredSkills = allSkills
-      .filter(({ category }) => category === groupId)
+      .filter(({ category }) => (category || "general") === groupId)
       .sort((a, b) => {
         if (a.rank === null && b.rank === null) return 0;
         if (a.rank === null) return 1;

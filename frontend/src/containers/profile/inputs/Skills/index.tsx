@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { getSkills, getSkillOptions } from "@/api/skills";
 import Divider from "src/components/Divider";
 import SkillsGroup from "./SkillGroup";
-import type { SkillSelect, SkillGroup } from "@/types";
+import type { SkillSelect, SkillGroup, Skill, SkillOption } from "@/types";
 
 interface Props {
   lockEdit: boolean;
@@ -13,35 +13,37 @@ function Skills({ lockEdit }: Props) {
   const [skillOptions, setSkillOptions] = useState<SkillSelect[]>([]);
   const [toggleSort, setToggleSort] = useState<boolean>(false);
 
-  const skillGroups: Array<SkillGroup["id"]> = [
+  const skillGroups: SkillGroup["id"][] = [
     "frontend",
     "backend",
     "database",
-    "",
+    "general",
   ];
 
-  const fetchSkillOptions = useCallback(async () => {
+  const fetchSkillOptions = useCallback(async (): Promise<void> => {
     try {
-      const dbSkillOptions = await getSkillOptions();
+      const dbSkillOptions: SkillOption[] = await getSkillOptions();
       setSkillOptions(
-        dbSkillOptions.map(({ id, name }) => ({
-          label: name,
-          value: id,
-          id: "",
-          category: "",
-          rank: null,
-        }))
+        dbSkillOptions.map(
+          ({ id, name }): SkillSelect => ({
+            label: name,
+            value: id,
+            id: "",
+            category: "",
+            rank: null,
+          })
+        )
       );
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      console.error("Failed to fetch skill options:", err);
     }
   }, []);
 
-  const fetchSkills = useCallback(async () => {
+  const fetchSkills = useCallback(async (): Promise<void> => {
     try {
-      const dbSkills = await getSkills();
+      const dbSkills: Skill[] = await getSkills();
       const formattedList: SkillSelect[] = dbSkills.map(
-        ({ id, name, skillOptionsId, category, rank }) => ({
+        ({ id, name, skillOptionsId, category, rank }): SkillSelect => ({
           label: name,
           value: skillOptionsId,
           id,
@@ -50,18 +52,15 @@ function Skills({ lockEdit }: Props) {
         })
       );
       setAllSkills(formattedList);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      console.error("Failed to fetch skills:", err);
     }
   }, []);
 
   useEffect(() => {
-    fetchSkillOptions();
-  }, [fetchSkillOptions]);
-
-  useEffect(() => {
     fetchSkills();
-  }, [fetchSkills]);
+    fetchSkillOptions();
+  }, [fetchSkills, fetchSkillOptions]);
 
   return (
     <>
@@ -78,7 +77,7 @@ function Skills({ lockEdit }: Props) {
             stroke="currentColor"
             className="size-6 text-emerald-500 rounded-lg hover:cursor-pointer hover:text-white hover:bg-emerald-300"
             id="skill-sort-check"
-            onClick={() => setToggleSort(!toggleSort)}
+            onClick={() => setToggleSort(false)}
           >
             <path
               strokeLinecap="round"
@@ -94,7 +93,7 @@ function Skills({ lockEdit }: Props) {
             strokeWidth={1.5}
             stroke="currentColor"
             className="size-6 hover:cursor-pointer rounded-lg hover:cursor-pointer hover:text-sky-500"
-            onClick={() => setToggleSort(!toggleSort)}
+            onClick={() => setToggleSort(true)}
             id="skill-sort-funnel"
           >
             <path
