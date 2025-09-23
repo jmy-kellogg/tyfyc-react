@@ -12,6 +12,10 @@ class SkillCreate(BaseModel):
     category: str
     rank: Optional[int] = None
 
+class SkillUpdate(BaseModel):
+    category: Optional[str] =  None
+    rank: Optional[int] =  None
+
 class SkillResp(SkillBase):
     id: str
     name: str
@@ -26,8 +30,8 @@ class SkillOptionCreate(BaseModel):
     default_category: str | None = ""
 
 class SkillOptionUpdate(BaseModel):
-    name:  Optional[str]
-    default_category:  Optional[str]
+    name:  Optional[str] =  None
+    default_category:  Optional[str] =  None
 
 class SkillOptionsResp(SkillOptionsBase):
     id: str

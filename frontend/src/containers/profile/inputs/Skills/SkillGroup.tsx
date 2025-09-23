@@ -4,8 +4,13 @@ import CreatableSelect from "react-select/creatable";
 
 import DndSort from "@/components/Sortable/DndSort";
 
-import { addSkill, deleteSkill, addSkillOption } from "@/api/skills";
-import type { SortableList, Skill } from "@/types";
+import {
+  addSkill,
+  updateSkill,
+  deleteSkill,
+  addSkillOption,
+} from "@/api/skills";
+import type { SortableList } from "@/types";
 
 interface SkillSelect {
   label: string;
@@ -24,7 +29,7 @@ interface Props {
 }
 
 interface SkillGroup {
-  id: "frontend" | "backend" | "database" | "";
+  id: "frontend" | "backend" | "database" | "general" | "";
   name: string;
 }
 
@@ -32,7 +37,7 @@ const groups: SkillGroup[] = [
   { id: "frontend", name: "Frontend" },
   { id: "backend", name: "Backend" },
   { id: "database", name: "Database" },
-  { id: "", name: "General" },
+  { id: "general", name: "General" },
 ];
 
 function SkillsGroup({
@@ -40,28 +45,31 @@ function SkillsGroup({
   toggleSort,
   allSkills,
   skillOptions,
-  groupId = "",
+  groupId = "general",
 }: Props) {
   const displayName = groups.find(({ id }) => id == groupId)?.name || "General";
   const [skills, setSkills] = useState<SkillSelect[]>([]);
 
   const handleAddSkill = async (skillOptionsId: string) => {
-    const skill: Skill | undefined = await addSkill({
-      skillOptionsId,
-      category: groupId,
+    let skill: SkillSelect | undefined = allSkills.find(({ value }) => {
+      return value === skillOptionsId;
     });
 
-    if (skill) {
-      setSkills([
-        ...skills,
-        {
-          label: skill.name,
-          value: skill.skillOptionsId,
-          id: skill.id,
-          category: skill.category,
-          rank: skill.rank || null,
-        },
-      ]);
+    try {
+      if (skill) {
+        await updateSkill(skill.id, { category: groupId });
+      } else {
+        skill = await addSkill({
+          skillOptionsId,
+          category: groupId,
+        });
+      }
+
+      if (skill) {
+        setSkills([...skills, skill]);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, text
 from typing import List
 
-from app.schemas.skills import SkillOptionsResp, SkillOptionCreate, SkillOptionUpdate, SkillResp, SkillCreate
+from app.schemas.skills import SkillOptionsResp, SkillOptionCreate, SkillOptionUpdate, SkillResp, SkillCreate, SkillUpdate
 from app.auth.auth_handler import get_current_active_user
 from app.database import get_db, engine
 from app.models import SkillsOption, Skill, User
@@ -82,22 +82,19 @@ def create_skill(skill: SkillCreate, current_user: User = Depends(get_current_ac
     return skill_response
 
 @router.put("/skills/{skill_id}", tags=["skills"], response_model=SkillResp)
-def update_skill(skill_id: str, skill: SkillCreate, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def update_skill(skill_id: str, skill: SkillUpdate, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
     user_id = current_user.id
-    skill_option = db.get(SkillsOption, skill.skill_options_id)
     db_skill = db.get(Skill, skill_id)
-
-    if not skill_option:
-        raise HTTPException(status_code=404, detail="Skill option not found")
-    
     if not db_skill or db_skill.user_id != user_id:
         raise HTTPException(status_code=404, detail="Skill not found")
-    
-    if skill.category != db_skill.category:
-        setattr(db_skill, "category", skill.category)    
 
-    if skill.rank != db_skill.rank:
-        setattr(db_skill, "rank", skill.rank)    
+    skill_option = db.get(SkillsOption, db_skill.skill_options_id)
+    if not skill_option:
+        raise HTTPException(status_code=404, detail="Skill option not found")
+
+    for field, value in skill.dict(exclude_unset=True).items():
+        if value is not None:
+            setattr(db_skill, field, value)
     
     db.commit()
     db.refresh(db_skill)

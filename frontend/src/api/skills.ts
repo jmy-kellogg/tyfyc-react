@@ -22,6 +22,14 @@ export const addSkill = async (
   return response?.data || {};
 };
 
+export const updateSkill = async (
+  skillId: string,
+  skill: Partial<SkillCreate>
+): Promise<Skill | undefined> => {
+  const response = await api.put(`/skills/${skillId}`, skill);
+  return response?.data || {};
+};
+
 export const deleteSkill = async (skillId: string) => {
   await api.delete(`/skills/${skillId}`);
 };
