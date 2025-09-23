@@ -10,7 +10,7 @@ import {
   deleteSkill,
   addSkillOption,
 } from "@/api/skills";
-import type { SortableList, SkillSelect, SkillGroup } from "@/types";
+import type { SortableList, SkillSelect, SkillGroup, Skill } from "@/types";
 
 interface Props {
   lockEdit: boolean;
@@ -38,22 +38,36 @@ function SkillsGroup({
   const [skills, setSkills] = useState<SkillSelect[]>([]);
 
   const handleAddSkill = async (skillOptionsId: string) => {
-    let skill: SkillSelect | undefined = allSkills.find(({ value }) => {
+    const skill: SkillSelect | undefined = allSkills.find(({ value }) => {
       return value === skillOptionsId;
     });
+    let skillResp: Skill | undefined;
 
     try {
       if (skill) {
-        await updateSkill(skill.id, { category: groupId });
+        skillResp = await updateSkill(skill.id, {
+          category: groupId,
+          rank: skills.length - 1,
+        });
       } else {
-        skill = await addSkill({
+        skillResp = await addSkill({
           skillOptionsId,
           category: groupId,
+          rank: skills.length - 1,
         });
       }
 
-      if (skill) {
-        setSkills([...skills, skill]);
+      if (skillResp) {
+        setSkills([
+          ...skills,
+          {
+            label: skillResp.name,
+            value: skillResp.skillOptionsId,
+            id: skillResp.id,
+            category: skillResp.category,
+            rank: skillResp.rank,
+          },
+        ]);
       }
     } catch (err) {
       console.error(err);
@@ -83,12 +97,15 @@ function SkillsGroup({
   const removeSkill = async (id: string) => {
     if (!id) return;
 
-    const updatedSkills: SkillSelect[] = skills
-      .filter((skill) => skill.id !== id)
-      .sort((a, b) => (a.rank || 0) - (b.rank || 0));
-
-    await deleteSkill(id);
-    setSkills(updatedSkills);
+    const updatedSkills: SkillSelect[] = skills.filter(
+      (skill) => skill.id !== id
+    );
+    try {
+      await deleteSkill(id);
+      setSkills([...updatedSkills]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const formatSortList = (skill: SkillSelect) => ({
@@ -136,7 +153,12 @@ function SkillsGroup({
   useEffect(() => {
     const filteredSkills = allSkills
       .filter(({ category }) => category === groupId)
-      .sort((a, b) => (a.rank || 0) - (b.rank || 0));
+      .sort((a, b) => {
+        if (a.rank === null && b.rank === null) return 0;
+        if (a.rank === null) return 1;
+        if (b.rank === null) return -1;
+        return a.rank - b.rank;
+      });
 
     setSkills(filteredSkills);
   }, [allSkills, groupId]);
