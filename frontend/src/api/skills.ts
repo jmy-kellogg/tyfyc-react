@@ -4,6 +4,7 @@ import type {
   SkillOption,
   SkillCreate,
   SkillOptionCreate,
+  SkillUpdate,
 } from "@/types";
 
 export const getSkills = async (): Promise<Skill[]> => {
@@ -24,7 +25,7 @@ export const addSkill = async (
 
 export const updateSkill = async (
   skillId: string,
-  skill: Partial<SkillCreate>
+  skill: SkillUpdate
 ): Promise<Skill | undefined> => {
   const response = await api.put(`/skills/${skillId}`, skill);
   return response?.data || {};

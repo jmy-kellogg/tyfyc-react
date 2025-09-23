@@ -10,15 +10,7 @@ import {
   deleteSkill,
   addSkillOption,
 } from "@/api/skills";
-import type { SortableList } from "@/types";
-
-interface SkillSelect {
-  label: string;
-  value: string;
-  id: string;
-  category: string;
-  rank: number | null;
-}
+import type { SortableList, SkillSelect, SkillGroup } from "@/types";
 
 interface Props {
   lockEdit: boolean;
@@ -26,11 +18,6 @@ interface Props {
   allSkills: SkillSelect[];
   skillOptions: SkillSelect[];
   groupId: string;
-}
-
-interface SkillGroup {
-  id: "frontend" | "backend" | "database" | "general" | "";
-  name: string;
 }
 
 const groups: SkillGroup[] = [
@@ -96,9 +83,9 @@ function SkillsGroup({
   const removeSkill = async (id: string) => {
     if (!id) return;
 
-    const updatedSkills: SkillSelect[] = skills.filter(
-      (skill) => skill.id !== id
-    );
+    const updatedSkills: SkillSelect[] = skills
+      .filter((skill) => skill.id !== id)
+      .sort((a, b) => (a.rank || 0) - (b.rank || 0));
 
     await deleteSkill(id);
     setSkills(updatedSkills);
@@ -123,25 +110,33 @@ function SkillsGroup({
     ),
   });
 
-  const handleSort = (list: SortableList) => {
-    // ToDo: save order in DB
+  const handleSort = async (list: SortableList) => {
     const updatedSkills: SkillSelect[] = list.map(
-      ({ label, value, id, category, rank }) => ({
+      ({ label, value, id, category }, index) => ({
         label,
         value,
         id,
         category,
-        rank,
+        rank: index,
       })
     );
 
     setSkills(updatedSkills);
+
+    // Update each skill's rank in the database
+    for (const skill of updatedSkills) {
+      try {
+        await updateSkill(skill.id, { rank: skill.rank });
+      } catch (error) {
+        console.error(`Failed to update rank for skill ${skill.id}:`, error);
+      }
+    }
   };
 
   useEffect(() => {
-    const filteredSkills = allSkills.filter(
-      ({ category }) => category === groupId
-    );
+    const filteredSkills = allSkills
+      .filter(({ category }) => category === groupId)
+      .sort((a, b) => (a.rank || 0) - (b.rank || 0));
 
     setSkills(filteredSkills);
   }, [allSkills, groupId]);
@@ -151,11 +146,9 @@ function SkillsGroup({
       {toggleSort ? (
         <div className="grid grid-cols-[5rem_1fr] items-start gap-2">
           <b>{`${displayName}: `}</b>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-2 w-9/10">
+          <div className="flex flex-wrap">
             <DndSort
-              list={skills
-                .filter(({ category }) => category == groupId)
-                .map(formatSortList)}
+              list={skills.map(formatSortList)}
               direction="horizontal"
               onSort={handleSort}
             ></DndSort>
@@ -167,12 +160,7 @@ function SkillsGroup({
             <div>
               <div className="grid grid-cols-[5rem_1fr] items-start gap-2">
                 <b>{`${displayName}: `}</b>
-                <p>
-                  {skills
-                    .filter(({ category }) => category == groupId)
-                    .map(({ label }) => label)
-                    .join(", ")}
-                </p>
+                <p>{skills.map(({ label }) => label).join(", ")}</p>
               </div>
             </div>
           ) : (
@@ -187,7 +175,7 @@ function SkillsGroup({
                 className="basic-single"
                 placeholder="Technologies"
                 options={skillOptions}
-                value={skills.filter(({ category }) => category == groupId)}
+                value={skills}
                 onChange={onChange}
                 onCreateOption={onCreateOption}
                 styles={{

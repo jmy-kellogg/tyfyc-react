@@ -17,7 +17,13 @@ export interface Skill {
 
 export interface SkillCreate {
   skillOptionsId: string;
-  category: string;
+  category?: string;
+  rank?: number | null;
+}
+
+export interface SkillUpdate {
+  category?: string;
+  rank?: number | null;
 }
 
 export interface SkillOption {
@@ -29,4 +35,18 @@ export interface SkillOption {
 export interface SkillOptionCreate {
   name: string;
   defaultCategory?: string;
+}
+
+// Skill Select UI
+export interface SkillSelect {
+  label: string;
+  value: string;
+  id: string;
+  category: string;
+  rank: number | null;
+}
+
+export interface SkillGroup {
+  id: "frontend" | "backend" | "database" | "general" | "";
+  name: string;
 }

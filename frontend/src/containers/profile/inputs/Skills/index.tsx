@@ -2,22 +2,10 @@ import { useState, useCallback, useEffect } from "react";
 import { getSkills, getSkillOptions } from "@/api/skills";
 import Divider from "src/components/Divider";
 import SkillsGroup from "./SkillGroup";
+import type { SkillSelect, SkillGroup } from "@/types";
 
 interface Props {
   lockEdit: boolean;
-}
-
-interface SkillSelect {
-  label: string;
-  value: string;
-  id: string;
-  category: string;
-  rank: number | null;
-}
-
-interface SkillGroup {
-  id: "frontend" | "backend" | "database" | "";
-  name: string;
 }
 
 function Skills({ lockEdit }: Props) {
