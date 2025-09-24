@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getSkills, addSkill, getSkillOptions } from "@/api/skills";
+import { getSkills, createSkill, getSkillOptions } from "@/api/skills";
 import type { SkillOption } from "@/types";
 
 interface Props {
@@ -11,7 +11,7 @@ function SkillSection({ posting }: Props) {
   const [skills, setSkills] = useState<string[]>([]);
 
   const addSkillToProfile = async (skill: SkillOption) => {
-    await addSkill({
+    await createSkill({
       skillOptionsId: skill.id,
       category: "",
     });

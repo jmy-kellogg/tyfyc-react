@@ -85,6 +85,45 @@ def create_skill(skill: SkillCreate, current_user: User = Depends(get_current_ac
 def update_skill(skill_id: str, skill: SkillUpdate, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
     user_id = current_user.id
     db_skill = db.get(Skill, skill_id)
+    skill_option = db.get(SkillsOption, skill.skill_options_id)
+    
+    if not skill_option:
+        raise HTTPException(status_code=404, detail="Skill option not found")
+
+    if db_skill:
+        if db_skill.user_id != user_id:
+            raise HTTPException(status_code=404, detail="Skill not found for user")
+
+        for field, value in skill.dict(exclude_unset=True).items():
+            if value is not None:
+                setattr(db_skill, field, value)
+    else:
+        db_skill = Skill(
+          category=skill.category,
+          skill_options_id=skill.skill_options_id,
+          rank=skill.rank,
+          user_id=user_id
+        )
+        db.add(db_skill)
+    
+    db.commit()
+    db.refresh(db_skill)
+
+    skill_response = {
+        "id": db_skill.id,
+        "category": db_skill.category,
+        "skill_options_id":  db_skill.skill_options_id,
+        "rank": db_skill.rank,
+        "name": skill_option.name,
+        "default_category": skill_option.default_category
+    }
+    
+    return skill_response
+
+@router.patch("/skills/{skill_id}", tags=["skills"], response_model=SkillResp)
+def update_skill(skill_id: str, skill: SkillUpdate, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    user_id = current_user.id
+    db_skill = db.get(Skill, skill_id)
     if not db_skill or db_skill.user_id != user_id:
         raise HTTPException(status_code=404, detail="Skill not found")
 

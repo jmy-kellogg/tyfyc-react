@@ -5,10 +5,10 @@ import CreatableSelect from "react-select/creatable";
 import DndSort from "@/components/Sortable/DndSort";
 
 import {
-  addSkill,
+  createSkill,
   updateSkill,
   deleteSkill,
-  addSkillOption,
+  createSkillOption,
 } from "@/api/skills";
 import type {
   SortableList,
@@ -53,11 +53,12 @@ function SkillsGroup({
     try {
       if (skill) {
         skillResp = await updateSkill(skill.id, {
+          skillOptionsId,
           category: groupId,
           rank: skills.length - 1,
         });
       } else {
-        skillResp = await addSkill({
+        skillResp = await createSkill({
           skillOptionsId,
           category: groupId,
           rank: skills.length - 1,
@@ -97,7 +98,7 @@ function SkillsGroup({
 
   const onCreateOption = async (inputValue: string): Promise<void> => {
     try {
-      const skillOption: SkillOption = await addSkillOption({
+      const skillOption: SkillOption = await createSkillOption({
         name: inputValue,
       });
       await handleAddSkill(skillOption.id);

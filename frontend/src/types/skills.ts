@@ -22,6 +22,7 @@ export interface SkillCreate {
 }
 
 export interface SkillUpdate {
+  skillOptionsId: string;
   category?: string;
   rank?: number | null;
 }
