@@ -7,25 +7,34 @@ import type {
 } from "@/types";
 
 export const getApplications = async (): Promise<Applications> => {
-  const response = await api.get("/applications");
-  return response?.data || [];
+  const response = await api.get<Applications>("/applications");
+  return response?.data ?? [];
 };
 
 export const getApplication = async (
   applicationId: string
 ): Promise<Application> => {
-  const response = await api.get(`/applications/${applicationId}`);
-  return response?.data || {};
+  const response = await api.get<Application>(`/applications/${applicationId}`);
+  if (!response?.data) {
+    throw new Error(`Failed to fetch application with id: ${applicationId}`);
+  }
+  return response.data;
 };
 
 export const updateApplication = async (
   application: ApplicationUpdate
 ): Promise<Application> => {
-  const response = await api.put(
+  if (!application.id) {
+    throw new Error("Application ID is required for update");
+  }
+  const response = await api.put<Application>(
     `/applications/${application.id}`,
     application
   );
-  return response?.data || {};
+  if (!response?.data) {
+    throw new Error(`Failed to update application with id: ${application.id}`);
+  }
+  return response.data;
 };
 
 export const addApplication = async (
@@ -33,13 +42,24 @@ export const addApplication = async (
 ): Promise<Application> => {
   const reqBody: ApplicationCreate = {
     ...application,
-    status: application.status || "applied",
+    status: application.status ?? "applied",
   };
 
-  const response = await api.post("/applications", reqBody);
-  return response?.data || {};
+  const response = await api.post<Application>("/applications", reqBody);
+  if (!response?.data) {
+    throw new Error("Failed to create application");
+  }
+  return response.data;
 };
 
-export const deleteApplication = async (applicationId: string) => {
-  await api.delete(`/applications/${applicationId}`);
+export const deleteApplication = async (
+  applicationId: string
+): Promise<void> => {
+  if (!applicationId) {
+    throw new Error("Application ID is required for deletion");
+  }
+  const response = await api.delete(`/applications/${applicationId}`);
+  if (!response) {
+    throw new Error(`Failed to delete application with id: ${applicationId}`);
+  }
 };
