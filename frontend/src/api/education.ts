@@ -45,10 +45,6 @@ export const updateEducation = async (
     throw new Error("Education ID is required for update");
   }
 
-  if (!education.school || !education.degree) {
-    throw new Error("School and degree are required");
-  }
-
   const sanitizedEducation = sanitizeEduReq(education);
 
   const response = await api.put<Education>(
