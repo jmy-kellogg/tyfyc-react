@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ActionMeta, MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
@@ -23,6 +23,7 @@ interface Props {
   toggleSort: boolean;
   allSkills: SkillSelect[];
   skillOptions: SkillSelect[];
+  setAllSkills: React.Dispatch<React.SetStateAction<SkillSelect[]>>;
   groupId: SkillGroup["id"];
 }
 
@@ -38,6 +39,7 @@ function SkillsGroup({
   toggleSort,
   allSkills,
   skillOptions,
+  setAllSkills,
   groupId = "general",
 }: Props) {
   const displayName: string =
@@ -57,25 +59,38 @@ function SkillsGroup({
           category: groupId,
           rank: skills.length - 1,
         });
+        if (skillResp) {
+          const newSkill = {
+            label: skillResp.name,
+            value: skillResp.skillOptionsId,
+            id: skillResp.id,
+            category: skillResp.category,
+            rank: skillResp.rank,
+          };
+          setAllSkills((origSkills) =>
+            origSkills.map((origSkill) =>
+              origSkill.id == skill.id ? newSkill : origSkill
+            )
+          );
+        }
       } else {
         skillResp = await createSkill({
           skillOptionsId,
           category: groupId,
           rank: skills.length - 1,
         });
-      }
-
-      if (skillResp) {
-        setSkills([
-          ...skills,
-          {
-            label: skillResp.name,
-            value: skillResp.skillOptionsId,
-            id: skillResp.id,
-            category: skillResp.category,
-            rank: skillResp.rank,
-          },
-        ]);
+        if (skillResp) {
+          setAllSkills([
+            ...skills,
+            {
+              label: skillResp.name,
+              value: skillResp.skillOptionsId,
+              id: skillResp.id,
+              category: skillResp.category,
+              rank: skillResp.rank,
+            },
+          ]);
+        }
       }
     } catch (err: unknown) {
       console.error("Failed to add skill:", err);
@@ -110,12 +125,12 @@ function SkillsGroup({
   const removeSkill = async (id: string): Promise<void> => {
     if (!id) return;
 
-    const updatedSkills: SkillSelect[] = skills.filter(
+    const updatedSkills: SkillSelect[] = allSkills.filter(
       (skill) => skill.id !== id
     );
     try {
       await deleteSkill(id);
-      setSkills([...updatedSkills]);
+      setAllSkills([...updatedSkills]);
     } catch (err: unknown) {
       console.error("Failed to remove skill:", err);
     }
@@ -156,7 +171,10 @@ function SkillsGroup({
     // Update each skill's rank in the database
     for (const skill of updatedSkills) {
       try {
-        await updateSkill(skill.id, { rank: skill.rank });
+        await updateSkill(skill.id, {
+          skillOptionsId: skill.value,
+          rank: skill.rank,
+        });
       } catch (error: unknown) {
         console.error(`Failed to update rank for skill ${skill.id}:`, error);
       }

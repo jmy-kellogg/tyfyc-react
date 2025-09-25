@@ -110,6 +110,7 @@ function Skills({ lockEdit }: Props) {
           lockEdit={lockEdit}
           toggleSort={toggleSort}
           allSkills={allSkills}
+          setAllSkills={setAllSkills}
           skillOptions={skillOptions}
           groupId={group}
         />
