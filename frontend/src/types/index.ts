@@ -14,12 +14,12 @@ export interface StatusOption {
   style: string;
   color: string;
 }
-
-// // API
-// export interface ParsedData {
-//   personal: Personal;
-//   skills: SkillsList;
-//   jobHistory: JobHistoryList;
-//   education: EducationList;
-//   projects: ProjectsList;
-// }
+export interface CompanyResearch {
+  name?: string;
+  location?: string;
+  size?: string;
+  industry?: string;
+  funding?: string;
+  site?: string;
+  error?: string;
+}

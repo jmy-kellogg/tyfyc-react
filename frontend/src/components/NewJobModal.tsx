@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import RichEditor from "@/components/RichEditor";
@@ -6,20 +6,23 @@ import { addApplication } from "@/api/applications";
 import { getCompanyResearch } from "@/api/companies";
 import { getToday } from "@/utils";
 import { setActiveTab, addJobTabs } from "src/store/reducers/navigationSlice";
-import type { ApplicationCreate, Application } from "@/types";
+import type { ApplicationCreate, Application, CompanyResearch } from "@/types";
 import type { State } from "@/store";
+import type { Dispatch } from "@reduxjs/toolkit";
+
+type CompanyInfoStatus = "loading" | "success" | "error" | "";
 
 interface CompanyInfo {
-  status: string;
+  status: CompanyInfoStatus;
   message: string;
   company?: string;
 }
 
-function NewJobModal() {
-  const dispatch = useDispatch();
+const NewJobModal: React.FC = () => {
+  const dispatch = useDispatch<Dispatch>();
   const flags = useSelector((state: State) => state.auth.flags);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [hover, setHover] = useState(false);
+  const [hover, setHover] = useState<boolean>(false);
   const [companySite, setCompanySite] = useState<string>("");
   const [postingLink, setPostingLink] = useState<string>("");
   const [posting, setPosting] = useState<string>("<p></p>");
@@ -29,21 +32,29 @@ function NewJobModal() {
     company: "",
   });
 
-  const clear = () => {
+  const clear = useCallback((): void => {
     setCompanySite("");
     setPostingLink("");
-    setPosting("");
+    setPosting("<p></p>");
     setCompanyInfo({ status: "", message: "" });
-  };
+  }, []);
 
-  const submit = async () => {
+  const submit = useCallback(async (): Promise<void> => {
+    if (!posting.trim() || posting === "<p></p>") {
+      setCompanyInfo({
+        status: "error",
+        message: "Job posting content is required",
+      });
+      return;
+    }
+
     const reqBody: ApplicationCreate = {
-      companySite: companySite,
-      postingLink: postingLink,
-      posting: posting,
+      companySite: companySite.trim(),
+      postingLink: postingLink.trim(),
+      posting: posting.trim(),
       dateApplied: getToday(),
       status: "applied",
-      company: companyInfo.company || "",
+      company: companyInfo.company?.trim() || "",
     };
 
     try {
@@ -61,40 +72,59 @@ function NewJobModal() {
 
       clear();
       setShowModal(false);
-    } catch {
+    } catch (error: unknown) {
+      console.error("Failed to submit application:", error);
       setCompanyInfo({
         status: "error",
         message: "Error on submit. Please try again",
       });
     }
-  };
+  }, [posting, companySite, postingLink, companyInfo.company, clear, dispatch]);
 
-  const research = async () => {
+  const research = useCallback(async (): Promise<void> => {
+    if (!companySite.trim()) {
+      setCompanyInfo({
+        status: "error",
+        message: "Company site URL is required",
+      });
+      return;
+    }
+
     setCompanyInfo({ status: "loading", message: "Loading..." });
-    try {
-      const companyResearch = await getCompanyResearch(companySite);
 
-      if (companyResearch.error) {
-        setCompanyInfo({ status: "error", message: companyResearch.error });
+    try {
+      const companyResearch: CompanyResearch =
+        await getCompanyResearch(companySite);
+
+      if ("error" in companyResearch && companyResearch.error) {
+        setCompanyInfo({
+          status: "error",
+          message: companyResearch.error || "",
+        });
       } else {
         const { name, location, size, industry, funding } = companyResearch;
         const message = [
-          `Company Name: ${name}`,
-          `HQ Location: ${location}`,
-          `Company Size: ${size}`,
-          `Industry: ${industry}`,
-          `Latest Funding: ${funding}`,
+          `Company Name: ${name || "N/A"}`,
+          `HQ Location: ${location || "N/A"}`,
+          `Company Size: ${size || "N/A"}`,
+          `Industry: ${industry || "N/A"}`,
+          `Latest Funding: ${funding || "N/A"}`,
         ].join("\n");
 
-        setCompanyInfo({ status: "success", message: message, company: name });
+        setCompanyInfo({
+          status: "success",
+          message,
+          company: name || "Unknown Company",
+        });
       }
-    } catch {
+    } catch (error: unknown) {
+      console.error("Failed to research company:", error);
       setCompanyInfo({
         status: "error",
-        message: "failed to get info on company",
+        message: "Failed to get info on company. Please try again.",
       });
     }
-  };
+  }, [companySite]);
 
   return (
     <>
@@ -175,7 +205,7 @@ function NewJobModal() {
                         disabled={
                           companyInfo.status === "success" ||
                           companyInfo.status === "loading" ||
-                          companySite === ""
+                          !companySite.trim()
                         }
                       >
                         <svg
@@ -242,12 +272,12 @@ function NewJobModal() {
                   <div className="m-2 ml-5">Loading...</div>
                 )}
                 {companyInfo.status === "error" && (
-                  <div className="m-2 ml-5 bg-red-100 border border-red-400 text-red-700">
+                  <div className="m-2 ml-5 bg-red-100 border border-red-400 text-red-700 p-2 rounded">
                     Error: {companyInfo.message}
                   </div>
                 )}
                 {companyInfo.status === "success" && (
-                  <div className="m-2 ml-5 whitespace-pre-line">
+                  <div className="m-2 ml-5 whitespace-pre-line p-2 rounded">
                     {companyInfo.message}
                   </div>
                 )}
@@ -263,7 +293,7 @@ function NewJobModal() {
                 <button
                   type="button"
                   className="rounded-md bg-indigo-600 text-white mt-2 p-2 place-self-end font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500 disabled:border-gray-200 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
-                  disabled={!posting || posting === "<p></p>"}
+                  disabled={!posting?.trim() || posting === "<p></p>"}
                   onClick={submit}
                 >
                   Submit
@@ -275,7 +305,7 @@ function NewJobModal() {
               <div className="flex min-h-200">
                 <RichEditor
                   content={posting}
-                  onTextChange={(text) => setPosting(text)}
+                  onTextChange={(text: string) => setPosting(text)}
                 />
               </div>
             </div>
@@ -284,6 +314,6 @@ function NewJobModal() {
       )}
     </>
   );
-}
+};
 
 export default NewJobModal;
