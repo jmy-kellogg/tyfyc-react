@@ -1,4 +1,8 @@
-import axios from "axios";
+import axios, {
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from "axios";
 import { jsToPythonKeys, pythonToJsKeys } from "@/utils";
 
 import { setToken } from "@/reducers/authSlice";
@@ -10,53 +14,69 @@ const api = axios.create({
   timeout: 10000,
 });
 
-const noAuthUrls = ["/auth/register", "/auth/token"];
+const noAuthUrls: readonly string[] = [
+  "/auth/register",
+  "/auth/token",
+] as const;
 
 // Create parity for Python and JS keys naming conventions
 // Convert request data keys from camel case to snake case
 api.interceptors.request.use(
-  function (config) {
-    const token = localStorage.getItem("token");
-    const url = config.url || "";
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    const token: string | null = localStorage.getItem("token");
+    const url: string = config.url ?? "";
 
     if (token && !noAuthUrls.includes(url)) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
-    config.data = jsToPythonKeys(config.data);
+    if (config.data) {
+      config.data = jsToPythonKeys(config.data);
+    }
 
     return config;
   },
-  function (error) {
-    if (error.status === 401) {
+  (error: AxiosError): Promise<never> => {
+    console.error("Request interceptor error:", error);
+
+    if (error.response?.status === 401) {
       store.dispatch(setToken(null));
     } else {
-      // passes all error message to Alert Component
-      store.dispatch(addAlert({ type: "error", message: error.message || "" }));
-      return Promise.reject(error);
+      const errorMessage: string = error.message ?? "Request failed";
+      store.dispatch(addAlert({ type: "error", message: errorMessage }));
     }
+
+    return Promise.reject(error);
   }
 );
 
 // Convert response data keys from snake case to camel case
 api.interceptors.response.use(
-  function (response) {
-    if (Array.isArray(response.data)) {
-      response.data.map(pythonToJsKeys);
-    } else {
-      response.data = pythonToJsKeys(response.data);
+  (response: AxiosResponse): AxiosResponse => {
+    if (response.data) {
+      if (Array.isArray(response.data)) {
+        response.data = response.data.map((item: unknown) =>
+          pythonToJsKeys(item)
+        );
+      } else if (typeof response.data === "object") {
+        response.data = pythonToJsKeys(response.data);
+      }
     }
 
     return response;
   },
-  function (error) {
-    if (error.status === 401) {
+  (error: AxiosError): Promise<never> => {
+    console.error("Response interceptor error:", error);
+
+    if (error.response?.status === 401) {
       store.dispatch(setToken(null));
+      localStorage.removeItem("token");
     } else {
-      // passes all error message to Alert Component
-      store.dispatch(addAlert({ type: "error", message: error.message || "" }));
-      return Promise.reject(error);
+      const errorMessage: string = error.message ?? "Request failed";
+      store.dispatch(addAlert({ type: "error", message: errorMessage }));
     }
+
+    return Promise.reject(error);
   }
 );
 
