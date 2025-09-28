@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 
 import { loginUser, registerUser } from "@/api/auth";
 import { getApplications, updateApplication } from "src/api/applications";
@@ -35,14 +36,14 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const dispatch = useDispatch();
-  const token = useSelector((state: State) => state.auth.token);
+  const dispatch = useDispatch<Dispatch>();
+  const token: string | null = useSelector((state: State) => state.auth.token);
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname }: { pathname: string } = useLocation();
 
-  const checkForExpired = async () => {
+  const checkForExpired = async (): Promise<void> => {
     const applications = await getApplications();
-    const appExpireDate = new Date();
+    const appExpireDate: Date = new Date();
     appExpireDate.setMonth(appExpireDate.getMonth() - 2);
 
     const applied = applications.filter(({ status }) => status === "applied");
@@ -52,7 +53,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (expiredList.length) {
       await Promise.all(
-        expiredList.map(async (application) => {
+        expiredList.map(async (application): Promise<void> => {
           dispatch(
             addAlert({
               type: "info",
@@ -92,7 +93,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     navigate("/login");
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     if (token && pathname !== "/") {
       navigate("/");
     } else if (!token && pathname !== "/login") {
