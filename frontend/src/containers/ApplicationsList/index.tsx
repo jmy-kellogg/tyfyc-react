@@ -1,18 +1,23 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  ChangeEvent,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 
-import { getFormattedDate } from "@utils";
+import ExportCSV from "./ExportCSV";
+import ImportCSV from "./ImportCSV";
 import {
   getApplications,
   deleteApplication,
   updateApplication,
 } from "src/api/applications";
-import ExportCSV from "./ExportCSV";
-import ImportCSV from "./ImportCSV";
 import Dropdown from "@/components/DropDown";
-
+import { getFormattedDate } from "@utils";
 import { statusOptions } from "@options";
-
 import {
   setActiveTab,
   addJobTabs,
@@ -47,12 +52,12 @@ const sortApplications = (applications: Applications): Applications => {
   return sortedList;
 };
 
-function ApplicationsList() {
-  const dispatch = useDispatch();
+const ApplicationsList: React.FC = () => {
+  const dispatch: Dispatch = useDispatch();
   const flags = useSelector((state: State) => state.auth.flags);
   const [applications, setApplications] = useState<Applications>([]);
-  const [search, setSearch] = useState("");
-  const filteredList = useMemo(() => {
+  const [search, setSearch] = useState<string>("");
+  const filteredList: Applications = useMemo((): Applications => {
     return search
       ? applications.filter(({ company }) =>
           company.toLowerCase().includes(search.toLowerCase())
@@ -60,25 +65,25 @@ function ApplicationsList() {
       : applications;
   }, [applications, search]);
 
-  const openApplication = ({ company, id }: Application) => {
+  const openApplication = ({ company, id }: Application): void => {
     dispatch(addJobTabs({ label: company || "Job", value: id }));
     dispatch(setActiveTab(id));
   };
 
-  const remove = async (applicationId: string) => {
+  const remove = async (applicationId: string): Promise<void> => {
     await deleteApplication(applicationId);
     fetchData();
     dispatch(removeJobTab(applicationId));
   };
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (): Promise<void> => {
     const dbApplications = await getApplications();
     const sortedList = sortApplications(dbApplications);
 
     setApplications(sortedList);
   }, [setApplications]);
 
-  useEffect(() => {
+  useEffect((): void => {
     fetchData();
   }, [fetchData]);
 
@@ -94,11 +99,16 @@ function ApplicationsList() {
               placeholder="Search Companies"
               className="py-2 px-4 place-content-between w-2xl text-base placeholder:text-gray-400 rounded-lg focus:outline-none"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                setSearch(e.target.value)
+              }
             />
             <button
               className="m-auto p-1 mx-2 self-start rounded-lg text-gray-500 hover:cursor-pointer hover:font-bold hover:bg-gray-200"
-              onClick={() => setSearch("")}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+                e.stopPropagation();
+                setSearch("");
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +135,10 @@ function ApplicationsList() {
               >
                 <button
                   className="hover:bg-indigo-100 hover:cursor-pointer"
-                  onClick={() => openApplication(application)}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+                    e.stopPropagation();
+                    openApplication(application);
+                  }}
                 >
                   <div className="text-l flex justify-between items-center">
                     <div className="w-30 text-left font-bold my-3 mx-1">
@@ -141,7 +154,9 @@ function ApplicationsList() {
                     inputName="status"
                     inputValue={application.status || ""}
                     options={statusOptions}
-                    onUpdate={async (status) => {
+                    onUpdate={async (
+                      status: Record<string, unknown>
+                    ): Promise<void> => {
                       await updateApplication({ ...application, ...status });
                       fetchData();
                     }}
@@ -153,7 +168,7 @@ function ApplicationsList() {
 
                 <DeleteBtn
                   application={application}
-                  onRemove={() => remove(application.id)}
+                  onRemove={(): Promise<void> => remove(application.id)}
                 />
               </div>
             ))}
@@ -162,6 +177,6 @@ function ApplicationsList() {
       </div>
     </>
   );
-}
+};
 
 export default ApplicationsList;

@@ -1,58 +1,57 @@
 import Papa from "papaparse";
-import { ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 
 import type { Applications, ApplicationUpdate } from "@/types";
 import { getApplications, addApplication } from "@/api/applications";
 
-interface Props {
+interface ImportCSVProps {
   fetchData: () => void;
 }
 
-function ImportCSV({ fetchData }: Props) {
+const ImportCSV: React.FC<ImportCSVProps> = ({ fetchData }) => {
   const isObject = (item: unknown): boolean => {
     return (
       item !== null && typeof item === "object" && Object.keys(item).length > 0
     );
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const uploadApplications = async (csvData: Array<any>) => {
+  const uploadApplications = async (csvData: Array<Record<string, unknown>>): Promise<void> => {
     try {
       const dbApplications: Applications = await getApplications();
-      const jobIdLists = dbApplications.map(({ id }) => id);
+      const jobIdLists: string[] = dbApplications.map(({ id }) => id);
       const uploadList: Array<ApplicationUpdate> = csvData
         .filter(isObject)
-        .filter((item: ApplicationUpdate) => {
-          return !item?.id || !jobIdLists.includes(item?.id);
+        .filter((item: Record<string, unknown>) => {
+          return !item?.id || !jobIdLists.includes(item.id as string);
         });
 
       if (uploadList.length) {
-        uploadList.forEach(async (application) => {
+        uploadList.forEach(async (application: ApplicationUpdate): Promise<void> => {
           await addApplication(application);
         });
         fetchData();
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
     }
   };
 
-  const onFilePicked = async (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files || [];
-    const file: File = files[0];
+  const onFilePicked = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const files: FileList | null = event.target.files;
+    const file: File | undefined = files?.[0];
 
     if (file) {
       Papa.parse(file, {
         header: true,
-        complete: async (results) => {
-          const csvData = results?.data;
+        complete: async (results: Papa.ParseResult<Record<string, unknown>>): Promise<void> => {
+          const csvData: Array<Record<string, unknown>> | undefined = results?.data;
           if (!csvData) {
             console.error("No data from CSV found");
           } else {
             await uploadApplications(csvData);
           }
         },
-        error: function (error) {
+        error: function (error: Papa.ParseError): void {
           console.error("Error parsing CSV:", error);
         },
       });
@@ -74,6 +73,6 @@ function ImportCSV({ fetchData }: Props) {
       </label>
     </>
   );
-}
+};
 
 export default ImportCSV;
