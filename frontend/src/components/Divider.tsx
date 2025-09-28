@@ -1,6 +1,6 @@
 import { divider } from "@utils";
 
-function Divider() {
+const Divider: React.FC = () => {
   return (
     <>
       <p
@@ -14,6 +14,6 @@ function Divider() {
       </p>
     </>
   );
-}
+};
 
 export default Divider;

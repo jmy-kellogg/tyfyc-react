@@ -1,33 +1,48 @@
-import { useState, ChangeEvent, useMemo } from "react";
+import React, { useState, ChangeEvent, useMemo, MouseEvent } from "react";
 
 interface FormData {
   [name: string]: string;
 }
 
-interface Props {
+interface DropdownOption {
+  label: string;
+  value: string;
+  style?: string;
+}
+
+interface DropdownProps {
   inputName: string;
   inputValue: string;
-  options: Array<{ label: string; value: string; style?: string }>;
+  options: DropdownOption[];
   onUpdate: (data: FormData) => void;
 }
 
-function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
-  const [hover, setHover] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const inputLabel = useMemo(() => {
-    const option = options.find(({ value }) => value === inputValue);
+const Dropdown: React.FC<DropdownProps> = ({
+  inputName,
+  inputValue,
+  options,
+  onUpdate,
+}) => {
+  const [hover, setHover] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
+  const inputLabel = useMemo((): string => {
+    const option: DropdownOption | undefined = options.find(
+      ({ value }) => value === inputValue
+    );
     if (option) {
       return option.label;
     } else {
       return inputValue;
     }
   }, [options, inputValue]);
-  const inputStyle = useMemo(() => {
-    const option = options.find(({ value }) => value === inputValue);
+  const inputStyle = useMemo((): string | undefined => {
+    const option: DropdownOption | undefined = options.find(
+      ({ value }) => value === inputValue
+    );
     return option?.style;
   }, [options, inputValue]);
 
-  const onChangeData = (e: ChangeEvent<HTMLSelectElement>) => {
+  const onChangeData = (e: ChangeEvent<HTMLSelectElement>): void => {
     e.stopPropagation();
     onUpdate({ [inputName]: e.target.value });
     setEdit(false);
@@ -46,7 +61,7 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
               value={inputValue}
               onChange={onChangeData}
             >
-              {options.map(({ label, value }) => (
+              {options.map(({ label, value }: DropdownOption) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
@@ -54,7 +69,7 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
             </select>
 
             <div className="block">
-              <button onClick={() => setEdit(false)}>
+              <button onClick={(): void => setEdit(false)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -76,12 +91,12 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
           <>
             <button
               className="hover:cursor-pointer mx-1"
-              onClick={(e) => {
+              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
                 e.stopPropagation();
                 setEdit(true);
               }}
-              onMouseOver={() => setHover(true)}
-              onMouseOut={() => setHover(false)}
+              onMouseOver={(): void => setHover(true)}
+              onMouseOut={(): void => setHover(false)}
             >
               <div className="flex">
                 <p className={`font-bold ${inputStyle}`}> {inputLabel} </p>
@@ -108,6 +123,6 @@ function Dropdown({ inputName, inputValue, options, onUpdate }: Props) {
       </div>
     </>
   );
-}
+};
 
 export default Dropdown;

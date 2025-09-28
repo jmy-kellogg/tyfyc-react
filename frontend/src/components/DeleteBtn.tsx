@@ -1,12 +1,12 @@
-import { useState } from "react";
+import React, { useState, MouseEvent } from "react";
 import type { Application } from "@/types";
 
-interface Props {
+interface DeleteBtnProps {
   application: Partial<Application>;
   onRemove: () => void;
 }
 
-function DeleteBtn({ application, onRemove }: Props) {
+const DeleteBtn: React.FC<DeleteBtnProps> = ({ application, onRemove }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -14,7 +14,10 @@ function DeleteBtn({ application, onRemove }: Props) {
       <button
         type="button"
         className="rounded-md align-sub text-red-600 m-1 p-1 hover:bg-red-100 hover:cursor-pointer"
-        onClick={() => setShowModal(true)}
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
+          setShowModal(true);
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -57,13 +60,17 @@ function DeleteBtn({ application, onRemove }: Props) {
               <button
                 type="button"
                 className="rounded-md bg-gray-400 text-white m-2 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
-                onClick={() => setShowModal(false)}
+                onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                  e.stopPropagation();
+                  setShowModal(false);
+                }}
               >
                 Cancel
               </button>
               <button
                 className="rounded-md bg-red-500 text-white m-2 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-white hover:text-red-500 hover:border hover:border-red-500 hover:"
-                onClick={() => {
+                onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                  e.stopPropagation();
                   onRemove();
                   setShowModal(false);
                 }}
@@ -76,6 +83,6 @@ function DeleteBtn({ application, onRemove }: Props) {
       )}
     </>
   );
-}
+};
 
 export default DeleteBtn;

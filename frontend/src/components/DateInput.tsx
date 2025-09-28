@@ -1,21 +1,25 @@
-import { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, MouseEvent } from "react";
 import { getFormattedDate } from "@utils";
 
 interface FormData {
   [name: string]: string;
 }
 
-interface Props {
+interface DateInputProps {
   inputName: string;
   inputValue: string;
   onUpdate: (data: FormData) => void;
 }
 
-function DateInput({ inputName, inputValue, onUpdate }: Props) {
-  const [hover, setHover] = useState(false);
-  const [edit, setEdit] = useState(false);
+const DateInput: React.FC<DateInputProps> = ({
+  inputName,
+  inputValue,
+  onUpdate,
+}) => {
+  const [hover, setHover] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
 
-  const onChangeData = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeData = (e: ChangeEvent<HTMLInputElement>): void => {
     onUpdate({ [e.target.name]: e.target.value });
     setEdit(false);
     setHover(false);
@@ -36,7 +40,12 @@ function DateInput({ inputName, inputValue, onUpdate }: Props) {
             />
 
             <div className="block">
-              <button onClick={() => setEdit(false)}>
+              <button
+                onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                  e.stopPropagation();
+                  setEdit(false);
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -58,12 +67,12 @@ function DateInput({ inputName, inputValue, onUpdate }: Props) {
           <>
             <button
               className="hover:cursor-pointer mx-1"
-              onClick={(e) => {
+              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
                 e.stopPropagation();
                 setEdit(true);
               }}
-              onMouseOver={() => setHover(true)}
-              onMouseOut={() => setHover(false)}
+              onMouseOver={(): void => setHover(true)}
+              onMouseOut={(): void => setHover(false)}
             >
               <div className="flex">
                 <p> {getFormattedDate(inputValue)} </p>
@@ -90,6 +99,6 @@ function DateInput({ inputName, inputValue, onUpdate }: Props) {
       </div>
     </>
   );
-}
+};
 
 export default DateInput;

@@ -1,4 +1,6 @@
+import React from "react";
 import { useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 
 import {
   removeJobTab,
@@ -10,17 +12,22 @@ import {
 } from "src/store/reducers/navigationSlice";
 import type { TabsList } from "@/types";
 
-interface Props {
+interface TabsProps {
   tabs: TabsList;
   active: string;
   setActive?: (tabValue: string) => void;
   clearable?: boolean;
 }
 
-function Tabs({ tabs, active, setActive, clearable = true }: Props) {
-  const dispatch = useDispatch();
+const Tabs: React.FC<TabsProps> = ({
+  tabs,
+  active,
+  setActive,
+  clearable = true,
+}) => {
+  const dispatch = useDispatch<Dispatch>();
 
-  const removeTab = async (value: string) => {
+  const removeTab = async (value: string): Promise<void> => {
     if (value === "settings") {
       dispatch(setShowSettings(false));
     } else if (value === "profile") {
@@ -52,7 +59,7 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
               className={`m-1 mb-2 flex align-sub text-sm w-full max-w-30 hover:font-bold hover:max-w-100 ${
                 active !== value ? "hover:cursor-pointer" : ""
               }`}
-              onClick={() => setActive && setActive(value)}
+              onClick={(): void => setActive && setActive(value)}
             >
               {value === "settings" && (
                 <svg
@@ -132,7 +139,7 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
             {clearable && (
               <button
                 className="ml-1 mt-1 self-start rounded-lg text-gray-500 hover:cursor-pointer hover:font-bold hover:bg-gray-200"
-                onClick={() => removeTab(value)}
+                onClick={(): void => void removeTab(value)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -149,6 +156,6 @@ function Tabs({ tabs, active, setActive, clearable = true }: Props) {
       </div>
     </>
   );
-}
+};
 
 export default Tabs;

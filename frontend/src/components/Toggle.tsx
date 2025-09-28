@@ -1,10 +1,15 @@
-interface Props {
+import { ChangeEvent } from "react";
+interface ToggleProps {
   checked: boolean;
-  onChange: () => void;
   label: string;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Toggle({ checked, onChange, label }: Props) {
+const Toggle: React.FC<ToggleProps> = ({
+  checked,
+  onChange,
+  label,
+}: ToggleProps) => {
   return (
     <label className="mx-2 inline-flex items-center cursor-pointer">
       <input
@@ -18,6 +23,6 @@ function Toggle({ checked, onChange, label }: Props) {
       <span className="ms-3 text-md font-bold text-gray-900">{label}</span>
     </label>
   );
-}
+};
 
 export default Toggle;

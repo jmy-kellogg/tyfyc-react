@@ -131,9 +131,9 @@ const NewJobModal: React.FC = () => {
       <button
         className="fixed top-0 right-0 flex align-bottom rounded-md bg-indigo-600 text-white m-3 p-2 font-semibold shadow-md hover:cursor-pointer hover:bg-indigo-500"
         type="button"
-        onClick={() => setShowModal(true)}
-        onMouseOver={() => setHover(true)}
-        onMouseOut={() => setHover(false)}
+        onClick={(): void => setShowModal(true)}
+        onMouseOver={(): void => setHover(true)}
+        onMouseOut={(): void => setHover(false)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@ const NewJobModal: React.FC = () => {
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                onClick={() => setShowModal(false)}
+                onClick={(): void => setShowModal(false)}
               >
                 <svg
                   className="w-3 h-3"
@@ -195,7 +195,7 @@ const NewJobModal: React.FC = () => {
                       type="text"
                       className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                       value={companySite}
-                      onChange={(e) => setCompanySite(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setCompanySite(e.target.value)}
                     />
                     {flags.includes("OPENAI_FEATURE_FLAG") && (
                       <button
@@ -232,7 +232,7 @@ const NewJobModal: React.FC = () => {
                     type="text"
                     className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                     value={postingLink}
-                    onChange={(e) => setPostingLink(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setPostingLink(e.target.value)}
                   />
                 </div>
               </div>
@@ -245,7 +245,7 @@ const NewJobModal: React.FC = () => {
                     <button
                       type="button"
                       className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                      onClick={() => {
+                      onClick={(): void => {
                         setCompanyInfo({ status: "", message: "" });
                       }}
                     >

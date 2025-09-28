@@ -1,10 +1,10 @@
-import { useState, useEffect, ChangeEvent, SyntheticEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, SyntheticEvent, MouseEvent } from "react";
 
 interface FormData {
   [name: string]: string;
 }
 
-interface Props {
+interface InputLinkProps {
   inputName: string;
   inputValue: string;
   label: string;
@@ -14,7 +14,7 @@ interface Props {
   tag?: "h1" | "h2" | "h3";
 }
 
-function InputLink({
+const InputLink: React.FC<InputLinkProps> = ({
   inputName,
   inputValue,
   label,
@@ -22,31 +22,31 @@ function InputLink({
   linkValue,
   onUpdate,
   tag = "h2",
-}: Props) {
-  const [hover, setHover] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [formData, setFormData] = useState({
+}) => {
+  const [hover, setHover] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [formData, setFormData] = useState<FormData>({
     [inputName]: inputValue,
     [linkName]: linkValue,
   });
 
-  const onChangeData = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeData = (e: ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onUpdate(formData);
     setEdit(false);
     setHover(false);
   };
 
-  const handleBlur = (e: SyntheticEvent<HTMLInputElement>) => {
+  const handleBlur = (e: SyntheticEvent<HTMLInputElement>): void => {
     e.preventDefault();
     onUpdate(formData);
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     setFormData({ [inputName]: inputValue, [linkName]: linkValue });
   }, [inputName, inputValue, linkName, linkValue]);
 
@@ -95,7 +95,7 @@ function InputLink({
                   />
                 </svg>
               </button>
-              <button onClick={() => setEdit(false)}>
+              <button onClick={(): void => setEdit(false)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -118,12 +118,12 @@ function InputLink({
           <>
             <button
               className="hover:cursor-pointer"
-              onClick={(e) => {
+              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
                 e.stopPropagation();
                 setEdit(true);
               }}
-              onMouseOver={() => setHover(true)}
-              onMouseOut={() => setHover(false)}
+              onMouseOver={(): void => setHover(true)}
+              onMouseOut={(): void => setHover(false)}
             >
               <span className="flex">
                 {tag === "h1" && <h1>{inputValue || label}</h1>}
@@ -148,7 +148,7 @@ function InputLink({
               </span>
             </button>
             {linkValue && (
-              <a href={linkValue} target="_blank">
+              <a href={linkValue} target="_blank" rel="noopener noreferrer">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -170,6 +170,6 @@ function InputLink({
       </div>
     </>
   );
-}
+};
 
 export default InputLink;

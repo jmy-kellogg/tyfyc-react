@@ -1,18 +1,22 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-interface Props {
+interface TextCopyProps {
   copyText: string;
   displayText?: string;
   label?: string;
 }
 
-function TextCopy({ label, displayText, copyText }: Props) {
-  const [copied, setCopied] = useState(false);
+const TextCopy: React.FC<TextCopyProps> = ({
+  label,
+  displayText,
+  copyText,
+}) => {
+  const [copied, setCopied] = useState<boolean>(false);
 
-  const handleCopy = () => {
+  const handleCopy = (): void => {
     navigator.clipboard.writeText(copyText);
     setCopied(true);
-    setTimeout(() => {
+    setTimeout((): void => {
       setCopied(false);
     }, 1000);
   };
@@ -38,6 +42,6 @@ function TextCopy({ label, displayText, copyText }: Props) {
       </svg>
     </div>
   );
-}
+};
 
 export default TextCopy;
