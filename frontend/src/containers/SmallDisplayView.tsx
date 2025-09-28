@@ -1,4 +1,6 @@
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 
 import ApplicationDetails from "./ApplicationDetails";
 import Settings from "./Settings";
@@ -9,17 +11,17 @@ import ApplicationsList from "./ApplicationsList";
 import Tabs from "@/components/Tabs";
 
 import {
-  setActiveTab,
   getTabs,
   getActiveTab,
+  setActiveTab,
 } from "@/store/reducers/navigationSlice";
 
-function SmallDisplayView() {
-  const dispatch = useDispatch();
+const SmallDisplayView: React.FC = () => {
+  const dispatch = useDispatch<Dispatch>();
   const tabs = useSelector(getTabs);
-  const activeTab = useSelector(getActiveTab);
+  const activeTab: string = useSelector(getActiveTab);
 
-  const setActive = (activeValue: string) => {
+  const setActive = (activeValue: string): void => {
     dispatch(setActiveTab(activeValue));
   };
 
@@ -43,6 +45,6 @@ function SmallDisplayView() {
       </div>
     </>
   );
-}
+};
 
 export default SmallDisplayView;

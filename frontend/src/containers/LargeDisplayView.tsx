@@ -1,4 +1,6 @@
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 
 import ApplicationDetails from "./ApplicationDetails";
 import Profile from "./Profile";
@@ -11,23 +13,23 @@ import Tabs from "@/components/Tabs";
 import { setActiveTab, getActiveTab } from "@/store/reducers/navigationSlice";
 import type { State } from "@/store";
 
-function LargeDisplayView() {
-  const dispatch = useDispatch();
-  const activeTab = useSelector(getActiveTab);
-  const showSettings = useSelector(
+const LargeDisplayView: React.FC = () => {
+  const dispatch = useDispatch<Dispatch>();
+  const activeTab: string = useSelector(getActiveTab);
+  const showSettings: boolean = useSelector(
     (state: State) => state.navigation.showSettings
   );
-  const showProfile = useSelector(
+  const showProfile: boolean = useSelector(
     (state: State) => state.navigation.showProfile
   );
-  const showResume = useSelector((state: State) => state.navigation.showResume);
-  const showStats = useSelector((state: State) => state.navigation.showStats);
+  const showResume: boolean = useSelector((state: State) => state.navigation.showResume);
+  const showStats: boolean = useSelector((state: State) => state.navigation.showStats);
   const jobTabs = useSelector((state: State) => state.navigation.jobTabs);
-  const showApplications = useSelector(
+  const showApplications: boolean = useSelector(
     (state: State) => state.navigation.showApplications
   );
 
-  const setActive = (activeValue: string) => {
+  const setActive = (activeValue: string): void => {
     dispatch(setActiveTab(activeValue));
   };
 
@@ -118,6 +120,6 @@ function LargeDisplayView() {
       </div>
     </>
   );
-}
+};
 
 export default LargeDisplayView;
