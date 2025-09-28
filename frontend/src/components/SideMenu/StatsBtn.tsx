@@ -1,22 +1,27 @@
+import React, { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 import { setShowStats } from "src/store/reducers/navigationSlice";
 
-interface Props {
-  openMenu: boolean;
+interface StatsBtnProps {
   activeTab: string;
+  openMenu: boolean;
 }
 
-function StatsBtn({ openMenu, activeTab }: Props) {
-  const dispatch = useDispatch();
+const StatsBtn: React.FC<StatsBtnProps> = ({ activeTab, openMenu }) => {
+  const dispatch = useDispatch<Dispatch>();
 
-  const toggleStats = () => {
+  const toggleStats = (): void => {
     dispatch(setShowStats(true));
   };
 
   return (
     <button
       className="my-2 flex w-max hover:cursor-pointer hover:text-indigo-400 hover:font-bold"
-      onClick={toggleStats}
+      onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+        e.stopPropagation();
+        toggleStats();
+      }}
     >
       {activeTab === "stats" ? (
         <svg
@@ -50,6 +55,6 @@ function StatsBtn({ openMenu, activeTab }: Props) {
       )}
     </button>
   );
-}
+};
 
 export default StatsBtn;

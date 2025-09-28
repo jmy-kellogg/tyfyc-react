@@ -1,15 +1,17 @@
+import React, { MouseEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 import { setActiveTab } from "src/store/reducers/navigationSlice";
 import type { State } from "src/store";
-interface Props {
-  openMenu: boolean;
+interface JobTabsBtnProps {
   activeTab: string;
+  openMenu: boolean;
 }
 
-function JobTabsBtn({ openMenu, activeTab }: Props) {
-  const dispatch = useDispatch();
+const JobTabsBtn: React.FC<JobTabsBtnProps> = ({ activeTab, openMenu }) => {
+  const dispatch = useDispatch<Dispatch>();
   const jobTabs = useSelector((state: State) => state.navigation.jobTabs);
-  const toggleJob = (jobId: string) => {
+  const toggleJob = (jobId: string): void => {
     dispatch(setActiveTab(jobId));
   };
 
@@ -19,7 +21,8 @@ function JobTabsBtn({ openMenu, activeTab }: Props) {
         <button
           key={value}
           className="flex my-2 hover:cursor-pointer hover:text-indigo-400 hover:font-bold"
-          onClick={() => {
+          onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+            e.stopPropagation();
             toggleJob(value);
           }}
         >
@@ -43,6 +46,6 @@ function JobTabsBtn({ openMenu, activeTab }: Props) {
       ))}
     </>
   );
-}
+};
 
 export default JobTabsBtn;

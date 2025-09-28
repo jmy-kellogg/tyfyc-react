@@ -1,22 +1,29 @@
+import React, { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { setShowApplications } from "src/store/reducers/navigationSlice";
+import type { Dispatch } from "@reduxjs/toolkit";
 
-interface Props {
-  openMenu: boolean;
+interface ApplicationBtnProps {
   activeTab: string;
+  openMenu: boolean;
 }
 
-function ApplicationBtn({ openMenu, activeTab }: Props) {
-  const dispatch = useDispatch();
-
-  const toggleApplication = () => {
+const ApplicationBtn: React.FC<ApplicationBtnProps> = ({
+  activeTab,
+  openMenu,
+}) => {
+  const dispatch = useDispatch<Dispatch>();
+  const toggleApplication = (): void => {
     dispatch(setShowApplications(true));
   };
 
   return (
     <button
       className="my-2 flex w-max hover:cursor-pointer hover:text-indigo-400 hover:font-bold"
-      onClick={toggleApplication}
+      onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+        e.stopPropagation();
+        toggleApplication();
+      }}
     >
       {activeTab === "applications" ? (
         <svg
@@ -57,6 +64,6 @@ function ApplicationBtn({ openMenu, activeTab }: Props) {
       )}
     </button>
   );
-}
+};
 
 export default ApplicationBtn;

@@ -1,22 +1,27 @@
+import React, { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { setShowProfile } from "src/store/reducers/navigationSlice";
+import type { Dispatch } from "@reduxjs/toolkit";
 
-interface Props {
-  openMenu: boolean;
+interface ProfileBtnProps {
   activeTab: string;
+  openMenu: boolean;
 }
 
-function ProfileBtn({ openMenu, activeTab }: Props) {
-  const dispatch = useDispatch();
+const ProfileBtn: React.FC<ProfileBtnProps> = ({ activeTab, openMenu }) => {
+  const dispatch = useDispatch<Dispatch>();
 
-  const toggleProfile = () => {
+  const toggleProfile = (): void => {
     dispatch(setShowProfile(true));
   };
 
   return (
     <button
       className="my-2 flex w-max hover:cursor-pointer hover:text-indigo-400 hover:font-bold"
-      onClick={toggleProfile}
+      onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+        e.stopPropagation();
+        toggleProfile();
+      }}
     >
       {activeTab === "profile" ? (
         <svg
@@ -54,6 +59,6 @@ function ProfileBtn({ openMenu, activeTab }: Props) {
       )}
     </button>
   );
-}
+};
 
 export default ProfileBtn;

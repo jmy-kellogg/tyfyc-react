@@ -1,19 +1,21 @@
+import React, { MouseEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 
 import { setSmallDisplay } from "src/store/reducers/navigationSlice";
 import type { State } from "src/store";
 
-interface Props {
+interface DisplayBtnProps {
   openMenu: boolean;
 }
 
-function DisplayBtn({ openMenu }: Props) {
-  const dispatch = useDispatch();
-  const smallDisplay = useSelector(
+const DisplayBtn: React.FC<DisplayBtnProps> = ({ openMenu }) => {
+  const dispatch = useDispatch<Dispatch>();
+  const smallDisplay: boolean = useSelector(
     (state: State) => state.navigation.smallDisplay
   );
 
-  const toggleDisplay = () => {
+  const toggleDisplay = (): void => {
     dispatch(setSmallDisplay(!smallDisplay));
   };
 
@@ -21,7 +23,10 @@ function DisplayBtn({ openMenu }: Props) {
     <>
       <button
         className="my-2 flex w-max hover:cursor-pointer hover:text-indigo-400 hover:font-bold"
-        onClick={toggleDisplay}
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
+          toggleDisplay();
+        }}
       >
         {smallDisplay ? (
           <svg
@@ -62,6 +67,6 @@ function DisplayBtn({ openMenu }: Props) {
       </button>
     </>
   );
-}
+};
 
 export default DisplayBtn;

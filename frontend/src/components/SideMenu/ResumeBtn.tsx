@@ -1,22 +1,27 @@
+import React, { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 import { setShowResume } from "src/store/reducers/navigationSlice";
 
-interface Props {
-  openMenu: boolean;
+interface ResumeBtnProps {
   activeTab: string;
+  openMenu: boolean;
 }
 
-function ResumeBtn({ openMenu, activeTab }: Props) {
-  const dispatch = useDispatch();
+const ResumeBtn: React.FC<ResumeBtnProps> = ({ activeTab, openMenu }) => {
+  const dispatch = useDispatch<Dispatch>();
 
-  const toggleResume = () => {
+  const toggleResume = (): void => {
     dispatch(setShowResume(true));
   };
 
   return (
     <button
       className="my-2 flex w-max hover:cursor-pointer hover:text-indigo-400 hover:font-bold"
-      onClick={toggleResume}
+      onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+        e.stopPropagation();
+        toggleResume();
+      }}
     >
       {activeTab === "resume" ? (
         <svg
@@ -55,6 +60,6 @@ function ResumeBtn({ openMenu, activeTab }: Props) {
       )}
     </button>
   );
-}
+};
 
 export default ResumeBtn;

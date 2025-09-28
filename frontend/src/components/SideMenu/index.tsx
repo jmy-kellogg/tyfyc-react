@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, MouseEvent } from "react";
 import { useSelector } from "react-redux";
 
 import { getActiveTab } from "src/store/reducers/navigationSlice";
@@ -11,14 +11,14 @@ import JobTabsBtn from "./JobTabsBtn";
 import LogoutBtn from "./LogoutBtn";
 import SettingsBtn from "./SettingsBtn";
 
-function SideMenu() {
-  const [openMenu, setOpenMenu] = useState(
+const SideMenu: React.FC = () => {
+  const [openMenu, setOpenMenu] = useState<boolean>(
     () => localStorage.getItem("openMenu") === "true"
   );
-  const activeTab = useSelector(getActiveTab);
+  const activeTab: string = useSelector(getActiveTab);
 
-  const toggleMenu = () => {
-    const menuStatus = !openMenu;
+  const toggleMenu = (): void => {
+    const menuStatus: boolean = !openMenu;
     localStorage.setItem("openMenu", menuStatus.toString());
     setOpenMenu(menuStatus);
   };
@@ -30,7 +30,10 @@ function SideMenu() {
       >
         <button
           className="p-2 m-1 w-min rounded-lg hover:cursor-pointer hover:inset-shadow-sm hover:inset-shadow-slate-400 hover:text-indigo-400"
-          onClick={toggleMenu}
+          onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+            e.stopPropagation();
+            toggleMenu();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,6 +64,6 @@ function SideMenu() {
       </div>
     </>
   );
-}
+};
 
 export default SideMenu;

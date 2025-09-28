@@ -1,22 +1,27 @@
+import React, { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 import { setShowSettings } from "src/store/reducers/navigationSlice";
 
-interface Props {
-  openMenu: boolean;
+interface SettingsBtnProps {
   activeTab: string;
+  openMenu: boolean;
 }
 
-function SettingsBtn({ openMenu, activeTab }: Props) {
-  const dispatch = useDispatch();
+const SettingsBtn: React.FC<SettingsBtnProps> = ({ activeTab, openMenu }) => {
+  const dispatch = useDispatch<Dispatch>();
 
-  const toggleSettings = () => {
+  const toggleSettings = (): void => {
     dispatch(setShowSettings(true));
   };
 
   return (
     <button
       className="m-2 flex w-max hover:cursor-pointer hover:text-indigo-400 hover:font-bold"
-      onClick={toggleSettings}
+      onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+        e.stopPropagation();
+        toggleSettings();
+      }}
     >
       {activeTab === "settings" ? (
         <svg
@@ -59,6 +64,6 @@ function SettingsBtn({ openMenu, activeTab }: Props) {
       )}
     </button>
   );
-}
+};
 
 export default SettingsBtn;

@@ -1,15 +1,16 @@
-import { useContext } from "react";
+import React, { useContext, MouseEvent } from "react";
 import { AuthContext } from "@/context/AuthContext";
 
-interface Props {
+interface LogoutBtnProps {
   openMenu: boolean;
 }
 
-function LogoutBtn({ openMenu }: Props) {
+const LogoutBtn: React.FC<LogoutBtnProps> = ({ openMenu }) => {
   const { logout } = useContext(AuthContext);
 
-  const handleLogout = (e: React.FormEvent) => {
+  const handleLogout = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
+    e.stopPropagation();
     if (logout) {
       logout();
     }
@@ -38,6 +39,6 @@ function LogoutBtn({ openMenu }: Props) {
       {openMenu && <div className="mx-2 content-center">Logout</div>}
     </button>
   );
-}
+};
 
 export default LogoutBtn;
