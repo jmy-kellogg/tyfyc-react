@@ -6,14 +6,14 @@ import ProjectItem from "./ProjectItem";
 import { getProjects, createProject, deleteProject } from "@/api/projects";
 import type { Project } from "@/types";
 
-interface Props {
+interface ProjectsProps {
   lockEdit: boolean;
 }
 
-function Projects({ lockEdit }: Props) {
+const Projects: React.FC<ProjectsProps> = ({ lockEdit }) => {
   const [projects, setProjects] = useState<Project[]>([]);
 
-  const addNew = async () => {
+  const addNew = async (): Promise<void> => {
     const lastItem = projects[projects.length - 1];
     if (
       lastItem.title ||
@@ -31,7 +31,7 @@ function Projects({ lockEdit }: Props) {
     }
   };
 
-  const remove = async (id: string) => {
+  const remove = async (id: string): Promise<void> => {
     await deleteProject(id);
     setProjects(projects.filter((project) => project.id !== id));
   };
@@ -53,7 +53,10 @@ function Projects({ lockEdit }: Props) {
           <button
             type="button"
             className="float-right rounded-md bg-indigo-600 m-1 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={addNew}
+            onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+              e.stopPropagation();
+              addNew();
+            }}
           >
             Add Project
           </button>
@@ -67,6 +70,6 @@ function Projects({ lockEdit }: Props) {
       ))}
     </>
   );
-}
+};
 
 export default Projects;

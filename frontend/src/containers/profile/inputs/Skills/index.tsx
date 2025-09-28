@@ -1,14 +1,14 @@
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { getSkills, getSkillOptions } from "@/api/skills";
 import Divider from "src/components/Divider";
 import SkillsGroup from "./SkillGroup";
 import type { SkillSelect, SkillGroup, Skill, SkillOption } from "@/types";
 
-interface Props {
+interface SkillsProps {
   lockEdit: boolean;
 }
 
-function Skills({ lockEdit }: Props) {
+const Skills: React.FC<SkillsProps> = ({ lockEdit }) => {
   const [allSkills, setAllSkills] = useState<SkillSelect[]>([]);
   const [skillOptions, setSkillOptions] = useState<SkillSelect[]>([]);
   const [toggleSort, setToggleSort] = useState<boolean>(false);
@@ -57,7 +57,7 @@ function Skills({ lockEdit }: Props) {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect((): void => {
     fetchSkills();
     fetchSkillOptions();
   }, [fetchSkills, fetchSkillOptions]);
@@ -77,7 +77,10 @@ function Skills({ lockEdit }: Props) {
             stroke="currentColor"
             className="size-6 text-emerald-500 rounded-lg hover:cursor-pointer hover:text-white hover:bg-emerald-300"
             id="skill-sort-check"
-            onClick={() => setToggleSort(false)}
+            onClick={(e: React.MouseEvent<SVGSVGElement>): void => {
+              e.stopPropagation();
+              setToggleSort(false);
+            }}
           >
             <path
               strokeLinecap="round"
@@ -93,7 +96,10 @@ function Skills({ lockEdit }: Props) {
             strokeWidth={1.5}
             stroke="currentColor"
             className="size-6 hover:cursor-pointer rounded-lg hover:cursor-pointer hover:text-sky-500"
-            onClick={() => setToggleSort(true)}
+            onClick={(e: React.MouseEvent<SVGSVGElement>): void => {
+              e.stopPropagation();
+              setToggleSort(true);
+            }}
             id="skill-sort-funnel"
           >
             <path
@@ -104,7 +110,7 @@ function Skills({ lockEdit }: Props) {
           </svg>
         )}
       </div>
-      {skillGroups.map((group) => (
+      {skillGroups.map((group: SkillGroup["id"]) => (
         <SkillsGroup
           key={group || "general"}
           lockEdit={lockEdit}
@@ -119,6 +125,6 @@ function Skills({ lockEdit }: Props) {
       <Divider />
     </>
   );
-}
+};
 
 export default Skills;

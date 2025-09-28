@@ -1,30 +1,36 @@
-import { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, FocusEvent } from "react";
 
 import { getFormattedDate } from "@utils";
-
 import { updateEducation } from "@/api/education";
 import type { Education } from "@/types";
 
-interface Props {
+interface EducationItemProps {
   education: Education;
   lockEdit: boolean;
   remove: (id: string) => void;
 }
 
-function EducationItem({ education, lockEdit, remove }: Props) {
+const EducationItem: React.FC<EducationItemProps> = ({
+  education,
+  lockEdit,
+  remove,
+}) => {
   const [form, setForm] = useState<Education>(education);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.target.name;
-    const value = e.target.value;
+  ): void => {
+    const key: string = e.target.name;
+    const value: string = e.target.value;
     setForm({ ...form, [key]: value });
   };
 
-  const updateData = async (key: keyof Education, value: string) => {
+  const updateData = async (
+    key: keyof Education,
+    value: string
+  ): Promise<void> => {
     if (value && education[key] !== value) {
-      const updateBody = {
+      const updateBody: Partial<Education> = {
         school: form.school,
         gradYear: form.gradYear,
         degree: form.degree,
@@ -59,7 +65,10 @@ function EducationItem({ education, lockEdit, remove }: Props) {
               className="w-full rounded-md bg-white m-1 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.school}
               onChange={handleChange}
-              onBlur={(e) => updateData("school", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("school", e.target.value);
+              }}
             />
             <input
               id="grad-year"
@@ -69,12 +78,18 @@ function EducationItem({ education, lockEdit, remove }: Props) {
               className="w-full rounded-md bg-white m-1 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.gradYear}
               onChange={handleChange}
-              onBlur={(e) => updateData("gradYear", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("gradYear", e.target.value);
+              }}
             />
             <button
               type="button"
               className="rounded-md align-sub text-red-600 m-1 p-1 hover:bg-red-100 hover:cursor-pointer"
-              onClick={() => remove(education.id)}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+                e.stopPropagation();
+                remove(education.id);
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -101,13 +116,16 @@ function EducationItem({ education, lockEdit, remove }: Props) {
               className="rounded-md w-full bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.degree}
               onChange={handleChange}
-              onBlur={(e) => updateData("degree", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("degree", e.target.value);
+              }}
             />
           </div>
         </div>
       )}
     </>
   );
-}
+};
 
 export default EducationItem;

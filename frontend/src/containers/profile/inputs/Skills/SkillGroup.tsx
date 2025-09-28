@@ -18,7 +18,7 @@ import type {
   SkillOption,
 } from "@/types";
 
-interface Props {
+interface SkillsGroupProps {
   lockEdit: boolean;
   toggleSort: boolean;
   allSkills: SkillSelect[];
@@ -34,14 +34,14 @@ const groups: SkillGroup[] = [
   { id: "general", name: "General" },
 ];
 
-function SkillsGroup({
+const SkillsGroup: React.FC<SkillsGroupProps> = ({
   lockEdit,
   toggleSort,
   allSkills,
   skillOptions,
   setAllSkills,
   groupId = "general",
-}: Props) {
+}) => {
   const displayName: string =
     groups.find(({ id }) => id === groupId)?.name || "General";
   const [skills, setSkills] = useState<SkillSelect[]>([]);
@@ -60,7 +60,7 @@ function SkillsGroup({
           rank: skills.length - 1,
         });
         if (skillResp) {
-          const newSkill = {
+          const newSkill: SkillSelect = {
             label: skillResp.name,
             value: skillResp.skillOptionsId,
             id: skillResp.id,
@@ -147,7 +147,10 @@ function SkillsGroup({
           viewBox="0 0 20 20"
           fill="currentColor"
           className="size-5 self-center hover:cursor-pointer hover:font-bold hover:text-red-600"
-          onClick={() => removeSkill(skill.id)}
+          onClick={(e: React.MouseEvent<SVGSVGElement>): void => {
+            e.stopPropagation();
+            removeSkill(skill.id);
+          }}
         >
           <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
         </svg>
@@ -181,7 +184,7 @@ function SkillsGroup({
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     const filteredSkills = allSkills
       .filter(({ category }) => (category || "general") === groupId)
       .sort((a, b) => {
@@ -249,6 +252,6 @@ function SkillsGroup({
       )}
     </div>
   );
-}
+};
 
 export default SkillsGroup;

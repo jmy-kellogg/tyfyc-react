@@ -1,21 +1,21 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent, FocusEvent } from "react";
 import { useSelector } from "react-redux";
 
 import Divider from "src/components/Divider";
 import { updateUser } from "@/api/user";
 import type { State } from "@/store";
 
-interface Props {
+interface TitleProps {
   lockEdit: boolean;
 }
 
-function Title({ lockEdit }: Props) {
+const Title: React.FC<TitleProps> = ({ lockEdit }) => {
   const user = useSelector((state: State) => state.auth.user);
-  const [firstName, setFirstName] = useState(user?.firstName || "");
-  const [lastName, setLastName] = useState(user?.lastName || "");
-  const [jobTitle, setJobTitle] = useState(user?.jobTitle || "");
+  const [firstName, setFirstName] = useState<string>(user?.firstName || "");
+  const [lastName, setLastName] = useState<string>(user?.lastName || "");
+  const [jobTitle, setJobTitle] = useState<string>(user?.jobTitle || "");
 
-  const validateData = () => {
+  const validateData = (): boolean => {
     if (!firstName || !lastName || !jobTitle) {
       return false;
     } else if (
@@ -29,13 +29,13 @@ function Title({ lockEdit }: Props) {
     }
   };
 
-  const updateData = () => {
+  const updateData = (): void => {
     if (validateData()) {
       updateUser({ firstName, lastName, jobTitle });
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     if (user) {
       setFirstName(user.firstName || "");
       setLastName(user.lastName || "");
@@ -61,8 +61,9 @@ function Title({ lockEdit }: Props) {
                 placeholder="First Name"
                 className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                onBlur={() => {
+                onChange={(e: ChangeEvent<HTMLInputElement>): void => setFirstName(e.target.value)}
+                onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                  e.stopPropagation();
                   if (user?.firstName !== firstName) {
                     updateData();
                   }
@@ -77,8 +78,9 @@ function Title({ lockEdit }: Props) {
                 placeholder="Last Name"
                 className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                onBlur={() => {
+                onChange={(e: ChangeEvent<HTMLInputElement>): void => setLastName(e.target.value)}
+                onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                  e.stopPropagation();
                   if (user?.lastName !== lastName) {
                     updateData();
                   }
@@ -94,8 +96,9 @@ function Title({ lockEdit }: Props) {
               placeholder="Target Job Title"
               className="text-center block w-full rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
               value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
-              onBlur={() => {
+              onChange={(e: ChangeEvent<HTMLInputElement>): void => setJobTitle(e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
                 if (user?.jobTitle !== jobTitle) {
                   updateData();
                 }
@@ -107,6 +110,6 @@ function Title({ lockEdit }: Props) {
       <Divider />
     </>
   );
-}
+};
 
 export default Title;

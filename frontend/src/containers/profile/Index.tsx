@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, MouseEvent } from "react";
 
 import Title from "./Inputs/Title";
 import Contact from "./Inputs/Contact";
@@ -8,7 +8,7 @@ import Employment from "./Inputs/Employment";
 import Education from "./Inputs/Education";
 import Projects from "./Inputs/Projects";
 
-function Profile() {
+const Profile: React.FC = () => {
   const [lockEdit, setLockEdit] = useState<boolean>(true);
 
   return (
@@ -18,7 +18,8 @@ function Profile() {
           {lockEdit ? (
             <button
               className="rounded-full border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-              onClick={() => {
+              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                e.stopPropagation();
                 setLockEdit(false);
               }}
             >
@@ -41,7 +42,8 @@ function Profile() {
           ) : (
             <button
               className="rounded-full border-2 border-indigo-600 p-2 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-              onClick={() => {
+              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                e.stopPropagation();
                 setLockEdit(true);
               }}
             >
@@ -75,6 +77,6 @@ function Profile() {
       </div>
     </>
   );
-}
+};
 
 export default Profile;

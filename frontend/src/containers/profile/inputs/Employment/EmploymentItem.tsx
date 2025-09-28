@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, FocusEvent } from "react";
 import { getFormattedDate } from "@utils";
 
 import RichEditor from "@/components/RichEditor";
@@ -6,26 +6,26 @@ import ReadOnly from "@/components/RichEditor/ReadOnly";
 import { updateEmployment } from "@/api/employment";
 import type { Employment } from "@/types";
 
-interface Props {
+interface EmploymentItemProps {
   employment: Employment;
   lockEdit: boolean;
   remove: (id: string) => void;
 }
 
-function EmploymentItem({ employment, lockEdit, remove }: Props) {
+const EmploymentItem: React.FC<EmploymentItemProps> = ({ employment, lockEdit, remove }) => {
   const [form, setForm] = useState<Employment>(employment);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.target.name;
-    const value = e.target.value;
+  ): void => {
+    const key: string = e.target.name;
+    const value: string = e.target.value;
     setForm({ ...form, [key]: value });
   };
 
-  const updateData = async (key: keyof Employment, value: string) => {
+  const updateData = async (key: keyof Employment, value: string): Promise<void> => {
     if (value && employment[key] !== value) {
-      const updateBody = {
+      const updateBody: Partial<Employment> = {
         jobTitle: form.jobTitle,
         company: form.company,
         start: form.start,
@@ -37,8 +37,8 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
     }
   };
 
-  const setDescription = (text: string) => {
-    const updateForm = { ...form, description: text };
+  const setDescription = (text: string): void => {
+    const updateForm: Employment = { ...form, description: text };
     setForm(updateForm);
     updateEmployment(employment.id, updateForm);
   };
@@ -73,7 +73,10 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
             className="m-1 block font-bold w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             value={form.jobTitle}
             onChange={handleChange}
-            onBlur={(e) => updateData("jobTitle", e.target.value)}
+            onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+              e.stopPropagation();
+              updateData("jobTitle", e.target.value);
+            }}
           />
           <div className="flex">
             <input
@@ -84,7 +87,10 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
               className="m-1 block font-bold w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.company}
               onChange={handleChange}
-              onBlur={(e) => updateData("company", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("company", e.target.value);
+              }}
             />
 
             <input
@@ -95,7 +101,10 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
               className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.location}
               onChange={handleChange}
-              onBlur={(e) => updateData("location", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("location", e.target.value);
+              }}
             />
 
             <input
@@ -106,7 +115,10 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
               className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.start}
               onChange={handleChange}
-              onBlur={(e) => updateData("start", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("start", e.target.value);
+              }}
             />
             <p className="font-bold self-center"> - </p>
             <input
@@ -117,7 +129,10 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
               className="m-1 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.end}
               onChange={handleChange}
-              onBlur={(e) => updateData("end", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("end", e.target.value);
+              }}
             />
           </div>
 
@@ -131,7 +146,10 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
           <button
             type="button"
             className="rounded-md text-sm/6 my-3 px-2 py-1 outline-1 -outline-offset-1 outline-gray-300 font-semibold shadow-sm hover:bg-indigo-300 outline-1"
-            onClick={() => remove(employment.id)}
+            onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+              e.stopPropagation();
+              remove(employment.id);
+            }}
           >
             Remove {form.company}
           </button>
@@ -139,6 +157,6 @@ function EmploymentItem({ employment, lockEdit, remove }: Props) {
       )}
     </>
   );
-}
+};
 
 export default EmploymentItem;

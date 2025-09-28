@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, FocusEvent } from "react";
 import { useSelector } from "react-redux";
 import Divider from "src/components/Divider";
 import RichEditor from "@/components/RichEditor";
@@ -6,15 +6,15 @@ import ReadOnly from "@/components/RichEditor/ReadOnly";
 import { updateUser } from "@/api/user";
 import type { State } from "@/store";
 
-interface Props {
+interface SummaryProps {
   lockEdit: boolean;
 }
 
-function Summary({ lockEdit }: Props) {
+const Summary: React.FC<SummaryProps> = ({ lockEdit }) => {
   const user = useSelector((state: State) => state.auth.user);
-  const [summary, setSummary] = useState(user?.summary || "");
+  const [summary, setSummary] = useState<string>(user?.summary || "");
 
-  const updateText = (text: string) => {
+  const updateText = (text: string): void => {
     setSummary(text);
 
     if (text && summary !== text) {
@@ -22,13 +22,13 @@ function Summary({ lockEdit }: Props) {
     }
   };
 
-  const saveSummary = () => {
+  const saveSummary = (): void => {
     if (summary && summary !== user?.summary) {
       updateUser({ summary });
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     if (user) {
       setSummary(user.summary || "");
     }
@@ -42,7 +42,10 @@ function Summary({ lockEdit }: Props) {
           <ReadOnly content={summary} />
         </div>
       ) : (
-        <form onBlur={saveSummary}>
+        <form onBlur={(e: FocusEvent<HTMLFormElement>): void => {
+          e.stopPropagation();
+          saveSummary();
+        }}>
           <div className="mt-2">
             <RichEditor content={summary} onTextChange={updateText} />
           </div>
@@ -51,6 +54,6 @@ function Summary({ lockEdit }: Props) {
       <Divider />
     </>
   );
-}
+};
 
 export default Summary;

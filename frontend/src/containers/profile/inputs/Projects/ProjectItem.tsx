@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, FocusEvent, MouseEvent } from "react";
 
 import { getFormattedDate } from "@utils";
 import RichEditor from "@/components/RichEditor";
@@ -6,26 +6,33 @@ import ReadOnly from "@/components/RichEditor/ReadOnly";
 import { updateProject } from "@/api/projects";
 import type { Project } from "@/types";
 
-interface Props {
+interface ProjectItemProps {
   project: Project;
   lockEdit: boolean;
   remove: (id: string) => void;
 }
 
-function ProjectItem({ project, lockEdit, remove }: Props) {
+const ProjectItem: React.FC<ProjectItemProps> = ({
+  project,
+  lockEdit,
+  remove,
+}) => {
   const [form, setForm] = useState<Project>(project);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.target.name;
-    const value = e.target.value;
+  ): void => {
+    const key: string = e.target.name;
+    const value: string = e.target.value;
     setForm({ ...form, [key]: value });
   };
 
-  const updateData = async (key: keyof Project, value: string) => {
+  const updateData = async (
+    key: keyof Project,
+    value: string
+  ): Promise<void> => {
     if (value && project[key] !== value) {
-      const updateBody = {
+      const updateBody: Partial<Project> = {
         title: form.title,
         description: form.description,
         year: form.year,
@@ -35,8 +42,8 @@ function ProjectItem({ project, lockEdit, remove }: Props) {
     }
   };
 
-  const setDescription = (text: string) => {
-    const updateForm = { ...form, description: text };
+  const setDescription = (text: string): void => {
+    const updateForm: Project = { ...form, description: text };
     setForm(updateForm);
     updateProject(project.id, updateForm);
   };
@@ -74,7 +81,10 @@ function ProjectItem({ project, lockEdit, remove }: Props) {
               className="w-75 m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.title}
               onChange={handleChange}
-              onBlur={(e) => updateData("title", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("title", e.target.value);
+              }}
             />
 
             <input
@@ -85,12 +95,18 @@ function ProjectItem({ project, lockEdit, remove }: Props) {
               className="block m-1 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={form.url}
               onChange={handleChange}
-              onBlur={(e) => updateData("url", e.target.value)}
+              onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+                e.stopPropagation();
+                updateData("url", e.target.value);
+              }}
             />
             <button
               type="button"
               className="rounded-md align-sub text-red-600 m-1 p-1 hover:bg-red-100 hover:cursor-pointer"
-              onClick={() => remove(form.id)}
+              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                e.stopPropagation();
+                remove(form.id);
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -122,12 +138,15 @@ function ProjectItem({ project, lockEdit, remove }: Props) {
             className="m-1 w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             value={form.year}
             onChange={handleChange}
-            onBlur={(e) => updateData("year", e.target.value)}
+            onBlur={(e: FocusEvent<HTMLInputElement>): void => {
+              e.stopPropagation();
+              updateData("year", e.target.value);
+            }}
           />
         </div>
       )}
     </>
   );
-}
+};
 
 export default ProjectItem;
