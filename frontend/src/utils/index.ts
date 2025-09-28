@@ -3,8 +3,8 @@ import type { Application, StatusOption } from "../types";
 
 // This is to allow us to see sections when importing pdf, until we have a more robust parser
 export const divider = (): string => {
-  let index = 100;
-  let line = "";
+  let index: number = 100;
+  let line: string = "";
   while (index > 0) {
     index--;
     line += "_";
@@ -30,8 +30,8 @@ export const getFormattedDate = (
     month: "short",
   }
 ): string => {
-  const lang = navigator?.language || "en-US";
-  const dateOptions = {
+  const lang: string = navigator?.language || "en-US";
+  const dateOptions: Intl.DateTimeFormatOptions = {
     ...options,
     timeZone: "UTC",
   };
@@ -39,41 +39,43 @@ export const getFormattedDate = (
   return new Date(dateString).toLocaleDateString(lang, dateOptions);
 };
 export const getToday = (): string => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const formattedMonth = month < 10 ? `0${month}` : month;
-  const day = today.getDate();
-  const formattedDay = day < 10 ? `0${day}` : day;
-  const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+  const today: Date = new Date();
+  const year: number = today.getFullYear();
+  const month: number = today.getMonth() + 1;
+  const day: number = today.getDate();
+  const formattedMonth: string = month < 10 ? `0${month}` : `${month}`;
+  const formattedDay: string = day < 10 ? `0${day}` : `${day}`;
+  const formattedDate: string = `${year}-${formattedMonth}-${formattedDay}`;
 
   return formattedDate;
 };
 
 // Skills Utils
 export const snake_case_string = (str: string): string => {
-  const regex =
+  const regex: RegExp =
     /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
-  const regexOutput = str.match(regex) || [];
-  return regexOutput.map((s) => s?.toLowerCase()).join("_");
+  const regexOutput: RegExpMatchArray | null = str.match(regex);
+  return (regexOutput || []).map((s: string) => s?.toLowerCase()).join("_");
 };
 
 export const snakeToCamelCase = (str: string): string => {
   return str
     .toLowerCase()
-    .replace(/([-_][a-z])/g, (group) =>
+    .replace(/([-_][a-z])/g, (group: string): string =>
       group.toUpperCase().replace("-", "").replace("_", "")
     );
 };
 
 export const camelToSnakeCase = (str: string): string => {
-  const regex =
+  const regex: RegExp =
     /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
-  const regexOutput = str.match(regex) || [];
-  return regexOutput.map((s) => s?.toLowerCase()).join("_");
+  const regexOutput: RegExpMatchArray | null = str.match(regex);
+  return (regexOutput || []).map((s: string) => s?.toLowerCase()).join("_");
 };
 
-export const createSkill = (newSkill: string) => {
+export const createSkill = (
+  newSkill: string
+): { label: string; value: string } => {
   return {
     label: newSkill,
     value: snake_case_string(newSkill),
@@ -81,30 +83,32 @@ export const createSkill = (newSkill: string) => {
 };
 
 // API Utils
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const jsToPythonKeys = (item: any) => {
-  if (item && item.constructor == Object) {
-    const keys = Object.keys(item);
-    keys.forEach((key) => {
-      const snake_case = camelToSnakeCase(key);
+export const jsToPythonKeys = <T extends Record<string, unknown>>(
+  item: T
+): T => {
+  if (item && item.constructor === Object) {
+    const keys: string[] = Object.keys(item);
+    keys.forEach((key: string): void => {
+      const snake_case: string = camelToSnakeCase(key);
       if (snake_case !== key) {
-        item[snake_case] = item[key];
-        delete item[key];
+        (item as Record<string, unknown>)[snake_case] = item[key];
+        delete (item as Record<string, unknown>)[key];
       }
     });
   }
   return item;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const pythonToJsKeys = (item: any) => {
-  if (item && item.constructor == Object) {
-    const keys = Object.keys(item);
-    keys.forEach((key) => {
+export const pythonToJsKeys = <T extends Record<string, unknown>>(
+  item: T
+): T => {
+  if (item && item.constructor === Object) {
+    const keys: string[] = Object.keys(item);
+    keys.forEach((key: string): void => {
       if (key.includes("_")) {
-        const camelCase = snakeToCamelCase(key);
-        item[camelCase] = item[key];
-        delete item[key];
+        const camelCase: string = snakeToCamelCase(key);
+        (item as Record<string, unknown>)[camelCase] = item[key];
+        delete (item as Record<string, unknown>)[key];
       }
     });
   }
