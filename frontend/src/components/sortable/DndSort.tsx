@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   closestCorners,
   DndContext,
@@ -18,31 +18,31 @@ import SortableItem from "./SortableItem";
 
 import { SortableList } from "@/types";
 
-interface Props {
+interface DndSortProps {
   list: SortableList;
   direction: "horizontal" | "vertical";
   onSort: (list: SortableList) => void;
 }
 
-function DndSort({ list, direction, onSort }: Props) {
-  const [sortableList, setSortableList] = useState(list);
+const DndSort: React.FC<DndSortProps> = ({ list, direction, onSort }) => {
+  const [sortableList, setSortableList] = useState<SortableList>(list);
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
     activationConstraint: {
       distance: 10,
     },
   });
-  const getItemPos = (id: UniqueIdentifier) => {
+  const getItemPos = (id: UniqueIdentifier): number => {
     return sortableList.findIndex((item) => item.id === id);
   };
 
-  const handelDragEnd = (event: DragEndEvent) => {
+  const handelDragEnd = (event: DragEndEvent): void => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
       const originalPos = getItemPos(active.id);
       const newPos = getItemPos(over.id);
       onSort(arrayMove(sortableList, originalPos, newPos));
-      setSortableList((sortableList) => {
+      setSortableList((sortableList: SortableList): SortableList => {
         return arrayMove(sortableList, originalPos, newPos);
       });
     }
@@ -70,6 +70,6 @@ function DndSort({ list, direction, onSort }: Props) {
       </DndContext>
     </>
   );
-}
+};
 
 export default DndSort;

@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, MouseEvent } from "react";
 import { useSelector } from "react-redux";
 
 import "./ResumeDoc.css";
@@ -19,12 +19,12 @@ export interface ResumeProps {
   jobTitle?: string;
 }
 
-function Resume({ resume, onSave, jobTitle }: ResumeProps) {
-  const [content, setContent] = useState("");
-  const [hasChanged, setHasChanged] = useState(false);
+const Resume: React.FC<ResumeProps> = ({ resume, onSave, jobTitle }) => {
+  const [content, setContent] = useState<string>("");
+  const [hasChanged, setHasChanged] = useState<boolean>(false);
   const user = useSelector((state: State) => state.auth.user);
 
-  const onPrint = () => {
+  const onPrint = (): void => {
     const element = document.getElementById("resume-content");
     const doc = new jsPDF({ format: "A4" });
     if (element) {
@@ -43,19 +43,19 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
     }
   };
 
-  const updateResume = (text: string) => {
+  const updateResume = (text: string): void => {
     setContent(text);
     setHasChanged(true);
   };
 
-  const saveResume = async () => {
+  const saveResume = async (): Promise<void> => {
     if (content) {
       onSave(content);
       setHasChanged(false);
     }
   };
 
-  const employmentItem = (job: Employment) => {
+  const employmentItem = (job: Employment): string => {
     return `
       <p>
         <h3>${job.jobTitle}</h3>
@@ -77,7 +77,7 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
       </p>`;
   };
 
-  const educationItem = (edu: Education) => {
+  const educationItem = (edu: Education): string => {
     return `
        <p>
            <p>${edu.degree}</p>
@@ -95,7 +95,7 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
     `;
   };
 
-  const projectItem = (project: Project) => {
+  const projectItem = (project: Project): string => {
     return `
       <p>
           ${
@@ -120,7 +120,7 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
     `;
   };
 
-  const defaultPersonal = (personal: User) => {
+  const defaultPersonal = (personal: User): string => {
     return `    
     <p>
       <h1 style="text-align: center">${
@@ -138,13 +138,13 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
     </p>`;
   };
 
-  const createSkills = (skills: Skill[]) => {
+  const createSkills = (skills: Skill[]): string => {
     const skillsList = skills.map(({ name }) => name);
 
     return `<p>${skillsList.join(", ")}</p>`;
   };
 
-  const createResume = async () => {
+  const createResume = async (): Promise<void> => {
     const employment = (await getEmploymentList()) || [];
     const education = (await getEducationList()) || [];
     const projects = (await getProjects()) || [];
@@ -172,7 +172,7 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
     setHasChanged(true);
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     if (resume) {
       setContent(resume);
       setHasChanged(false);
@@ -186,14 +186,20 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
           <div className="flex">
             <button
               className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-              onClick={createResume}
+              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                e.stopPropagation();
+                createResume();
+              }}
             >
               Generate Resume
             </button>
             {hasChanged && (
               <button
                 className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-                onClick={saveResume}
+                onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                  e.stopPropagation();
+                  saveResume();
+                }}
               >
                 Save Resume
               </button>
@@ -201,7 +207,10 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
           </div>
           <button
             className="flex justify-self-end rounded-md border-2 border-indigo-600 m-3 p-3 text-sm font-semibold text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-            onClick={onPrint}
+            onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+              e.stopPropagation();
+              onPrint();
+            }}
           >
             Export Resume
           </button>
@@ -214,6 +223,6 @@ function Resume({ resume, onSave, jobTitle }: ResumeProps) {
       </div>
     </>
   );
-}
+};
 
 export default Resume;
