@@ -1,4 +1,6 @@
+import React from "react";
 import { useDispatch } from "react-redux";
+import type { Dispatch } from "@reduxjs/toolkit";
 
 import { statusOptions } from "@options";
 import type { Application, ApplicationUpdate } from "@/types";
@@ -10,24 +12,24 @@ import Dropdown from "@/components/DropDown";
 import DateInput from "@/components/DateInput";
 import DeleteBtn from "@/components/DeleteBtn";
 
-interface Props {
+interface DetailsHeaderProps {
   application: Application;
   onUpdate: (form: ApplicationUpdate) => void;
 }
 
-function DetailsHeader({ application, onUpdate }: Props) {
-  const dispatch = useDispatch();
+const DetailsHeader: React.FC<DetailsHeaderProps> = ({ application, onUpdate }) => {
+  const dispatch: Dispatch = useDispatch();
 
-  const updateCompanyName = (companyInfo: ApplicationUpdate) => {
+  const updateCompanyName = (companyInfo: ApplicationUpdate): void => {
     if (!application.id) return;
-    const companyName = companyInfo.company;
+    const companyName: string | undefined = companyInfo.company;
     if (companyName && companyName !== application.company) {
       dispatch(setJobTab({ label: companyName, value: application.id }));
     }
     onUpdate(companyInfo);
   };
 
-  const remove = async () => {
+  const remove = async (): Promise<void> => {
     if (application.id) {
       await deleteApplication(application.id);
       dispatch(removeJobTab(application.id));
@@ -98,6 +100,6 @@ function DetailsHeader({ application, onUpdate }: Props) {
       </div>
     </div>
   );
-}
+};
 
 export default DetailsHeader;

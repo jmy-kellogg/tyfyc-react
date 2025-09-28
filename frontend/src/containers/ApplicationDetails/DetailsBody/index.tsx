@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import type { ApplicationUpdate, Application } from "@/types";
+import type { ApplicationUpdate, Application, User } from "@/types";
 import Resume from "@/components/Resume";
 import Toggle from "@/components/Toggle";
 import SkillSection from "./SkillsSection";
@@ -8,22 +8,22 @@ import TextInput from "./TextInput";
 import PostingBtnMenu from "./PostingBtnMenu";
 import type { State } from "@/store";
 
-interface Props {
+interface DetailsBodyProps {
   application: Application;
   onUpdate: (form: ApplicationUpdate) => void;
 }
-function DetailsBody({ application, onUpdate }: Props) {
-  const user = useSelector((state: State) => state.auth.user);
+const DetailsBody: React.FC<DetailsBodyProps> = ({ application, onUpdate }) => {
+  const user: User | null = useSelector((state: State) => state.auth.user);
   const [notesToggle, setNotesToggle] = useState<boolean>(false);
   const [resumeToggle, setResumeToggle] = useState<boolean>(false);
   const [skillsToggle, setSkillsToggle] = useState<boolean>(true);
   const [postingToggle, setPostingToggle] = useState<boolean>(true);
 
-  const saveResume = (resume: string) => {
+  const saveResume = (resume: string): void => {
     onUpdate({ resume });
   };
 
-  const handleNotesToggle = () => {
+  const handleNotesToggle = (): void => {
     setNotesToggle(!notesToggle);
     if (!notesToggle && !application.notes) {
       // ToDo: allow this to be customizable
@@ -33,8 +33,8 @@ function DetailsBody({ application, onUpdate }: Props) {
     }
   };
 
-  useEffect(() => {
-    const toggle = !!application.notes && application.notes !== "<p></p>";
+  useEffect((): void => {
+    const toggle: boolean = !!application.notes && application.notes !== "<p></p>";
     setNotesToggle(toggle);
   }, [application]);
 
@@ -48,17 +48,17 @@ function DetailsBody({ application, onUpdate }: Props) {
         />
         <Toggle
           checked={resumeToggle}
-          onChange={() => setResumeToggle(!resumeToggle)}
+          onChange={(): void => setResumeToggle(!resumeToggle)}
           label="Resume"
         />
         <Toggle
           checked={skillsToggle}
-          onChange={() => setSkillsToggle(!skillsToggle)}
+          onChange={(): void => setSkillsToggle(!skillsToggle)}
           label="Skills"
         />
         <Toggle
           checked={postingToggle}
-          onChange={() => setPostingToggle(!postingToggle)}
+          onChange={(): void => setPostingToggle(!postingToggle)}
           label="Posting"
         />
       </div>
@@ -100,6 +100,6 @@ function DetailsBody({ application, onUpdate }: Props) {
       </div>
     </>
   );
-}
+};
 
 export default DetailsBody;

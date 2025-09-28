@@ -1,27 +1,28 @@
+import React from "react";
 import type { ApplicationUpdate, Application } from "@/types";
 
-interface Props {
+interface PostingBtnMenuProps {
   onUpdate: (form: ApplicationUpdate) => void;
   application: Application;
 }
 
-const PostingBtnMenu = ({ onUpdate, application }: Props) => {
-  const updateCompany = () => {
-    const text = window?.getSelection()?.toString() || "";
+const PostingBtnMenu: React.FC<PostingBtnMenuProps> = ({ onUpdate, application }) => {
+  const updateCompany = (): void => {
+    const text: string = window?.getSelection()?.toString() || "";
     if (text) {
       onUpdate({ company: text });
     }
   };
 
-  const updateLocation = () => {
-    const text = window?.getSelection()?.toString() || "";
+  const updateLocation = (): void => {
+    const text: string = window?.getSelection()?.toString() || "";
     if (text) {
       onUpdate({ location: text });
     }
   };
 
-  const updateSalary = () => {
-    const text = window?.getSelection()?.toString() || "";
+  const updateSalary = (): void => {
+    const text: string = window?.getSelection()?.toString() || "";
     if (text) {
       onUpdate({ salary: text });
     }
@@ -31,7 +32,10 @@ const PostingBtnMenu = ({ onUpdate, application }: Props) => {
     <div className="flex">
       <button
         className={`group p-1 mr-1 flex rounded-sm border-1 ${application.company ? "border-gray-300 hover:bg-gray-200 " : "border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white"} hover:cursor-pointer`}
-        onClick={updateCompany}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
+          updateCompany();
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +59,10 @@ const PostingBtnMenu = ({ onUpdate, application }: Props) => {
 
       <button
         className={`group p-1 mr-1 flex rounded-sm border-1 ${application.location ? "border-gray-300 hover:bg-gray-200 " : "border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white"} hover:cursor-pointer`}
-        onClick={updateLocation}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
+          updateLocation();
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +91,10 @@ const PostingBtnMenu = ({ onUpdate, application }: Props) => {
 
       <button
         className={`group p-1 mr-1 flex rounded-sm border-1 ${application.salary ? "border-gray-300 hover:bg-gray-200 " : "border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white"} hover:cursor-pointer`}
-        onClick={updateSalary}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
+          updateSalary();
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

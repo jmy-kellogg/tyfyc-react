@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import RichEditor from "@/components/RichEditor";
 import ReadOnly from "@/components/RichEditor/ReadOnly";
 
@@ -6,7 +6,7 @@ interface FormData {
   [name: string]: string;
 }
 
-interface Props {
+interface TextInputProps {
   label: string;
   inputName: string;
   inputValue: string;
@@ -14,46 +14,48 @@ interface Props {
   popupBtnMenu?: ReactNode;
 }
 
-function TextInput({
+const TextInput: React.FC<TextInputProps> = ({
   label,
   inputName,
   inputValue,
   onUpdate,
   popupBtnMenu,
-}: Props) {
-  const [hover, setHover] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [text, setText] = useState(inputValue);
+}) => {
+  const [hover, setHover] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [text, setText] = useState<string>(inputValue);
 
-  const handleUpdate = (textString: string) => {
+  const handleUpdate = (textString: string): void => {
     onUpdate({ [inputName]: textString });
   };
 
-  const updateText = (textString: string) => {
+  const updateText = (textString: string): void => {
     if (textString !== inputValue) {
       handleUpdate(textString);
     }
     setText(textString);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     if (inputValue !== text) {
       handleUpdate(text);
     }
     setEdit(false);
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     setText(inputValue);
   }, [inputValue]);
 
   return (
     <div
       id={`${inputName}-text-input`}
-      onMouseEnter={() => {
+      onMouseEnter={(e: React.MouseEvent<HTMLDivElement>): void => {
+        e.stopPropagation();
         setHover(true);
       }}
-      onMouseLeave={() => {
+      onMouseLeave={(e: React.MouseEvent<HTMLDivElement>): void => {
+        e.stopPropagation();
         // setHover(false);
       }}
     >
@@ -78,7 +80,7 @@ function TextInput({
         {edit && (
           <>
             <button
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
                 e.stopPropagation();
                 handleSubmit();
               }}
@@ -111,13 +113,16 @@ function TextInput({
             />
           </div>
         ) : (
-          <div onClick={() => setEdit(true)}>
+          <div onClick={(e: React.MouseEvent<HTMLDivElement>): void => {
+            e.stopPropagation();
+            setEdit(true);
+          }}>
             <ReadOnly content={text} />
           </div>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default TextInput;

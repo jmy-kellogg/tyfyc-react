@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import type { ApplicationUpdate, Application } from "@/types";
@@ -24,18 +24,21 @@ const initApplication: Application = {
   resume: "",
 };
 
-function ApplicationDetails() {
-  const applicationId = useSelector(getActiveTab);
+const ApplicationDetails: React.FC = () => {
+  const applicationId: string = useSelector(getActiveTab);
   const [application, setApplication] = useState<Application>(initApplication);
 
-  const handleUpdate = async (form: ApplicationUpdate) => {
-    const updatedApp = await updateApplication({ ...application, ...form });
+  const handleUpdate = async (form: ApplicationUpdate): Promise<void> => {
+    const updatedApp: Application = await updateApplication({
+      ...application,
+      ...form,
+    });
     setApplication(updatedApp);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const dbApp = await getApplication(applicationId);
+  useEffect((): void => {
+    const fetchData = async (): Promise<void> => {
+      const dbApp: Application = await getApplication(applicationId);
       setApplication(dbApp);
     };
     fetchData();
@@ -50,6 +53,6 @@ function ApplicationDetails() {
       </div>
     </div>
   );
-}
+};
 
 export default ApplicationDetails;

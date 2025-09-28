@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getSkills, createSkill, getSkillOptions } from "@/api/skills";
-import type { SkillOption } from "@/types";
+import type { SkillOption, Skill } from "@/types";
 
-interface Props {
+interface SkillsSectionProps {
   posting: string;
 }
 
-function SkillSection({ posting }: Props) {
+const SkillSection: React.FC<SkillsSectionProps> = ({ posting }) => {
   const [postingSkills, setPostingSkills] = useState<SkillOption[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
 
-  const addSkillToProfile = async (skill: SkillOption) => {
+  const addSkillToProfile = async (skill: SkillOption): Promise<void> => {
     await createSkill({
       skillOptionsId: skill.id,
       category: "",
@@ -18,23 +18,23 @@ function SkillSection({ posting }: Props) {
     setSkills([...skills, skill.id]);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const dbSkills = await getSkills();
+  useEffect((): void => {
+    const fetchData = async (): Promise<void> => {
+      const dbSkills: Skill[] = await getSkills();
       setSkills(dbSkills.map(({ skillOptionsId }) => skillOptionsId));
     };
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const dbSkillOptions = await getSkillOptions();
-      const postingSkills = dbSkillOptions.filter((skill) => {
+  useEffect((): void => {
+    const fetchData = async (): Promise<void> => {
+      const dbSkillOptions: SkillOption[] = await getSkillOptions();
+      const postingSkills: SkillOption[] = dbSkillOptions.filter((skill: SkillOption): boolean => {
         // ToDo: properly handle irregular regex characters
         if (skill.name.includes("+")) {
           return false;
         }
-        return `/${posting}/i`.match(skill.name);
+        return `/${posting}/i`.match(skill.name) !== null;
       });
 
       setPostingSkills(postingSkills);
@@ -45,12 +45,15 @@ function SkillSection({ posting }: Props) {
   return (
     <>
       <h2 className="block text-sm/6 font-medium">Skills:</h2>
-      {postingSkills.map((skill) => (
+      {postingSkills.map((skill: SkillOption) => (
         <button
           className={`rounded-sm border-1 border-indigo-600 text-indigo-600 m-1 px-2 shadow-md ${skills.includes(skill.id) ? "bg-yellow-100" : "hover:bg-indigo-100"}`}
           key={skill.id}
           disabled={skills.includes(skill.id)}
-          onClick={() => addSkillToProfile(skill)}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>): void => {
+            e.stopPropagation();
+            addSkillToProfile(skill);
+          }}
         >
           <span className="flex items-center">
             {!skills.includes(skill.id) && (
@@ -75,6 +78,6 @@ function SkillSection({ posting }: Props) {
       ))}
     </>
   );
-}
+};
 
 export default SkillSection;
