@@ -1,20 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-function PasswordReset() {
-  const [passwordForm, setPasswordForm] = useState({
+interface PasswordForm {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+const PasswordReset: React.FC = () => {
+  const [passwordForm, setPasswordForm] = useState<PasswordForm>({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
 
-  const handlePwdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePwdChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordForm({
       ...passwordForm,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handlePwdSubmit = async (e: React.FormEvent) => {
+  const handlePwdSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     // ToDo: update database
   };
@@ -60,6 +66,6 @@ function PasswordReset() {
       </form>
     </div>
   );
-}
+};
 
 export default PasswordReset;

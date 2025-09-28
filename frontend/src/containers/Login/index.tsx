@@ -1,11 +1,24 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Tabs from "@/components/Tabs";
 import { AuthContext } from "@/context/AuthContext";
 
-function Login() {
-  const [tab, setTab] = useState("login");
-  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
-  const [registerForm, setRegisterForm] = useState({
+interface LoginForm {
+  username: string;
+  password: string;
+}
+
+interface RegisterForm {
+  username: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+const Login: React.FC = () => {
+  const [tab, setTab] = useState<string>("login");
+  const [loginForm, setLoginForm] = useState<LoginForm>({ username: "", password: "" });
+  const [registerForm, setRegisterForm] = useState<RegisterForm>({
     username: "",
     email: "",
     password: "",
@@ -14,27 +27,27 @@ function Login() {
   });
   const { login, register } = useContext(AuthContext);
 
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     if (loginForm.username && loginForm.password && login) {
       login(loginForm.username, loginForm.password);
     }
   };
 
-  const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRegisterForm({
       ...registerForm,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleRegisterSubmit = async (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    const { username, email, password, firstName, lastName } = registerForm;
+    const { username, email, password, firstName, lastName }: RegisterForm = registerForm;
     if (username && password && email && firstName && lastName && register) {
       await register(username, email, password, firstName, lastName);
       setTab("login");
@@ -146,6 +159,6 @@ function Login() {
       </div>
     </>
   );
-}
+};
 
 export default Login;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import Resume from "@/components/Resume";
@@ -6,17 +6,17 @@ import { updateUser } from "@/api/user";
 
 import type { State } from "@/store";
 
-function Resumes() {
-  const [resume, setResume] = useState("");
+const Resumes: React.FC = () => {
+  const [resume, setResume] = useState<string>("");
   const user = useSelector((state: State) => state.auth.user);
 
-  const saveResume = async (resume: string) => {
+  const saveResume = async (resume: string): Promise<void> => {
     if (resume) {
       await updateUser({ resume });
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     if (user?.resume) {
       setResume(user.resume);
     }
@@ -29,6 +29,6 @@ function Resumes() {
       </div>
     </>
   );
-}
+};
 
 export default Resumes;
