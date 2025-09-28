@@ -1,3 +1,4 @@
+import React from "react";
 import { Sector } from "recharts";
 
 type Coordinate = {
@@ -29,7 +30,7 @@ type PieSectorDataItem = React.SVGProps<SVGPathElement> &
   Partial<GeometrySector> &
   PieSectorData;
 
-function RenderOuter({
+const RenderOuter: React.FC<PieSectorDataItem> = ({
   cx,
   cy,
   midAngle,
@@ -41,17 +42,17 @@ function RenderOuter({
   percent,
   value,
   color,
-}: PieSectorDataItem) {
-  const RADIAN = Math.PI / 180;
-  const sin = Math.sin(-RADIAN * (midAngle ?? 1));
-  const cos = Math.cos(-RADIAN * (midAngle ?? 1));
-  const sx = (cx ?? 0) + ((outerRadius ?? 0) + 10) * cos;
-  const sy = (cy ?? 0) + ((outerRadius ?? 0) + 10) * sin;
-  const mx = (cx ?? 0) + ((outerRadius ?? 0) + 30) * cos;
-  const my = (cy ?? 0) + ((outerRadius ?? 0) + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-  const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
+}) => {
+  const RADIAN: number = Math.PI / 180;
+  const sin: number = Math.sin(-RADIAN * (midAngle ?? 1));
+  const cos: number = Math.cos(-RADIAN * (midAngle ?? 1));
+  const sx: number = (cx ?? 0) + ((outerRadius ?? 0) + 10) * cos;
+  const sy: number = (cy ?? 0) + ((outerRadius ?? 0) + 10) * sin;
+  const mx: number = (cx ?? 0) + ((outerRadius ?? 0) + 30) * cos;
+  const my: number = (cy ?? 0) + ((outerRadius ?? 0) + 30) * sin;
+  const ex: number = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey: number = my;
+  const textAnchor: "start" | "end" = cos >= 0 ? "start" : "end";
 
   return (
     <g>
@@ -87,6 +88,6 @@ function RenderOuter({
       </text>
     </g>
   );
-}
+};
 
 export default RenderOuter;

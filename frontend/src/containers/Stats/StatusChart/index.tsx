@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Legend } from "recharts";
 
 import RenderOuter from "./RenderOuter";
@@ -14,15 +14,15 @@ interface StatusData {
   percent: number;
 }
 
-function StatusChart() {
-  const [totalApplied, setTotalApplied] = useState(0);
+const StatusChart: React.FC = () => {
+  const [totalApplied, setTotalApplied] = useState<number>(0);
   const [macroData, setMacroData] = useState<StatusData[]>([]);
   const [statusData, setStatusData] = useState<StatusData[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect((): void => {
+    const fetchData = async (): Promise<void> => {
       const dbApplications = await getApplications();
-      let total = 0;
+      let total: number = 0;
       const statusDict: { [key: string]: number } = statusOptions.reduce(
         (prev, curr) => {
           return {
@@ -40,30 +40,30 @@ function StatusChart() {
         }
       });
 
-      const interviewed = [
+      const interviewed: string[] = [
         "interviewing",
         "accepted",
         "no_offer",
         "declined",
         "rejected",
       ];
-      const noInterview = ["auto_rejected", "no_response"];
-      const active = ["applied", "pending"];
+      const noInterview: string[] = ["auto_rejected", "no_response"];
+      const active: string[] = ["applied", "pending"];
 
-      const interviewedTotal = interviewed.reduce(
-        (prev, curr) => prev + statusDict[curr],
+      const interviewedTotal: number = interviewed.reduce(
+        (prev: number, curr: string): number => prev + statusDict[curr],
         0
       );
-      const noInterviewTotal = noInterview.reduce(
-        (prev, curr) => prev + statusDict[curr],
+      const noInterviewTotal: number = noInterview.reduce(
+        (prev: number, curr: string): number => prev + statusDict[curr],
         0
       );
-      const activeTotal = active.reduce(
-        (prev, curr) => prev + statusDict[curr],
+      const activeTotal: number = active.reduce(
+        (prev: number, curr: string): number => prev + statusDict[curr],
         0
       );
 
-      const macro = [
+      const macro: StatusData[] = [
         {
           dataKey: "got_interview",
           name: "Got Interview",
@@ -89,7 +89,7 @@ function StatusChart() {
         },
       ];
 
-      const data = statusOptions
+      const data: StatusData[] = statusOptions
         .map(({ id, label, color }): StatusData => {
           return {
             dataKey: id,
@@ -151,6 +151,6 @@ function StatusChart() {
       </PieChart>
     </>
   );
-}
+};
 
 export default StatusChart;

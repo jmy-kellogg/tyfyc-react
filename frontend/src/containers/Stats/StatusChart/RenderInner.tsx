@@ -1,3 +1,4 @@
+import React from "react";
 import { SectorProps, Sector } from "recharts";
 
 type Coordinate = {
@@ -20,7 +21,7 @@ type PieSectorDataItem = React.SVGProps<SVGPathElement> &
   Partial<SectorProps> &
   PieSectorData;
 
-function RenderInner({
+const RenderInner: React.FC<PieSectorDataItem> = ({
   cx,
   cy,
   innerRadius,
@@ -31,7 +32,7 @@ function RenderInner({
   percent,
   value,
   color,
-}: PieSectorDataItem) {
+}) => {
   return (
     <g>
       <text x={cx} y={cy} dy={0} textAnchor="middle" fill={color} fontSize={20}>
@@ -58,6 +59,6 @@ function RenderInner({
       />
     </g>
   );
-}
+};
 
 export default RenderInner;
