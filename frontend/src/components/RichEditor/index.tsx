@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import {
   useEditor,
   EditorContent,
@@ -9,19 +9,24 @@ import {
 import extensions from "./extensions";
 import EditBtnMenu from "./EditBtnMenu.tsx";
 
-interface Props {
+interface RichEditorProps {
   content: string;
   onTextChange: (text: string) => void;
   popupBtnMenu?: ReactNode;
 }
 
-const RichEditor = ({ content, onTextChange, popupBtnMenu }: Props) => {
-  const formattedContent = content[0] === "<" ? content : `<p>${content}</p>`;
+const RichEditor: React.FC<RichEditorProps> = ({
+  content,
+  onTextChange,
+  popupBtnMenu,
+}) => {
+  const formattedContent: string =
+    content[0] === "<" ? content : `<p>${content}</p>`;
   const editor = useEditor({
     extensions,
     content: formattedContent,
-    onUpdate({ editor }) {
-      const text = editor.getHTML();
+    onUpdate({ editor }): void {
+      const text: string = editor.getHTML();
       onTextChange(text);
     },
   });

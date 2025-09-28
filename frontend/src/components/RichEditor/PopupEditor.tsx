@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   useEditor,
   EditorContent,
@@ -8,24 +8,32 @@ import {
 
 import EditBtnMenu from "./EditBtnMenu.tsx";
 import extensions from "./extensions";
-interface Props {
+interface PopupEditorProps {
   content: string;
   handleTextChange: (text: string) => void;
 }
 
-const RichEditor = ({ content, handleTextChange }: Props) => {
-  const formattedContent = content[0] === "<" ? content : `<p>${content}</p>`;
+const PopupEditor: React.FC<PopupEditorProps> = ({
+  content,
+  handleTextChange,
+}) => {
+  const formattedContent: string =
+    content[0] === "<" ? content : `<p>${content}</p>`;
   const editor = useEditor({
     extensions,
     content: formattedContent,
   });
 
-  const handleBlur = () => {
-    if (editor) handleTextChange(editor.getHTML());
+  const handleBlur = (): void => {
+    if (editor) {
+      const text: string = editor.getHTML();
+      handleTextChange(text);
+    }
   };
 
-  useEffect(() => {
-    const formattedContent = content[0] === "<" ? content : `<p>${content}</p>`;
+  useEffect((): void => {
+    const formattedContent: string =
+      content[0] === "<" ? content : `<p>${content}</p>`;
     editor?.commands.setContent(formattedContent);
   }, [content, editor]);
 
@@ -54,4 +62,4 @@ const RichEditor = ({ content, handleTextChange }: Props) => {
   );
 };
 
-export default RichEditor;
+export default PopupEditor;

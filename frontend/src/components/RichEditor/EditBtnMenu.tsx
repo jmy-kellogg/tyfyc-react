@@ -1,11 +1,12 @@
-import type { Editor } from "@tiptap/core";
+import React, { MouseEvent } from "react";
 import { useEditorState } from "@tiptap/react";
+import type { Editor } from "@tiptap/core";
 
-interface Props {
+interface EditBtnMenuProps {
   editor: Editor;
 }
 
-const EditBtnMenu = ({ editor }: Props) => {
+const EditBtnMenu: React.FC<EditBtnMenuProps> = ({ editor }) => {
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
@@ -47,7 +48,8 @@ const EditBtnMenu = ({ editor }: Props) => {
     <div className="flex">
       <button
         className={`${editorState.isHeading1 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleHeading({ level: 1 }).run();
         }}
       >
@@ -69,7 +71,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleHeading({ level: 2 }).run();
         }}
       >
@@ -91,7 +94,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isHeading3 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleHeading({ level: 3 }).run();
         }}
       >
@@ -113,7 +117,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isBold ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleBold().run();
         }}
       >
@@ -134,7 +139,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isItalic ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleItalic().run();
         }}
       >
@@ -155,7 +161,8 @@ const EditBtnMenu = ({ editor }: Props) => {
       </button>
       <button
         className={`${editorState.isUnderline ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleUnderline().run();
         }}
       >
@@ -176,7 +183,8 @@ const EditBtnMenu = ({ editor }: Props) => {
       </button>
       <button
         className={`${editorState.isStrike ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleStrike().run();
         }}
       >
@@ -198,7 +206,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isHighlight ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleHighlight({ color: "#FAF594" }).run();
         }}
       >
@@ -220,7 +229,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().setHorizontalRule().run();
         }}
       >
@@ -238,7 +248,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isBulletList ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleBulletList().run();
         }}
       >
@@ -260,7 +271,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isTaskList ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().toggleTaskList().run();
         }}
       >
@@ -282,7 +294,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().setTextAlign("left").run();
         }}
       >
@@ -304,7 +317,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().setTextAlign("center").run();
         }}
       >
@@ -326,7 +340,8 @@ const EditBtnMenu = ({ editor }: Props) => {
 
       <button
         className={`${editorState.isHeading2 ? "bg-indigo-400 text-white " : ""}p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().setTextAlign("right").run();
         }}
       >
@@ -348,7 +363,8 @@ const EditBtnMenu = ({ editor }: Props) => {
       <button
         className={`p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
         disabled={!editorState.canUndo}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().undo().run();
         }}
       >
@@ -370,7 +386,8 @@ const EditBtnMenu = ({ editor }: Props) => {
       <button
         className={`p-1 mr-1 hover:bg-gray-200 hover:cursor-pointer`}
         disabled={!editorState.canRedo}
-        onClick={() => {
+        onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
           editor.chain().focus().redo().run();
         }}
       >

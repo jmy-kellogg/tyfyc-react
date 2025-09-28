@@ -1,21 +1,21 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import extensions from "./extensions";
 
-interface Props {
+interface ReadOnlyProps {
   content: string;
 }
 
-const ReadOnly = ({ content }: Props) => {
-  const formattedContent = content[0] === "<" ? content : `<p>${content}</p>`;
+const ReadOnly: React.FC<ReadOnlyProps> = ({ content }) => {
+  const formattedContent: string = content[0] === "<" ? content : `<p>${content}</p>`;
   const editor = useEditor({
     extensions,
     content: formattedContent,
     editable: false,
   });
 
-  useEffect(() => {
-    const formattedContent = content[0] === "<" ? content : `<p>${content}</p>`;
+  useEffect((): void => {
+    const formattedContent: string = content[0] === "<" ? content : `<p>${content}</p>`;
     editor?.commands.setContent(formattedContent);
   }, [content, editor]);
 
