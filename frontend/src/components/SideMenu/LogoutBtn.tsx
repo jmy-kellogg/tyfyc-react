@@ -1,13 +1,12 @@
-import React, { useContext, MouseEvent } from "react";
-import { AuthContext } from "@/context/AuthContext";
+import React, { MouseEvent } from "react";
+import { useAuthContext } from "@/context/AuthContext.ts";
 
 interface LogoutBtnProps {
   openMenu: boolean;
 }
 
 const LogoutBtn: React.FC<LogoutBtnProps> = ({ openMenu }) => {
-  const { logout } = useContext(AuthContext);
-
+  const { logout } = useAuthContext();
   const handleLogout = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     e.stopPropagation();

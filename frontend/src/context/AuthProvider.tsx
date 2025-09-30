@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, ReactNode } from "react";
+import React, { useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "@reduxjs/toolkit";
@@ -9,36 +9,17 @@ import { setTabsToDefault } from "src/store/reducers/navigationSlice";
 import { setToken, clearAuth } from "src/store/reducers/authSlice";
 import { addAlert } from "@/reducers/alertsSlice";
 
+import { AuthContext } from "./AuthContext.ts";
 import type { State } from "@/store";
-
-interface AuthContextType {
-  login: ((username: string, password: string) => Promise<void>) | null;
-  register:
-    | ((
-        username: string,
-        email: string,
-        password: string,
-        firstName: string,
-        lastName: string
-      ) => Promise<void>)
-    | null;
-  logout: (() => void) | null;
-}
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  login: null,
-  register: null,
-  logout: null,
-});
-
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useDispatch<Dispatch>();
-  const token: string | null = useSelector((state: State) => state.auth.token);
   const navigate = useNavigate();
+  const token: string | null = useSelector((state: State) => state.auth.token);
   const { pathname }: { pathname: string } = useLocation();
 
   const checkForExpired = async (): Promise<void> => {
@@ -107,5 +88,3 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export { AuthProvider, AuthContext };

@@ -1,9 +1,8 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/context/AuthContext.ts";
 
 import SideMenu from "./components/SideMenu/index";
-import Alerts from "./components/Alerts";
 import SmallDisplayView from "./containers/SmallDisplayView";
 import LargeDisplayView from "./containers/LargeDisplayView";
 
@@ -15,7 +14,7 @@ import NewJobModal from "@/components/NewJobModal";
 
 function App() {
   const dispatch = useDispatch();
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuthContext();
   const token = useSelector((state: State) => state.auth.token);
   const { smallDisplay } = useSelector((state: State) => state.navigation);
 
@@ -44,7 +43,6 @@ function App() {
             <div className="m-3 w-full">
               {smallDisplay ? <SmallDisplayView /> : <LargeDisplayView />}
             </div>
-            <Alerts />
           </div>
         </>
       )}
