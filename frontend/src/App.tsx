@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "@/context/AuthContext";
 
 import SideMenu from "./components/SideMenu/index";
-import Alerts from "./components/Alerts";
 import SmallDisplayView from "./containers/SmallDisplayView";
 import LargeDisplayView from "./containers/LargeDisplayView";
 
@@ -44,7 +43,6 @@ function App() {
             <div className="m-3 w-full">
               {smallDisplay ? <SmallDisplayView /> : <LargeDisplayView />}
             </div>
-            <Alerts />
           </div>
         </>
       )}

@@ -10,19 +10,22 @@ import Logout from "./components/Logout.tsx";
 import { persistor, store } from "./store";
 
 import "./index.css";
+import AlertProvider from "./context/AlertProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
-          </Routes>
+          <AlertProvider>
+            <Routes>
+              <Route path="/" element={<App />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />} />
+            </Routes>
+          </AlertProvider>
         </AuthProvider>
       </BrowserRouter>
     </PersistGate>
-  </Provider>,
+  </Provider>
 );
