@@ -1,38 +1,17 @@
-import { useEffect, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AuthContext } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
 
 import SideMenu from "./components/SideMenu/index";
-import Alerts from "./components/Alerts";
 import SmallDisplayView from "./containers/SmallDisplayView";
 import LargeDisplayView from "./containers/LargeDisplayView";
 
-import { getFeatureFlags } from "@/api/auth";
-import { fetchUser } from "@/api/user";
-import { setUser, setFlags } from "src/store/reducers/authSlice";
 import type { State } from "./store";
 import NewJobModal from "@/components/NewJobModal";
 
 function App() {
-  const dispatch = useDispatch();
-  const { logout } = useContext(AuthContext);
   const token = useSelector((state: State) => state.auth.token);
-  const { smallDisplay } = useSelector((state: State) => state.navigation);
-
-  useEffect(() => {
-    if (token) {
-      const fetchData = async () => {
-        const userProfile = await fetchUser();
-        dispatch(setUser(userProfile));
-
-        const featureFlags = (await getFeatureFlags()) || [];
-        dispatch(setFlags(featureFlags));
-      };
-      fetchData();
-    } else if (logout) {
-      logout();
-    }
-  }, [dispatch, logout, token]);
+  const smallDisplay = useSelector(
+    (state: State) => state.navigation.smallDisplay
+  );
 
   return (
     <>
@@ -44,7 +23,6 @@ function App() {
             <div className="m-3 w-full">
               {smallDisplay ? <SmallDisplayView /> : <LargeDisplayView />}
             </div>
-            <Alerts />
           </div>
         </>
       )}

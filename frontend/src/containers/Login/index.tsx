@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Tabs from "@/components/Tabs";
-import { AuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/context/AuthContext.ts";
 
 interface LoginForm {
   username: string;
@@ -17,7 +17,10 @@ interface RegisterForm {
 
 const Login: React.FC = () => {
   const [tab, setTab] = useState<string>("login");
-  const [loginForm, setLoginForm] = useState<LoginForm>({ username: "", password: "" });
+  const [loginForm, setLoginForm] = useState<LoginForm>({
+    username: "",
+    password: "",
+  });
   const [registerForm, setRegisterForm] = useState<RegisterForm>({
     username: "",
     email: "",
@@ -25,7 +28,7 @@ const Login: React.FC = () => {
     firstName: "",
     lastName: "",
   });
-  const { login, register } = useContext(AuthContext);
+  const { login, register } = useAuthContext();
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -38,7 +41,9 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleRegisterChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setRegisterForm({
       ...registerForm,
       [e.target.name]: e.target.value,
@@ -47,7 +52,8 @@ const Login: React.FC = () => {
 
   const handleRegisterSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    const { username, email, password, firstName, lastName }: RegisterForm = registerForm;
+    const { username, email, password, firstName, lastName }: RegisterForm =
+      registerForm;
     if (username && password && email && firstName && lastName && register) {
       await register(username, email, password, firstName, lastName);
       setTab("login");

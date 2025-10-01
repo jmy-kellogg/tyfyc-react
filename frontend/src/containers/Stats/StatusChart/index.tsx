@@ -112,7 +112,7 @@ const StatusChart: React.FC = () => {
   return (
     <>
       <h3 className="justify-self-center">{totalApplied} Applications</h3>
-      <PieChart width={800} height={300}>
+      <PieChart width={800} height={400}>
         <Legend
           align="left"
           layout="vertical"
