@@ -3,10 +3,16 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "@reduxjs/toolkit";
 
-import { loginUser, registerUser } from "@/api/auth";
+import { loginUser, registerUser, getFeatureFlags } from "@/api/auth";
 import { getApplications, updateApplication } from "src/api/applications";
+import { fetchUser } from "@/api/user";
 import { setTabsToDefault } from "src/store/reducers/navigationSlice";
-import { setToken, clearAuth } from "src/store/reducers/authSlice";
+import {
+  setToken,
+  clearAuth,
+  setUser,
+  setFlags,
+} from "src/store/reducers/authSlice";
 import { addAlert } from "@/reducers/alertsSlice";
 
 import { AuthContext } from "./AuthContext.ts";
@@ -75,12 +81,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect((): void => {
-    if (token && pathname !== "/") {
-      navigate("/");
-    } else if (!token && pathname !== "/login") {
+    const fetchData = async (): Promise<void> => {
+      const userProfile = await fetchUser();
+      dispatch(setUser(userProfile));
+
+      const featureFlags = (await getFeatureFlags()) || [];
+      dispatch(setFlags(featureFlags));
+    };
+
+    if (token) {
+      if (pathname === "/login") navigate("/");
+      else fetchData();
+    } else if (pathname !== "/login") {
+      dispatch(setTabsToDefault());
       navigate("/login");
     }
-  }, [navigate, pathname, token]);
+  }, [navigate, pathname, dispatch, token]);
 
   return (
     <AuthContext.Provider value={{ login, register, logout }}>
