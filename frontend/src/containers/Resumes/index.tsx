@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 
 import Resume from "@/components/Resume";
-import { updateUser } from "@/api/user";
+import { fetchUser, updateUser } from "@/api/user";
 
-import type { State } from "@/store";
-
+import type { User } from "@/types";
 const Resumes: React.FC = () => {
   const [resume, setResume] = useState<string>("");
-  const user = useSelector((state: State) => state.auth.user);
-
   const saveResume = async (resume: string): Promise<void> => {
     if (resume) {
       await updateUser({ resume });
@@ -17,10 +13,13 @@ const Resumes: React.FC = () => {
   };
 
   useEffect((): void => {
-    if (user?.resume) {
-      setResume(user.resume);
-    }
-  }, [user]);
+    const fetchData = async (): Promise<void> => {
+      const { resume }: User = await fetchUser();
+
+      setResume(resume || "");
+    };
+    fetchData();
+  }, []);
 
   return (
     <>

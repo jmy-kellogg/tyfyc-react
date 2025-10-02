@@ -1,17 +1,16 @@
 import React, { useState, useEffect, FocusEvent } from "react";
-import { useSelector } from "react-redux";
 import Divider from "src/components/Divider";
 import RichEditor from "@/components/RichEditor";
 import ReadOnly from "@/components/RichEditor/ReadOnly";
 import { updateUser } from "@/api/user";
-import type { State } from "@/store";
+import type { User } from "@/types";
 
 interface SummaryProps {
   lockEdit: boolean;
+  user: User | null;
 }
 
-const Summary: React.FC<SummaryProps> = ({ lockEdit }) => {
-  const user = useSelector((state: State) => state.auth.user);
+const Summary: React.FC<SummaryProps> = ({ lockEdit, user }) => {
   const [summary, setSummary] = useState<string>(user?.summary || "");
 
   const updateText = (text: string): void => {
@@ -42,10 +41,12 @@ const Summary: React.FC<SummaryProps> = ({ lockEdit }) => {
           <ReadOnly content={summary} />
         </div>
       ) : (
-        <form onBlur={(e: FocusEvent<HTMLFormElement>): void => {
-          e.stopPropagation();
-          saveSummary();
-        }}>
+        <form
+          onBlur={(e: FocusEvent<HTMLFormElement>): void => {
+            e.stopPropagation();
+            saveSummary();
+          }}
+        >
           <div className="mt-2">
             <RichEditor content={summary} onTextChange={updateText} />
           </div>

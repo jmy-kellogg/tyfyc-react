@@ -1,16 +1,16 @@
 import React, { useState, useEffect, ChangeEvent, FocusEvent } from "react";
-import { useSelector } from "react-redux";
 
 import Divider from "src/components/Divider";
 import { updateUser } from "@/api/user";
-import type { State } from "@/store";
+
+import type { User } from "@/types";
 
 interface TitleProps {
   lockEdit: boolean;
+  user: User | null;
 }
 
-const Title: React.FC<TitleProps> = ({ lockEdit }) => {
-  const user = useSelector((state: State) => state.auth.user);
+const Title: React.FC<TitleProps> = ({ lockEdit, user }) => {
   const [firstName, setFirstName] = useState<string>(user?.firstName || "");
   const [lastName, setLastName] = useState<string>(user?.lastName || "");
   const [jobTitle, setJobTitle] = useState<string>(user?.jobTitle || "");
@@ -61,7 +61,9 @@ const Title: React.FC<TitleProps> = ({ lockEdit }) => {
                 placeholder="First Name"
                 className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={firstName}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => setFirstName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                  setFirstName(e.target.value)
+                }
                 onBlur={(e: FocusEvent<HTMLInputElement>): void => {
                   e.stopPropagation();
                   if (user?.firstName !== firstName) {
@@ -78,7 +80,9 @@ const Title: React.FC<TitleProps> = ({ lockEdit }) => {
                 placeholder="Last Name"
                 className="text-center block w-full h-10 rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={lastName}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => setLastName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                  setLastName(e.target.value)
+                }
                 onBlur={(e: FocusEvent<HTMLInputElement>): void => {
                   e.stopPropagation();
                   if (user?.lastName !== lastName) {
@@ -96,7 +100,9 @@ const Title: React.FC<TitleProps> = ({ lockEdit }) => {
               placeholder="Target Job Title"
               className="text-center block w-full rounded-md bg-white px-3 py-1 font-bold outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
               value={jobTitle}
-              onChange={(e: ChangeEvent<HTMLInputElement>): void => setJobTitle(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                setJobTitle(e.target.value)
+              }
               onBlur={(e: FocusEvent<HTMLInputElement>): void => {
                 e.stopPropagation();
                 if (user?.jobTitle !== jobTitle) {

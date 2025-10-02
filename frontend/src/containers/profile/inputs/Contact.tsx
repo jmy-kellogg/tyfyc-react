@@ -1,18 +1,16 @@
 import React, { useState, useEffect, ChangeEvent, FocusEvent } from "react";
-import { useSelector } from "react-redux";
 
-import type { User } from "@/types";
-import type { State } from "@/store";
 import { updateUser } from "@/api/user";
 import Divider from "src/components/Divider";
 import TextCopy from "@/components/TextCopy";
+import type { User } from "@/types";
 
 interface ContactProps {
   lockEdit: boolean;
+  user: User | null;
 }
 
-const Contact: React.FC<ContactProps> = ({ lockEdit }) => {
-  const user: User | null = useSelector((state: State) => state.auth.user);
+const Contact: React.FC<ContactProps> = ({ lockEdit, user }) => {
   const [email, setEmail] = useState<string>(user?.email || "");
   const [phone, setPhone] = useState<string>(user?.phone || "");
   const [city, setCity] = useState<string>(user?.city || "");
@@ -45,7 +43,8 @@ const Contact: React.FC<ContactProps> = ({ lockEdit }) => {
 
   // ToDo: make text parser more robust
   const getUrlText = (url: string): string => {
-    const text: string[] = url.split("/").filter((word: string): boolean => !!word) || [];
+    const text: string[] =
+      url.split("/").filter((word: string): boolean => !!word) || [];
     return text[text.length - 1] || url;
   };
 
@@ -118,7 +117,9 @@ const Contact: React.FC<ContactProps> = ({ lockEdit }) => {
                 placeholder="Email address"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={email}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => setEmail(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                  setEmail(e.target.value)
+                }
                 onMouseLeave={(e: React.MouseEvent<HTMLInputElement>): void => {
                   e.stopPropagation();
                   if (user?.email !== email) {
@@ -153,7 +154,9 @@ const Contact: React.FC<ContactProps> = ({ lockEdit }) => {
                 placeholder="City"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={city}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => setCity(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                  setCity(e.target.value)
+                }
                 onBlur={(e: FocusEvent<HTMLInputElement>): void => {
                   e.stopPropagation();
                   if (user?.city !== city) {
@@ -170,7 +173,9 @@ const Contact: React.FC<ContactProps> = ({ lockEdit }) => {
                 placeholder="State"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={state}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => setState(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                  setState(e.target.value)
+                }
                 onBlur={(e: FocusEvent<HTMLInputElement>): void => {
                   e.stopPropagation();
                   if (user?.state !== state) {
@@ -189,7 +194,9 @@ const Contact: React.FC<ContactProps> = ({ lockEdit }) => {
                 placeholder="LinkedIn"
                 className="text-center block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={linkedIn || "www.linkedin.com/in/"}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => setLinkedIn(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                  setLinkedIn(e.target.value)
+                }
                 onBlur={(e: FocusEvent<HTMLInputElement>): void => {
                   e.stopPropagation();
                   if (user?.linkedIn !== linkedIn) {
@@ -206,7 +213,9 @@ const Contact: React.FC<ContactProps> = ({ lockEdit }) => {
                 placeholder="GitHub"
                 className="text-center block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm/6"
                 value={gitHub || "www.github.com/"}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => setGitHub(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void =>
+                  setGitHub(e.target.value)
+                }
                 onBlur={(e: FocusEvent<HTMLInputElement>): void => {
                   e.stopPropagation();
                   if (user?.gitHub !== gitHub) {

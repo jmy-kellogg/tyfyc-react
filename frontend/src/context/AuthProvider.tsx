@@ -5,14 +5,8 @@ import type { Dispatch } from "@reduxjs/toolkit";
 
 import { loginUser, registerUser, getFeatureFlags } from "@/api/auth";
 import { getApplications, updateApplication } from "src/api/applications";
-import { fetchUser } from "@/api/user";
 import { setTabsToDefault } from "src/store/reducers/navigationSlice";
-import {
-  setToken,
-  clearAuth,
-  setUser,
-  setFlags,
-} from "src/store/reducers/authSlice";
+import { setToken, clearAuth, setFlags } from "src/store/reducers/authSlice";
 import { addAlert } from "@/reducers/alertsSlice";
 
 import { AuthContext } from "./AuthContext.ts";
@@ -82,9 +76,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect((): void => {
     const fetchData = async (): Promise<void> => {
-      const userProfile = await fetchUser();
-      dispatch(setUser(userProfile));
-
       const featureFlags = (await getFeatureFlags()) || [];
       dispatch(setFlags(featureFlags));
     };
