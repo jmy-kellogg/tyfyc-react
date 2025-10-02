@@ -1,15 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { FeatureFlag } from "@/types";
 
 export interface AuthState {
   token: string | null;
-  flags: string[];
 }
 
 const initialState: AuthState = {
   token: null,
-
-  flags: [],
 };
 
 export const authSlice = createSlice({
@@ -25,11 +21,6 @@ export const authSlice = createSlice({
         localStorage.removeItem("token");
       }
     },
-    setFlags: (state: AuthState, action: PayloadAction<FeatureFlag[]>) => {
-      state.flags = action.payload
-        .filter(({ isActive }) => isActive)
-        .map(({ name }) => name);
-    },
     clearAuth: () => {
       localStorage.removeItem("token");
       return initialState;
@@ -37,5 +28,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setToken, setFlags, clearAuth } = authSlice.actions;
+export const { setToken, clearAuth } = authSlice.actions;
 export default authSlice.reducer;
