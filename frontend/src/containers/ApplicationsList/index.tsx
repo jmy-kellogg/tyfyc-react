@@ -5,7 +5,7 @@ import React, {
   useMemo,
   ChangeEvent,
 } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import type { Dispatch } from "@reduxjs/toolkit";
 
 import ExportCSV from "./ExportCSV";
@@ -25,8 +25,8 @@ import {
 } from "src/store/reducers/navigationSlice";
 
 import type { Application, Applications } from "@/types";
-import type { State } from "@/store";
 import DeleteBtn from "@/components/DeleteBtn";
+import { useAuthContext } from "@/context/AuthContext";
 
 const order = [
   "interviewing",
@@ -54,7 +54,7 @@ const sortApplications = (applications: Applications): Applications => {
 
 const ApplicationsList: React.FC = () => {
   const dispatch: Dispatch = useDispatch();
-  const flags = useSelector((state: State) => state.auth.flags);
+  const { flags } = useAuthContext();
   const [applications, setApplications] = useState<Applications>([]);
   const [search, setSearch] = useState<string>("");
   const filteredList: Applications = useMemo((): Applications => {

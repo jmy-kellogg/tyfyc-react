@@ -12,6 +12,7 @@ interface AuthContextType {
       ) => Promise<void>)
     | null;
   logout: (() => void) | null;
+  flags: string[];
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

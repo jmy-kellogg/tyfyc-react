@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { CSVLink } from "react-csv";
 
 import type { Application, Applications } from "@/types";
-import type { State } from "@/store";
+import { useAuthContext } from "@/context/AuthContext";
 
 type HeaderRow = Array<keyof Application>;
 type CsvRow = Array<Application[keyof Application]>;
@@ -14,7 +13,7 @@ interface ExportCSVProps {
 }
 
 const ExportCSV: React.FC<ExportCSVProps> = ({ applications }) => {
-  const flags = useSelector((state: State) => state.auth.flags);
+  const { flags } = useAuthContext();
   const [data, setData] = useState<CsvData>([]);
 
   useEffect((): void => {
@@ -45,8 +44,9 @@ const ExportCSV: React.FC<ExportCSVProps> = ({ applications }) => {
       ? fullHeaders
       : partialHeaders;
 
-    const values: CsvData = applications.map((app: Application): CsvRow =>
-      headers.map((key: keyof Application): string => app[key] || "")
+    const values: CsvData = applications.map(
+      (app: Application): CsvRow =>
+        headers.map((key: keyof Application): string => app[key] || "")
     );
 
     setData([headers, ...values]);

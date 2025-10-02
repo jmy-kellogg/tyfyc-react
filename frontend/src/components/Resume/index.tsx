@@ -1,6 +1,5 @@
 import jsPDF from "jspdf";
 import React, { useState, useEffect, MouseEvent } from "react";
-import { useSelector } from "react-redux";
 
 import "./ResumeDoc.css";
 import PopupEditor from "@/components/RichEditor/PopupEditor";
@@ -10,8 +9,9 @@ import { getEmploymentList } from "@/api/employment";
 import { getEducationList } from "@/api/education";
 import { getProjects } from "@/api/projects";
 
+import { fetchUser } from "@/api/user";
+
 import type { Education, Project, Employment, User, Skill } from "@/types";
-import type { State } from "@/store";
 
 export interface ResumeProps {
   resume: string;
@@ -22,7 +22,6 @@ export interface ResumeProps {
 const Resume: React.FC<ResumeProps> = ({ resume, onSave, jobTitle }) => {
   const [content, setContent] = useState<string>("");
   const [hasChanged, setHasChanged] = useState<boolean>(false);
-  const user = useSelector((state: State) => state.auth.user);
 
   const onPrint = (): void => {
     const element = document.getElementById("resume-content");
@@ -34,7 +33,7 @@ const Resume: React.FC<ResumeProps> = ({ resume, onSave, jobTitle }) => {
       });
       doc.html(element, {
         callback: function (doc) {
-          doc.save(`${user?.lastName || "tyfyc"}_resume.pdf`);
+          doc.save("tyfyc_resume.pdf");
         },
         width: 200,
         margin: [5, 5, 5, 5],
@@ -149,6 +148,7 @@ const Resume: React.FC<ResumeProps> = ({ resume, onSave, jobTitle }) => {
     const education = (await getEducationList()) || [];
     const projects = (await getProjects()) || [];
     const skills = (await getSkills()) || [];
+    const user = await fetchUser();
 
     const defaultResume = `
       <p>

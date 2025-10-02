@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, useEffect, MouseEvent } from "react";
 
 import Title from "./Inputs/Title";
 import Contact from "./Inputs/Contact";
@@ -8,8 +8,21 @@ import Employment from "./Inputs/Employment";
 import Education from "./Inputs/Education";
 import Projects from "./Inputs/Projects";
 
+import { fetchUser } from "@/api/user";
+import type { User } from "@/types";
+
 const Profile: React.FC = () => {
   const [lockEdit, setLockEdit] = useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect((): void => {
+    const fetchData = async (): Promise<void> => {
+      const userProfile = await fetchUser();
+
+      setUser(userProfile);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -66,9 +79,9 @@ const Profile: React.FC = () => {
           )}
         </div>
         <div className="w-3xl justify-self-center">
-          <Title lockEdit={lockEdit} />
-          <Contact lockEdit={lockEdit} />
-          <Summary lockEdit={lockEdit} />
+          <Title lockEdit={lockEdit} user={user} />
+          <Contact lockEdit={lockEdit} user={user} />
+          <Summary lockEdit={lockEdit} user={user} />
           <Skills lockEdit={lockEdit} />
           <Employment lockEdit={lockEdit} />
           <Education lockEdit={lockEdit} />

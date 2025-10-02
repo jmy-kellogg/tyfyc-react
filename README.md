@@ -25,10 +25,6 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 - [ ] Job posting search
 - [ ] Company rating
 
-## OpenAI
-
-add .env file in `/frontend` with an OPENAI_API_KEY and feature flag OPENAI_FEATURE_FLAG=true to get AI functionality.
-
 # Development
 
 ## Frontend

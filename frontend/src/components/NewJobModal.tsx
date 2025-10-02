@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import RichEditor from "@/components/RichEditor";
 import { addApplication } from "@/api/applications";
@@ -7,7 +7,7 @@ import { getCompanyResearch } from "@/api/companies";
 import { getToday } from "@/utils";
 import { setActiveTab, addJobTabs } from "src/store/reducers/navigationSlice";
 import type { ApplicationCreate, Application, CompanyResearch } from "@/types";
-import type { State } from "@/store";
+import { useAuthContext } from "@/context/AuthContext";
 import type { Dispatch } from "@reduxjs/toolkit";
 
 type CompanyInfoStatus = "loading" | "success" | "error" | "";
@@ -20,7 +20,7 @@ interface CompanyInfo {
 
 const NewJobModal: React.FC = () => {
   const dispatch = useDispatch<Dispatch>();
-  const flags = useSelector((state: State) => state.auth.flags);
+  const { flags } = useAuthContext();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
   const [companySite, setCompanySite] = useState<string>("");
@@ -195,7 +195,9 @@ const NewJobModal: React.FC = () => {
                       type="text"
                       className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                       value={companySite}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setCompanySite(e.target.value)}
+                      onChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ): void => setCompanySite(e.target.value)}
                     />
                     {flags.includes("OPENAI_FEATURE_FLAG") && (
                       <button
@@ -232,7 +234,9 @@ const NewJobModal: React.FC = () => {
                     type="text"
                     className="w-full h-fit m-1 rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                     value={postingLink}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setPostingLink(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+                      setPostingLink(e.target.value)
+                    }
                   />
                 </div>
               </div>

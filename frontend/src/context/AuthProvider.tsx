@@ -1,22 +1,17 @@
-import React, { useEffect, ReactNode } from "react";
+import React, { useEffect, useState, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "@reduxjs/toolkit";
 
 import { loginUser, registerUser, getFeatureFlags } from "@/api/auth";
 import { getApplications, updateApplication } from "src/api/applications";
-import { fetchUser } from "@/api/user";
 import { setTabsToDefault } from "src/store/reducers/navigationSlice";
-import {
-  setToken,
-  clearAuth,
-  setUser,
-  setFlags,
-} from "src/store/reducers/authSlice";
+import { setToken, clearAuth } from "src/store/reducers/authSlice";
 import { addAlert } from "@/reducers/alertsSlice";
 
 import { AuthContext } from "./AuthContext.ts";
 import type { State } from "@/store";
+import type { FeatureFlag } from "@/types";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -25,6 +20,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useDispatch<Dispatch>();
   const navigate = useNavigate();
+  const [flags, setFlags] = useState<string[]>([]);
   const token: string | null = useSelector((state: State) => state.auth.token);
   const { pathname }: { pathname: string } = useLocation();
 
@@ -82,11 +78,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect((): void => {
     const fetchData = async (): Promise<void> => {
-      const userProfile = await fetchUser();
-      dispatch(setUser(userProfile));
+      const featureFlags: FeatureFlag[] = (await getFeatureFlags()) || [];
+      const activeFlags: string[] = featureFlags
+        .filter(({ isActive }) => isActive)
+        .map(({ name }) => name);
 
-      const featureFlags = (await getFeatureFlags()) || [];
-      dispatch(setFlags(featureFlags));
+      setFlags(activeFlags);
     };
 
     if (token) {
@@ -99,7 +96,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [navigate, pathname, dispatch, token]);
 
   return (
-    <AuthContext.Provider value={{ login, register, logout }}>
+    <AuthContext.Provider value={{ login, register, logout, flags }}>
       {children}
     </AuthContext.Provider>
   );
