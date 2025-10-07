@@ -6,8 +6,20 @@ import type {
   Application,
 } from "@/types";
 
-export const getApplications = async (): Promise<Applications> => {
-  const response = await api.get<Applications>("/applications");
+interface PaginationOptions {
+  skip?: number;
+  limit?: number;
+}
+
+export const getApplications = async (
+  options?: PaginationOptions
+): Promise<Applications> => {
+  const params = new URLSearchParams();
+  if (options?.skip !== undefined) params.append("skip", options.skip.toString());
+  if (options?.limit !== undefined) params.append("limit", options.limit.toString());
+
+  const url = params.toString() ? `/applications?${params.toString()}` : "/applications";
+  const response = await api.get<Applications>(url);
   return response?.data ?? [];
 };
 
