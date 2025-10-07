@@ -15,7 +15,9 @@ const ImportCSV: React.FC<ImportCSVProps> = ({ fetchData }) => {
     );
   };
 
-  const uploadApplications = async (csvData: Array<Record<string, unknown>>): Promise<void> => {
+  const uploadApplications = async (
+    csvData: Array<Record<string, unknown>>
+  ): Promise<void> => {
     try {
       const dbApplications: Applications = await getApplications();
       const jobIdLists: string[] = dbApplications.map(({ id }) => id);
@@ -26,9 +28,11 @@ const ImportCSV: React.FC<ImportCSVProps> = ({ fetchData }) => {
         });
 
       if (uploadList.length) {
-        uploadList.forEach(async (application: ApplicationUpdate): Promise<void> => {
-          await addApplication(application);
-        });
+        uploadList.forEach(
+          async (application: ApplicationUpdate): Promise<void> => {
+            await addApplication(application);
+          }
+        );
         fetchData();
       }
     } catch (err: unknown) {
@@ -36,23 +40,25 @@ const ImportCSV: React.FC<ImportCSVProps> = ({ fetchData }) => {
     }
   };
 
-  const onFilePicked = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const onFilePicked = async (
+    event: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     const files: FileList | null = event.target.files;
     const file: File | undefined = files?.[0];
 
     if (file) {
       Papa.parse(file, {
         header: true,
-        complete: async (results: Papa.ParseResult<Record<string, unknown>>): Promise<void> => {
-          const csvData: Array<Record<string, unknown>> | undefined = results?.data;
+        complete: async (
+          results: Papa.ParseResult<Record<string, unknown>>
+        ): Promise<void> => {
+          const csvData: Array<Record<string, unknown>> | undefined =
+            results?.data;
           if (!csvData) {
             console.error("No data from CSV found");
           } else {
             await uploadApplications(csvData);
           }
-        },
-        error: function (error: Papa.ParseError): void {
-          console.error("Error parsing CSV:", error);
         },
       });
     }
