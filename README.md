@@ -27,6 +27,14 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 
 # Development
 
+## Scripts
+
+`./dev-scripts.sh` init-frontend - Initialize frontend (install dependencies)
+`./dev-scripts.sh` init-backend - Initialize backend (venv, dependencies, database)
+`./dev-scripts.sh` frontend - Start frontend only
+`./dev-scripts.sh` backend - Start backend only
+`./dev-scripts.sh` both - Start both frontend and backend
+
 ## Frontend
 
 ```
