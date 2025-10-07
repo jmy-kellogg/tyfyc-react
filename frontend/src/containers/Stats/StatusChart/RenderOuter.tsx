@@ -1,5 +1,5 @@
-import React from "react";
 import { Sector } from "recharts";
+import type { PieLabel } from "recharts";
 
 type Coordinate = {
   x: number;
@@ -30,19 +30,21 @@ type PieSectorDataItem = React.SVGProps<SVGPathElement> &
   Partial<GeometrySector> &
   PieSectorData;
 
-const RenderOuter: React.FC<PieSectorDataItem> = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  startAngle,
-  endAngle,
-  name,
-  percent,
-  value,
-  color,
-}) => {
+const RenderOuter: PieLabel = (props: PieSectorDataItem) => {
+  const {
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    name,
+    percent,
+    value,
+    color,
+  } = props;
+
   const RADIAN: number = Math.PI / 180;
   const sin: number = Math.sin(-RADIAN * (midAngle ?? 1));
   const cos: number = Math.cos(-RADIAN * (midAngle ?? 1));

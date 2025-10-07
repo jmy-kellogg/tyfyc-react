@@ -14,6 +14,7 @@ export interface StatusOption {
   style: string;
   color: string;
 }
+
 export interface CompanyResearch {
   name?: string;
   location?: string;

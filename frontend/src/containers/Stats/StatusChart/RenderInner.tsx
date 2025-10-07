@@ -1,5 +1,6 @@
 import React from "react";
 import { SectorProps, Sector } from "recharts";
+import type { ActiveShape } from "recharts/types/util/types";
 
 type Coordinate = {
   x: number;
@@ -21,18 +22,19 @@ type PieSectorDataItem = React.SVGProps<SVGPathElement> &
   Partial<SectorProps> &
   PieSectorData;
 
-const RenderInner: React.FC<PieSectorDataItem> = ({
-  cx,
-  cy,
-  innerRadius,
-  outerRadius,
-  startAngle,
-  endAngle,
-  name,
-  percent,
-  value,
-  color,
-}) => {
+const RenderInner: ActiveShape = (props: PieSectorDataItem) => {
+  const {
+    cx,
+    cy,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    name,
+    percent,
+    value,
+    color,
+  } = props;
   return (
     <g>
       <text x={cx} y={cy} dy={0} textAnchor="middle" fill={color} fontSize={20}>
