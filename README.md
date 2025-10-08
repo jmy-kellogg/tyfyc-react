@@ -29,11 +29,14 @@ Tyfyc stands for “thank you for your consideration” this is to assist in cus
 
 ## Scripts
 
-`./dev-scripts.sh` init-frontend - Initialize frontend (install dependencies)
-`./dev-scripts.sh` init-backend - Initialize backend (venv, dependencies, database)
-`./dev-scripts.sh` frontend - Start frontend only
-`./dev-scripts.sh` backend - Start backend only
-`./dev-scripts.sh` both - Start both frontend and backend
+`./dev-scripts.sh init-frontend` - Initialize frontend (install dependencies)
+`./dev-scripts.sh init-backend` - Initialize backend (venv, dependencies, database)
+`./dev-scripts.sh frontend` - Start frontend only
+`./dev-scripts.sh backend` - Start backend only
+`./dev-scripts.sh both` - Start both frontend and backend
+`./dev-scripts.sh patch` - Updates CHANGELOG.md with notes for patch release
+`./dev-scripts.sh minor` - Updates CHANGELOG.md with notes for minor release
+`./dev-scripts.sh major` - Updates CHANGELOG.md with notes for major release
 
 ## Frontend
 
@@ -111,6 +114,56 @@ downgrade
 ```
 alembic downgrade [revision_number]
 ```
+
+## Commit Message Format
+
+To ensure proper changelog generation, follow this commit message format:
+
+```
+type(category): description [flags]
+```
+
+**Types:**
+
+- `breaking` - Breaking changes
+- `build` - Build system changes
+- `ci` - CI/CD changes
+- `chore` - Maintenance tasks
+- `docs` - Documentation changes
+- `feat` - New features
+- `fix` - Bug fixes
+- `other` - Other changes
+- `perf` - Performance improvements
+- `refactor` - Code refactoring
+- `revert` - Revert previous changes
+- `style` - Code style changes
+- `test` - Test changes
+
+**Examples:**
+
+```
+feat(auth): add user authentication
+fix(api): resolve pagination bug
+docs(readme): update installation instructions
+```
+
+## Generating Changelog
+
+After making commits with proper format, generate the changelog:
+
+```bash
+# For patch version (0.0.x)
+./dev-scripts.sh patch
+
+# For minor version (0.x.0)
+./dev-scripts.sh minor
+
+# For major version (x.0.0)
+./dev-scripts.sh major
+```
+
+This will automatically update the `CHANGELOG.md` file based on your commit history.
+See more details about package at [generate-changelog](https://www.npmjs.com/package/generate-changelog)
 
 ## Project Structure
 
