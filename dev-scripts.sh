@@ -64,7 +64,7 @@ init_backend() {
 
 start_backend() {
   echo "Starting backend development server..."
-  cd backend && source venv/bin/activate && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+  cd backend && source venv/bin/activate && python ./main.py
 }
 
 start_frontend() {
@@ -80,8 +80,7 @@ start_both() {
 
   # Start backend
   echo "Starting backend server..."
-  cd backend && source venv/bin/activate && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 &
-  BACKEND_PID=$!
+  cd backend && source venv/bin/activate && python ./main.py
 
   # Wait a moment for backend to start
   sleep 2
