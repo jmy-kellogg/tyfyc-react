@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import Tabs from "@/components/Tabs";
 import { useAuthContext } from "@/context/AuthContext.ts";
+import PasswordInput from "@/components/PasswordInput";
+import Register from "./Register";
 
 interface LoginForm {
   username: string;
   password: string;
-}
-
-interface RegisterForm {
-  username: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
 }
 
 const Login: React.FC = () => {
@@ -21,14 +15,7 @@ const Login: React.FC = () => {
     username: "",
     password: "",
   });
-  const [registerForm, setRegisterForm] = useState<RegisterForm>({
-    username: "",
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-  });
-  const { login, register } = useAuthContext();
+  const { login } = useAuthContext();
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -38,25 +25,6 @@ const Login: React.FC = () => {
     e.preventDefault();
     if (loginForm.username && loginForm.password && login) {
       login(loginForm.username, loginForm.password);
-    }
-  };
-
-  const handleRegisterChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setRegisterForm({
-      ...registerForm,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleRegisterSubmit = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault();
-    const { username, email, password, firstName, lastName }: RegisterForm =
-      registerForm;
-    if (username && password && email && firstName && lastName && register) {
-      await register(username, email, password, firstName, lastName);
-      setTab("login");
     }
   };
 
@@ -84,19 +52,16 @@ const Login: React.FC = () => {
               type="text"
               name="username"
               placeholder="Username"
-              className="m-3 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              className="m-2 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               value={loginForm.username}
               onChange={handleLoginChange}
               required
             />
-            <input
-              type="password"
+            <PasswordInput
               name="password"
               placeholder="Password"
-              className="m-3 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={loginForm.password}
+              password={loginForm.password}
               onChange={handleLoginChange}
-              required
             />
             <button
               className="align-right rounded-md border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
@@ -107,61 +72,7 @@ const Login: React.FC = () => {
           </form>
         )}
 
-        {tab === "register" && (
-          <form onSubmit={handleRegisterSubmit} className="p-5 bg-white">
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              className="m-3 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={registerForm.username}
-              onChange={handleRegisterChange}
-              required
-            />
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              className="m-3 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={registerForm.firstName}
-              onChange={handleRegisterChange}
-              required
-            />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              className="m-3 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={registerForm.lastName}
-              onChange={handleRegisterChange}
-              required
-            />
-            <input
-              type="text"
-              name="email"
-              placeholder="Email"
-              className="m-3 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={registerForm.email}
-              onChange={handleRegisterChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="m-3 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              value={registerForm.password}
-              onChange={handleRegisterChange}
-              required
-            />
-            <button
-              className="align-right rounded-md border-2 border-indigo-600 p-2 m-4 text-indigo-600 shadow-md hover:bg-indigo-500 hover:text-white hover:cursor-pointer"
-              type="submit"
-            >
-              Register
-            </button>
-          </form>
-        )}
+        {tab === "register" && <Register setTab={setTab} />}
       </div>
     </>
   );

@@ -123,3 +123,60 @@ export const pythonToJsKeys = <T extends Record<string, unknown>>(
   }
   return item;
 };
+
+export const validatePassword = ({
+  currentPassword,
+  newPassword,
+  confirmPassword,
+}: {
+  currentPassword?: string;
+  newPassword: string;
+  confirmPassword: string;
+}): { isValid: boolean; details: string } => {
+  // Check if all fields are filled
+  if (!newPassword || !confirmPassword || currentPassword === "") {
+    return {
+      isValid: false,
+      details: "All fields are required",
+    };
+  }
+
+  // Check if new password matches confirm password
+  if (newPassword !== confirmPassword) {
+    return {
+      isValid: false,
+      details: "New and Confirm password do not match",
+    };
+  }
+
+  // Check if new password is different from current password
+  if (currentPassword !== undefined && currentPassword === newPassword) {
+    return {
+      isValid: false,
+      details: "New password must be different from current password",
+    };
+  }
+
+  // Check password length
+  if (newPassword.length < 8) {
+    return {
+      isValid: false,
+      details: "Password must be at least 8 characters long",
+    };
+  }
+
+  // Check password strength (at least one uppercase, one lowercase, one number)
+  const hasUpperCase = /[A-Z]/.test(newPassword);
+  const hasLowerCase = /[a-z]/.test(newPassword);
+  const hasNumber = /[0-9]/.test(newPassword);
+
+  if (!hasUpperCase || !hasLowerCase || !hasNumber) {
+    return {
+      isValid: false,
+      details:
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+    };
+  }
+
+  return { isValid: true, details: "" };
+};

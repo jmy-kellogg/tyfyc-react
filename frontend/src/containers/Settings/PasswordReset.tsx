@@ -1,6 +1,7 @@
 import { FC, ChangeEvent, FormEvent, useState } from "react";
 import { updatePassword } from "@/api/auth";
 import PasswordInput from "@/components/PasswordInput";
+import { validatePassword } from "@/utils";
 
 const PasswordReset: FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -8,54 +9,20 @@ const PasswordReset: FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
 
-  const validatePassword = (): boolean => {
-    // Check if all fields are filled
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      setErrorMsg("All fields are required");
-      return false;
-    }
-
-    // Check if new password matches confirm password
-    if (newPassword !== confirmPassword) {
-      setErrorMsg("New and Confirm password do not match");
-      return false;
-    }
-
-    // Check if new password is different from current password
-    if (currentPassword === newPassword) {
-      setErrorMsg("New password must be different from current password");
-      return false;
-    }
-
-    // Check password length
-    if (newPassword.length < 8) {
-      setErrorMsg("Password must be at least 8 characters long");
-      return false;
-    }
-
-    // Check password strength (at least one uppercase, one lowercase, one number)
-    const hasUpperCase = /[A-Z]/.test(newPassword);
-    const hasLowerCase = /[a-z]/.test(newPassword);
-    const hasNumber = /[0-9]/.test(newPassword);
-
-    if (!hasUpperCase || !hasLowerCase || !hasNumber) {
-      setErrorMsg(
-        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-      );
-      return false;
-    }
-
-    setErrorMsg("");
-    return true;
-  };
-
   const resetErrorMsg = () => {
     setErrorMsg("");
   };
 
   const handlePwdSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    if (!validatePassword()) {
+    const { isValid, details } = validatePassword({
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+
+    if (!isValid) {
+      setErrorMsg(details);
       return;
     }
 
@@ -80,26 +47,26 @@ const PasswordReset: FC = () => {
         <PasswordInput
           name="currentPassword"
           password={currentPassword}
+          onErrorMsg={resetErrorMsg}
           onChange={(e: ChangeEvent<HTMLInputElement>): void =>
             setCurrentPassword(e.target.value)
           }
-          onError={resetErrorMsg}
         />
         <PasswordInput
           name="newPassword"
           password={newPassword}
+          onErrorMsg={resetErrorMsg}
           onChange={(e: ChangeEvent<HTMLInputElement>): void =>
             setNewPassword(e.target.value)
           }
-          onError={resetErrorMsg}
         />
         <PasswordInput
           name="confirmPassword"
           password={confirmPassword}
+          onErrorMsg={resetErrorMsg}
           onChange={(e: ChangeEvent<HTMLInputElement>): void =>
             setConfirmPassword(e.target.value)
           }
-          onError={resetErrorMsg}
         />
         {!!errorMsg && <div className="m-2">{errorMsg}</div>}
 

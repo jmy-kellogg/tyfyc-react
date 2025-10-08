@@ -6,7 +6,7 @@ interface PwdInputProps {
   name: string;
   placeholder?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onError: (error: string) => void;
+  onErrorMsg?: (error: string) => void;
 }
 
 const PasswordInput: FC<PwdInputProps> = ({
@@ -14,7 +14,7 @@ const PasswordInput: FC<PwdInputProps> = ({
   name,
   placeholder,
   onChange,
-  onError,
+  onErrorMsg,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -24,7 +24,9 @@ const PasswordInput: FC<PwdInputProps> = ({
   };
 
   const resetErrorMsg = () => {
-    onError("");
+    if (onErrorMsg) {
+      onErrorMsg("");
+    }
   };
 
   return (
@@ -33,7 +35,7 @@ const PasswordInput: FC<PwdInputProps> = ({
         type={showPassword ? "text" : "password"}
         name={name}
         placeholder={placeholder || camelToText(name)}
-        className="m-2 w-full rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+        className="m-2 w-xl rounded-md bg-white p-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
         value={password}
         onChange={onChange}
         onSelect={resetErrorMsg}
