@@ -24,3 +24,14 @@ export const getFeatureFlags = async (): Promise<FeatureFlag[]> => {
   const response = await api.get(`/feature_flags`);
   return response.data || [];
 };
+
+export const updatePassword = async (
+  currentPassword: string,
+  newPassword: string
+): Promise<{ message: string }> => {
+  const response = await api.put(`/auth/password`, {
+    current_password: currentPassword,
+    new_password: newPassword,
+  });
+  return response.data;
+};

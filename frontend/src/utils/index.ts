@@ -73,6 +73,15 @@ export const camelToSnakeCase = (str: string): string => {
   return (regexOutput || []).map((s: string) => s?.toLowerCase()).join("_");
 };
 
+export const camelToText = (str: string): string => {
+  const words = str.replace(/([A-Z])/g, " $1").trim();
+
+  return words
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
 export const createSkill = (
   newSkill: string
 ): { label: string; value: string } => {

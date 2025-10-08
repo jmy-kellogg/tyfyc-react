@@ -42,6 +42,10 @@ class UserUpdate(BaseModel):
     git_hub: Optional[str] =  None
     linked_in: Optional[str] =  None
     resume: Optional[str] =  None
+
+class PasswordUpdate(BaseModel):
+    current_password: str
+    new_password: str
  
 class UserResponse(UserBase):
     id: str

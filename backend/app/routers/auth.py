@@ -4,10 +4,10 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, HTTPException, status, APIRouter
 from sqlalchemy.orm import Session
 
-from app.auth.auth_handler import authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_user, get_password_hash
+from app.auth.auth_handler import authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_user, get_password_hash, verify_password, get_current_active_user
 from app.database import get_db
 from app.schemas.auth import Token
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import UserCreate, UserResponse, PasswordUpdate
 from app.models import User
 
 router = APIRouter()
@@ -59,3 +59,31 @@ async def login_for_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")
+
+
+@router.put("/auth/password", tags=["auth"], status_code=status.HTTP_200_OK)
+async def update_password(
+    password_data: PasswordUpdate,
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """Update the current user's password"""
+    # Verify current password
+    if not verify_password(password_data.current_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Current password is incorrect"
+        )
+
+    # Validate new password is different
+    if password_data.current_password == password_data.new_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="New password must be different from current password"
+        )
+
+    # Update password
+    current_user.hashed_password = get_password_hash(password_data.new_password)
+    db.commit()
+
+    return {"message": "Password updated successfully"}
