@@ -9,6 +9,7 @@ import {
   setShowProfile,
   setShowApplications,
   setShowStats,
+  setShowJobBoards,
 } from "src/store/reducers/navigationSlice";
 import type { TabsList } from "@/types";
 
@@ -38,6 +39,8 @@ const Tabs: React.FC<TabsProps> = ({
       dispatch(setShowApplications(false));
     } else if (value === "stats") {
       dispatch(setShowStats(false));
+    } else if (value === "jobBoards") {
+      dispatch(setShowJobBoards(false));
     } else {
       dispatch(removeJobTab(value));
     }

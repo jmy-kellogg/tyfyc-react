@@ -206,10 +206,9 @@ const JobBoards: FC = () => {
               const url = new URL(search.link);
               const baseUrl = url.hostname.replace("www.", "");
               board = boardsMap.find(({ hostname }) => hostname == baseUrl);
-            } catch (error) {
+            } catch {
               console.error("Invalid URL:", search.link);
             }
-            console.log(board);
 
             return (
               <div key={search.id} className="flex flex-col gap-4 mt-4">
