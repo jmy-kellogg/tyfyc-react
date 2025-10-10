@@ -6,7 +6,10 @@ interface PostingBtnMenuProps {
   application: Application;
 }
 
-const PostingBtnMenu: React.FC<PostingBtnMenuProps> = ({ onUpdate, application }) => {
+const PostingBtnMenu: React.FC<PostingBtnMenuProps> = ({
+  onUpdate,
+  application,
+}) => {
   const updateCompany = (): void => {
     const text: string = window?.getSelection()?.toString() || "";
     if (text) {
@@ -54,7 +57,11 @@ const PostingBtnMenu: React.FC<PostingBtnMenuProps> = ({ onUpdate, application }
         <span className="flex group-hover:hidden">
           {application.company || "Company"}
         </span>
-        <span className="hidden group-hover:flex">Update Company</span>
+        <span className="hidden group-hover:flex">
+          {application.company
+            ? `Update Company from ${application.company}`
+            : "Update Company"}
+        </span>
       </button>
 
       <button
@@ -86,7 +93,11 @@ const PostingBtnMenu: React.FC<PostingBtnMenuProps> = ({ onUpdate, application }
         <span className="flex group-hover:hidden">
           {application.location || "Location"}
         </span>
-        <span className="hidden group-hover:flex">Update Location</span>
+        <span className="hidden group-hover:flex">
+          {application.location
+            ? `Update Location from ${application.location}`
+            : "Update Location"}
+        </span>
       </button>
 
       <button
@@ -113,7 +124,11 @@ const PostingBtnMenu: React.FC<PostingBtnMenuProps> = ({ onUpdate, application }
         <span className="flex group-hover:hidden">
           {application.salary || "Salary"}
         </span>
-        <span className="hidden group-hover:flex">Update Salary</span>
+        <span className="hidden group-hover:flex">
+          {application.salary
+            ? `Update Salary from ${application.salary}`
+            : "Update Salary"}
+        </span>
       </button>
 
       {/* <button className="group p-1 mx-1 flex rounded-sm border-1 border-gray-300 hover:bg-gray-200 hover:cursor-pointer">
