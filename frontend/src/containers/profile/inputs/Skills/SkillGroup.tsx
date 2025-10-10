@@ -67,6 +67,7 @@ const SkillsGroup: React.FC<SkillsGroupProps> = ({
             category: skillResp.category,
             rank: skillResp.rank,
           };
+
           setAllSkills((origSkills) =>
             origSkills.map((origSkill) =>
               origSkill.id == skill.id ? newSkill : origSkill
@@ -81,7 +82,7 @@ const SkillsGroup: React.FC<SkillsGroupProps> = ({
         });
         if (skillResp) {
           setAllSkills([
-            ...skills,
+            ...allSkills,
             {
               label: skillResp.name,
               value: skillResp.skillOptionsId,

@@ -29,13 +29,13 @@ const SkillSection: React.FC<SkillsSectionProps> = ({ posting }) => {
   useEffect((): void => {
     const fetchData = async (): Promise<void> => {
       const dbSkillOptions: SkillOption[] = await getSkillOptions();
-      const postingSkills: SkillOption[] = dbSkillOptions.filter((skill: SkillOption): boolean => {
-        // ToDo: properly handle irregular regex characters
-        if (skill.name.includes("+")) {
-          return false;
+      const postingSkills: SkillOption[] = dbSkillOptions.filter(
+        (skill: SkillOption): boolean => {
+          // Escape special regex characters in skill name
+          const escapedSkillName = skill.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          return new RegExp(escapedSkillName, 'i').test(posting);
         }
-        return `/${posting}/i`.match(skill.name) !== null;
-      });
+      );
 
       setPostingSkills(postingSkills);
     };
