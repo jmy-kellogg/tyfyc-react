@@ -96,3 +96,12 @@ class Project(Base):
     year = Column(String)
     url = Column(String)
     user_id = Column(String, ForeignKey("users.id"))
+
+class JobSearch(Base):
+    __tablename__ = "job_searches"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    link = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    details = Column(String, nullable=True)
+    board_name = Column(String, nullable=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)

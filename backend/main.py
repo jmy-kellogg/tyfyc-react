@@ -5,7 +5,7 @@ from fastapi.security import HTTPBasic
 
 from app.database import Base, engine
 
-from app.routers import auth, user, feature_flags, applications, skills, employment, education, projects, companies
+from app.routers import auth, user, feature_flags, applications, skills, employment, education, projects, companies, job_search
 
 Base.metadata.create_all(bind=engine)
 
@@ -16,6 +16,7 @@ tags_metadata = [
   applications.tags_metadata,
   skills.tags_metadata,
   companies.tags_metadata,
+  job_search.tags_metadata,
 ]
 
 app = FastAPI(debug=True, openapi_tags=tags_metadata)
@@ -42,6 +43,7 @@ app.include_router(employment.router)
 app.include_router(education.router)
 app.include_router(projects.router)
 app.include_router(companies.router)
+app.include_router(job_search.router)
 
 security = HTTPBasic()
 
