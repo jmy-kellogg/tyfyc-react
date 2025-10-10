@@ -7,6 +7,7 @@ import Settings from "./Settings";
 import Profile from "./Profile";
 import Resumes from "./Resumes";
 import Stats from "./Stats";
+import JobBoards from "./JobBoard";
 import ApplicationsList from "./ApplicationsList";
 import Tabs from "@/components/Tabs";
 
@@ -33,6 +34,7 @@ const SmallDisplayView: React.FC = () => {
         {activeTab === "profile" && <Profile />}
         {activeTab === "resume" && <Resumes />}
         {activeTab === "stats" && <Stats />}
+        {activeTab === "jobBoards" && <JobBoards />}
         {activeTab === "applications" && <ApplicationsList />}
         {![
           "settings",
@@ -40,6 +42,7 @@ const SmallDisplayView: React.FC = () => {
           "resume",
           "applications",
           "stats",
+          "jobBoards",
           "",
         ].includes(activeTab) && <ApplicationDetails />}
       </div>

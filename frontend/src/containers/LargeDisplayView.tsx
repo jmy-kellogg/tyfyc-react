@@ -22,11 +22,18 @@ const LargeDisplayView: React.FC = () => {
   const showProfile: boolean = useSelector(
     (state: State) => state.navigation.showProfile
   );
-  const showResume: boolean = useSelector((state: State) => state.navigation.showResume);
-  const showStats: boolean = useSelector((state: State) => state.navigation.showStats);
+  const showResume: boolean = useSelector(
+    (state: State) => state.navigation.showResume
+  );
+  const showStats: boolean = useSelector(
+    (state: State) => state.navigation.showStats
+  );
   const jobTabs = useSelector((state: State) => state.navigation.jobTabs);
   const showApplications: boolean = useSelector(
     (state: State) => state.navigation.showApplications
+  );
+  const showJobBoards: boolean = useSelector(
+    (state: State) => state.navigation.showJobBoards
   );
 
   const setActive = (activeValue: string): void => {
@@ -88,6 +95,20 @@ const LargeDisplayView: React.FC = () => {
                 },
               ]}
               active="stats"
+            />
+            <Stats />
+          </div>
+        )}
+        {showJobBoards && (
+          <div className="w-4xl">
+            <Tabs
+              tabs={[
+                {
+                  label: "Job Boards",
+                  value: "jobBoards",
+                },
+              ]}
+              active="jobBoards"
             />
             <Stats />
           </div>

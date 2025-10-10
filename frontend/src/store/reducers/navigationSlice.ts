@@ -12,6 +12,7 @@ export interface NavigationState {
   showProfile: boolean;
   showResume: boolean;
   showStats: boolean;
+  showJobBoards: boolean;
   showApplications: boolean;
   activeTab: string;
   tabs: TabsList;
@@ -24,6 +25,7 @@ const initialState: NavigationState = {
   showProfile: true,
   showResume: true,
   showStats: false,
+  showJobBoards: false,
   showApplications: true,
   activeTab: "",
   tabs: [
@@ -31,6 +33,7 @@ const initialState: NavigationState = {
     { label: "Profile", value: "profile" },
     { label: "Resume", value: "resume" },
     { label: "Stats", value: "stats" },
+    { label: "Job Boards", value: "jobBoards" },
     { label: "Applications", value: "applications" },
   ],
   jobTabs: [],
@@ -108,6 +111,22 @@ export const navigationSlice = createSlice({
         state.tabs = state.tabs.filter(({ value }) => value !== "resume");
       }
     },
+    setShowJobBoards: (
+      state: NavigationState,
+      action: PayloadAction<boolean>
+    ) => {
+      const tabExists = checkForTab(state.tabs, "jobBoards");
+      state.showResume = action.payload;
+
+      if (action.payload && state.smallDisplay) {
+        state.activeTab = "jobBoards";
+      }
+      if (action.payload && !tabExists) {
+        state.tabs.unshift({ label: "Job Boards", value: "jobBoards" });
+      } else if (!action.payload && tabExists) {
+        state.tabs = state.tabs.filter(({ value }) => value !== "jobBoards");
+      }
+    },
     setShowApplications: (
       state: NavigationState,
       action: PayloadAction<boolean>
@@ -164,6 +183,7 @@ export const {
   setShowProfile,
   setShowStats,
   setShowResume,
+  setShowJobBoards,
   setShowApplications,
   setActiveTab,
   setJobTab,

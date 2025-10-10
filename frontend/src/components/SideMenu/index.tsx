@@ -6,6 +6,7 @@ import DisplayBtn from "./DisplayBtn";
 import ProfileBtn from "./ProfileBtn";
 import StatsBtn from "./StatsBtn";
 import ResumeBtn from "./ResumeBtn";
+import JobBoardsBtn from "./JobBoardsBtn";
 import ApplicationBtn from "./ApplicationBtn";
 import JobTabsBtn from "./JobTabsBtn";
 import LogoutBtn from "./LogoutBtn";
@@ -56,6 +57,7 @@ const SideMenu: React.FC = () => {
           <ProfileBtn openMenu={openMenu} activeTab={activeTab} />
           <ResumeBtn openMenu={openMenu} activeTab={activeTab} />
           <StatsBtn openMenu={openMenu} activeTab={activeTab} />
+          <JobBoardsBtn openMenu={openMenu} activeTab={activeTab} />
           <ApplicationBtn openMenu={openMenu} activeTab={activeTab} />
           <JobTabsBtn openMenu={openMenu} activeTab={activeTab} />
         </div>
