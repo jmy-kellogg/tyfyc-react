@@ -4,6 +4,7 @@ export * from "./employment";
 export * from "./projects";
 export * from "./settings";
 export * from "./skills";
+export * from "./jobSearch";
 
 import type { Application } from "./applications";
 
