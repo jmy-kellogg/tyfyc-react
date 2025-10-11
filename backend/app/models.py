@@ -1,7 +1,9 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, TEXT, Boolean, DateTime, ForeignKey, Integer
+from sqlalchemy import Column, String, TEXT, Boolean, DateTime, ForeignKey, Integer, Enum
 from app.database import Base
+from app.schemas.companies import WorkplaceType
+
 
 def generate_uuid():
     return str(uuid.uuid4())
@@ -104,4 +106,19 @@ class JobSearch(Base):
     name = Column(String, nullable=False)
     details = Column(String, nullable=True)
     board_name = Column(String, nullable=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+
+
+class Companies(Base):
+    __tablename__ = "companies"
+    id = Column(String, primary_key=True, default=generate_uuid)
+    site = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    industry = Column(String, nullable=True)
+    summary = Column(String, nullable=True)
+    size = Column(String, nullable=True)
+    location = Column(String, nullable=True)
+    funding = Column(String, nullable=True)
+    workplace_type = Column(Enum(WorkplaceType), nullable=False, default=WorkplaceType.UNKNOWN)
+    verified = Column(Boolean, nullable=False, default=False)
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
