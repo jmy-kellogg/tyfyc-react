@@ -214,11 +214,9 @@ const SkillsGroup: React.FC<SkillsGroupProps> = ({
       ) : (
         <>
           {lockEdit ? (
-            <div>
-              <div className="grid grid-cols-[5rem_1fr] items-start gap-2">
-                <b>{`${displayName}: `}</b>
-                <p>{skills.map(({ label }) => label).join(", ")}</p>
-              </div>
+            <div className="grid grid-cols-[5rem_1fr] items-start gap-2">
+              <b>{`${displayName}: `}</b>
+              <p>{skills.map(({ label }) => label).join(", ")}</p>
             </div>
           ) : (
             <div className="grid grid-cols-[5rem_1fr] items-start gap-2">

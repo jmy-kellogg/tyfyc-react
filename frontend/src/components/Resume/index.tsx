@@ -138,9 +138,29 @@ const Resume: React.FC<ResumeProps> = ({ resume, onSave, jobTitle }) => {
   };
 
   const createSkills = (skills: Skill[]): string => {
-    const skillsList = skills.map(({ name }) => name);
+    const groupedSkills = skills.reduce(
+      (acc, skill) => {
+        const category =
+          skill.category.charAt(0).toUpperCase() + skill.category.slice(1) ||
+          "Other";
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(skill.name);
+        return acc;
+      },
+      {} as Record<string, string[]>
+    );
 
-    return `<p>${skillsList.join(", ")}</p>`;
+    return Object.entries(groupedSkills)
+      .map(
+        ([category, skillNames]) =>
+          `<p>
+            <strong>${category}:</strong>
+            <span>${skillNames.join(", ")}</span>
+          </p>`
+      )
+      .join("");
   };
 
   const createResume = async (): Promise<void> => {
@@ -155,7 +175,7 @@ const Resume: React.FC<ResumeProps> = ({ resume, onSave, jobTitle }) => {
         ${user ? defaultPersonal(user) : ""}
         <hr />
         <h2 style="text-align: center">Skills</h2>
-        ${createSkills(skills)}
+        <p>${createSkills(skills)}</p>
         <hr />
         <h2 style="text-align: center">Professional Experience</h2>
         ${employment.map((job) => employmentItem(job)).join("")}
