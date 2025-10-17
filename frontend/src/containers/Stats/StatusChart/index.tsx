@@ -133,7 +133,7 @@ const StatusChart: React.FC = () => {
   }, []);
 
   return (
-    <div className="m-2 p-4 w-max border border-gray-200 shadow-xl rounded-md">
+    <div className="m-2 p-4 w-max border border-gray-200 shadow-md rounded-md">
       <h3 className="justify-self-center">{totalApplied} Applications</h3>
       <PieChart width={800} height={400}>
         <Legend
