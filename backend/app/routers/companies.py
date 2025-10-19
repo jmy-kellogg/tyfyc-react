@@ -14,7 +14,7 @@ tags_metadata = {
     "description": "Operations for companies information",
 }
 
-@router.get("/companies/research/", tags=["companies"], response_model=CompanyResearch)
+@router.get("/companies/research", tags=["companies"], response_model=CompanyResearch)
 def research_company(company_site: str): 
     company = get_company_name_from_url(company_site)
 
