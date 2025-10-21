@@ -3,7 +3,8 @@ import type { ApplicationUpdate, Application, User } from "@/types";
 import Resume from "@/components/Resume";
 import Toggle from "@/components/Toggle";
 import SkillSection from "./SkillsSection";
-import TextInput from "./TextInput";
+import NotesInput from "./NotesInput";
+import PostingInput from "./PostingInput";
 import PostingBtnMenu from "./PostingBtnMenu";
 import { fetchUser } from "@/api/user";
 import type { SkillOption } from "@/types";
@@ -76,7 +77,7 @@ const DetailsBody: React.FC<DetailsBodyProps> = ({ application, onUpdate }) => {
       </div>
       <div className="m-3">
         {notesToggle && (
-          <TextInput
+          <NotesInput
             label="Notes:"
             inputName="notes"
             inputValue={application.notes || ""}
@@ -86,7 +87,7 @@ const DetailsBody: React.FC<DetailsBodyProps> = ({ application, onUpdate }) => {
       </div>
       <div className="m-3">
         {postingToggle && (
-          <TextInput
+          <PostingInput
             label="Posting:"
             inputName="posting"
             inputValue={application.posting || ""}
