@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import RichEditor from "@/components/RichEditor";
 import ReadOnly from "@/components/RichEditor/ReadOnly";
+import type { SkillOption } from "@/types";
 
 interface FormData {
   [name: string]: string;
@@ -12,6 +13,7 @@ interface TextInputProps {
   inputValue: string;
   onUpdate: (data: FormData) => void;
   popupBtnMenu?: ReactNode;
+  postingSkills?: SkillOption[];
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -20,6 +22,7 @@ const TextInput: React.FC<TextInputProps> = ({
   inputValue,
   onUpdate,
   popupBtnMenu,
+  postingSkills,
 }) => {
   const [hover, setHover] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
@@ -44,8 +47,27 @@ const TextInput: React.FC<TextInputProps> = ({
   };
 
   useEffect((): void => {
-    setText(inputValue);
-  }, [inputValue]);
+    let newText = inputValue;
+    if (postingSkills && !!postingSkills.length) {
+      postingSkills.forEach((skill) => {
+        const regex = new RegExp(
+          `\\b(${skill.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})\\b`,
+          "gi"
+        );
+
+        newText = newText.replace(regex, (match) => {
+          const isHighlighted = newText.indexOf(`${match}</mark>`);
+
+          if (isHighlighted > -1) {
+            return match;
+          } else {
+            return `<mark style="background-color: #FAF594">${match}</mark>`;
+          }
+        });
+      });
+    }
+    setText(newText);
+  }, [inputValue, postingSkills]);
 
   return (
     <div
@@ -113,10 +135,12 @@ const TextInput: React.FC<TextInputProps> = ({
             />
           </div>
         ) : (
-          <div onClick={(e: React.MouseEvent<HTMLDivElement>): void => {
-            e.stopPropagation();
-            setEdit(true);
-          }}>
+          <div
+            onClick={(e: React.MouseEvent<HTMLDivElement>): void => {
+              e.stopPropagation();
+              setEdit(true);
+            }}
+          >
             <ReadOnly content={text} />
           </div>
         )}

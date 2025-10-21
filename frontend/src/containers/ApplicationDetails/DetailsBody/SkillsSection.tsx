@@ -4,10 +4,15 @@ import type { SkillOption, Skill } from "@/types";
 
 interface SkillsSectionProps {
   posting: string;
+  postingSkills: SkillOption[];
+  setPostingSkills: (skills: SkillOption[]) => void;
 }
 
-const SkillSection: React.FC<SkillsSectionProps> = ({ posting }) => {
-  const [postingSkills, setPostingSkills] = useState<SkillOption[]>([]);
+const SkillSection: React.FC<SkillsSectionProps> = ({
+  posting,
+  postingSkills,
+  setPostingSkills,
+}) => {
   const [skills, setSkills] = useState<string[]>([]);
 
   const addSkillToProfile = async (skill: SkillOption): Promise<void> => {
@@ -32,15 +37,18 @@ const SkillSection: React.FC<SkillsSectionProps> = ({ posting }) => {
       const postingSkills: SkillOption[] = dbSkillOptions.filter(
         (skill: SkillOption): boolean => {
           // Escape special regex characters in skill name
-          const escapedSkillName = skill.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          return new RegExp(escapedSkillName, 'i').test(posting);
+          const escapedSkillName = skill.name.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&"
+          );
+          return new RegExp(escapedSkillName, "i").test(posting);
         }
       );
 
       setPostingSkills(postingSkills);
     };
     fetchData();
-  }, [posting]);
+  }, [posting, setPostingSkills]);
 
   return (
     <>

@@ -6,12 +6,14 @@ import SkillSection from "./SkillsSection";
 import TextInput from "./TextInput";
 import PostingBtnMenu from "./PostingBtnMenu";
 import { fetchUser } from "@/api/user";
+import type { SkillOption } from "@/types";
 
 interface DetailsBodyProps {
   application: Application;
   onUpdate: (form: ApplicationUpdate) => void;
 }
 const DetailsBody: React.FC<DetailsBodyProps> = ({ application, onUpdate }) => {
+  const [postingSkills, setPostingSkills] = useState<SkillOption[]>([]);
   const [notesToggle, setNotesToggle] = useState<boolean>(false);
   const [resumeToggle, setResumeToggle] = useState<boolean>(false);
   const [skillsToggle, setSkillsToggle] = useState<boolean>(true);
@@ -64,7 +66,13 @@ const DetailsBody: React.FC<DetailsBodyProps> = ({ application, onUpdate }) => {
         />
       </div>
       <div className="m-3">
-        {skillsToggle && <SkillSection posting={application.posting} />}
+        {skillsToggle && (
+          <SkillSection
+            posting={application.posting}
+            postingSkills={postingSkills}
+            setPostingSkills={setPostingSkills}
+          />
+        )}
       </div>
       <div className="m-3">
         {notesToggle && (
@@ -83,6 +91,7 @@ const DetailsBody: React.FC<DetailsBodyProps> = ({ application, onUpdate }) => {
             inputName="posting"
             inputValue={application.posting || ""}
             onUpdate={onUpdate}
+            postingSkills={postingSkills}
             popupBtnMenu={
               <PostingBtnMenu onUpdate={onUpdate} application={application} />
             }
