@@ -71,6 +71,7 @@ const StatusChart: React.FC = () => {
     const interviewed: string[] = [
       "interviewing",
       "accepted",
+      "offer",
       "no_offer",
       "declined",
       "rejected",

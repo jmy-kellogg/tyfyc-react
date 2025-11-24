@@ -16,6 +16,13 @@ export const statusOptions: Array<StatusOption> = [
     color: "oklch(0.596 0.145 163.225);",
   },
   {
+    id: "offer",
+    label: "Offer",
+    value: "offer",
+    style: "text-violet-500",
+    color: "oklch(0.596 0.145 163.225);",
+  },
+  {
     id: "no_offer",
     label: "No Offer",
     value: "no_offer",

@@ -29,10 +29,11 @@ import DeleteBtn from "@/components/DeleteBtn";
 import { useAuthContext } from "@/context/AuthContext";
 
 const order = [
-  "interviewing",
-  "applied",
-  "pending",
   "accepted",
+  "interviewing",
+  "offer",
+  "pending",
+  "applied",
   "declined",
   "no_offer",
   "rejected",

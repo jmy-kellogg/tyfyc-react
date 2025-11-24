@@ -4,6 +4,7 @@ export interface ApplicationBase {
   status:
     | "applied"
     | "accepted"
+    | "offer"
     | "interviewing"
     | "no_offer"
     | "rejected"
